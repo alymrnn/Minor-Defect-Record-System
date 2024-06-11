@@ -88,13 +88,14 @@ include ('plugins/system_plugins/navbar/index_navbar.php');
             <div class="col-12 col-sm-4 col-md-1 mb-2">
               <!-- clear all button -->
               <label for=""></label>
-              <button class="btn btn-block d-flex justify-content-left" id="clear_btn" onclick="clear_search_input()"
+              <button class="btn btn-block d-flex justify-content-left" id="clear_btn" onclick="clear_defect_record()"
                 style="color:#fff;height:34px;background: #474747;font-size:15px;font-weight:normal;"
                 onmouseover="this.style.backgroundColor='#2D2D2D'; this.style.color='#FFF';"
                 onmouseout="this.style.backgroundColor='#474747'; this.style.color='#FFF';">
                 <i class="fas fa-trash" style="margin-top: 2px;"></i>&nbsp;Clear All
               </button>
             </div>
+
             <div class="col-12 col-sm-4 col-md-1 mb-2">
               <!-- refresh button -->
               <label for=""></label>
@@ -109,8 +110,7 @@ include ('plugins/system_plugins/navbar/index_navbar.php');
           <div class="row justify-content-end">
             <div class="col-12 col-sm-4 col-md-2 mt-3">
               <!-- search button -->
-              <button class="btn btn-block d-flex justify-content-left" id="search_btn"
-                onclick="load_defect_table(1)"
+              <button class="btn btn-block d-flex justify-content-left" id="search_btn" onclick="load_defect_table()"
                 style="color:#fff;height:34px;border-radius:.25rem;background: #474747;font-size:15px;font-weight:normal;"
                 onmouseover="this.style.backgroundColor='#2D2D2D'; this.style.color='#FFF';"
                 onmouseout="this.style.backgroundColor='#474747'; this.style.color='#FFF';">
@@ -157,7 +157,7 @@ include ('plugins/system_plugins/navbar/index_navbar.php');
                 <th>Car Model</th>
                 <th>Line</th>
                 <th>Process</th>
-                <th>Shift/Group</th>
+                <th>Group</th>
                 <th>Product Number</th>
                 <th>Lot Number</th>
                 <th>Serial Number</th>
@@ -185,8 +185,8 @@ include ('plugins/system_plugins/navbar/index_navbar.php');
           </div>
           <div class="d-flex justify-content-sm-center">
             <button type="button" class="btn" style="background: #032b43; color: #fff;" id="btnNextPage"
-              onclick="get_next_page()" onmouseover="this.style.backgroundColor='#032031'; this.style.color='#FFF';" onm
-              </div>
+              onclick="get_next_page()" onmouseover="this.style.backgroundColor='#032031'; this.style.color='#FFF';"
+              onmouseout="this.style.backgroundColor='#032b43'; this.style.color='#FFF';">Load more</button>
           </div>
         </div>
   </section>
