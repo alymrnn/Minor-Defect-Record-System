@@ -1,6 +1,8 @@
 <script type="text/javascript">
     $(document).ready(function () {
         fetch_defect_category();
+        fetch_search_defect_category();
+        fetch_search_defect_details();
         load_defect_table(1);
 
         $('#a_scan_qr').prop('disabled', true).css('background', '#F1F1F1');
@@ -9,13 +11,61 @@
 
         $('#a_defect_category').change(function () {
             const select_defect_category = $(this).val();
-            fetch_defect_details(select_defect_category);
+            if (select_defect_category === '') {
+                $('#a_defect_details').prop('disabled', true).css('background', '#F1F1F1').val('');
+            } else {
+                fetch_defect_details(select_defect_category);
+            }
         });
+
+        // $('#search_defect_details').prop('disabled', true).css('background', '#F1F1F1');
+
+        // $('#search_defect_category').change(function () {
+        //     const select_search_defect_category = $(this).val();
+        //     if (select_search_defect_category === '') {
+        //         $('#search_defect_details').prop('disabled', true).css('background', '#F1F1F1').val('');
+        //     } else {
+        //         fetch_search_defect_details(select_search_defect_category);
+        //     }
+        // });
     });
 
     document.getElementById("scan_product_name").addEventListener("keyup", e => {
         load_defect_table(1);
     });
+
+    document.getElementById("scan_lot_no").addEventListener("keyup", e => {
+        load_defect_table(1);
+    });
+
+    document.getElementById("scan_serial_no").addEventListener("keyup", e => {
+        load_defect_table(1);
+    });
+
+    document.getElementById("search_process").addEventListener("keyup", e => {
+        load_defect_table(1);
+    });
+
+    document.getElementById("search_line_no").addEventListener("keyup", e => {
+        load_defect_table(1);
+    });
+
+    document.getElementById("search_date_from").addEventListener("change", e => {
+        load_defect_table(1);
+    });
+
+    document.getElementById("search_date_to").addEventListener("change", e => {
+        load_defect_table(1);
+    });
+
+    document.getElementById("search_defect_category").addEventListener("change", e => {
+        load_defect_table(1);
+    });
+
+    document.getElementById("search_defect_details").addEventListener("change", e => {
+        load_defect_table(1);
+    });
+
 
     // Table Responsive Scroll Event for Load More
     document.getElementById("list_of_defect_res").addEventListener("scroll", function () {
@@ -40,6 +90,14 @@
 
     const count_defect = () => {
         var scan_product_name = sessionStorage.getItem('scan_product_name');
+        var scan_lot_no = sessionStorage.getItem('scan_lot_no');
+        var scan_serial_no = sessionStorage.getItem('scan_serial_no');
+        var search_process = sessionStorage.getItem('search_process');
+        var search_line_no = sessionStorage.getItem('search_line_no');
+        var search_date_from = sessionStorage.getItem('search_date_from');
+        var search_date_to = sessionStorage.getItem('search_date_to');
+        var search_defect_category = sessionStorage.getItem('search_defect_category');
+        var search_defect_details = sessionStorage.getItem('search_defect_details');
 
         $.ajax({
             url: 'process/index_p.php',
@@ -48,6 +106,14 @@
             data: {
                 method: 'count_defect_list',
                 scan_product_name: scan_product_name,
+                scan_lot_no: scan_lot_no,
+                scan_serial_no: scan_serial_no,
+                search_process: search_process,
+                search_line_no: search_line_no,
+                search_date_from: search_date_from,
+                search_date_to: search_date_to,
+                search_defect_category: search_defect_category,
+                search_defect_details: search_defect_details
             },
             success: function (response) {
                 sessionStorage.setItem('count_rows', response);
@@ -66,6 +132,14 @@
 
     const load_defect_last_page = () => {
         var scan_product_name = sessionStorage.getItem('scan_product_name');
+        var scan_lot_no = sessionStorage.getItem('scan_lot_no');
+        var scan_serial_no = sessionStorage.getItem('scan_serial_no');
+        var search_process = sessionStorage.getItem('search_process');
+        var search_line_no = sessionStorage.getItem('search_line_no');
+        var search_date_from = sessionStorage.getItem('search_date_from');
+        var search_date_to = sessionStorage.getItem('search_date_to');
+        var search_defect_category = sessionStorage.getItem('search_defect_category');
+        var search_defect_details = sessionStorage.getItem('search_defect_details');
 
         var current_page = parseInt(sessionStorage.getItem('defect_table_pagination'));
 
@@ -76,6 +150,14 @@
             data: {
                 method: 'defect_list_last_page',
                 scan_product_name: scan_product_name,
+                scan_lot_no: scan_lot_no,
+                scan_serial_no: scan_serial_no,
+                search_process: search_process,
+                search_line_no: search_line_no,
+                search_date_from: search_date_from,
+                search_date_to: search_date_to,
+                search_defect_category: search_defect_category,
+                search_defect_details: search_defect_details
             },
             success: function (response) {
                 sessionStorage.setItem('last_page', response);
@@ -95,18 +177,59 @@
 
     const load_defect_table = current_page => {
         var scan_product_name = document.getElementById('scan_product_name').value;
+        var scan_lot_no = document.getElementById('scan_lot_no').value;
+        var scan_serial_no = document.getElementById('scan_serial_no').value;
+        var search_process = document.getElementById('search_process').value;
+        var search_line_no = document.getElementById('search_line_no').value;
+        var search_date_from = document.getElementById('search_date_from').value;
+        var search_date_to = document.getElementById('search_date_to').value;
+        var search_defect_category = document.getElementById('search_defect_category').value;
+        var search_defect_details = document.getElementById('search_defect_details').value;
 
         var scan_product_name_1 = sessionStorage.getItem('scan_product_name');
+        var scan_lot_no_1 = sessionStorage.getItem('scan_lot_no');
+        var scan_serial_no_1 = sessionStorage.getItem('scan_serial_no');
+        var search_process_1 = sessionStorage.getItem('search_process');
+        var search_line_no_1 = sessionStorage.getItem('search_line_no');
+        var search_date_from_1 = sessionStorage.getItem('search_date_from');
+        var search_date_to_1 = sessionStorage.getItem('search_date_to');
+        var search_defect_category_1 = sessionStorage.getItem('search_defect_category');
+        var search_defect_details_1 = sessionStorage.getItem('search_defect_details');
 
         if (current_page > 1) {
             switch (true) {
                 case scan_product_name !== scan_product_name_1:
+                case scan_lot_no !== scan_lot_no_1:
+                case scan_serial_no !== scan_serial_no_1:
+                case search_process !== search_process_1:
+                case search_line_no !== search_line_no_1:
+                case search_date_from !== search_date_from_1:
+                case search_date_to !== search_date_to_1:
+                case search_defect_category !== search_defect_category_1:
+                case search_defect_details !== search_defect_details_1:
                     scan_product_name = scan_product_name_1;
+                    scan_lot_no = scan_lot_no_1;
+                    scan_serial_no = scan_serial_no_1;
+                    search_process = search_process_1;
+                    search_line_no = search_line_no_1;
+                    search_date_from = search_date_from_1;
+                    search_date_to = search_date_to_1;
+                    search_defect_category = search_defect_category_1;
+                    search_defect_details = search_defect_details_1;
+
                     break;
                 default:
             }
         } else {
             sessionStorage.setItem('scan_product_name', scan_product_name);
+            sessionStorage.setItem('scan_lot_no', scan_lot_no);
+            sessionStorage.setItem('scan_serial_no', scan_serial_no);
+            sessionStorage.setItem('search_process', search_process);
+            sessionStorage.setItem('search_line_no', search_line_no);
+            sessionStorage.setItem('search_date_from', search_date_from);
+            sessionStorage.setItem('search_date_to', search_date_to);
+            sessionStorage.setItem('search_defect_category', search_defect_category);
+            sessionStorage.setItem('search_defect_details', search_defect_details);
         }
         $.ajax({
             url: 'process/index_p.php',
@@ -115,6 +238,15 @@
             data: {
                 method: 'load_defect_list',
                 scan_product_name: scan_product_name,
+                scan_lot_no: scan_lot_no,
+                scan_serial_no: scan_serial_no,
+                search_process: search_process,
+                search_line_no: search_line_no,
+                search_date_from: search_date_from,
+                search_date_to: search_date_to,
+                search_defect_category: search_defect_category,
+                search_defect_details: search_defect_details,
+
                 current_page: current_page
             },
             beforeSend: () => {
@@ -138,6 +270,50 @@
         });
     }
 
+    const fetch_search_defect_category = () => {
+        $.ajax({
+            url: 'process/index_p.php',
+            type: 'POST',
+            cache: false,
+            data: {
+                method: 'fetch_search_defect_category',
+            },
+            success: function (response) {
+                $('#search_defect_category').html(response);
+            },
+        });
+    }
+
+    const fetch_search_defect_details = () => {
+        $.ajax({
+            url: 'process/index_p.php',
+            type: 'POST',
+            cache: false,
+            data: {
+                method: 'fetch_search_defect_details'
+            },
+            success: function (response) {
+                $('#search_defect_details').html(response);
+            },
+        });
+    }
+
+    // const fetch_search_defect_details = (search_category_value) => {
+    //     $.ajax({
+    //         url: 'process/index_p.php',
+    //         type: 'POST',
+    //         cache: false,
+    //         data: {
+    //             method: 'fetch_search_defect_details',
+    //             search_category_value: search_category_value
+    //         },
+    //         success: function (response) {
+    //             $('#search_defect_details').html(response);
+    //             $('#search_defect_details').prop('disabled', false).css('background', '#FFF');
+    //         },
+    //     });
+    // }
+
     const fetch_defect_category = () => {
         $.ajax({
             url: 'process/index_p.php',
@@ -152,14 +328,14 @@
         });
     }
 
-    const fetch_defect_details = (category_code) => {
+    const fetch_defect_details = (category_value) => {
         $.ajax({
             url: 'process/index_p.php',
             type: 'POST',
             cache: false,
             data: {
                 method: 'fetch_defect_details',
-                category_code: category_code
+                category_value: category_value
             },
             success: function (response) {
                 $('#a_defect_details').html(response);
@@ -167,21 +343,6 @@
             },
         });
     }
-
-
-    // const load_defect_table = () => {
-    //     $.ajax({
-    //         url: 'process/index_p.php',
-    //         type: 'POST',
-    //         cache: false,
-    //         data: {
-    //             method: 'defect_list'
-    //         }, success: function (response) {
-    //             $('#list_of_defect').html(response);
-    //             $('#spinner').fadeOut();
-    //         }
-    //     });
-    // }
 
     function handleCarMakerChange(selectOpt) {
         var carMaker = selectOpt.value;
@@ -668,5 +829,30 @@
 
     function refresh_page() {
         location.reload();
+    }
+
+    const export_defect_record = () => {
+        var scan_product_name = document.getElementById('scan_product_name').value.trim();
+        var scan_lot_no = document.getElementById('scan_lot_no').value.trim();
+        var scan_serial_no = document.getElementById('scan_serial_no').value.trim();
+        var search_process = document.getElementById('search_process').value.trim();
+        var search_line_no = document.getElementById('search_line_no').value.trim();
+        var search_date_from = document.getElementById('search_date_from').value.trim();
+        var search_date_to = document.getElementById('search_date_to').value.trim();
+        var search_defect_category = document.getElementById('search_defect_category').value.trim();
+        var search_defect_details = document.getElementById('search_defect_details').value.trim();
+
+        window.open(
+            'process/exp_defect_record.php?scan_product_name=' + scan_product_name +
+            "&scan_lot_no=" + scan_lot_no +
+            "&scan_serial_no=" + scan_serial_no +
+            "&search_process=" + search_process +
+            "&search_line_no=" + search_line_no +
+            "&search_date_from=" + search_date_from +
+            "&search_date_to=" + search_date_to +
+            "&search_defect_category=" + search_defect_category +
+            "&search_defect_details=" + search_defect_details,
+            '_blank'
+        );
     }
 </script>
