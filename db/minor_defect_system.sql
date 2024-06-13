@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 13, 2024 at 10:07 AM
+-- Generation Time: Jun 13, 2024 at 10:57 AM
 -- Server version: 10.4.21-MariaDB
 -- PHP Version: 7.4.25
 
@@ -135,6 +135,7 @@ CREATE TABLE `t_minor_defect_f` (
   `car_model` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `line_no` int(10) DEFAULT NULL,
   `process` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `group_d` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `shift` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `product_no` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `lot_no` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,

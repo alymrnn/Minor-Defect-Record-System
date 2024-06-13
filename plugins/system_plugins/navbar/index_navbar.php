@@ -35,6 +35,12 @@
     .highlight {
         border: 1px solid #CA3F3F;
     }
+
+    th,
+    td {
+        border: 1px solid #EEE;
+        text-align: center;
+    }
 </style>
 
 <!-- Navbar -->
@@ -46,30 +52,29 @@
             RECORD SYSTEM</span>
     </a>
 
-    <button class="navbar-toggler order-1" type="button" data-toggle="collapse" data-target="#navbarCollapse"
-        aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <!-- Right navbar links -->
     <ul class="order-1 order-md-3 navbar-nav navbar-no-expand ml-auto">
         <li class="nav-item mr-4 pt-3">
-            <p style="color: #fff; font-size: 15px;"><i class="far fa-clock"></i>&nbsp;&nbsp;<span id="time"></span></p>
+            <p style="color: #fff; font-size: 15px;"><i class="fas fa-calendar-check"></i>&nbsp;&nbsp;<span
+                    id="datetime"></span></p>
         </li>
     </ul>
 </nav>
 <!-- /.navbar -->
 
 <script>
-    var datetime = new Date();
-    console.log(datetime);
-    document.getElementById("time").textContent = datetime;
+    function refreshDateTime() {
+        const datetimeDisplay = document.getElementById("datetime");
+        const now = new Date();
 
-    function refreshTime() {
-        const timeDisplay = document.getElementById("time");
-        const dateString = new Date().toLocaleString();
-        const formattedString = dateString.replace(", ", " | ");
-        timeDisplay.textContent = formattedString;
+        const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        const formattedDate = now.toLocaleDateString(undefined, dateOptions);
+
+        const timeOptions = { hour: 'numeric', minute: 'numeric', second: 'numeric' };
+        const formattedTime = now.toLocaleTimeString(undefined, timeOptions);
+
+        const formattedDateTime = `${formattedDate} | ${formattedTime}`;
+
+        datetimeDisplay.textContent = formattedDateTime;
     }
-    setInterval(refreshTime, 1000);
+    setInterval(refreshDateTime, 1000); 
 </script>

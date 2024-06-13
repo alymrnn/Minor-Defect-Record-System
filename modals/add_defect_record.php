@@ -29,7 +29,7 @@
                         <span id="dateDetectedError" class="error-message" style="display:none; color:#CA3F3F;">Date
                             Detected field is required.</span>
                     </div>
-                    <div class="col-12 col-md-3">
+                    <div class="col-12 col-md-2">
                         <label style="font-weight: normal;color: #000;">Car Model</label>
                         <label style="color:#CA3F3F">*</label>
                         <select id="a_car_model" class="form-control" onchange="handleCarMakerChange(this)"
@@ -57,7 +57,7 @@
                         <span id="lineNoError" class="error-message" style="display:none; color:#CA3F3F;">Line
                             No. field is required.</span>
                     </div>
-                    <div class="col-12 col-md-3">
+                    <div class="col-12 col-md-2">
                         <label style="font-weight: normal;color: #000;">Process</label>
                         <label style="color:#CA3F3F">*</label>
                         <input type="text" id="a_process" class="form-control" autocomplete="off" placeholder=""
@@ -69,12 +69,25 @@
                     <div class="col-12 col-md-2">
                         <label style="font-weight: normal;color: #000;">Group</label>
                         <label style="color:#CA3F3F">*</label>
-                        <select id="a_shift_group" class="form-control"
+                        <select id="a_group" class="form-control"
                             style="color: #525252; font-size: 15px; border-radius: .25rem; background: #FFF; height: 35px; width: 100%;"
                             required>
                             <option value="" disabled selected>Select Group</option>
                             <option value="A">A</option>
                             <option value="B">B</option>
+                        </select>
+                        <span id="groupError" class="error-message" style="display:none; color:#CA3F3F;">Group
+                            field is required.</span>
+                    </div>
+                    <div class="col-12 col-md-2">
+                        <label style="font-weight: normal;color: #000;">Shift</label>
+                        <label style="color:#CA3F3F">*</label>
+                        <select id="a_shift" class="form-control"
+                            style="color: #525252; font-size: 15px; border-radius: .25rem; background: #FFF; height: 35px; width: 100%;"
+                            required>
+                            <option value="" disabled selected>Select Shift</option>
+                            <option value="Day Shift">Day Shift</option>
+                            <option value="Night Shift">Night Shift</option>
                         </select>
                         <span id="shiftError" class="error-message" style="display:none; color:#CA3F3F;">Shift
                             field is required.</span>

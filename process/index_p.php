@@ -206,6 +206,7 @@ if ($method == 'load_defect_list') {
             echo '<td style="text-align:center;">' . $row['car_model'] . '</td>';
             echo '<td style="text-align:center;">' . $row['line_no'] . '</td>';
             echo '<td style="text-align:center;">' . $row['process'] . '</td>';
+            echo '<td style="text-align:center;">' . $row['group_d'] . '</td>';
             echo '<td style="text-align:center;">' . $row['shift'] . '</td>';
             echo '<td style="text-align:center;">' . $row['product_no'] . '</td>';
             echo '<td style="text-align:center;">' . $row['lot_no'] . '</td>';
@@ -314,6 +315,7 @@ if ($method == 'add_defect_record') {
     $car_model = trim($_POST['car_model']);
     $line_no = trim($_POST['line_no']);
     $process = trim($_POST['process']);
+    $group = trim($_POST['group']);
     $shift = trim($_POST['shift']);
     $product_name = trim($_POST['product_name']);
     $lot_no = trim($_POST['lot_no']);
@@ -328,7 +330,7 @@ if ($method == 'add_defect_record') {
 
     $defect_id = generate_defect_id($defect_id);
 
-    $query = "INSERT INTO t_minor_defect_f (`defect_id`,`date_detected`,`car_model`,`line_no`,`process`,`shift`,`product_no`,`lot_no`,`serial_no`,`defect_category`,`defect_details`,`sequence_no`,`connector_no`,`repaired_by`,`verified_by`) VALUES ('$defect_id','$date_detected','$car_model','$line_no','$process','$shift','$product_name','$lot_no','$serial_no','$defect_category','$defect_details','$sequence_no','$connector_no','$repaired_by','$verified_by')";
+    $query = "INSERT INTO t_minor_defect_f (`defect_id`,`date_detected`,`car_model`,`line_no`,`process`,`group_d`,`shift`,`product_no`,`lot_no`,`serial_no`,`defect_category`,`defect_details`,`sequence_no`,`connector_no`,`repaired_by`,`verified_by`) VALUES ('$defect_id','$date_detected','$car_model','$line_no','$process','$group','$shift','$product_name','$lot_no','$serial_no','$defect_category','$defect_details','$sequence_no','$connector_no','$repaired_by','$verified_by')";
     $stmt = $conn->prepare($query);
     if ($stmt->execute()) {
         echo 'success';

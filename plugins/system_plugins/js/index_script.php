@@ -557,7 +557,13 @@
         document.getElementById("processError").style.display = 'none';
     });
 
-    document.getElementById("a_shift_group").addEventListener("input", function () {
+    document.getElementById("a_group").addEventListener("input", function () {
+        var shift = this;
+        shift.classList.remove('highlight');
+        document.getElementById("groupError").style.display = 'none';
+    });
+
+    document.getElementById("a_shift").addEventListener("input", function () {
         var shift = this;
         shift.classList.remove('highlight');
         document.getElementById("shiftError").style.display = 'none';
@@ -622,7 +628,8 @@
         var car_model = document.getElementById("a_car_model").value;
         var line_no = document.getElementById("a_line_no").value;
         var process = document.getElementById("a_process").value;
-        var shift = document.getElementById("a_shift_group").value;
+        var group = document.getElementById("a_group").value;
+        var shift = document.getElementById("a_shift").value;
 
         // These fields are populated by QR code scan
         var product_name = document.getElementById("a_product_name");
@@ -664,8 +671,14 @@
             hasError = true;
         }
 
+        if (group === '') {
+            document.getElementById("a_group").classList.add('highlight');
+            document.getElementById("groupError").style.display = 'block';
+            hasError = true;
+        }
+
         if (shift === '') {
-            document.getElementById("a_shift_group").classList.add('highlight');
+            document.getElementById("a_shift").classList.add('highlight');
             document.getElementById("shiftError").style.display = 'block';
             hasError = true;
         }
@@ -744,6 +757,7 @@
                 car_model: car_model,
                 line_no: line_no,
                 process: process,
+                group: group,
                 shift: shift,
                 product_name: product_name.value,
                 lot_no: lot_no.value,
@@ -769,7 +783,8 @@
                     $('#a_car_model').val('');
                     $('#a_line_no').val('');
                     $('#a_process').val('');
-                    $('#a_shift_group').val('');
+                    $('#a_group').val('');
+                    $('#a_shift').val('');
                     $('#a_product_name').val('');
                     $('#a_lot_no').val('');
                     $('#a_serial_no').val('');
@@ -802,7 +817,8 @@
         document.getElementById("a_car_model").value = '';
         document.getElementById("a_line_no").value = '';
         document.getElementById("a_process").value = '';
-        document.getElementById("a_shift_group").value = '';
+        document.getElementById("a_group").value = '';
+        document.getElementById("a_shift").value = '';
         document.getElementById("a_product_name").value = '';
         document.getElementById("a_lot_no").value = '';
         document.getElementById("a_serial_no").value = '';

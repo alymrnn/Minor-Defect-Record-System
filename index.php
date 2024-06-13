@@ -120,7 +120,8 @@ include ('plugins/system_plugins/navbar/index_navbar.php');
             </div>
             <div class=" col-12 col-sm-4 col-md-2 mt-3">
               <!-- export button -->
-              <button class="btn btn-block d-flex justify-content-left" id="export_record" onclick="export_defect_record()"
+              <button class="btn btn-block d-flex justify-content-left" id="export_record"
+                onclick="export_defect_record()"
                 style="color:#fff;height:35px;background: #335c67;font-size:15px;font-weight:normal;"
                 onmouseover="this.style.backgroundColor='#27464F'; this.style.color='#FFF';"
                 onmouseout="this.style.backgroundColor='#335c67'; this.style.color='#FFF';"><i class="fas fa-download"
@@ -142,11 +143,9 @@ include ('plugins/system_plugins/navbar/index_navbar.php');
       <!-- MAIN FIELD -->
       <div class="card m-3">
         <div class="card-body">
-          <div class="row">
-            <div class="col-sm-3 mt-2">
-              <!-- view total count of data from table -->
-              <span id="count_view_defect"></span>
-            </div>
+          <div class="col-sm-3">
+            <!-- view total count of data from table -->
+            <span id="count_view_defect"></span>
           </div>
 
           <!-- table -->
@@ -159,7 +158,9 @@ include ('plugins/system_plugins/navbar/index_navbar.php');
                 <th>Car Model</th>
                 <th>Line No.</th>
                 <th>Process</th>
-                <th>Group</th>
+
+                <!-- for group and shift values -->
+                <th colspan="2">Shift</th>
                 <th>Product Number</th>
                 <th>Lot Number</th>
                 <th>Serial Number</th>

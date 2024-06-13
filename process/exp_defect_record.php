@@ -17,7 +17,6 @@ header('Content-Type: text/csv; charset=utf-8');
 header('Content-Disposition: attachment; filename="' . $filename . '";');
 
 $f = fopen('php://memory', 'w');
-
 fputs($f, "\xEF\xBB\xBF");
 
 $delimiter = ',';
@@ -27,7 +26,7 @@ $headers = array(
     'Car Model',
     'Line No.',
     'Process',
-    'Group',
+    'Shift',
     'Product Number',
     'Lot Number',
     'Serial Number',
@@ -41,12 +40,12 @@ $headers = array(
 
 fputcsv($f, $headers, $delimiter);
 
-$query = "SELECT date_detected, car_model, line_no, process, shift, product_no, lot_no, serial_no, defect_category, defect_details, sequence_no, connector_no, repaired_by, verified_by FROM t_minor_defect_f WHERE 1=1";
+$query = "SELECT date_detected, car_model, line_no, process, CONCAT(group_d, ' | ', shift) AS shift, product_no, lot_no, serial_no, defect_category, defect_details, sequence_no, connector_no, repaired_by, verified_by FROM t_minor_defect_f WHERE 1=1";
 
 $conditions = [];
 $params = [];
 
-if (!empty($date_from) && !empty($date_to)) {
+if (!empty($search_date_from) && !empty($search_date_to)) {
     $conditions[] = "date_detected BETWEEN ? AND ?";
     $params[] = $search_date_from;
     $params[] = $search_date_to;
@@ -115,8 +114,7 @@ if ($stmt->rowCount() > 0) {
         fputcsv($f, $lineData, $delimiter);
     }
 } else {
-    echo 'NO RECORD FOUND';
-    exit;
+    fputcsv($f, array('NO RECORD FOUND'), $delimiter);
 }
 
 fseek($f, 0);
