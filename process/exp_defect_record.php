@@ -22,10 +22,11 @@ fputs($f, "\xEF\xBB\xBF");
 $delimiter = ',';
 
 $headers = array(
-    'Date Detected',
+    'Datetime Detected',
     'Car Model',
     'Line No.',
     'Process',
+    'Group',
     'Shift',
     'Product Number',
     'Lot Number',
@@ -40,7 +41,9 @@ $headers = array(
 
 fputcsv($f, $headers, $delimiter);
 
-$query = "SELECT date_detected, car_model, line_no, process, CONCAT(group_d, ' | ', shift) AS shift, product_no, lot_no, serial_no, defect_category, defect_details, sequence_no, connector_no, repaired_by, verified_by FROM t_minor_defect_f WHERE 1=1";
+// $query = "SELECT date_detected, car_model, line_no, process, CONCAT(group_d, ' | ', shift) AS shift, product_no, lot_no, serial_no, defect_category, defect_details, sequence_no, connector_no, repaired_by, verified_by FROM t_minor_defect_f WHERE 1=1";
+
+$query = "SELECT date_detected, car_model, line_no, process, group_d, shift, product_no, lot_no, serial_no, defect_category, defect_details, sequence_no, connector_no, repaired_by, verified_by FROM t_minor_defect_f WHERE 1=1";
 
 $conditions = [];
 $params = [];
@@ -100,6 +103,7 @@ if ($stmt->rowCount() > 0) {
             $row['car_model'],
             $row['line_no'],
             $row['process'],
+            $row['group_d'],
             $row['shift'],
             $row['product_no'],
             $row['lot_no'],

@@ -18,6 +18,12 @@
             }
         });
 
+        get_inspection_details();
+
+        $('#add_defect_record').on('shown.bs.modal', function () {
+            set_current_date_time();
+        });
+
         // $('#search_defect_details').prop('disabled', true).css('background', '#F1F1F1');
 
         // $('#search_defect_category').change(function () {
@@ -377,7 +383,7 @@
     }
 
     function enableScanAndAttachHandler(scanHandler) {
-        $('#a_scan_qr').prop('disabled', false).css('background', '#FFF');
+        // $('#a_scan_qr').prop('disabled', false).css('background', '#FFF');
         scanHandler();
     }
 
@@ -539,6 +545,12 @@
         document.getElementById("dateDetectedError").style.display = 'none';
     });
 
+    document.getElementById("a_car_maker").addEventListener("input", function () {
+        var car_maker = this;
+        car_maker.classList.remove('highlight');
+        document.getElementById("carMakerError").style.display = 'none';
+    });
+
     document.getElementById("a_car_model").addEventListener("input", function () {
         var car_model = this;
         car_model.classList.remove('highlight');
@@ -625,6 +637,7 @@
 
     const add_defect_record = () => {
         var date_detected = document.getElementById("a_date_detected").value;
+        var car_maker = document.getElementById("a_car_maker").value;
         var car_model = document.getElementById("a_car_model").value;
         var line_no = document.getElementById("a_line_no").value;
         var process = document.getElementById("a_process").value;
@@ -644,12 +657,20 @@
         var verified_by = document.getElementById("a_verified_by").value;
         var defect_id = document.getElementById('defect_id_no').value;
 
+        var ip_address = document.getElementById("a_ip_address").value;
+
         let hasError = false;
 
         // Validation checks
         if (date_detected === '') {
             document.getElementById("a_date_detected").classList.add('highlight');
             document.getElementById("dateDetectedError").style.display = 'block';
+            hasError = true;
+        }
+
+        if (car_maker === '') {
+            document.getElementById("a_car_maker").classList.add('highlight');
+            document.getElementById("carMakerError").style.display = 'block';
             hasError = true;
         }
 
@@ -754,6 +775,7 @@
             data: {
                 method: 'add_defect_record',
                 date_detected: date_detected,
+                car_maker: car_maker,
                 car_model: car_model,
                 line_no: line_no,
                 process: process,
@@ -768,7 +790,8 @@
                 connector_no: connector_no,
                 repaired_by: repaired_by,
                 verified_by: verified_by,
-                defect_id: defect_id
+                defect_id: defect_id,
+                ip_address: ip_address
             },
             success: function (response) {
                 if (response == 'success') {
@@ -780,6 +803,7 @@
                         timer: 1500
                     });
                     $('#a_date_detected').val('');
+                    $('#a_car_maker').val('');
                     $('#a_car_model').val('');
                     $('#a_line_no').val('');
                     $('#a_process').val('');
@@ -795,8 +819,10 @@
                     $('#a_repaired_by').val('');
                     $('#a_verified_by').val('');
                     $('#defect_id_no').val('');
+                    $('#a_ip_address').val('');
 
                     load_defect_table(1);
+                    // location.reload();
 
                     $('#add_defect_record').modal('hide');
                 } else {
@@ -812,13 +838,14 @@
         });
     }
 
-    const clear_defect_record = () => {
-        document.getElementById("a_date_detected").value = '';
+    const clear_add_defect_record = () => {
+        // document.getElementById("a_date_detected").value = '';
+        document.getElementById("a_car_maker").value = '';
         document.getElementById("a_car_model").value = '';
-        document.getElementById("a_line_no").value = '';
-        document.getElementById("a_process").value = '';
+        // document.getElementById("a_line_no").value = '';
+        // document.getElementById("a_process").value = '';
         document.getElementById("a_group").value = '';
-        document.getElementById("a_shift").value = '';
+        // document.getElementById("a_shift").value = '';
         document.getElementById("a_product_name").value = '';
         document.getElementById("a_lot_no").value = '';
         document.getElementById("a_serial_no").value = '';
@@ -828,7 +855,9 @@
         document.getElementById("a_connector_no").value = '';
         document.getElementById("a_repaired_by").value = '';
         document.getElementById("a_verified_by").value = '';
+    }
 
+    const clear_search_defect_record = () => {
         document.getElementById("scan_qr").value = '';
         document.getElementById("scan_product_name").value = '';
         document.getElementById("scan_lot_no").value = '';
@@ -841,6 +870,7 @@
         document.getElementById("search_defect_details").value = '';
 
         load_defect_table(1);
+        // location.reload();
     }
 
     function refresh_page() {
@@ -871,4 +901,53 @@
             '_blank'
         );
     }
+
+    const get_inspection_details = () => {
+        const ip_address = $('#a_ip_address').val();
+
+        $.ajax({
+            url: 'process/inspection_p.php',
+            type: 'GET',
+            data: {
+                method: 'get_inspection_details',
+                ip_address: ip_address
+            },
+            success: function (response) {
+                // console.log(response);
+
+                const data = JSON.parse(response);
+                $('#a_car_maker').val(data.car_maker);
+                $('#a_car_model').val(data.car_model);
+                $('#a_line_no').val(data.line_no);
+                $('#a_process').val(data.process);
+            },
+            error: function (xhr, status, error) {
+                console.error('AJAX Error: ', status, error);
+            }
+        });
+    }
+
+    const set_current_date_time = () => {
+        const date_input = document.getElementById('a_date_detected');
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = String(now.getMonth() + 1).padStart(2, '0');
+        const day = String(now.getDate()).padStart(2, '0');
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        const seconds = String(now.getSeconds()).padStart(2, '0');
+
+        let shift = '';
+        if ((hours > 6 && hours < 18) || (hours === 6 && minutes >= 0 && seconds >= 0) || (hours === 17 && minutes <= 59 && seconds <= 59)) {
+            shift = 'DS';
+        } else {
+            shift = 'NS';
+        }
+
+        const date_time_format = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
+        date_input.value = date_time_format;
+
+        document.getElementById('a_shift').value = shift;
+    };
+
 </script>

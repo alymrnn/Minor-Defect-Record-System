@@ -2,7 +2,7 @@
     <div class="wrapper">
 
         <!-- Preloader -->
-        <div class="preloader flex-column justify-content-center align-items-center" style="background: #292929;">
+        <!-- <div class="preloader flex-column justify-content-center align-items-center" style="background: #292929;">
             <img class="animation__shake" src="dist/img/defect.png" alt="Web Template" height="100" width="100">
             <noscript>
                 <br>
@@ -10,4 +10,4 @@
                 <br>
                 <span>Call IT Personnel Immediately!!! They will fix it right away.</span>
             </noscript>
-        </div>
+        </div> -->

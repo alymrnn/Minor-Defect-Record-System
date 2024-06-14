@@ -9,7 +9,13 @@ include ('plugins/system_plugins/navbar/index_navbar.php');
   <!-- Main content -->
   <section class="content">
     <div class="col-12 col-md-12 m-0 p-0">
-      <div class="card m-3">
+
+      <p class="text-right pt-3 pr-3" style="font-size: 16px;"><i>IP Address: &nbsp;</i><input
+          style="border: 1px solid #EEE; width: 120px; text-align: center;" value="<?= $_SERVER['REMOTE_ADDR']; ?>"
+          disabled>
+      </p>
+
+      <div class="card mx-3">
         <!-- SEARCH FIELD -->
         <di class="card-body">
           <div class="row">
@@ -90,7 +96,7 @@ include ('plugins/system_plugins/navbar/index_navbar.php');
             <div class="col-12 col-sm-4 col-md-1 mb-2">
               <!-- clear all button -->
               <label for=""></label>
-              <button class="btn btn-block d-flex justify-content-left" id="clear_btn" onclick="clear_defect_record()"
+              <button class="btn btn-block d-flex justify-content-left" id="clear_btn" onclick="clear_search_defect_record()"
                 style="color:#fff;height:35px;background: #474747;font-size:15px;font-weight:normal;"
                 onmouseover="this.style.backgroundColor='#2D2D2D'; this.style.color='#FFF';"
                 onmouseout="this.style.backgroundColor='#474747'; this.style.color='#FFF';">
@@ -141,7 +147,7 @@ include ('plugins/system_plugins/navbar/index_navbar.php');
       </div>
 
       <!-- MAIN FIELD -->
-      <div class="card m-3">
+      <div class="card mx-3">
         <div class="card-body">
           <div class="col-sm-3">
             <!-- view total count of data from table -->
@@ -149,18 +155,22 @@ include ('plugins/system_plugins/navbar/index_navbar.php');
           </div>
 
           <!-- table -->
-          <div id="list_of_defect_res" class="card-body table-responsive m-0 p-0" style="max-height: 500px;">
+          <div id="list_of_defect_res" class="card-body table-responsive m-0 p-0" style="max-height: 400px;">
             <table class="table col-12 mt-3 table-head-fixed text-nowrap table-hover" id="defect_table"
               style="background: #F9F9F9;">
               <thead style="text-align: center;">
                 <th>#</th>
-                <th>Date Detected</th>
+                <th>Datetime Detected</th>
+                <th>Car Maker</th>
                 <th>Car Model</th>
                 <th>Line No.</th>
                 <th>Process</th>
+                <th>Group</th>
+                <th>Shift</th>
 
                 <!-- for group and shift values -->
-                <th colspan="2">Shift</th>
+                <!-- <th colspan="2">Shift</th> -->
+
                 <th>Product Number</th>
                 <th>Lot Number</th>
                 <th>Serial Number</th>

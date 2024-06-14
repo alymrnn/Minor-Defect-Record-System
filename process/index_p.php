@@ -203,6 +203,7 @@ if ($method == 'load_defect_list') {
             echo '<tr>';
             echo '<td style="text-align:center;">' . $c . '</td>';
             echo '<td style="text-align:center;">' . $row['date_detected'] . '</td>';
+            echo '<td style="text-align:center;">' . $row['car_maker'] . '</td>';
             echo '<td style="text-align:center;">' . $row['car_model'] . '</td>';
             echo '<td style="text-align:center;">' . $row['line_no'] . '</td>';
             echo '<td style="text-align:center;">' . $row['process'] . '</td>';
@@ -312,6 +313,7 @@ function generate_defect_id($defect_id)
 
 if ($method == 'add_defect_record') {
     $date_detected = trim($_POST['date_detected']);
+    $car_maker = trim($_POST['car_maker']);
     $car_model = trim($_POST['car_model']);
     $line_no = trim($_POST['line_no']);
     $process = trim($_POST['process']);
@@ -327,10 +329,11 @@ if ($method == 'add_defect_record') {
     $repaired_by = trim($_POST['repaired_by']);
     $verified_by = trim($_POST['verified_by']);
     $defect_id = trim($_POST['defect_id']);
+    $ip_address = trim($_POST['ip_address']);
 
     $defect_id = generate_defect_id($defect_id);
 
-    $query = "INSERT INTO t_minor_defect_f (`defect_id`,`date_detected`,`car_model`,`line_no`,`process`,`group_d`,`shift`,`product_no`,`lot_no`,`serial_no`,`defect_category`,`defect_details`,`sequence_no`,`connector_no`,`repaired_by`,`verified_by`) VALUES ('$defect_id','$date_detected','$car_model','$line_no','$process','$group','$shift','$product_name','$lot_no','$serial_no','$defect_category','$defect_details','$sequence_no','$connector_no','$repaired_by','$verified_by')";
+    $query = "INSERT INTO t_minor_defect_f (`defect_id`,`date_detected`,`car_maker`,`car_model`,`line_no`,`process`,`group_d`,`shift`,`product_no`,`lot_no`,`serial_no`,`defect_category`,`defect_details`,`sequence_no`,`connector_no`,`repaired_by`,`verified_by`,`ip_address`) VALUES ('$defect_id','$date_detected','$car_maker','$car_model','$line_no','$process','$group','$shift','$product_name','$lot_no','$serial_no','$defect_category','$defect_details','$sequence_no','$connector_no','$repaired_by','$verified_by','$ip_address')";
     $stmt = $conn->prepare($query);
     if ($stmt->execute()) {
         echo 'success';

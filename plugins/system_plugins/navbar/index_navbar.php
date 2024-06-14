@@ -36,11 +36,11 @@
         border: 1px solid #CA3F3F;
     }
 
-    th,
+    /* th,
     td {
         border: 1px solid #EEE;
         text-align: center;
-    }
+    } */
 </style>
 
 <!-- Navbar -->
