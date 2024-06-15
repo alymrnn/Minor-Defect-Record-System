@@ -5,14 +5,14 @@
         fetch_search_defect_details();
         load_defect_table(1);
 
-        $('#a_scan_qr').prop('disabled', true).css('background', '#F1F1F1');
+        // $('#a_scan_qr').prop('disabled', true).css('background', '#F1F1F1');
 
-        $('#a_defect_details').prop('disabled', true).css('background', '#F1F1F1');
+        $('#a_defect_details').prop('disabled', true).css('background', '#DDD');
 
         $('#a_defect_category').change(function () {
             const select_defect_category = $(this).val();
             if (select_defect_category === '') {
-                $('#a_defect_details').prop('disabled', true).css('background', '#F1F1F1').val('');
+                $('#a_defect_details').prop('disabled', true).css('background', '#DDD').val('');
             } else {
                 fetch_defect_details(select_defect_category);
             }
@@ -22,6 +22,8 @@
 
         $('#add_defect_record').on('shown.bs.modal', function () {
             set_current_date_time();
+            load_stored_inspection_details();
+            clear_add_defect_record();
         });
 
         // $('#search_defect_details').prop('disabled', true).css('background', '#F1F1F1');
@@ -92,7 +94,7 @@
         if (next_page <= last_page && total > 0) {
             load_defect_table(next_page);
         }
-    }
+    };
 
     const count_defect = () => {
         var scan_product_name = sessionStorage.getItem('scan_product_name');
@@ -134,7 +136,7 @@
                 }
             }
         });
-    }
+    };
 
     const load_defect_last_page = () => {
         var scan_product_name = sessionStorage.getItem('scan_product_name');
@@ -179,7 +181,7 @@
                 }
             }
         });
-    }
+    };
 
     const load_defect_table = current_page => {
         var scan_product_name = document.getElementById('scan_product_name').value;
@@ -274,7 +276,7 @@
                 count_defect();
             }
         });
-    }
+    };
 
     const fetch_search_defect_category = () => {
         $.ajax({
@@ -288,7 +290,7 @@
                 $('#search_defect_category').html(response);
             },
         });
-    }
+    };
 
     const fetch_search_defect_details = () => {
         $.ajax({
@@ -302,7 +304,7 @@
                 $('#search_defect_details').html(response);
             },
         });
-    }
+    };
 
     // const fetch_search_defect_details = (search_category_value) => {
     //     $.ajax({
@@ -332,7 +334,7 @@
                 $('#a_defect_category').html(response);
             },
         });
-    }
+    };
 
     const fetch_defect_details = (category_value) => {
         $.ajax({
@@ -348,44 +350,45 @@
                 $('#a_defect_details').prop('disabled', false).css('background', '#FFF');
             },
         });
-    }
+    };
 
     function handleCarMakerChange(selectOpt) {
         var carMaker = selectOpt.value;
         $('#a_scan_qr').off('keyup');
 
         switch (carMaker) {
-            case 'Honda':
+            case 'HONDA':
                 enableScanAndAttachHandler(handleHondaScan);
                 break;
-            case 'Mazda':
+            case 'MAZDA':
                 enableScanAndAttachHandler(handleMazdaScan);
                 break;
-            case 'Nissan':
+            case 'NISSAN':
                 enableScanAndAttachHandler(handleNissanScan);
                 break;
-            case 'Subaru':
+            case 'SUBARU':
                 enableScanAndAttachHandler(handleSubaruScan);
                 break;
-            case 'Suzuki':
+            case 'SUZUKI':
                 enableScanAndAttachHandler(handleSuzukiScan);
                 break;
-            case 'Toyota':
+            case 'TOYOTA':
                 enableScanAndAttachHandler(handleToyotaScan);
                 break;
-            case 'Daihatsu':
+            case 'DAIHATSU':
                 enableScanAndAttachHandler(handleDaihatsuScan);
                 break;
             default:
-                $('#a_scan_qr').prop('disabled', true).css('background', '#F1F1F1');
+                // $('#a_scan_qr').prop('disabled', true).css('background', '#F1F1F1');
+                $('#a_scan_qr').prop('disabled', false).css('background', '#FFF');
                 break;
         }
-    }
+    };
 
     function enableScanAndAttachHandler(scanHandler) {
         // $('#a_scan_qr').prop('disabled', false).css('background', '#FFF');
         scanHandler();
-    }
+    };
 
     function handleSuzukiScan() {
         $('#a_scan_qr').on('keyup', function (e) {
@@ -402,7 +405,7 @@
                 }
             }
         });
-    }
+    };
 
     // WORKING SCAN IN LIVE
     function handleSuzukiScan() {
@@ -411,9 +414,19 @@
                 e.preventDefault();
                 var qrCode = this.value;
                 if (qrCode.length === 50) {
-                    document.getElementById('a_product_name').value = qrCode.substring(10, 35);
-                    document.getElementById('a_lot_no').value = qrCode.substring(35, 41);
-                    document.getElementById('a_serial_no').value = qrCode.substring(41, 50);
+                    var product_name = document.getElementById('a_product_name');
+                    var lot_no = document.getElementById('a_lot_no');
+                    var serial_no = document.getElementById('a_serial_no');
+
+                    product_name.value = qrCode.substring(10, 35);
+                    var input_event = new Event('input', { bubbles: true });
+                    product_name.dispatchEvent(input_event);
+
+                    lot_no.value = qrCode.substring(35, 41);
+                    lot_no.dispatchEvent(input_event);
+
+                    serial_no.value = qrCode.substring(41, 50);
+                    serial_no.dispatchEvent(input_event);
 
                     this.value = '';
                 }
@@ -422,7 +435,7 @@
                 }
             }
         });
-    }
+    };
 
     function handleMazdaScan() {
         document.getElementById('a_scan_qr').addEventListener('keyup', function (e) {
@@ -430,9 +443,19 @@
                 e.preventDefault();
                 var qrCode = this.value;
                 if (qrCode.length === 50) {
-                    document.getElementById('a_product_name').value = qrCode.substring(10, 35);
-                    document.getElementById('a_lot_no').value = qrCode.substring(35, 41);
-                    document.getElementById('a_serial_no').value = qrCode.substring(41, 50);
+                    var product_name = document.getElementById('a_product_name');
+                    var lot_no = document.getElementById('a_lot_no');
+                    var serial_no = document.getElementById('a_serial_no');
+
+                    product_name.value = qrCode.substring(10, 35);
+                    var input_event = new Event('input', { bubbles: true });
+                    product_name.dispatchEvent(input_event);
+
+                    lot_no.value = qrCode.substring(35, 41);
+                    lot_no.dispatchEvent(input_event);
+
+                    serial_no.value = qrCode.substring(41, 50);
+                    serial_no.dispatchEvent(input_event);
 
                     this.value = '';
                 }
@@ -441,7 +464,7 @@
                 }
             }
         });
-    }
+    };
 
     function handleDaihatsuScan() {
         document.getElementById('a_scan_qr').addEventListener('keyup', function (e) {
@@ -449,9 +472,19 @@
                 e.preventDefault();
                 var qrCode = this.value;
                 if (qrCode.length === 50) {
-                    document.getElementById('a_product_name').value = qrCode.substring(10, 35);
-                    document.getElementById('a_lot_no').value = qrCode.substring(35, 41);
-                    document.getElementById('a_serial_no').value = qrCode.substring(41, 50);
+                    var product_name = document.getElementById('a_product_name');
+                    var lot_no = document.getElementById('a_lot_no');
+                    var serial_no = document.getElementById('a_serial_no');
+
+                    product_name.value = qrCode.substring(10, 35);
+                    var input_event = new Event('input', { bubbles: true });
+                    product_name.dispatchEvent(input_event);
+
+                    lot_no.value = qrCode.substring(35, 41);
+                    lot_no.dispatchEvent(input_event);
+
+                    serial_no.value = qrCode.substring(41, 50);
+                    serial_no.dispatchEvent(input_event);
 
                     this.value = '';
                 }
@@ -460,7 +493,7 @@
                 }
             }
         });
-    }
+    };
 
     function handleHondaScan() {
         document.getElementById('a_scan_qr').addEventListener('keyup', function (e) {
@@ -468,9 +501,19 @@
                 e.preventDefault();
                 var qrCode = this.value;
                 if (qrCode.length === 50) {
-                    document.getElementById('a_product_name').value = qrCode.substring(10, 35);
-                    document.getElementById('a_lot_no').value = qrCode.substring(35, 41);
-                    document.getElementById('a_serial_no').value = qrCode.substring(41, 50);
+                    var product_name = document.getElementById('a_product_name');
+                    var lot_no = document.getElementById('a_lot_no');
+                    var serial_no = document.getElementById('a_serial_no');
+
+                    product_name.value = qrCode.substring(10, 35);
+                    var input_event = new Event('input', { bubbles: true });
+                    product_name.dispatchEvent(input_event);
+
+                    lot_no.value = qrCode.substring(35, 41);
+                    lot_no.dispatchEvent(input_event);
+
+                    serial_no.value = qrCode.substring(41, 50);
+                    serial_no.dispatchEvent(input_event);
 
                     this.value = '';
                 }
@@ -479,7 +522,7 @@
                 }
             }
         });
-    }
+    };
 
     function handleNissanScan() {
         document.getElementById('a_scan_qr').addEventListener('keyup', function (e) {
@@ -487,9 +530,19 @@
                 e.preventDefault();
                 var qrCode = this.value;
                 if (qrCode.length === 50) {
-                    document.getElementById('a_product_name').value = qrCode.substring(10, 35);
-                    document.getElementById('a_lot_no').value = qrCode.substring(35, 41);
-                    document.getElementById('a_serial_no').value = qrCode.substring(41, 50);
+                    var product_name = document.getElementById('a_product_name');
+                    var lot_no = document.getElementById('a_lot_no');
+                    var serial_no = document.getElementById('a_serial_no');
+
+                    product_name.value = qrCode.substring(10, 35);
+                    var input_event = new Event('input', { bubbles: true });
+                    product_name.dispatchEvent(input_event);
+
+                    lot_no.value = qrCode.substring(35, 41);
+                    lot_no.dispatchEvent(input_event);
+
+                    serial_no.value = qrCode.substring(41, 50);
+                    serial_no.dispatchEvent(input_event);
 
                     this.value = '';
                 }
@@ -498,7 +551,7 @@
                 }
             }
         });
-    }
+    };
 
     function handleSubaruScan() {
         document.getElementById('a_scan_qr').addEventListener('keyup', function (e) {
@@ -506,9 +559,19 @@
                 e.preventDefault();
                 var qrCode = this.value;
                 if (qrCode.length === 50) {
-                    document.getElementById('a_product_name').value = qrCode.substring(10, 35);
-                    document.getElementById('a_lot_no').value = qrCode.substring(35, 41);
-                    document.getElementById('a_serial_no').value = qrCode.substring(41, 50);
+                    var product_name = document.getElementById('a_product_name');
+                    var lot_no = document.getElementById('a_lot_no');
+                    var serial_no = document.getElementById('a_serial_no');
+
+                    product_name.value = qrCode.substring(10, 35);
+                    var input_event = new Event('input', { bubbles: true });
+                    product_name.dispatchEvent(input_event);
+
+                    lot_no.value = qrCode.substring(35, 41);
+                    lot_no.dispatchEvent(input_event);
+
+                    serial_no.value = qrCode.substring(41, 50);
+                    serial_no.dispatchEvent(input_event);
 
                     this.value = '';
                 }
@@ -517,7 +580,7 @@
                 }
             }
         });
-    }
+    };
 
     function handleToyotaScan() {
         document.getElementById('a_scan_qr').addEventListener('keyup', function (e) {
@@ -525,18 +588,28 @@
                 e.preventDefault();
                 var qrCode = this.value;
                 if (qrCode.length === 50) {
-                    document.getElementById('a_product_name').value = qrCode.substring(10, 35);
-                    document.getElementById('a_lot_no').value = qrCode.substring(35, 41);
-                    document.getElementById('a_serial_no').value = qrCode.substring(41, 50);
+                    var product_name = document.getElementById('a_product_name');
+                    var lot_no = document.getElementById('a_lot_no');
+                    var serial_no = document.getElementById('a_serial_no');
+
+                    product_name.value = qrCode.substring(10, 35);
+                    var input_event = new Event('input', { bubbles: true });
+                    product_name.dispatchEvent(input_event);
+
+                    lot_no.value = qrCode.substring(35, 41);
+                    lot_no.dispatchEvent(input_event);
+
+                    serial_no.value = qrCode.substring(41, 50);
+                    serial_no.dispatchEvent(input_event);
 
                     this.value = '';
-                }
-                else {
+                } else {
 
                 }
             }
         });
-    }
+    };
+
 
     // highlight input field when empty
     document.getElementById("a_date_detected").addEventListener("input", function () {
@@ -570,8 +643,8 @@
     });
 
     document.getElementById("a_group").addEventListener("input", function () {
-        var shift = this;
-        shift.classList.remove('highlight');
+        var group = this;
+        group.classList.remove('highlight');
         document.getElementById("groupError").style.display = 'none';
     });
 
@@ -589,7 +662,7 @@
 
     document.getElementById("a_lot_no").addEventListener("input", function () {
         var lot_no = this;
-        process.classList.remove('highlight');
+        lot_no.classList.remove('highlight');
         document.getElementById("lotNoError").style.display = 'none';
     });
 
@@ -836,12 +909,12 @@
                 }
             }
         });
-    }
+    };
 
     const clear_add_defect_record = () => {
         // document.getElementById("a_date_detected").value = '';
-        document.getElementById("a_car_maker").value = '';
-        document.getElementById("a_car_model").value = '';
+        // document.getElementById("a_car_maker").value = '';
+        // document.getElementById("a_car_model").value = '';
         // document.getElementById("a_line_no").value = '';
         // document.getElementById("a_process").value = '';
         document.getElementById("a_group").value = '';
@@ -850,12 +923,17 @@
         document.getElementById("a_lot_no").value = '';
         document.getElementById("a_serial_no").value = '';
         document.getElementById("a_defect_category").value = '';
-        document.getElementById("a_defect_details").value = '';
+        // document.getElementById("a_defect_details").value = '';
         document.getElementById("a_sequence_no").value = '';
         document.getElementById("a_connector_no").value = '';
         document.getElementById("a_repaired_by").value = '';
         document.getElementById("a_verified_by").value = '';
-    }
+
+        const defect_details_input = document.getElementById("a_defect_details");
+        defect_details_input.value = '';
+        defect_details_input.disabled = true;
+        defect_details_input.style.backgroundColor = "#DDD"
+    };
 
     const clear_search_defect_record = () => {
         document.getElementById("scan_qr").value = '';
@@ -871,11 +949,11 @@
 
         load_defect_table(1);
         // location.reload();
-    }
+    };
 
     function refresh_page() {
         location.reload();
-    }
+    };
 
     const export_defect_record = () => {
         var scan_product_name = document.getElementById('scan_product_name').value.trim();
@@ -900,7 +978,41 @@
             "&search_defect_details=" + search_defect_details,
             '_blank'
         );
-    }
+    };
+
+    // const get_inspection_details = () => {
+    //     const ip_address = $('#a_ip_address').val();
+
+    //     $.ajax({
+    //         url: 'process/inspection_p.php',
+    //         type: 'GET',
+    //         data: {
+    //             method: 'get_inspection_details',
+    //             ip_address: ip_address
+    //         },
+    //         success: function (response) {
+    //             // console.log(response);
+
+    //             const data = JSON.parse(response);
+    //             $('#a_car_maker').val(data.car_maker);
+    //             $('#a_car_model').val(data.car_model);
+    //             $('#a_line_no').val(data.line_no);
+    //             $('#a_process').val(data.process);
+
+    //             sessionStorage.setItem('car_maker', data.car_maker);
+    //             sessionStorage.setItem('car_model', data.car_model);
+    //             sessionStorage.setItem('line_no', data.line_no);
+    //             sessionStorage.setItem('process', data.process);
+
+    //             handleCarMakerChange(document.getElementById('a_car_maker'));
+
+    //             $('#a_car_maker').prop('disabled', true).css('background', '#F1F1F1');
+    //         },
+    //         error: function (xhr, status, error) {
+    //             console.error('AJAX Error: ', status, error);
+    //         }
+    //     });
+    // };
 
     const get_inspection_details = () => {
         const ip_address = $('#a_ip_address').val();
@@ -913,19 +1025,53 @@
                 ip_address: ip_address
             },
             success: function (response) {
-                // console.log(response);
+                // console.log('Response:', response);
 
                 const data = JSON.parse(response);
-                $('#a_car_maker').val(data.car_maker);
-                $('#a_car_model').val(data.car_model);
-                $('#a_line_no').val(data.line_no);
-                $('#a_process').val(data.process);
+                if (data.success) {
+                    $('#a_car_maker').val(data.car_maker);
+                    $('#a_car_model').val(data.car_model);
+                    $('#a_line_no').val(data.line_no);
+                    $('#a_process').val(data.process);
+
+                    sessionStorage.setItem('car_maker', data.car_maker);
+                    sessionStorage.setItem('car_model', data.car_model);
+                    sessionStorage.setItem('line_no', data.line_no);
+                    sessionStorage.setItem('process', data.process);
+
+                    $('#a_car_maker').prop('disabled', true).css('background', '#F1F1F1');
+                    handleCarMakerChange(document.getElementById('a_car_maker'));
+                } else {
+                    Swal.fire({
+                        icon: 'info',
+                        title: 'IP address is not registered.',
+                        text: 'Cannot fetch inspection details for this IP address.',
+                        showConfirmButton: true
+                    });
+                }
             },
             error: function (xhr, status, error) {
                 console.error('AJAX Error: ', status, error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'AJAX Error',
+                    showConfirmButton: true
+                });
             }
         });
-    }
+    };
+
+    const load_stored_inspection_details = () => {
+        const car_maker = sessionStorage.getItem('car_maker');
+        const car_model = sessionStorage.getItem('car_model');
+        const line_no = sessionStorage.getItem('line_no');
+        const process = sessionStorage.getItem('process');
+
+        if (car_maker) $('#a_car_maker').val(car_maker);
+        if (car_model) $('#a_car_model').val(car_model);
+        if (line_no) $('#a_line_no').val(line_no);
+        if (process) $('#a_process').val(process);
+    };
 
     const set_current_date_time = () => {
         const date_input = document.getElementById('a_date_detected');

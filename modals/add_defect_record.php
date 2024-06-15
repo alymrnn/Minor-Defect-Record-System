@@ -127,7 +127,7 @@
                         <label style="font-weight: normal;color: #000;">Product Number</label>
                         <label style="color:#CA3F3F">*</label>
                         <input type="text" id="a_product_name" class="form-control" autocomplete="off"
-                            style="color: #525252;font-size: 15px;border-radius: .25rem;background: #F1F1F1;height: 35px; width:100%;"
+                            style="color: #525252;font-size: 15px;border-radius: .25rem;background: #DDD;height: 35px; width:100%;"
                             readonly>
                         <span id="productNoError" class="error-message" style="display:none; color:#CA3F3F;">Product
                             Number field is required.</span>
@@ -137,7 +137,7 @@
                         <label style="font-weight: normal;color: #000;">Lot No.</label>
                         <label style="color:#CA3F3F">*</label>
                         <input type="text" id="a_lot_no" class="form-control" autocomplete="off"
-                            style="color: #525252;font-size: 15px;border-radius: .25rem;background: #F1F1F1;height: 35px; width:100%;"
+                            style="color: #525252;font-size: 15px;border-radius: .25rem;background: #DDD;height: 35px; width:100%;"
                             readonly>
                         <span id="lotNoError" class="error-message" style="display:none; color:#CA3F3F;">Lot No.
                             field is required.</span>
@@ -146,7 +146,7 @@
                         <label style="font-weight: normal;color: #000;">Serial No.</label>
                         <label style="color:#CA3F3F">*</label>
                         <input type="text" id="a_serial_no" class="form-control" autocomplete="off"
-                            style="color: #525252;font-size: 15px;border-radius: .25rem;background: #F1F1F1;height: 35px; width:100%;"
+                            style="color: #525252;font-size: 15px;border-radius: .25rem;background: #DDD;height: 35px; width:100%;"
                             readonly>
                         <span id="serialNoError" class="error-message" style="display:none; color:#CA3F3F;">Serial No.
                             field is required.</span>
@@ -168,7 +168,7 @@
                         <label style="font-weight: normal;color: #000;">Defect Details</label>
                         <label style="color:#CA3F3F">*</label>
                         <select id="a_defect_details" class="form-control"
-                            style="color: #525252; font-size: 15px; border-radius: .25rem; background: #FFF; height: 35px; width: 100%;"
+                            style="color: #525252; font-size: 15px; border-radius: .25rem; background: #DDD; height: 35px; width: 100%;"
                             required>
                             <option value="" disabled selected>Select Defect Details</option>
                         </select>
