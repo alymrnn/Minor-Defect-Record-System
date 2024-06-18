@@ -1091,7 +1091,7 @@
                     Swal.fire({
                         icon: 'warning',
                         title: 'IP address is not registered.',
-                        text: 'Cannot fetch inspection details for this IP address.',
+                        text: 'Register IP address to fetch inspection details.',
                         showConfirmButton: false,
                         color: '#525252',
                         background: '#FFFDF2',
