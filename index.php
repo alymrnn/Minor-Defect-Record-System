@@ -119,7 +119,7 @@ include ('plugins/system_plugins/navbar/index_navbar.php');
           <div class="row justify-content-end">
             <div class="col-12 col-sm-4 col-md-2 mt-3">
               <!-- search button -->
-              <button class="btn btn-block d-flex justify-content-left" id="search_btn" onclick="load_defect_table()"
+              <button class="btn btn-block d-flex justify-content-left" id="search_btn" onclick="load_defect_table(1)"
                 style="color:#fff;height:35px;border-radius:.25rem;background: #474747;font-size:15px;font-weight:normal;"
                 onmouseover="this.style.backgroundColor='#2D2D2D'; this.style.color='#FFF';"
                 onmouseout="this.style.backgroundColor='#474747'; this.style.color='#FFF';">
