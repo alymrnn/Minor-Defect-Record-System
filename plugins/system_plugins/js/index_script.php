@@ -1089,10 +1089,13 @@
                     handleCarMakerChange(document.getElementById('a_car_maker'));
                 } else {
                     Swal.fire({
-                        icon: 'info',
+                        icon: 'warning',
                         title: 'IP address is not registered.',
                         text: 'Cannot fetch inspection details for this IP address.',
-                        showConfirmButton: true
+                        showConfirmButton: false,
+                        color: '#525252',
+                        background: '#FFFDF2',
+                        backdrop: 'rgba(0, 0, 0, 0.8)'
                     });
                 }
             },
