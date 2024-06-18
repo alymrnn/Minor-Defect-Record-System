@@ -780,7 +780,6 @@
 
         let hasError = false;
 
-        // Validation checks
         if (date_detected === '') {
             document.getElementById("a_date_detected").classList.add('highlight');
             document.getElementById("dateDetectedError").style.display = 'block';
@@ -958,18 +957,11 @@
     };
 
     const clear_add_defect_record = () => {
-        // document.getElementById("a_date_detected").value = '';
-        // document.getElementById("a_car_maker").value = '';
-        // document.getElementById("a_car_model").value = '';
-        // document.getElementById("a_line_no").value = '';
-        // document.getElementById("a_process").value = '';
         document.getElementById("a_group").value = '';
-        // document.getElementById("a_shift").value = '';
         document.getElementById("a_product_name").value = '';
         document.getElementById("a_lot_no").value = '';
         document.getElementById("a_serial_no").value = '';
         document.getElementById("a_defect_category").value = '';
-        // document.getElementById("a_defect_details").value = '';
         document.getElementById("a_sequence_no").value = '';
         document.getElementById("a_connector_no").value = '';
         document.getElementById("a_repaired_by").value = '';
@@ -1071,8 +1063,6 @@
                 ip_address: ip_address
             },
             success: function (response) {
-                // console.log('Response:', response);
-
                 const data = JSON.parse(response);
                 if (data.success) {
                     $('#a_car_maker').val(data.car_maker);

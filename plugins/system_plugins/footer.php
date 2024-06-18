@@ -1,7 +1,9 @@
 <footer class="main-footer" style="background:#2b2d42; color:white; font-size: 14px;">
     Copyright &copy; 2024. Allyssa Kate Maranan. All rights reserved.
     <div class="float-right d-none d-sm-inline-block">
-        Version 1.0.0
+        Version 1.0.0 | <i>IP Address: &nbsp;</i><input
+            style="border:none;background:none;color:#FFF;text-align:right;width:90px;"
+            value="<?= $_SERVER['REMOTE_ADDR']; ?>" disabled>
     </div>
 </footer>
 <?php

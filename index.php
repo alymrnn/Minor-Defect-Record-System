@@ -9,11 +9,7 @@ include ('plugins/system_plugins/navbar/index_navbar.php');
   <!-- Main content -->
   <section class="content">
     <div class="col-12 col-md-12 m-0 p-0">
-
-      <p class="text-right pt-3 pr-3" style="font-size: 16px;"><i>IP Address: &nbsp;</i><input
-          style="border: 1px solid #EEE; width: 120px; text-align: center;" value="<?= $_SERVER['REMOTE_ADDR']; ?>"
-          disabled>
-      </p>
+      <div class="mt-4"></div>
 
       <div class="card mx-3">
         <!-- SEARCH FIELD -->
@@ -154,13 +150,15 @@ include ('plugins/system_plugins/navbar/index_navbar.php');
       <!-- MAIN FIELD -->
       <div class="card mx-3">
         <div class="card-body">
+          <p class="p-0 m-0" style="color:#525252"><i class="fas fa-th-list" style="color:#525252"></i>&nbsp;Minor
+            Defect Record Table</p>
           <div class="col-sm-3">
             <!-- view total count of data from table -->
             <span id="count_view_defect"></span>
           </div>
 
           <!-- table -->
-          <div id="list_of_defect_res" class="card-body table-responsive m-0 p-0" style="max-height: 400px;">
+          <div id="list_of_defect_res" class="card-body table-responsive m-0 p-0" style="max-height: 450px;">
             <table class="table col-12 mt-3 table-head-fixed text-nowrap table-hover" id="defect_table"
               style="background: #F9F9F9;">
               <thead style="text-align: center;">
