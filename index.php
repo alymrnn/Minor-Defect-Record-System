@@ -136,7 +136,7 @@ include ('plugins/system_plugins/navbar/index_navbar.php');
             </div>
             <div class=" col-12 col-sm-4 col-md-2 mt-3">
               <!-- add button -->
-              <button class="btn btn-block d-flex justify-content-left" data-toggle="modal"
+              <button id="add_record_btn" class="btn btn-block d-flex justify-content-left" data-toggle="modal"
                 data-target="#add_defect_record"
                 style="color:#fff;height:35px;background: #9e2a2b;font-size:15px;font-weight:normal;"
                 onmouseover="this.style.backgroundColor='#792021'; this.style.color='#FFF';"
@@ -150,8 +150,7 @@ include ('plugins/system_plugins/navbar/index_navbar.php');
       <!-- MAIN FIELD -->
       <div class="card mx-3">
         <div class="card-body">
-          <p class="p-0 m-0" style="color:#525252"><i class="fas fa-th-list" style="color:#525252"></i>&nbsp;Minor
-            Defect Record Table</p>
+          <p class="p-0 m-0" style="color:#525252"><i class="far fa-folder"></i>&nbsp;Minor Defect Record Table</p>
           <div class="col-sm-3">
             <!-- view total count of data from table -->
             <span id="count_view_defect"></span>

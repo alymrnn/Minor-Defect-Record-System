@@ -86,6 +86,23 @@
                             is required.</span>
                     </div>
                     <div class="col-12 col-md-3">
+                        <label style="font-weight: normal;color: #000;">Shift</label>
+                        <label style="color:#CA3F3F">*</label>
+                        <input id="a_shift" class="form-control"
+                            style="color: #525252; font-size: 15px; border-radius: .25rem; background: #F1F1F1; height: 35px; width: 100%;"
+                            required disabled>
+
+                        <!-- <select id="a_shift" class="form-control"
+                            style="color: #525252; font-size: 15px; border-radius: .25rem; background: #FFF; height: 35px; width: 100%;"
+                            required>
+                            <option value="" disabled selected>Select Shift</option>
+                            <option value="DS">DS</option>
+                            <option value="NS">NS</option>
+                        </select> -->
+                        <span id="shiftError" class="error-message" style="display:none; color:#CA3F3F;">Shift
+                            field is required.</span>
+                    </div>
+                    <div class="col-12 col-md-3">
                         <label style="font-weight: normal;color: #000;">Group</label>
                         <label style="color:#CA3F3F">*</label>
                         <select id="a_group" class="form-control"
@@ -96,22 +113,6 @@
                             <option value="B">B</option>
                         </select>
                         <span id="groupError" class="error-message" style="display:none; color:#CA3F3F;">Group
-                            field is required.</span>
-                    </div>
-                    <div class="col-12 col-md-3">
-                        <label style="font-weight: normal;color: #000;">Shift</label>
-                        <label style="color:#CA3F3F">*</label>
-                        <input id="a_shift" class="form-control"
-                            style="color: #525252; font-size: 15px; border-radius: .25rem; background: #F1F1F1; height: 35px; width: 100%;" required disabled>
-
-                        <!-- <select id="a_shift" class="form-control"
-                            style="color: #525252; font-size: 15px; border-radius: .25rem; background: #FFF; height: 35px; width: 100%;"
-                            required>
-                            <option value="" disabled selected>Select Shift</option>
-                            <option value="DS">DS</option>
-                            <option value="NS">NS</option>
-                        </select> -->
-                        <span id="shiftError" class="error-message" style="display:none; color:#CA3F3F;">Shift
                             field is required.</span>
                     </div>
                 </div>

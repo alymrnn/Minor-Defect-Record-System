@@ -20,6 +20,7 @@
         });
 
         get_inspection_details();
+        check_ip_address();
 
         $('#add_defect_record').on('shown.bs.modal', function () {
             set_current_date_time();
@@ -1051,6 +1052,30 @@
     //         }
     //     });
     // };
+
+    const check_ip_address = () => {
+        const add_record_btn = document.getElementById('add_record_btn');
+        const ip_address = '<?= $_SERVER['REMOTE_ADDR']; ?>';
+
+        $.ajax({
+            url: 'process/inspection_p.php',
+            type: 'GET',
+            data: {
+                method: 'check_ip_address',
+                ip_address: ip_address
+            },
+            success: function (response) {
+                const data = JSON.parse(response);
+                if (!data.success) {
+                    add_record_btn.disabled = true;
+                    add_record_btn.title = data.error;
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error('Error:', error);
+            }
+        });
+    };
 
     const get_inspection_details = () => {
         const ip_address = $('#a_ip_address').val();

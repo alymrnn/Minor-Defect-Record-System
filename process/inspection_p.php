@@ -143,4 +143,27 @@ if ($method == 'get_inspection_details') {
     exit;
 }
 
+if ($method == 'check_ip_address') {
+    $ip_address = $_GET['ip_address'];
+
+    $query = "SELECT * FROM m_inspection_ip WHERE ip_address = ?";
+    $stmt = $conn_pcad->prepare($query);
+    $stmt->execute([$ip_address]);
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($stmt->rowCount() > 0) {
+        echo json_encode([
+            'success' => true,
+            'message' => 'IP address is allowed.'
+        ]);
+    } else {
+        echo json_encode([
+            'success' => false,
+            'error' => 'IP address is not allowed to add records.'
+        ]);
+    }
+
+    exit;
+}
+
 ?>
