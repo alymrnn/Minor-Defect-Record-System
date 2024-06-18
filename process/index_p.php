@@ -10,7 +10,7 @@ function count_defect_list($conn, $scan_product_name, $scan_lot_no, $scan_serial
     $conditions = [];
     $params = [];
 
-    if (!empty($date_from) && !empty($date_to)) {
+    if (!empty($search_date_from) && !empty($search_date_to)) {
         $conditions[] = "date_detected BETWEEN ? AND ?";
         $params[] = $search_date_from;
         $params[] = $search_date_to;
@@ -51,7 +51,6 @@ function count_defect_list($conn, $scan_product_name, $scan_lot_no, $scan_serial
         $params[] = '%' . $search_defect_details . '%';
     }
 
-
     if (!empty($conditions)) {
         $query .= " WHERE " . implode(" AND ", $conditions);
     }
@@ -70,19 +69,8 @@ if ($method == 'count_defect_list') {
     $scan_serial_no = trim($_POST['scan_serial_no']);
     $search_process = trim($_POST['search_process']);
     $search_line_no = trim($_POST['search_line_no']);
-
     $search_date_from = trim($_POST['search_date_from']);
-    if (!empty($search_date_from)) {
-        $search_date_from = date_create($search_date_from);
-        $search_date_from = date_format($search_date_from, "Y/m/d");
-    }
-
     $search_date_to = trim($_POST['search_date_to']);
-    if (!empty($search_date_to)) {
-        $search_date_to = date_create($search_date_to);
-        $search_date_to = date_format($search_date_to, "Y/m/d");
-    }
-
     $search_defect_category = trim($_POST['search_defect_category']);
     $search_defect_details = trim($_POST['search_defect_details']);
 
@@ -95,19 +83,8 @@ if ($method == 'defect_list_last_page') {
     $scan_serial_no = trim($_POST['scan_serial_no']);
     $search_process = trim($_POST['search_process']);
     $search_line_no = trim($_POST['search_line_no']);
-
     $search_date_from = trim($_POST['search_date_from']);
-    if (!empty($search_date_from)) {
-        $search_date_from = date_create($search_date_from);
-        $search_date_from = date_format($search_date_from, "Y/m/d");
-    }
-
     $search_date_to = trim($_POST['search_date_to']);
-    if (!empty($search_date_to)) {
-        $search_date_to = date_create($search_date_to);
-        $search_date_to = date_format($search_date_to, "Y/m/d");
-    }
-
     $search_defect_category = trim($_POST['search_defect_category']);
     $search_defect_details = trim($_POST['search_defect_details']);
 
@@ -128,18 +105,9 @@ if ($method == 'load_defect_list') {
     $scan_serial_no = trim($_POST['scan_serial_no']);
     $search_process = trim($_POST['search_process']);
     $search_line_no = trim($_POST['search_line_no']);
-
     $search_date_from = trim($_POST['search_date_from']);
-    if (!empty($search_date_from)) {
-        $search_date_from = date_create($search_date_from);
-        $search_date_from = date_format($search_date_from, "Y/m/d");
-    }
 
     $search_date_to = trim($_POST['search_date_to']);
-    if (!empty($search_date_to)) {
-        $search_date_to = date_create($search_date_to);
-        $search_date_to = date_format($search_date_to, "Y/m/d");
-    }
 
     $search_defect_category = trim($_POST['search_defect_category']);
     $search_defect_details = trim($_POST['search_defect_details']);
@@ -152,39 +120,53 @@ if ($method == 'load_defect_list') {
 
     $c = $page_first_result;
 
-    $query = "SELECT * FROM t_minor_defect_f";
-    $conditions = [];
+    $query = "SELECT `date_detected`,`car_maker`,`car_model`,`line_no`,`process`,
+            `group_d`,`shift`,`product_no`,`lot_no`,`serial_no`,
+            `defect_category`,`defect_details`,`sequence_no`,`connector_no`,`repaired_by`,
+            `verified_by` FROM t_minor_defect_f";
 
-    if (!empty($date_from) && !empty($date_to)) {
-        $conditions[] = "date_detected BETWEEN '$search_date_from' AND '$search_date_to'";
+    $conditions = [];
+    $params = [];
+
+    if (!empty($search_date_from) && !empty($search_date_to)) {
+        $conditions[] = "date_detected BETWEEN ? AND ?";
+        $params[] = $search_date_from;
+        $params[] = $search_date_to;
     }
 
     if (!empty($scan_product_name) && $scan_product_name !== '%') {
-        $conditions[] = "product_no LIKE '$scan_product_name'";
+        $conditions[] = "product_no LIKE ?";
+        $params[] = '%' . $scan_product_name . '%';
     }
 
     if (!empty($scan_lot_no) && $scan_lot_no !== '%') {
-        $conditions[] = "lot_no LIKE '$scan_lot_no'";
+        $conditions[] = "lot_no LIKE ?";
+        $params[] = '%' . $scan_lot_no . '%';
     }
 
     if (!empty($scan_serial_no) && $scan_serial_no !== '%') {
-        $conditions[] = "serial_no LIKE '$scan_serial_no'";
+        $conditions[] = "serial_no LIKE ?";
+        $params[] = '%' . $scan_serial_no . '%';
     }
 
     if (!empty($search_process) && $search_process !== '%') {
-        $conditions[] = "process LIKE '$search_process'";
+        $conditions[] = "process LIKE ?";
+        $params[] = '%' . $search_process . '%';
     }
 
     if (!empty($search_line_no) && $search_line_no !== '%') {
-        $conditions[] = "line_no LIKE '$search_line_no'";
+        $conditions[] = "line_no LIKE ?";
+        $params[] = '%' . $search_line_no . '%';
     }
 
     if (!empty($search_defect_category) && $search_defect_category !== '%') {
-        $conditions[] = "defect_category LIKE '$search_defect_category'";
+        $conditions[] = "defect_category LIKE ?";
+        $params[] = '%' . $search_defect_category . '%';
     }
 
     if (!empty($search_defect_details) && $search_defect_details !== '%') {
-        $conditions[] = "defect_details LIKE '$search_defect_details'";
+        $conditions[] = "defect_details LIKE ?";
+        $params[] = '%' . $search_defect_details . '%';
     }
 
     if (!empty($conditions)) {
@@ -195,8 +177,9 @@ if ($method == 'load_defect_list') {
 
     $query .= " LIMIT " . $page_first_result . ", " . $results_per_page;
 
-    $stmt = $conn->prepare($query, array(PDO::ATTR_CURSOR => PDO::CURSOR_SCROLL));
-    $stmt->execute();
+    $stmt = $conn->prepare($query);
+    $stmt->execute($params);
+
     if ($stmt->rowCount() > 0) {
         foreach ($stmt->fetchALL() as $row) {
             $c++;
@@ -212,8 +195,8 @@ if ($method == 'load_defect_list') {
             echo '<td style="text-align:center;">' . $row['product_no'] . '</td>';
             echo '<td style="text-align:center;">' . $row['lot_no'] . '</td>';
             echo '<td style="text-align:center;">' . $row['serial_no'] . '</td>';
-            echo '<td style="text-align:center;">' . $row['defect_category'] . '</td>';
-            echo '<td style="text-align:center;">' . $row['defect_details'] . '</td>';
+            echo '<td>' . $row['defect_category'] . '</td>';
+            echo '<td>' . $row['defect_details'] . '</td>';
             echo '<td style="text-align:center;">' . $row['sequence_no'] . '</td>';
             echo '<td style="text-align:center;">' . $row['connector_no'] . '</td>';
             echo '<td style="text-align:center;">' . $row['repaired_by'] . '</td>';
@@ -270,6 +253,20 @@ if ($method == 'fetch_search_defect_details') {
 //         echo '<option value="">Select Defect Details</option>';
 //     }
 // }
+
+if ($method == 'fetch_process') {
+    $query = "SELECT `process_p` FROM m_process ORDER BY process_p ASC";
+    $stmt = $conn->prepare($query);
+    $stmt->execute();
+    if ($stmt->rowCount() > 0) {
+        echo '<option value="" disabled selected>Select Process</option>';
+        foreach ($stmt->fetchAll() as $row) {
+            echo '<option>' . htmlspecialchars($row['process_p']) . '</option>';
+        }
+    } else {
+        echo '<option value="">Select Process</option>';
+    }
+}
 
 if ($method == 'fetch_defect_category') {
     $query = "SELECT `defect_category_dc` FROM m_defect_category ORDER BY defect_category_dc ASC";

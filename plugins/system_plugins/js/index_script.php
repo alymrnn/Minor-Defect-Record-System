@@ -3,6 +3,7 @@
         fetch_defect_category();
         fetch_search_defect_category();
         fetch_search_defect_details();
+        fetch_process();
         load_defect_table(1);
 
         // $('#a_scan_qr').prop('disabled', true).css('background', '#F1F1F1');
@@ -50,7 +51,7 @@
         load_defect_table(1);
     });
 
-    document.getElementById("search_process").addEventListener("keyup", e => {
+    document.getElementById("search_process").addEventListener("change", e => {
         load_defect_table(1);
     });
 
@@ -72,6 +73,37 @@
 
     document.getElementById("search_defect_details").addEventListener("change", e => {
         load_defect_table(1);
+    });
+
+    document.getElementById('scan_qr').addEventListener('input', function (e) {
+        var qr_code_scan = this.value;
+
+        if (qr_code_scan.length === 50) {
+            const product_name_field = document.getElementById('scan_product_name');
+            const lot_no_field = document.getElementById('scan_lot_no');
+            const serial_no_field = document.getElementById('scan_serial_no');
+
+            if (product_name_field && lot_no_field && serial_no_field) {
+                product_name_field.value = qr_code_scan.substring(10, 35);
+                lot_no_field.value = qr_code_scan.substring(35, 41);
+                serial_no_field.value = qr_code_scan.substring(41, 50);
+
+                load_defect_table(1);
+            } else {
+                console.error("One or more elements were not found in the DOM.");
+            }
+
+            this.value = '';
+        } else if (qr_code_scan.length > 50) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Invalid QR Code',
+                text: 'Invalid',
+                showConfirmButton: false,
+                timer: 1000
+            });
+            this.value = '';
+        }
     });
 
 
@@ -321,6 +353,20 @@
     //         },
     //     });
     // }
+
+    const fetch_process = () => {
+        $.ajax({
+            url: 'process/index_p.php',
+            type: 'POST',
+            cache: false,
+            data: {
+                method: 'fetch_process',
+            },
+            success: function (response) {
+                $('#search_process').html(response);
+            },
+        });
+    }
 
     const fetch_defect_category = () => {
         $.ajax({

@@ -48,9 +48,13 @@ include ('plugins/system_plugins/navbar/index_navbar.php');
             <div class="col-12 col-sm-6 col-md-2 mb-2">
               <!-- process -->
               <label style="font-weight:normal;margin:0;padding:0;color:#000;">Process</label>
-              <input type="text" id="search_process" class="form-control" placeholder="Process" autocomplete="off"
+              <!-- <input type="text" id="search_process" class="form-control" placeholder="Process" autocomplete="off"
                 class="pl-3"
+                style="color: #525252;font-size: 15px;border-radius: .25rem;border: 1px solid #888888;background: #FFF;height:35px; width:100%;"> -->
+              <select id="search_process" class="form-control"
                 style="color: #525252;font-size: 15px;border-radius: .25rem;border: 1px solid #888888;background: #FFF;height:35px; width:100%;">
+                <option value="" disabled selected>Select Process</option>
+              </select>
             </div>
           </div>
 
@@ -96,7 +100,8 @@ include ('plugins/system_plugins/navbar/index_navbar.php');
             <div class="col-12 col-sm-4 col-md-1 mb-2">
               <!-- clear all button -->
               <label for=""></label>
-              <button class="btn btn-block d-flex justify-content-left" id="clear_btn" onclick="clear_search_defect_record()"
+              <button class="btn btn-block d-flex justify-content-left" id="clear_btn"
+                onclick="clear_search_defect_record()"
                 style="color:#fff;height:35px;background: #474747;font-size:15px;font-weight:normal;"
                 onmouseover="this.style.backgroundColor='#2D2D2D'; this.style.color='#FFF';"
                 onmouseout="this.style.backgroundColor='#474747'; this.style.color='#FFF';">
