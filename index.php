@@ -15,6 +15,13 @@ include ('plugins/system_plugins/navbar/index_navbar.php');
         <!-- SEARCH FIELD -->
         <di class="card-body">
           <div class="row">
+            <div class="col-12 col-sm-6 col-md-2 mb-2">
+              <!-- line no. -->
+              <label style="font-weight:normal;margin:0;padding:0;color:#000;">Line No.</label>
+              <input type="text" id="search_line_no" class="form-control" placeholder="Line No." autocomplete="off"
+                class="pl-3"
+                style="color: #525252;font-size: 15px;border-radius: .25rem;border: 1px solid #888888;background: #FFF;height:35px; width:100%;">
+            </div>
             <div class="col-12 col-sm-6 col-md-4 mb-2">
               <!-- qr scan -->
               <label style="font-weight:normal;margin:0;padding:0;color:#000;">Scan here</label>
@@ -41,28 +48,9 @@ include ('plugins/system_plugins/navbar/index_navbar.php');
                 autocomplete="off"
                 style="color: #525252;font-size: 15px;border-radius: .25rem;border: 1px solid #888888;background: #FFF;height:35px; width:100%;">
             </div>
-            <div class="col-12 col-sm-6 col-md-2 mb-2">
-              <!-- process -->
-              <label style="font-weight:normal;margin:0;padding:0;color:#000;">Process</label>
-              <!-- <input type="text" id="search_process" class="form-control" placeholder="Process" autocomplete="off"
-                class="pl-3"
-                style="color: #525252;font-size: 15px;border-radius: .25rem;border: 1px solid #888888;background: #FFF;height:35px; width:100%;"> -->
-              <select id="search_process" class="form-control"
-                style="color: #525252;font-size: 15px;border-radius: .25rem;border: 1px solid #888888;background: #FFF;height:35px; width:100%;">
-                <option value="" disabled selected>Select Process</option>
-              </select>
-            </div>
           </div>
 
           <div class="row">
-            <div class="col-12 col-sm-6 col-md-2 mb-2">
-              <!-- line no. -->
-              <label style="font-weight:normal;margin:0;padding:0;color:#000;">Line No.</label>
-              <input type="text" id="search_line_no" class="form-control" placeholder="Line No." autocomplete="off"
-                class="pl-3"
-                style="color: #525252;font-size: 15px;border-radius: .25rem;border: 1px solid #888888;background: #FFF;height:35px; width:100%;">
-            </div>
-
             <div class="col-12 col-sm-4 col-md-2 mb-2">
               <!-- date from -->
               <label style="font-weight:normal;margin:0;padding:0;color:#000;">Date From</label>
@@ -76,6 +64,17 @@ include ('plugins/system_plugins/navbar/index_navbar.php');
               <input type="date" name="date_to" class="form-control" id="search_date_to" placeholder="Date To"
                 onfocus="(this.type='date')"
                 style="color: #525252;font-size: 15px;border-radius: .25rem;border: 1px solid #888888;background: #FFF;height:35px; width:100%;">
+            </div>
+            <div class="col-12 col-sm-6 col-md-2 mb-2">
+              <!-- process -->
+              <label style="font-weight:normal;margin:0;padding:0;color:#000;">Process</label>
+              <!-- <input type="text" id="search_process" class="form-control" placeholder="Process" autocomplete="off"
+                class="pl-3"
+                style="color: #525252;font-size: 15px;border-radius: .25rem;border: 1px solid #888888;background: #FFF;height:35px; width:100%;"> -->
+              <select id="search_process" class="form-control"
+                style="color: #525252;font-size: 15px;border-radius: .25rem;border: 1px solid #888888;background: #FFF;height:35px; width:100%;">
+                <option value="" disabled selected>Select Process</option>
+              </select>
             </div>
             <div class="col-12 col-sm-6 col-md-2 mb-2">
               <!-- defect category -->

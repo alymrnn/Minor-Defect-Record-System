@@ -940,11 +940,9 @@
                     $('#a_ip_address').val('');
 
                     load_defect_table(1);
-                    // location.reload();
 
                     $('#add_defect_record').modal('hide');
                 } else {
-                    console.error("Unexpected response from the server:", response);
                     Swal.fire({
                         icon: 'error',
                         title: 'Error',

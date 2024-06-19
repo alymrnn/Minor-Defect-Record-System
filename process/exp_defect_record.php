@@ -93,7 +93,7 @@ if (count($conditions) > 0) {
     $query .= ' AND ' . implode(' AND ', $conditions);
 }
 
-$stmt = $conn->prepare($query);
+$stmt = $conn->prepare($query, array(PDO::ATTR_CURSOR => PDO::CURSOR_SCROLL));
 $stmt->execute($params);
 
 if ($stmt->rowCount() > 0) {
