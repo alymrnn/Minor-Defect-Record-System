@@ -17,10 +17,24 @@ $server_date_month_time = date('Y-m-01 H:i:s');
 $server_time = date('H:i:s');
 
 try {
-    $conn = new PDO ("mysql:host=$servername;dbname=minor_defect_system",$username,$password);
+    $conn = new PDO("mysql:host=$servername;dbname=minor_defect_system", $username, $password);
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     // $conn->setAttribute(PDO::ATTR_TIMEOUT, TIMEOUT_SECONDS);
 } catch (PDOException $e) {
-    echo 'NO CONNECTION' .$e->getMessage();
+    echo 'NO CONNECTION' . $e->getMessage();
 }
+
+// ==MSSQL SERVER CONNECTION
+// $servername = 'localhost';
+// $username = ''; 
+// $password = ''; 
+// $database = ''; 
+
+// try {
+//     $conn = new PDO("sqlsrv:Server=$servername;Database=$database", $username, $password);
+//     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+// } catch (PDOException $e) {
+//     echo 'NO CONNECTION: ' . $e->getMessage();
+//     exit; 
+// }
 ?>

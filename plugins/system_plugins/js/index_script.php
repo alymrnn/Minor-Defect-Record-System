@@ -107,7 +107,6 @@
         }
     });
 
-
     // Table Responsive Scroll Event for Load More
     document.getElementById("list_of_defect_res").addEventListener("scroll", function () {
         var scrollTop = document.getElementById("list_of_defect_res").scrollTop;
