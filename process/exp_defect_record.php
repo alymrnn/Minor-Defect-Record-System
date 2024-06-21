@@ -22,7 +22,8 @@ fputs($f, "\xEF\xBB\xBF");
 $delimiter = ',';
 
 $headers = array(
-    'Datetime Detected',
+    'Date Detected',
+    'Time Detected',
     'Car Model',
     'Line No.',
     'Process',
@@ -98,8 +99,14 @@ $stmt->execute($params);
 
 if ($stmt->rowCount() > 0) {
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        // Split date_detected into date and time
+        $datetime = new DateTime($row['date_detected']);
+        $date_part = $datetime->format('Y-m-d');
+        $time_part = $datetime->format('H:i:s');
+
         $lineData = array(
-            $row['date_detected'],
+            $date_part,
+            $time_part,
             $row['car_model'],
             $row['line_no'],
             $row['process'],
@@ -125,4 +132,5 @@ fseek($f, 0);
 fpassthru($f);
 
 $conn = null;
+
 ?>
