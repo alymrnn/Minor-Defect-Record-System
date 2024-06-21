@@ -36,6 +36,7 @@ $headers = array(
     'Defect Details',
     'Sequence No.',
     'Connector No.',
+    'Treatment Content of Defect',
     'Repaired By',
     'Verified By'
 );
@@ -44,7 +45,7 @@ fputcsv($f, $headers, $delimiter);
 
 // $query = "SELECT date_detected, car_model, line_no, process, CONCAT(group_d, ' | ', shift) AS shift, product_no, lot_no, serial_no, defect_category, defect_details, sequence_no, connector_no, repaired_by, verified_by FROM t_minor_defect_f WHERE 1=1";
 
-$query = "SELECT date_detected, car_model, line_no, process, group_d, shift, product_no, lot_no, serial_no, defect_category, defect_details, sequence_no, connector_no, repaired_by, verified_by FROM t_minor_defect_f WHERE 1=1";
+$query = "SELECT date_detected, car_model, line_no, process, group_d, shift, product_no, lot_no, serial_no, defect_category, defect_details, sequence_no, connector_no, treatment_content_defect,repaired_by, verified_by FROM t_minor_defect_f WHERE 1=1";
 
 $conditions = [];
 $params = [];
@@ -119,6 +120,7 @@ if ($stmt->rowCount() > 0) {
             $row['defect_details'],
             $row['sequence_no'],
             $row['connector_no'],
+            $row['treatment_content_defect'],
             $row['repaired_by'],
             $row['verified_by']
         );

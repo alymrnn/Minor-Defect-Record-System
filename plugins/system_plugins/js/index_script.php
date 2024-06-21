@@ -3,8 +3,10 @@
         fetch_defect_category();
         fetch_search_defect_category();
         fetch_search_defect_details();
-        fetch_process();
+        fetch_search_process();
+        fetch_add_process();
         load_defect_table(1);
+        count_treatment_content_defect_char();
 
         // $('#a_scan_qr').prop('disabled', true).css('background', '#F1F1F1');
 
@@ -354,16 +356,30 @@
     //     });
     // }
 
-    const fetch_process = () => {
+    const fetch_search_process = () => {
         $.ajax({
             url: 'process/index_p.php',
             type: 'POST',
             cache: false,
             data: {
-                method: 'fetch_process',
+                method: 'fetch_search_process',
             },
             success: function (response) {
                 $('#search_process').html(response);
+            },
+        });
+    }
+
+    const fetch_add_process = () => {
+        $.ajax({
+            url: 'process/index_p.php',
+            type: 'POST',
+            cache: false,
+            data: {
+                method: 'fetch_add_process',
+            },
+            success: function (response) {
+                $('#a_process').html(response);
             },
         });
     }
@@ -397,6 +413,13 @@
             },
         });
     };
+
+    const count_treatment_content_defect_char = () => {
+        var max_length = document.getElementById("a_treatment_content_defect").getAttribute("maxlength");
+        var comment_length = document.getElementById("a_treatment_content_defect").value.length;
+        var treatmentDefectError = `${comment_length} / ${max_length}`;
+        document.getElementById("treatment_content_defect_count").innerHTML = treatmentDefectError;
+    }
 
     function handleCarMakerChange(selectOpt) {
         var carMaker = selectOpt.value;
@@ -742,6 +765,12 @@
         document.getElementById("connectorNoError").style.display = 'none';
     });
 
+    document.getElementById("a_treatment_content_defect").addEventListener("input", function () {
+        var treatment_content_defect = this;
+        treatment_content_defect.classList.remove('highlight');
+        document.getElementById("treatmentContentDefectError").style.display = 'none';
+    });
+
     document.getElementById("a_repaired_by").addEventListener("input", function () {
         var repaired_by = this;
         repaired_by.classList.remove('highlight');
@@ -772,6 +801,7 @@
         var defect_details = document.getElementById("a_defect_details").value;
         var sequence_no = document.getElementById("a_sequence_no").value;
         var connector_no = document.getElementById("a_connector_no").value;
+        var treatment_content_defect = document.getElementById("a_treatment_content_defect").value;
         var repaired_by = document.getElementById("a_repaired_by").value;
         var verified_by = document.getElementById("a_verified_by").value;
         var defect_id = document.getElementById('defect_id_no').value;
@@ -846,6 +876,12 @@
             hasError = true;
         }
 
+        if (treatment_content_defect === '') {
+            document.getElementById("a_treatment_content_defect").classList.add('highlight');
+            document.getElementById("treatmentContentDefectError").style.display = 'block';
+            hasError = true;
+        }
+
         if (repaired_by === '') {
             document.getElementById("a_repaired_by").classList.add('highlight');
             document.getElementById("repairedByError").style.display = 'block';
@@ -906,6 +942,7 @@
                 defect_details: defect_details,
                 sequence_no: sequence_no,
                 connector_no: connector_no,
+                treatment_content_defect: treatment_content_defect,
                 repaired_by: repaired_by,
                 verified_by: verified_by,
                 defect_id: defect_id,
@@ -918,30 +955,38 @@
                         icon: 'success',
                         title: 'Successfully Recorded',
                         showConfirmButton: false,
-                        timer: 1500
+                        timer: 1100
                     });
-                    $('#a_date_detected').val('');
-                    $('#a_car_maker').val('');
-                    $('#a_car_model').val('');
-                    $('#a_line_no').val('');
-                    $('#a_process').val('');
-                    $('#a_group').val('');
-                    $('#a_shift').val('');
-                    $('#a_product_name').val('');
-                    $('#a_lot_no').val('');
-                    $('#a_serial_no').val('');
+                    // $('#a_date_detected').val('');
+                    // $('#a_car_maker').val('');
+                    // $('#a_car_model').val('');
+                    // $('#a_line_no').val('');
+                    // $('#a_process').val('');
+                    // $('#a_group').val('');
+                    // $('#a_shift').val('');
+                    // $('#a_product_name').val('');
+                    // $('#a_lot_no').val('');
+                    // $('#a_serial_no').val('');
                     $('#a_defect_category').val('');
                     $('#a_defect_details').val('');
                     $('#a_sequence_no').val('');
                     $('#a_connector_no').val('');
+                    $('#a_treatment_content_defect').val('');
                     $('#a_repaired_by').val('');
                     $('#a_verified_by').val('');
                     $('#defect_id_no').val('');
                     $('#a_ip_address').val('');
 
+                    const defect_details_input = document.getElementById("a_defect_details");
+                    defect_details_input.value = '';
+                    defect_details_input.disabled = true;
+                    defect_details_input.style.backgroundColor = "#DDD"
+
+                    set_current_date_time();
+
                     load_defect_table(1);
 
-                    $('#add_defect_record').modal('hide');
+                    $('#add_defect_record').modal('show');
                 } else {
                     Swal.fire({
                         icon: 'error',
@@ -955,6 +1000,8 @@
     };
 
     const clear_add_defect_record = () => {
+        document.getElementById("a_line_no").value = '';
+        document.getElementById("a_process").value = '';
         document.getElementById("a_group").value = '';
         document.getElementById("a_product_name").value = '';
         document.getElementById("a_lot_no").value = '';
@@ -962,6 +1009,7 @@
         document.getElementById("a_defect_category").value = '';
         document.getElementById("a_sequence_no").value = '';
         document.getElementById("a_connector_no").value = '';
+        document.getElementById("a_treatment_content_defect").value = '';
         document.getElementById("a_repaired_by").value = '';
         document.getElementById("a_verified_by").value = '';
 
@@ -969,6 +1017,10 @@
         defect_details_input.value = '';
         defect_details_input.disabled = true;
         defect_details_input.style.backgroundColor = "#DDD"
+
+        set_current_date_time();
+
+        count_treatment_content_defect_char();
     };
 
     const clear_search_defect_record = () => {
@@ -1089,13 +1141,13 @@
                 if (data.success) {
                     $('#a_car_maker').val(data.car_maker);
                     $('#a_car_model').val(data.car_model);
-                    $('#a_line_no').val(data.line_no);
-                    $('#a_process').val(data.process);
+                    // $('#a_line_no').val(data.line_no);
+                    // $('#a_process').val(data.process);
 
                     sessionStorage.setItem('car_maker', data.car_maker);
                     sessionStorage.setItem('car_model', data.car_model);
-                    sessionStorage.setItem('line_no', data.line_no);
-                    sessionStorage.setItem('process', data.process);
+                    // sessionStorage.setItem('line_no', data.line_no);
+                    // sessionStorage.setItem('process', data.process);
 
                     $('#a_car_maker').prop('disabled', true).css('background', '#F1F1F1');
                     handleCarMakerChange(document.getElementById('a_car_maker'));
@@ -1125,13 +1177,13 @@
     const load_stored_inspection_details = () => {
         const car_maker = sessionStorage.getItem('car_maker');
         const car_model = sessionStorage.getItem('car_model');
-        const line_no = sessionStorage.getItem('line_no');
-        const process = sessionStorage.getItem('process');
+        // const line_no = sessionStorage.getItem('line_no');
+        // const process = sessionStorage.getItem('process');
 
         if (car_maker) $('#a_car_maker').val(car_maker);
         if (car_model) $('#a_car_model').val(car_model);
-        if (line_no) $('#a_line_no').val(line_no);
-        if (process) $('#a_process').val(process);
+        // if (line_no) $('#a_line_no').val(line_no);
+        // if (process) $('#a_process').val(process);
     };
 
     const set_current_date_time = () => {

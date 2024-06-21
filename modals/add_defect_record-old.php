@@ -24,6 +24,9 @@
 
                         <label style="font-weight: normal;color: #000;">Date Detected</label>
                         <label style="color:#CA3F3F">*</label>
+                        <!-- <input type="date" id="a_date_detected" class="form-control" autocomplete="off"
+                            style="color: #525252;font-size: 15px;border-radius: .25rem;background: #FFF;height: 35px; width:100%;"
+                            required> -->
 
                         <input type="datetime-local" id="a_date_detected" class="form-control" autocomplete="off"
                             style="color: #525252;font-size: 15px;border-radius: .25rem;background: #F1F1F1;height: 35px; width:100%;"
@@ -37,6 +40,18 @@
                         <input id="a_car_maker" class="form-control" onchange="handleCarMakerChange(this)"
                             style="color: #525252; font-size: 15px; border-radius: .25rem; background: #F1F1F1; height: 35px; width: 100%;"
                             required disabled>
+                        <!-- <select id="a_car_maker" class="form-control" onchange="handleCarMakerChange(this)"
+                            style="color: #525252; font-size: 15px; border-radius: .25rem; background: #FFF; height: 35px; width: 100%;"
+                            required>
+                            <option value="" disabled selected>Select Car Maker</option>
+                            <option value="Mazda">Mazda</option>
+                            <option value="Daihatsu">Daihatsu</option>
+                            <option value="Honda">Honda</option>
+                            <option value="Toyota">Toyota</option>
+                            <option value="Suzuki">Suzuki</option>
+                            <option value="Nissan">Nissan</option>
+                            <option value="Subaru">Subaru</option>
+                        </select> -->
 
                         <span id="carMakerError" class="error-message" style="display:none; color:#CA3F3F;">Car
                             Maker field is required.</span>
@@ -56,23 +71,36 @@
                         <label style="font-weight: normal;color: #000;">Line No.</label>
                         <label style="color:#CA3F3F">*</label>
                         <input type="text" id="a_line_no" class="form-control" autocomplete="off" placeholder=""
-                            style="color: #525252;font-size: 15px;border-radius: .25rem;background: #FFF;height: 35px; width:100%;"
-                            required>
+                            style="color: #525252;font-size: 15px;border-radius: .25rem;background: #F1F1F1;height: 35px; width:100%;"
+                            required disabled>
                         <span id="lineNoError" class="error-message" style="display:none; color:#CA3F3F;">Line
                             No. field is required.</span>
                     </div>
                     <div class="col-12 col-md-3">
                         <label style="font-weight: normal;color: #000;">Process</label>
                         <label style="color:#CA3F3F">*</label>
-                        <!-- <input type="text" id="a_process" class="form-control" autocomplete="off" placeholder=""
-                            style="color: #525252;font-size: 15px;border-radius: .25rem;background: #FFF;height: 35px; width:100%;"
-                            required> -->
-                        <select id="a_process" class="form-control"
-                            style="color: #525252;font-size: 15px;border-radius: .25rem;background: #FFF;height:35px; width:100%;">
-                            <option value="" disabled selected>Select Process</option>
-                        </select>
+                        <input type="text" id="a_process" class="form-control" autocomplete="off" placeholder=""
+                            style="color: #525252;font-size: 15px;border-radius: .25rem;background: #F1F1F1;height: 35px; width:100%;"
+                            required disabled>
                         <span id="processError" class="error-message" style="display:none; color:#CA3F3F;">Process field
                             is required.</span>
+                    </div>
+                    <div class="col-12 col-md-3">
+                        <label style="font-weight: normal;color: #000;">Shift</label>
+                        <label style="color:#CA3F3F">*</label>
+                        <input id="a_shift" class="form-control"
+                            style="color: #525252; font-size: 15px; border-radius: .25rem; background: #F1F1F1; height: 35px; width: 100%;"
+                            required disabled>
+
+                        <!-- <select id="a_shift" class="form-control"
+                            style="color: #525252; font-size: 15px; border-radius: .25rem; background: #FFF; height: 35px; width: 100%;"
+                            required>
+                            <option value="" disabled selected>Select Shift</option>
+                            <option value="DS">DS</option>
+                            <option value="NS">NS</option>
+                        </select> -->
+                        <span id="shiftError" class="error-message" style="display:none; color:#CA3F3F;">Shift
+                            field is required.</span>
                     </div>
                     <div class="col-12 col-md-3">
                         <label style="font-weight: normal;color: #000;">Group</label>
@@ -85,15 +113,6 @@
                             <option value="B">B</option>
                         </select>
                         <span id="groupError" class="error-message" style="display:none; color:#CA3F3F;">Group
-                            field is required.</span>
-                    </div>
-                    <div class="col-12 col-md-3">
-                        <label style="font-weight: normal;color: #000;">Shift</label>
-                        <label style="color:#CA3F3F">*</label>
-                        <input id="a_shift" class="form-control"
-                            style="color: #525252; font-size: 15px; border-radius: .25rem; background: #F1F1F1; height: 35px; width: 100%;"
-                            required disabled>
-                        <span id="shiftError" class="error-message" style="display:none; color:#CA3F3F;">Shift
                             field is required.</span>
                     </div>
                 </div>
@@ -109,7 +128,8 @@
                         <label style="font-weight: normal;color: #000;">Product Number</label>
                         <label style="color:#CA3F3F">*</label>
                         <input type="text" id="a_product_name" class="form-control" autocomplete="off"
-                            style="color: #525252;font-size: 15px;border-radius: .25rem;background: #FFF;height: 35px; width:100%;">
+                            style="color: #525252;font-size: 15px;border-radius: .25rem;background: #DDD;height: 35px; width:100%;"
+                            readonly>
                         <span id="productNoError" class="error-message" style="display:none; color:#CA3F3F;">Product
                             Number field is required.</span>
                         <br>
@@ -118,7 +138,8 @@
                         <label style="font-weight: normal;color: #000;">Lot No.</label>
                         <label style="color:#CA3F3F">*</label>
                         <input type="text" id="a_lot_no" class="form-control" autocomplete="off"
-                            style="color: #525252;font-size: 15px;border-radius: .25rem;background: #FFF;height: 35px; width:100%;">
+                            style="color: #525252;font-size: 15px;border-radius: .25rem;background: #DDD;height: 35px; width:100%;"
+                            readonly>
                         <span id="lotNoError" class="error-message" style="display:none; color:#CA3F3F;">Lot No.
                             field is required.</span>
                     </div>
@@ -126,7 +147,8 @@
                         <label style="font-weight: normal;color: #000;">Serial No.</label>
                         <label style="color:#CA3F3F">*</label>
                         <input type="text" id="a_serial_no" class="form-control" autocomplete="off"
-                            style="color: #525252;font-size: 15px;border-radius: .25rem;background: #FFF;height: 35px; width:100%;">
+                            style="color: #525252;font-size: 15px;border-radius: .25rem;background: #DDD;height: 35px; width:100%;"
+                            readonly>
                         <span id="serialNoError" class="error-message" style="display:none; color:#CA3F3F;">Serial No.
                             field is required.</span>
                     </div>
@@ -174,16 +196,6 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-12 col-md-6">
-                        <label style="font-weight: normal;color: #000;">Treatment Content of Defect</label>
-                        <textarea type="text" id="a_treatment_content_defect" class="textarea form-control"
-                            maxlength="255"
-                            style="color: #525252;font-size: 15px;border-radius: .25rem;background: #FFF;height:65px; width:100%;"
-                            onkeyup="count_treatment_content_defect_char()" required></textarea>
-                        <span id="treatmentContentDefectError" class="error-message"
-                            style="display:none; color:#CA3F3F;">Treatment Defect Content field is required.</span>
-                        <span id="treatment_content_defect_count" style="color: #525252;font-size: 12px;"></span>
-                    </div>
                     <div class="col-12 col-md-3">
                         <label style="font-weight: normal;color: #000;">Repaired By <i style="font-size: 12px">(PD
                                 Jr.Staff/Staff ID No.)</i></label>
