@@ -4,12 +4,12 @@
         fetch_search_defect_category();
         fetch_search_defect_details();
         fetch_search_process();
-        fetch_add_process();
-        load_defect_table(1);
+        // fetch_add_process();
         count_treatment_content_defect_char();
 
         // $('#a_scan_qr').prop('disabled', true).css('background', '#F1F1F1');
 
+        $('#a_process').prop('disabled', true).css('background', '#DDD');
         $('#a_defect_details').prop('disabled', true).css('background', '#DDD');
 
         $('#a_defect_category').change(function () {
@@ -21,14 +21,34 @@
             }
         });
 
-        get_inspection_details();
-        check_ip_address();
+        // get_inspection_details();
+        // check_ip_address();
+
+        $('#a_line_no').on('keypress', function (e) {
+            if (e.which === 13) {
+                get_inspection_details();
+            }
+        });
+
+        $('#a_line_no').on('input', function () {
+            if (!$(this).val()) {
+                $('#a_car_maker').val('');
+                $('#a_car_model').val('');
+                $('#a_process').prop('disabled', true).css('background', '#DDD');
+                // sessionStorage.removeItem('car_maker');
+                // sessionStorage.removeItem('car_model');
+            }
+        });
 
         $('#add_defect_record').on('shown.bs.modal', function () {
             set_current_date_time();
-            load_stored_inspection_details();
+            // load_stored_inspection_details();
             clear_add_defect_record();
         });
+
+        var currentDate = new Date().toISOString().split('T')[0];
+        $('#search_date_from').val(currentDate);
+        $('#search_date_to').val(currentDate);
 
         // $('#search_defect_details').prop('disabled', true).css('background', '#F1F1F1');
 
@@ -40,6 +60,8 @@
         //         fetch_search_defect_details(select_search_defect_category);
         //     }
         // });
+
+        load_defect_table(1);
     });
 
     document.getElementById("scan_product_name").addEventListener("keyup", e => {
@@ -370,19 +392,19 @@
         });
     }
 
-    const fetch_add_process = () => {
-        $.ajax({
-            url: 'process/index_p.php',
-            type: 'POST',
-            cache: false,
-            data: {
-                method: 'fetch_add_process',
-            },
-            success: function (response) {
-                $('#a_process').html(response);
-            },
-        });
-    }
+    // const fetch_add_process = () => {
+    //     $.ajax({
+    //         url: 'process/index_p.php',
+    //         type: 'POST',
+    //         cache: false,
+    //         data: {
+    //             method: 'fetch_add_process',
+    //         },
+    //         success: function (response) {
+    //             $('#a_process').html(response);
+    //         },
+    //     });
+    // }
 
     const fetch_defect_category = () => {
         $.ajax({
@@ -1000,6 +1022,8 @@
     };
 
     const clear_add_defect_record = () => {
+        document.getElementById("a_car_maker").value = '';
+        document.getElementById("a_car_model").value = '';
         document.getElementById("a_line_no").value = '';
         document.getElementById("a_process").value = '';
         document.getElementById("a_group").value = '';
@@ -1013,14 +1037,15 @@
         document.getElementById("a_repaired_by").value = '';
         document.getElementById("a_verified_by").value = '';
 
-        const defect_details_input = document.getElementById("a_defect_details");
-        defect_details_input.value = '';
-        defect_details_input.disabled = true;
-        defect_details_input.style.backgroundColor = "#DDD"
+        document.getElementById("a_defect_details").value = '';
+        $('#a_defect_details').prop('disabled', true).css('background', '#DDD');
+        $('#a_process').prop('disabled', true).css('background', '#DDD');
 
         set_current_date_time();
 
         count_treatment_content_defect_char();
+
+        $('#a_process').empty().append('<option value="" disabled selected>Select Process</option>');
     };
 
     const clear_search_defect_record = () => {
@@ -1030,8 +1055,8 @@
         document.getElementById("scan_serial_no").value = '';
         document.getElementById("search_process").value = '';
         document.getElementById("search_line_no").value = '';
-        document.getElementById("search_date_from").value = '';
-        document.getElementById("search_date_to").value = '';
+        // document.getElementById("search_date_from").value = '';
+        // document.getElementById("search_date_to").value = '';
         document.getElementById("search_defect_category").value = '';
         document.getElementById("search_defect_details").value = '';
 
@@ -1054,19 +1079,27 @@
         var search_defect_category = document.getElementById('search_defect_category').value.trim();
         var search_defect_details = document.getElementById('search_defect_details').value.trim();
 
+        if (search_date_from === '') {
+            search_date_from = new Date().toISOString().slice(0, 10);
+        }
+        if (search_date_to === '') {
+            search_date_to = new Date().toISOString().slice(0, 10);
+        }
+
         window.open(
-            'process/exp_defect_record.php?scan_product_name=' + scan_product_name +
-            "&scan_lot_no=" + scan_lot_no +
-            "&scan_serial_no=" + scan_serial_no +
-            "&search_process=" + search_process +
-            "&search_line_no=" + search_line_no +
-            "&search_date_from=" + search_date_from +
-            "&search_date_to=" + search_date_to +
-            "&search_defect_category=" + search_defect_category +
-            "&search_defect_details=" + search_defect_details,
+            'process/exp_defect_record.php?scan_product_name=' + encodeURIComponent(scan_product_name) +
+            '&scan_lot_no=' + encodeURIComponent(scan_lot_no) +
+            '&scan_serial_no=' + encodeURIComponent(scan_serial_no) +
+            '&search_process=' + encodeURIComponent(search_process) +
+            '&search_line_no=' + encodeURIComponent(search_line_no) +
+            '&search_date_from=' + encodeURIComponent(search_date_from) +
+            '&search_date_to=' + encodeURIComponent(search_date_to) +
+            '&search_defect_category=' + encodeURIComponent(search_defect_category) +
+            '&search_defect_details=' + encodeURIComponent(search_defect_details),
             '_blank'
         );
     };
+
 
     // const get_inspection_details = () => {
     //     const ip_address = $('#a_ip_address').val();
@@ -1102,65 +1135,86 @@
     //     });
     // };
 
-    const check_ip_address = () => {
-        const add_record_btn = document.getElementById('add_record_btn');
-        const ip_address = '<?= $_SERVER['REMOTE_ADDR']; ?>';
+    // const check_ip_address = () => {
+    //     const add_record_btn = document.getElementById('add_record_btn');
+    //     const ip_address = '<?= $_SERVER['REMOTE_ADDR']; ?>';
 
-        $.ajax({
-            url: 'process/inspection_p.php',
-            type: 'GET',
-            data: {
-                method: 'check_ip_address',
-                ip_address: ip_address
-            },
-            success: function (response) {
-                const data = JSON.parse(response);
-                if (!data.success) {
-                    add_record_btn.disabled = true;
-                    add_record_btn.title = data.error;
-                }
-            },
-            error: function (xhr, status, error) {
-                console.error('Error:', error);
-            }
-        });
-    };
+    //     $.ajax({
+    //         url: 'process/inspection_p.php',
+    //         type: 'GET',
+    //         data: {
+    //             method: 'check_ip_address',
+    //             ip_address: ip_address
+    //         },
+    //         success: function (response) {
+    //             const data = JSON.parse(response);
+    //             if (!data.success) {
+    //                 add_record_btn.disabled = true;
+    //                 add_record_btn.title = data.error;
+    //             }
+    //         },
+    //         error: function (xhr, status, error) {
+    //             console.error('Error:', error);
+    //         }
+    //     });
+    // };
 
     const get_inspection_details = () => {
-        const ip_address = $('#a_ip_address').val();
+        const line_no = $('#a_line_no').val();
+
+        $('#a_process').prop('disabled', true).css('background', '#DDD');
 
         $.ajax({
             url: 'process/inspection_p.php',
             type: 'GET',
             data: {
                 method: 'get_inspection_details',
-                ip_address: ip_address
+                line_no: line_no
             },
             success: function (response) {
                 const data = JSON.parse(response);
                 if (data.success) {
-                    $('#a_car_maker').val(data.car_maker);
-                    $('#a_car_model').val(data.car_model);
-                    // $('#a_line_no').val(data.line_no);
-                    // $('#a_process').val(data.process);
+                    if (data.car_maker === null || data.car_model === null) {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'No Car Maker and Model',
+                            text: 'Register car maker and model of the line.',
+                            showConfirmButton: false,
+                            color: '#525252',
+                            background: '#FFFDF2',
+                            backdrop: 'rgba(0, 0, 0, 0.8)'
+                        });
 
-                    sessionStorage.setItem('car_maker', data.car_maker);
-                    sessionStorage.setItem('car_model', data.car_model);
-                    // sessionStorage.setItem('line_no', data.line_no);
-                    // sessionStorage.setItem('process', data.process);
+                        $('#a_process').prop('disabled', true).css('background', '#DDD');
+                    } else {
+                        $('#a_car_maker').val(data.car_maker);
+                        $('#a_car_model').val(data.car_model);
 
-                    $('#a_car_maker').prop('disabled', true).css('background', '#F1F1F1');
-                    handleCarMakerChange(document.getElementById('a_car_maker'));
+                        // sessionStorage.setItem('car_maker', data.car_maker);
+                        // sessionStorage.setItem('car_model', data.car_model);
+
+                        $('#a_process').empty().append('<option value="" disabled selected>Select Process</option>');
+
+                        data.processes.forEach(process => {
+                            $('#a_process').append(`<option value="${process}">${process}</option>`);
+                        });
+
+                        $('#a_process').prop('disabled', false).css('background', '#FFF');
+
+                        $('#a_car_maker').prop('disabled', true).css('background', '#F1F1F1');
+                        handleCarMakerChange(document.getElementById('a_car_maker'));
+                    }
                 } else {
                     Swal.fire({
                         icon: 'warning',
-                        title: 'IP address is not registered.',
-                        text: 'Register IP address to fetch inspection details.',
+                        title: data.error,
                         showConfirmButton: false,
                         color: '#525252',
                         background: '#FFFDF2',
                         backdrop: 'rgba(0, 0, 0, 0.8)'
                     });
+
+                    $('#a_process').prop('disabled', true).css('background', '#DDD');
                 }
             },
             error: function (xhr, status, error) {
@@ -1174,17 +1228,17 @@
         });
     };
 
-    const load_stored_inspection_details = () => {
-        const car_maker = sessionStorage.getItem('car_maker');
-        const car_model = sessionStorage.getItem('car_model');
-        // const line_no = sessionStorage.getItem('line_no');
-        // const process = sessionStorage.getItem('process');
+    // const load_stored_inspection_details = () => {
+    //     const car_maker = sessionStorage.getItem('car_maker');
+    //     const car_model = sessionStorage.getItem('car_model');
+    //     // const line_no = sessionStorage.getItem('line_no');
+    //     // const process = sessionStorage.getItem('process');
 
-        if (car_maker) $('#a_car_maker').val(car_maker);
-        if (car_model) $('#a_car_model').val(car_model);
-        // if (line_no) $('#a_line_no').val(line_no);
-        // if (process) $('#a_process').val(process);
-    };
+    //     if (car_maker) $('#a_car_maker').val(car_maker);
+    //     if (car_model) $('#a_car_model').val(car_model);
+    //     // if (line_no) $('#a_line_no').val(line_no);
+    //     // if (process) $('#a_process').val(process);
+    // };
 
     const set_current_date_time = () => {
         const date_input = document.getElementById('a_date_detected');

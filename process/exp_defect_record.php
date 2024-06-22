@@ -12,6 +12,10 @@ $search_date_to = $_GET['search_date_to'];
 $search_defect_category = $_GET['search_defect_category'];
 $search_defect_details = $_GET['search_defect_details'];
 
+// Ensure date format is correct for SQL query
+$search_date_from = date('Y-m-d', strtotime($search_date_from));
+$search_date_to = date('Y-m-d', strtotime($search_date_to));
+
 $filename = 'Minor-Defect-Record_' . date("Y-m-d") . '.csv';
 header('Content-Type: text/csv; charset=utf-8');
 header('Content-Disposition: attachment; filename="' . $filename . '";');
@@ -43,9 +47,7 @@ $headers = array(
 
 fputcsv($f, $headers, $delimiter);
 
-// $query = "SELECT date_detected, car_model, line_no, process, CONCAT(group_d, ' | ', shift) AS shift, product_no, lot_no, serial_no, defect_category, defect_details, sequence_no, connector_no, repaired_by, verified_by FROM t_minor_defect_f WHERE 1=1";
-
-$query = "SELECT date_detected, car_model, line_no, process, group_d, shift, product_no, lot_no, serial_no, defect_category, defect_details, sequence_no, connector_no, treatment_content_defect,repaired_by, verified_by FROM t_minor_defect_f WHERE 1=1";
+$query = "SELECT date_detected, car_model, line_no, process, group_d, shift, product_no, lot_no, serial_no, defect_category, defect_details, sequence_no, connector_no, treatment_content_defect, repaired_by, verified_by FROM t_minor_defect_f WHERE 1=1";
 
 $conditions = [];
 $params = [];
@@ -95,7 +97,7 @@ if (count($conditions) > 0) {
     $query .= ' AND ' . implode(' AND ', $conditions);
 }
 
-$stmt = $conn->prepare($query, array(PDO::ATTR_CURSOR => PDO::CURSOR_SCROLL));
+$stmt = $conn->prepare($query);
 $stmt->execute($params);
 
 if ($stmt->rowCount() > 0) {
@@ -134,5 +136,5 @@ fseek($f, 0);
 fpassthru($f);
 
 $conn = null;
-
+exit;
 ?>
