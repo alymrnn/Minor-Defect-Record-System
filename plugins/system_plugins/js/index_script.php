@@ -4,10 +4,7 @@
         fetch_search_defect_category();
         fetch_search_defect_details();
         fetch_search_process();
-        // fetch_add_process();
         count_treatment_content_defect_char();
-
-        // $('#a_scan_qr').prop('disabled', true).css('background', '#F1F1F1');
 
         $('#a_process').prop('disabled', true).css('background', '#DDD');
         $('#a_defect_details').prop('disabled', true).css('background', '#DDD');
@@ -21,9 +18,6 @@
             }
         });
 
-        // get_inspection_details();
-        // check_ip_address();
-
         $('#a_line_no').on('keypress', function (e) {
             if (e.which === 13) {
                 get_inspection_details();
@@ -35,31 +29,17 @@
                 $('#a_car_maker').val('');
                 $('#a_car_model').val('');
                 $('#a_process').prop('disabled', true).css('background', '#DDD');
-                // sessionStorage.removeItem('car_maker');
-                // sessionStorage.removeItem('car_model');
             }
         });
 
         $('#add_defect_record').on('shown.bs.modal', function () {
             set_current_date_time();
-            // load_stored_inspection_details();
             clear_add_defect_record();
         });
 
         var currentDate = new Date().toISOString().split('T')[0];
         $('#search_date_from').val(currentDate);
         $('#search_date_to').val(currentDate);
-
-        // $('#search_defect_details').prop('disabled', true).css('background', '#F1F1F1');
-
-        // $('#search_defect_category').change(function () {
-        //     const select_search_defect_category = $(this).val();
-        //     if (select_search_defect_category === '') {
-        //         $('#search_defect_details').prop('disabled', true).css('background', '#F1F1F1').val('');
-        //     } else {
-        //         fetch_search_defect_details(select_search_defect_category);
-        //     }
-        // });
 
         load_defect_table(1);
     });
@@ -1182,7 +1162,8 @@
                             showConfirmButton: false,
                             color: '#525252',
                             background: '#FFFDF2',
-                            backdrop: 'rgba(0, 0, 0, 0.8)'
+                            backdrop: 'rgba(0, 0, 0, 0.8)',
+                            showConfirmButton: true
                         });
 
                         $('#a_process').prop('disabled', true).css('background', '#DDD');
@@ -1211,7 +1192,8 @@
                         showConfirmButton: false,
                         color: '#525252',
                         background: '#FFFDF2',
-                        backdrop: 'rgba(0, 0, 0, 0.8)'
+                        backdrop: 'rgba(0, 0, 0, 0.8)',
+                        showConfirmButton: true
                     });
 
                     $('#a_process').prop('disabled', true).css('background', '#DDD');

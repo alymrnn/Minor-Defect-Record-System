@@ -12,10 +12,6 @@ $search_date_to = $_GET['search_date_to'];
 $search_defect_category = $_GET['search_defect_category'];
 $search_defect_details = $_GET['search_defect_details'];
 
-// Ensure date format is correct for SQL query
-$search_date_from = date('Y-m-d', strtotime($search_date_from));
-$search_date_to = date('Y-m-d', strtotime($search_date_to));
-
 $filename = 'Minor-Defect-Record_' . date("Y-m-d") . '.csv';
 header('Content-Type: text/csv; charset=utf-8');
 header('Content-Disposition: attachment; filename="' . $filename . '";');
@@ -53,7 +49,7 @@ $conditions = [];
 $params = [];
 
 if (!empty($search_date_from) && !empty($search_date_to)) {
-    $conditions[] = "date_detected BETWEEN ? AND ?";
+    $conditions[] = "CAST(date_detected AS DATE) BETWEEN ? AND ?";
     $params[] = $search_date_from;
     $params[] = $search_date_to;
 }
@@ -97,12 +93,11 @@ if (count($conditions) > 0) {
     $query .= ' AND ' . implode(' AND ', $conditions);
 }
 
-$stmt = $conn->prepare($query);
+$stmt = $conn->prepare($query, array(PDO::ATTR_CURSOR => PDO::CURSOR_SCROLL));
 $stmt->execute($params);
 
 if ($stmt->rowCount() > 0) {
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-        // Split date_detected into date and time
         $datetime = new DateTime($row['date_detected']);
         $date_part = $datetime->format('Y-m-d');
         $time_part = $datetime->format('H:i:s');
@@ -136,5 +131,5 @@ fseek($f, 0);
 fpassthru($f);
 
 $conn = null;
-exit;
+
 ?>

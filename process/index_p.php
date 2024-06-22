@@ -99,7 +99,6 @@ if ($method == 'defect_list_last_page') {
     echo $number_of_page;
 }
 
-
 // QUERY FOR MYSQL
 // if ($method == 'load_defect_list') {
 //     $current_page = intval($_POST['current_page']);
@@ -213,7 +212,6 @@ if ($method == 'defect_list_last_page') {
 //         echo '</tr>';
 //     }
 // }
-
 
 if ($method == 'load_defect_list') {
     $current_page = intval($_POST['current_page']);
