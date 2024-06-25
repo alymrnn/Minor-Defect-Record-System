@@ -94,21 +94,35 @@ include ('plugins/system_plugins/navbar/index_navbar.php');
                 <option value="" disabled selected>Select Defect Details</option>
               </select>
             </div>
-            <div class="col-12 col-sm-4 col-md-1 mb-2">
+            <div class="col-12 col-sm-6 col-md-2 mb-2">
+              <!-- search button -->
+              <label></label>
+              <button class="btn btn-block d-flex justify-content-left" id="search_btn" onclick="load_defect_table(1)"
+                style="color:#fff;height:35px;border-radius:.25rem;background: #2D2D2D;font-size:15px;font-weight:normal;"
+                onmouseover="this.style.backgroundColor='#1D1D1D'; this.style.color='#FFF';"
+                onmouseout="this.style.backgroundColor='#2D2D2D'; this.style.color='#FFF';">
+                <i class="fas fa-search" style="margin-top: 2px;"></i>&nbsp;Search</button>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12 col-sm-4 col-md-4 mt-2">
+              <p class="p-2" style="background: #FFFAD1; border-left: 3px solid #E89F4C;">
+                <i>Note:</i>
+                The records displayed below are for today's date.
+              </p>
+            </div>
+            <div class="col-12 col-sm-4 col-md-2 mt-2">
               <!-- clear all button -->
-              <label for=""></label>
               <button class="btn btn-block d-flex justify-content-left" id="clear_btn"
                 onclick="clear_search_defect_record()"
                 style="color:#fff;height:35px;background: #474747;font-size:15px;font-weight:normal;"
                 onmouseover="this.style.backgroundColor='#2D2D2D'; this.style.color='#FFF';"
                 onmouseout="this.style.backgroundColor='#474747'; this.style.color='#FFF';">
-                <i class="fas fa-trash" style="margin-top: 2px;"></i>&nbsp;Clear All
+                <i class="fas fa-trash" style="margin-top: 2px;"></i>&nbsp;Clear
               </button>
             </div>
-
-            <div class="col-12 col-sm-4 col-md-1 mb-2">
+            <div class="col-12 col-sm-4 col-md-2 mt-2">
               <!-- refresh button -->
-              <label for=""></label>
               <button class="btn btn-block d-flex justify-content-left" id="refresh_btn" onclick="refresh_page()"
                 style="color:#fff;height:35px;background: #474747;font-size:15px;font-weight:normal;"
                 onmouseover="this.style.backgroundColor='#2D2D2D'; this.style.color='#FFF';"
@@ -116,33 +130,23 @@ include ('plugins/system_plugins/navbar/index_navbar.php');
                 <i class="fas fa-sync-alt" style="margin-top: 2px;"></i>&nbsp;Refresh
               </button>
             </div>
-          </div>
-          <div class="row justify-content-end">
-            <div class="col-12 col-sm-4 col-md-2 mt-3">
-              <!-- search button -->
-              <button class="btn btn-block d-flex justify-content-left" id="search_btn" onclick="load_defect_table(1)"
-                style="color:#fff;height:35px;border-radius:.25rem;background: #474747;font-size:15px;font-weight:normal;"
-                onmouseover="this.style.backgroundColor='#2D2D2D'; this.style.color='#FFF';"
-                onmouseout="this.style.backgroundColor='#474747'; this.style.color='#FFF';">
-                <i class="fas fa-search" style="margin-top: 2px;"></i>&nbsp;&nbsp;Search</button>
-            </div>
-            <div class=" col-12 col-sm-4 col-md-2 mt-3">
+            <div class="col-12 col-sm-4 col-md-2 mt-2">
               <!-- export button -->
               <button class="btn btn-block d-flex justify-content-left" id="export_record"
                 onclick="export_defect_record()"
                 style="color:#fff;height:35px;background: #335c67;font-size:15px;font-weight:normal;"
                 onmouseover="this.style.backgroundColor='#27464F'; this.style.color='#FFF';"
                 onmouseout="this.style.backgroundColor='#335c67'; this.style.color='#FFF';"><i class="fas fa-download"
-                  style="margin-top: 2px;"></i>&nbsp;&nbsp;Export</button>
+                  style="margin-top: 2px;"></i>&nbsp;Export</button>
             </div>
-            <div class=" col-12 col-sm-4 col-md-2 mt-3">
+            <div class="col-12 col-sm-4 col-md-2 mt-2">
               <!-- add button -->
               <button id="add_record_btn" class="btn btn-block d-flex justify-content-left" data-toggle="modal"
                 data-target="#add_defect_record"
                 style="color:#fff;height:35px;background: #9e2a2b;font-size:15px;font-weight:normal;"
                 onmouseover="this.style.backgroundColor='#792021'; this.style.color='#FFF';"
                 onmouseout="this.style.backgroundColor='#9e2a2b'; this.style.color='#FFF';"><i class="fas fa-plus"
-                  style="margin-top: 2px;"></i>&nbsp;&nbsp;Add Record</button>
+                  style="margin-top: 2px;"></i>&nbsp;Add Record</button>
             </div>
           </div>
         </di>
