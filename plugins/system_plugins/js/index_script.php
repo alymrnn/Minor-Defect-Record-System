@@ -4,17 +4,28 @@
         fetch_search_defect_category();
         fetch_search_defect_details();
         fetch_search_process();
-        count_treatment_content_defect_char();
 
         $('#a_process').prop('disabled', true).css('background', '#DDD');
         $('#a_defect_details').prop('disabled', true).css('background', '#DDD');
+        $('#a_treatment_content_defect').prop('disabled', true).css('background', '#F1F1F1');
 
         $('#a_defect_category').change(function () {
             const select_defect_category = $(this).val();
+            $('#a_treatment_content_defect').val('');
             if (select_defect_category === '') {
                 $('#a_defect_details').prop('disabled', true).css('background', '#DDD').val('');
+                $('#a_treatment_content_defect').prop('disabled', true).css('background', '#F1F1F1').val('');
             } else {
                 fetch_defect_details(select_defect_category);
+            }
+        });
+
+        $('#a_defect_details').change(function () {
+            const select_defect_details = $(this).val();
+            if (select_defect_details === '') {
+                $('#a_treatment_content_defect').prop('disabled', true).css('background', '#F1F1F1').val('');
+            } else {
+                fetch_defect_treatment();
             }
         });
 
@@ -416,12 +427,16 @@
         });
     };
 
-    const count_treatment_content_defect_char = () => {
-        var max_length = document.getElementById("a_treatment_content_defect").getAttribute("maxlength");
-        var comment_length = document.getElementById("a_treatment_content_defect").value.length;
-        var treatmentDefectError = `${comment_length} / ${max_length}`;
-        document.getElementById("treatment_content_defect_count").innerHTML = treatmentDefectError;
-    }
+    const fetch_defect_treatment = () => {
+        const treatment = $('#a_defect_details option:selected').data('treatment');
+        if (treatment) {
+            $('#a_treatment_content_defect').val(treatment);
+            $('#a_treatment_content_defect').prop('disabled', true).css('background', '#F1F1F1');
+        } else {
+            $('#a_treatment_content_defect').val('');
+            $('#a_treatment_content_defect').prop('disabled', true).css('background', '#F1F1F1');
+        }
+    };
 
     function handleCarMakerChange(selectOpt) {
         var carMaker = selectOpt.value;
@@ -1022,8 +1037,6 @@
         $('#a_process').prop('disabled', true).css('background', '#DDD');
 
         set_current_date_time();
-
-        count_treatment_content_defect_char();
 
         $('#a_process').empty().append('<option value="" disabled selected>Select Process</option>');
     };

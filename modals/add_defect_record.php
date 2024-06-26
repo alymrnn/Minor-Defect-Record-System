@@ -154,7 +154,19 @@
                         <span id="defectDetailsError" class="error-message" style="display:none; color:#CA3F3F;">Defect
                             Details field is required.</span>
                     </div>
-                    <div class="col-12 col-md-2">
+                    <div class="col-12 col-md-4">
+                        <label style="font-weight: normal;color: #000;">Treatment Content of Defect</label>
+                        <label style="color:#CA3F3F">*</label>
+                        <input id="a_treatment_content_defect" class="form-control"
+                            style="color: #525252; font-size: 15px; border-radius: .25rem; background: #DDD; height: 35px; width: 100%;"
+                            required disabled>
+                        <span id="treatmentContentDefectError" class="error-message"
+                            style="display:none; color:#CA3F3F;">Treatment Defect Content field is required.</span>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-12 col-md-3">
                         <label style="font-weight: normal;color: #000;">Sequence No.</label>
                         <label style="color:#CA3F3F">*</label>
                         <input type="text" id="a_sequence_no" class="form-control" autocomplete="off" placeholder=""
@@ -163,7 +175,7 @@
                         <span id="sequenceNoError" class="error-message" style="display:none; color:#CA3F3F;">Sequence
                             No. field is required.</span>
                     </div>
-                    <div class="col-12 col-md-2">
+                    <div class="col-12 col-md-3">
                         <label style="font-weight: normal;color: #000;">Connector No.</label>
                         <label style="color:#CA3F3F">*</label>
                         <input type="text" id="a_connector_no" class="form-control" autocomplete="off" placeholder=""
@@ -171,18 +183,6 @@
                             required>
                         <span id="connectorNoError" class="error-message" style="display:none; color:#CA3F3F;">Connector
                             No. field is required.</span>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-12 col-md-6">
-                        <label style="font-weight: normal;color: #000;">Treatment Content of Defect</label>
-                        <textarea type="text" id="a_treatment_content_defect" class="textarea form-control"
-                            maxlength="255"
-                            style="color: #525252;font-size: 15px;border-radius: .25rem;background: #FFF;height:65px; width:100%;"
-                            onkeyup="count_treatment_content_defect_char()" required></textarea>
-                        <span id="treatmentContentDefectError" class="error-message"
-                            style="display:none; color:#CA3F3F;">Treatment Defect Content field is required.</span>
-                        <span id="treatment_content_defect_count" style="color: #525252;font-size: 12px;"></span>
                     </div>
                     <div class="col-12 col-md-3">
                         <label style="font-weight: normal;color: #000;">Repaired By <i style="font-size: 12px">(PD

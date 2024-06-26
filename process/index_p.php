@@ -329,7 +329,7 @@ if ($method == 'load_defect_list') {
             }
         } else {
             echo '<tr>';
-            echo '<td colspan="14" style="text-align:center; color:red;">No Record Found</td>';
+            echo '<td colspan="12" style="text-align:center; color:red;">No Record Found</td>';
             echo '</tr>';
         }
     } catch (PDOException $e) {
@@ -425,17 +425,34 @@ if ($method == 'fetch_defect_category') {
     }
 }
 
+// if ($method == 'fetch_defect_details' && isset($_POST['category_value'])) {
+//     $category_value = $_POST['category_value'];
+//     $query = "SELECT defect_details_dd FROM m_defect_details WHERE defect_code_value_dd = :category_value ORDER BY defect_details_dd ASC";
+//     $stmt = $conn->prepare($query, array(PDO::ATTR_CURSOR => PDO::CURSOR_SCROLL));
+//     $stmt->bindParam(':category_value', $category_value);
+//     $stmt->execute();
+//     if ($stmt->rowCount() > 0) {
+//         echo '<option value="" disabled selected>Select Defect Details</option>';
+//         foreach ($stmt->fetchAll() as $row) {
+//             echo '<option>' . htmlspecialchars($row['defect_details_dd']) . '</option>';
+//         }
+//     } else {
+//         echo '<option value="">Select Defect Details</option>';
+//     }
+// }
+
 if ($method == 'fetch_defect_details' && isset($_POST['category_value'])) {
     $category_value = $_POST['category_value'];
-    $query = "SELECT defect_details_dd FROM m_defect_details WHERE defect_code_value_dd = :category_value ORDER BY defect_details_dd ASC";
+    $query = "SELECT defect_details_dd, defect_treatment_dd FROM m_defect_details WHERE defect_code_value_dd = :category_value ORDER BY defect_details_dd ASC";
     $stmt = $conn->prepare($query, array(PDO::ATTR_CURSOR => PDO::CURSOR_SCROLL));
     $stmt->bindParam(':category_value', $category_value);
     $stmt->execute();
     if ($stmt->rowCount() > 0) {
-        echo '<option value="" disabled selected>Select Defect Details</option>';
+        $options = '<option value="" disabled selected>Select Defect Details</option>';
         foreach ($stmt->fetchAll() as $row) {
-            echo '<option>' . htmlspecialchars($row['defect_details_dd']) . '</option>';
+            $options .= '<option value="' . htmlspecialchars($row['defect_details_dd']) . '" data-treatment="' . htmlspecialchars($row['defect_treatment_dd']) . '">' . htmlspecialchars($row['defect_details_dd']) . '</option>';
         }
+        echo $options;
     } else {
         echo '<option value="">Select Defect Details</option>';
     }

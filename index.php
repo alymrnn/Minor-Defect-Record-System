@@ -106,7 +106,7 @@ include ('plugins/system_plugins/navbar/index_navbar.php');
           </div>
           <div class="row">
             <div class="col-12 col-sm-4 col-md-4 mt-2">
-              <p class="p-2" style="background: #FFFAD1; border-left: 3px solid #E89F4C;">
+              <p class="p-2" style="background: #FFFAD1; border-left: 3px solid #E89F4C; font-size: 13px;">
                 <i>Note:</i>
                 The records displayed below are for today's date.
               </p>
