@@ -1257,5 +1257,4 @@
 
         document.getElementById('a_shift').value = shift;
     };
-
 </script>
