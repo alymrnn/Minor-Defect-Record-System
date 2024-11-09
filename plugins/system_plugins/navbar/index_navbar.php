@@ -55,7 +55,7 @@
     <ul class="order-1 order-md-3 navbar-nav navbar-no-expand ml-auto">
         <li class="nav-item mr-4 pt-3">
             <p style="color: #fff; font-size: 15px;"><i class="fas fa-calendar-check"></i>&nbsp;&nbsp;<span
-                    id="datetime"></span></p>
+                    id="datetime"></span> | <a style="color: #EED965;" href="template/Minor-Defect-Record-System_WI.pdf" target="_blank">Work Instruction</a></p>
         </li>
     </ul>
 </nav>
