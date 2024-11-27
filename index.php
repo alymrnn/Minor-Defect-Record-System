@@ -105,13 +105,13 @@ include ('plugins/system_plugins/navbar/index_navbar.php');
             </div>
           </div>
           <div class="row">
-            <div class="col-12 col-sm-4 col-md-4 mt-2">
+            <!-- <div class="col-12 col-sm-4 col-md-4 mt-2">
               <p class="p-2" style="background: #FFFAD1; border-left: 3px solid #E89F4C; font-size: 13px;">
                 <i>Note:</i>
                 The records displayed below are for today's date.
               </p>
-            </div>
-            <div class="col-12 col-sm-4 col-md-2 mt-2">
+            </div> -->
+            <div class="col-12 col-sm-4 col-md-2 mt-2 offset-6">
               <!-- clear all button -->
               <button class="btn btn-block d-flex justify-content-left" id="clear_btn"
                 onclick="clear_search_defect_record()"
@@ -121,15 +121,15 @@ include ('plugins/system_plugins/navbar/index_navbar.php');
                 <i class="fas fa-trash" style="margin-top: 2px;"></i>&nbsp;Clear
               </button>
             </div>
-            <div class="col-12 col-sm-4 col-md-2 mt-2">
-              <!-- refresh button -->
+            <!-- <div class="col-12 col-sm-4 col-md-2 mt-2">
+              refresh button
               <button class="btn btn-block d-flex justify-content-left" id="refresh_btn" onclick="refresh_page()"
                 style="color:#fff;height:35px;background: #474747;font-size:15px;font-weight:normal;"
                 onmouseover="this.style.backgroundColor='#2D2D2D'; this.style.color='#FFF';"
                 onmouseout="this.style.backgroundColor='#474747'; this.style.color='#FFF';">
                 <i class="fas fa-sync-alt" style="margin-top: 2px;"></i>&nbsp;Refresh
               </button>
-            </div>
+            </div> -->
             <div class="col-12 col-sm-4 col-md-2 mt-2">
               <!-- export button -->
               <button class="btn btn-block d-flex justify-content-left" id="export_record"

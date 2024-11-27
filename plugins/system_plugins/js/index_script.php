@@ -60,7 +60,6 @@
     const toggleQRField = () => {
         const lineNo = $('#a_line_no').val();
         const isValidLineNo = /^[0-9]{4}$/.test(lineNo); // Check if it contains exactly 4 digits
-
         if (isValidLineNo) {
             $('#a_scan_qr').prop('disabled', false).css('background', '#FFF');
         } else {
@@ -72,72 +71,72 @@
         toggleQRField();
     });
 
-    document.getElementById("scan_product_name").addEventListener("keyup", e => {
-        load_defect_table(1);
-    });
+    // document.getElementById("scan_product_name").addEventListener("keyup", e => {
+    //     load_defect_table(1);
+    // });
 
-    document.getElementById("scan_lot_no").addEventListener("keyup", e => {
-        load_defect_table(1);
-    });
+    // document.getElementById("scan_lot_no").addEventListener("keyup", e => {
+    //     load_defect_table(1);
+    // });
 
-    document.getElementById("scan_serial_no").addEventListener("keyup", e => {
-        load_defect_table(1);
-    });
+    // document.getElementById("scan_serial_no").addEventListener("keyup", e => {
+    //     load_defect_table(1);
+    // });
 
-    document.getElementById("search_process").addEventListener("change", e => {
-        load_defect_table(1);
-    });
+    // document.getElementById("search_process").addEventListener("change", e => {
+    //     load_defect_table(1);
+    // });
 
-    document.getElementById("search_line_no").addEventListener("keyup", e => {
-        load_defect_table(1);
-    });
+    // document.getElementById("search_line_no").addEventListener("keyup", e => {
+    //     load_defect_table(1);
+    // });
 
-    document.getElementById("search_date_from").addEventListener("change", e => {
-        load_defect_table(1);
-    });
+    // document.getElementById("search_date_from").addEventListener("change", e => {
+    //     load_defect_table(1);
+    // });
 
-    document.getElementById("search_date_to").addEventListener("change", e => {
-        load_defect_table(1);
-    });
+    // document.getElementById("search_date_to").addEventListener("change", e => {
+    //     load_defect_table(1);
+    // });
 
-    document.getElementById("search_defect_category").addEventListener("change", e => {
-        load_defect_table(1);
-    });
+    // document.getElementById("search_defect_category").addEventListener("change", e => {
+    //     load_defect_table(1);
+    // });
 
-    document.getElementById("search_defect_details").addEventListener("change", e => {
-        load_defect_table(1);
-    });
+    // document.getElementById("search_defect_details").addEventListener("change", e => {
+    //     load_defect_table(1);
+    // });
 
-    document.getElementById('scan_qr').addEventListener('input', function (e) {
-        var qr_code_scan = this.value;
+    // document.getElementById('scan_qr').addEventListener('input', function (e) {
+    //     var qr_code_scan = this.value;
 
-        if (qr_code_scan.length === 50) {
-            const product_name_field = document.getElementById('scan_product_name');
-            const lot_no_field = document.getElementById('scan_lot_no');
-            const serial_no_field = document.getElementById('scan_serial_no');
+    //     if (qr_code_scan.length === 50) {
+    //         const product_name_field = document.getElementById('scan_product_name');
+    //         const lot_no_field = document.getElementById('scan_lot_no');
+    //         const serial_no_field = document.getElementById('scan_serial_no');
 
-            if (product_name_field && lot_no_field && serial_no_field) {
-                product_name_field.value = qr_code_scan.substring(10, 35);
-                lot_no_field.value = qr_code_scan.substring(35, 41);
-                serial_no_field.value = qr_code_scan.substring(41, 50);
+    //         if (product_name_field && lot_no_field && serial_no_field) {
+    //             product_name_field.value = qr_code_scan.substring(10, 35);
+    //             lot_no_field.value = qr_code_scan.substring(35, 41);
+    //             serial_no_field.value = qr_code_scan.substring(41, 50);
 
-                load_defect_table(1);
-            } else {
-                console.error("One or more elements were not found in the DOM.");
-            }
+    //             load_defect_table(1);
+    //         } else {
+    //             console.error("One or more elements were not found in the DOM.");
+    //         }
 
-            this.value = '';
-        } else if (qr_code_scan.length > 50) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Invalid QR Code',
-                text: 'Invalid',
-                showConfirmButton: false,
-                timer: 1000
-            });
-            this.value = '';
-        }
-    });
+    //         this.value = '';
+    //     } else if (qr_code_scan.length > 50) {
+    //         Swal.fire({
+    //             icon: 'error',
+    //             title: 'Invalid QR Code',
+    //             text: 'Invalid',
+    //             showConfirmButton: false,
+    //             timer: 1000
+    //         });
+    //         this.value = '';
+    //     }
+    // });
 
     // Table Responsive Scroll Event for Load More
     document.getElementById("list_of_defect_res").addEventListener("scroll", function () {
@@ -161,6 +160,7 @@
     };
 
     const count_defect = () => {
+        var scan_qr = sessionStorage.getItem('scan_qr');
         var scan_product_name = sessionStorage.getItem('scan_product_name');
         var scan_lot_no = sessionStorage.getItem('scan_lot_no');
         var scan_serial_no = sessionStorage.getItem('scan_serial_no');
@@ -177,6 +177,7 @@
             cache: false,
             data: {
                 method: 'count_defect_list',
+                scan_qr: scan_qr,
                 scan_product_name: scan_product_name,
                 scan_lot_no: scan_lot_no,
                 scan_serial_no: scan_serial_no,
@@ -203,6 +204,7 @@
     };
 
     const load_defect_last_page = () => {
+        var scan_qr = sessionStorage.getItem('scan_qr');
         var scan_product_name = sessionStorage.getItem('scan_product_name');
         var scan_lot_no = sessionStorage.getItem('scan_lot_no');
         var scan_serial_no = sessionStorage.getItem('scan_serial_no');
@@ -221,6 +223,7 @@
             cache: false,
             data: {
                 method: 'defect_list_last_page',
+                scan_qr: scan_qr,
                 scan_product_name: scan_product_name,
                 scan_lot_no: scan_lot_no,
                 scan_serial_no: scan_serial_no,
@@ -248,6 +251,7 @@
     };
 
     const load_defect_table = current_page => {
+        var scan_qr = document.getElementById('scan_qr').value;
         var scan_product_name = document.getElementById('scan_product_name').value;
         var scan_lot_no = document.getElementById('scan_lot_no').value;
         var scan_serial_no = document.getElementById('scan_serial_no').value;
@@ -258,6 +262,7 @@
         var search_defect_category = document.getElementById('search_defect_category').value;
         var search_defect_details = document.getElementById('search_defect_details').value;
 
+        var scan_qr_1 = sessionStorage.getItem('scan_qr');
         var scan_product_name_1 = sessionStorage.getItem('scan_product_name');
         var scan_lot_no_1 = sessionStorage.getItem('scan_lot_no');
         var scan_serial_no_1 = sessionStorage.getItem('scan_serial_no');
@@ -271,6 +276,7 @@
         if (current_page > 1) {
             switch (true) {
                 case scan_product_name !== scan_product_name_1:
+                case scan_qr !== scan_qr_1:
                 case scan_lot_no !== scan_lot_no_1:
                 case scan_serial_no !== scan_serial_no_1:
                 case search_process !== search_process_1:
@@ -280,6 +286,7 @@
                 case search_defect_category !== search_defect_category_1:
                 case search_defect_details !== search_defect_details_1:
                     scan_product_name = scan_product_name_1;
+                    scan_qr = scan_qr_1;
                     scan_lot_no = scan_lot_no_1;
                     scan_serial_no = scan_serial_no_1;
                     search_process = search_process_1;
@@ -293,6 +300,7 @@
                 default:
             }
         } else {
+            sessionStorage.setItem('scan_qr', scan_qr);
             sessionStorage.setItem('scan_product_name', scan_product_name);
             sessionStorage.setItem('scan_lot_no', scan_lot_no);
             sessionStorage.setItem('scan_serial_no', scan_serial_no);
@@ -309,6 +317,7 @@
             cache: false,
             data: {
                 method: 'load_defect_list',
+                scan_qr: scan_qr,
                 scan_product_name: scan_product_name,
                 scan_lot_no: scan_lot_no,
                 scan_serial_no: scan_serial_no,
@@ -786,8 +795,8 @@
         document.getElementById("search_defect_category").value = '';
         document.getElementById("search_defect_details").value = '';
 
-        load_defect_table(1);
-        // location.reload();
+        // load_defect_table(1);
+        location.reload();
     };
 
     function refresh_page() {

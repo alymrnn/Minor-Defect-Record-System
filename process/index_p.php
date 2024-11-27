@@ -4,7 +4,7 @@ include 'conn_pcad.php';
 
 $method = $_POST['method'];
 
-function count_defect_list($conn, $scan_product_name, $scan_lot_no, $scan_serial_no, $search_process, $search_line_no, $search_date_from, $search_date_to, $search_defect_category, $search_defect_details)
+function count_defect_list($conn, $scan_qr, $scan_product_name, $scan_lot_no, $scan_serial_no, $search_process, $search_line_no, $search_date_from, $search_date_to, $search_defect_category, $search_defect_details)
 {
     $query = "SELECT COUNT(id) AS total FROM t_minor_defect_f";
     $conditions = [];
@@ -14,6 +14,11 @@ function count_defect_list($conn, $scan_product_name, $scan_lot_no, $scan_serial
         $conditions[] = "CONVERT(date, date_detected) BETWEEN CONVERT(date, :search_date_from) AND CONVERT(date, :search_date_to)";
         $params[':search_date_from'] = $search_date_from;
         $params[':search_date_to'] = $search_date_to;
+    }
+
+    if (!empty($scan_qr) && $scan_qr !== '%') {
+        $conditions[] = "nameplate_value LIKE :nameplate_value";
+        $params[':nameplate_value'] = '%' . $scan_qr . '%';
     }
 
     if (!empty($scan_product_name) && $scan_product_name !== '%') {
@@ -68,6 +73,7 @@ function count_defect_list($conn, $scan_product_name, $scan_lot_no, $scan_serial
 }
 
 if ($method == 'count_defect_list') {
+    $scan_qr = trim($_POST['scan_qr']);
     $scan_product_name = trim($_POST['scan_product_name']);
     $scan_lot_no = trim($_POST['scan_lot_no']);
     $scan_serial_no = trim($_POST['scan_serial_no']);
@@ -78,10 +84,11 @@ if ($method == 'count_defect_list') {
     $search_defect_category = trim($_POST['search_defect_category']);
     $search_defect_details = trim($_POST['search_defect_details']);
 
-    echo count_defect_list($conn, $scan_product_name, $scan_lot_no, $scan_serial_no, $search_process, $search_line_no, $search_date_from, $search_date_to, $search_defect_category, $search_defect_details);
+    echo count_defect_list($conn, $scan_qr, $scan_product_name, $scan_lot_no, $scan_serial_no, $search_process, $search_line_no, $search_date_from, $search_date_to, $search_defect_category, $search_defect_details);
 }
 
 if ($method == 'defect_list_last_page') {
+    $scan_qr = trim($_POST['scan_qr']);
     $scan_product_name = trim($_POST['scan_product_name']);
     $scan_lot_no = trim($_POST['scan_lot_no']);
     $scan_serial_no = trim($_POST['scan_serial_no']);
@@ -93,7 +100,7 @@ if ($method == 'defect_list_last_page') {
     $search_defect_details = trim($_POST['search_defect_details']);
 
     $results_per_page = 20;
-    $number_of_result = count_defect_list($conn, $scan_product_name, $scan_lot_no, $scan_serial_no, $search_process, $search_line_no, $search_date_from, $search_date_to, $search_defect_category, $search_defect_details);
+    $number_of_result = count_defect_list($conn, $scan_qr, $scan_product_name, $scan_lot_no, $scan_serial_no, $search_process, $search_line_no, $search_date_from, $search_date_to, $search_defect_category, $search_defect_details);
     $number_of_page = ceil($number_of_result / $results_per_page);
 
     echo $number_of_page;
@@ -216,6 +223,7 @@ if ($method == 'defect_list_last_page') {
 if ($method == 'load_defect_list') {
     $current_page = intval($_POST['current_page']);
 
+    $scan_qr = trim($_POST['scan_qr']);
     $scan_product_name = trim($_POST['scan_product_name']);
     $scan_lot_no = trim($_POST['scan_lot_no']);
     $scan_serial_no = trim($_POST['scan_serial_no']);
@@ -232,7 +240,7 @@ if ($method == 'load_defect_list') {
     $c = $page_first_result;
 
     $query = "SELECT date_detected, car_maker, car_model, line_no, process, group_d, 
-            shift, product_no, lot_no, serial_no, defect_category, defect_details, 
+            shift, nameplate_value, product_no, lot_no, serial_no, defect_category, defect_details, 
             sequence_no, connector_no, treatment_content_defect, repaired_by, verified_by 
             FROM t_minor_defect_f";
 
@@ -243,6 +251,11 @@ if ($method == 'load_defect_list') {
         $conditions[] = "CONVERT(date, date_detected) BETWEEN :search_date_from AND :search_date_to";
         $params[':search_date_from'] = $search_date_from;
         $params[':search_date_to'] = $search_date_to;
+    }
+
+    if (!empty($scan_qr) && $scan_qr !== '%') {
+        $conditions[] = "nameplate_value LIKE :nameplate_value";
+        $params[':nameplate_value'] = '%' . $scan_qr . '%';
     }
 
     if (!empty($scan_product_name) && $scan_product_name !== '%') {
