@@ -102,6 +102,8 @@
                         <label style="font-weight: normal;color: #000;">Scan QR-Code</label>
                         <input type="text" id="a_scan_qr" class="form-control" autocomplete="off"
                             style="color: #525252;font-size: 15px;border-radius: .25rem;background: #FFF;height: 35px; width:100%;">
+
+                        <input type="hidden" id="nameplate_value">
                     </div>
                 </div>
                 <div class="row">

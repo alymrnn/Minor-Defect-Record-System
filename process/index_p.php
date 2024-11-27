@@ -366,22 +366,6 @@ if ($method == 'fetch_search_defect_details') {
     }
 }
 
-// if ($method == 'fetch_search_defect_details' && isset($_POST['search_category_value'])) {
-//     $search_category_value = $_POST['search_category_value'];
-//     $query = "SELECT `defect_details_dd` FROM m_defect_details WHERE defect_code_value_dd = :search_category_value ORDER BY defect_details_dd ASC";
-//     $stmt = $conn->prepare($query);
-//     $stmt->bindParam(':search_category_value', $search_category_value);
-//     $stmt->execute();
-//     if ($stmt->rowCount() > 0) {
-//         echo '<option value="" disabled selected>Select Defect Details</option>';
-//         foreach ($stmt->fetchAll() as $row) {
-//             echo '<option>' . htmlspecialchars($row['defect_details_dd']) . '</option>';
-//         }
-//     } else {
-//         echo '<option value="">Select Defect Details</option>';
-//     }
-// }
-
 if ($method == 'fetch_search_process') {
     $query = "SELECT process_p FROM m_process ORDER BY process_p ASC";
     $stmt = $conn->prepare($query, array(PDO::ATTR_CURSOR => PDO::CURSOR_SCROLL));
@@ -396,21 +380,6 @@ if ($method == 'fetch_search_process') {
     }
 }
 
-// if ($method == 'fetch_add_process') {
-//     $query = "SELECT process_p FROM m_process ORDER BY process_p ASC";
-//     $stmt = $conn->prepare($query, array(PDO::ATTR_CURSOR => PDO::CURSOR_SCROLL));
-//     $stmt->execute();
-//     if ($stmt->rowCount() > 0) {
-//         echo '<option value="" disabled selected>Select Process</option>';
-//         foreach ($stmt->fetchAll() as $row) {
-//             echo '<option>' . htmlspecialchars($row['process_p']) . '</option>';
-//         }
-//     } else {
-//         echo '<option value="">Select Process</option>';
-//     }
-// }
-
-
 if ($method == 'fetch_defect_category') {
     $query = "SELECT defect_category_dc FROM m_defect_category ORDER BY defect_category_dc ASC";
     $stmt = $conn->prepare($query, array(PDO::ATTR_CURSOR => PDO::CURSOR_SCROLL));
@@ -424,22 +393,6 @@ if ($method == 'fetch_defect_category') {
         echo '<option value="">Select Defect Category</option>';
     }
 }
-
-// if ($method == 'fetch_defect_details' && isset($_POST['category_value'])) {
-//     $category_value = $_POST['category_value'];
-//     $query = "SELECT defect_details_dd FROM m_defect_details WHERE defect_code_value_dd = :category_value ORDER BY defect_details_dd ASC";
-//     $stmt = $conn->prepare($query, array(PDO::ATTR_CURSOR => PDO::CURSOR_SCROLL));
-//     $stmt->bindParam(':category_value', $category_value);
-//     $stmt->execute();
-//     if ($stmt->rowCount() > 0) {
-//         echo '<option value="" disabled selected>Select Defect Details</option>';
-//         foreach ($stmt->fetchAll() as $row) {
-//             echo '<option>' . htmlspecialchars($row['defect_details_dd']) . '</option>';
-//         }
-//     } else {
-//         echo '<option value="">Select Defect Details</option>';
-//     }
-// }
 
 if ($method == 'fetch_defect_details' && isset($_POST['category_value'])) {
     $category_value = $_POST['category_value'];
@@ -476,6 +429,7 @@ if ($method == 'add_defect_record') {
     $process = trim($_POST['process']);
     $group = trim($_POST['group']);
     $shift = trim($_POST['shift']);
+    $nameplate_value = $_POST['nameplate_value'];
     $product_name = trim($_POST['product_name']);
     $lot_no = trim($_POST['lot_no']);
     $serial_no = trim($_POST['serial_no']);
@@ -491,7 +445,7 @@ if ($method == 'add_defect_record') {
 
     $defect_id = generate_defect_id($defect_id);
 
-    $query = "INSERT INTO t_minor_defect_f (defect_id,date_detected,car_maker,car_model,line_no,process,group_d,shift,product_no,lot_no,serial_no,defect_category,defect_details,sequence_no,connector_no,treatment_content_defect, repaired_by,verified_by,ip_address) VALUES ('$defect_id','$date_detected','$car_maker','$car_model','$line_no','$process','$group','$shift','$product_name','$lot_no','$serial_no','$defect_category','$defect_details','$sequence_no','$connector_no','$treatment_content_defect','$repaired_by','$verified_by','$ip_address')";
+    $query = "INSERT INTO t_minor_defect_f (defect_id,date_detected,car_maker,car_model,line_no,process,group_d,shift,nameplate_value,product_no,lot_no,serial_no,defect_category,defect_details,sequence_no,connector_no,treatment_content_defect, repaired_by,verified_by,ip_address) VALUES ('$defect_id','$date_detected','$car_maker','$car_model','$line_no','$process','$group','$shift','$nameplate_value','$product_name','$lot_no','$serial_no','$defect_category','$defect_details','$sequence_no','$connector_no','$treatment_content_defect','$repaired_by','$verified_by','$ip_address')";
     $stmt = $conn->prepare($query);
 
     if ($stmt->execute()) {
@@ -500,5 +454,4 @@ if ($method == 'add_defect_record') {
         echo 'error';
     }
 }
-
 ?>
