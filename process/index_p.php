@@ -99,7 +99,7 @@ if ($method == 'defect_list_last_page') {
     $search_defect_category = trim($_POST['search_defect_category']);
     $search_defect_details = trim($_POST['search_defect_details']);
 
-    $results_per_page = 20;
+    $results_per_page = 50;
     $number_of_result = count_defect_list($conn, $scan_qr, $scan_product_name, $scan_lot_no, $scan_serial_no, $search_process, $search_line_no, $search_date_from, $search_date_to, $search_defect_category, $search_defect_details);
     $number_of_page = ceil($number_of_result / $results_per_page);
 
@@ -124,7 +124,7 @@ if ($method == 'defect_list_last_page') {
 
 //     $c = 0;
 
-//     $results_per_page = 20;
+//     $results_per_page = 50;
 
 //     $page_first_result = ($current_page - 1) * $results_per_page;
 
@@ -235,7 +235,7 @@ if ($method == 'load_defect_list') {
     $search_defect_details = trim($_POST['search_defect_details']);
 
     $c = 0;
-    $results_per_page = 20;
+    $results_per_page = 50;
     $page_first_result = ($current_page - 1) * $results_per_page;
     $c = $page_first_result;
 
