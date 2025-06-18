@@ -131,7 +131,7 @@ include('plugins/system_plugins/navbar/index_navbar.php');
     </div>
 
     <!-- MAIN FIELD -->
-    <div class="card mx-2" style="background: #f9f9f9;">
+    <div class="card mx-2" style="background: #f9f9f9; border-top: 2px solid #8d0801;">
       <div class="card-body">
         <p class="p-0 m-0" style="color:#525252; font-size: 15px;"><i class="far fa-folder"></i>&nbsp;Minor Defect Record Table</p>
         <div class="col-sm-3">
@@ -145,16 +145,16 @@ include('plugins/system_plugins/navbar/index_navbar.php');
             style="background: #F9F9F9;">
             <thead style="text-align: center; font-size:14px;">
               <th>#</th>
-              <th>Datetime Detected</th>
+              <th>Date Detected</th>
               <th>Car Maker</th>
               <th>Car Model</th>
               <th>Line No.</th>
               <th>Process</th>
               <th>Group</th>
               <th>Shift</th>
-              <th>Product Number</th>
-              <th>Lot Number</th>
-              <th>Serial Number</th>
+              <th>Product Name</th>
+              <th>Lot No.</th>
+              <th>Serial No.</th>
               <th>Defect Category</th>
               <th>Defect Details</th>
               <th>Sequence No.</th>

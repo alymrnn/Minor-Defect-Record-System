@@ -426,10 +426,7 @@
                 text: 'Please fill in all required fields before submitting.',
                 background: '#1b263b',
                 color: '#f9f9f9',
-                iconColor: '#8d0801',
-                customClass: {
-                    confirmButton: 'swal-confirm-btn-dark'
-                }
+                iconColor: '#8d0801'
             });
             return;
         }
@@ -528,6 +525,7 @@
     };
 
     const clear_add_defect_record = () => {
+        document.getElementById("a_date_detected").value = '';
         document.getElementById("a_car_maker").value = '';
         document.getElementById("a_car_model").value = '';
         document.getElementById("a_line_no").value = '';
