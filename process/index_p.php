@@ -106,120 +106,6 @@ if ($method == 'defect_list_last_page') {
     echo $number_of_page;
 }
 
-// QUERY FOR MYSQL
-// if ($method == 'load_defect_list') {
-//     $current_page = intval($_POST['current_page']);
-
-//     $scan_product_name = trim($_POST['scan_product_name']);
-//     $scan_lot_no = trim($_POST['scan_lot_no']);
-//     $scan_serial_no = trim($_POST['scan_serial_no']);
-//     $search_process = trim($_POST['search_process']);
-//     $search_line_no = trim($_POST['search_line_no']);
-//     $search_date_from = trim($_POST['search_date_from']);
-
-//     $search_date_to = trim($_POST['search_date_to']);
-
-//     $search_defect_category = trim($_POST['search_defect_category']);
-//     $search_defect_details = trim($_POST['search_defect_details']);
-
-//     $c = 0;
-
-//     $results_per_page = 50;
-
-//     $page_first_result = ($current_page - 1) * $results_per_page;
-
-//     $c = $page_first_result;
-
-// $query = "SELECT `date_detected`,`car_maker`,`car_model`,`line_no`,`process`,
-//         `group_d`,`shift`,`product_no`,`lot_no`,`serial_no`,
-//         `defect_category`,`defect_details`,`sequence_no`,`connector_no`,`repaired_by`,
-//         `verified_by` FROM t_minor_defect_f";
-
-//     $conditions = [];
-//     $params = [];
-
-//     if (!empty($search_date_from) && !empty($search_date_to)) {
-//         $conditions[] = "date_detected BETWEEN ? AND ?";
-//         $params[] = $search_date_from;
-//         $params[] = $search_date_to;
-//     }
-
-//     if (!empty($scan_product_name) && $scan_product_name !== '%') {
-//         $conditions[] = "product_no LIKE ?";
-//         $params[] = '%' . $scan_product_name . '%';
-//     }
-
-//     if (!empty($scan_lot_no) && $scan_lot_no !== '%') {
-//         $conditions[] = "lot_no LIKE ?";
-//         $params[] = '%' . $scan_lot_no . '%';
-//     }
-
-//     if (!empty($scan_serial_no) && $scan_serial_no !== '%') {
-//         $conditions[] = "serial_no LIKE ?";
-//         $params[] = '%' . $scan_serial_no . '%';
-//     }
-
-//     if (!empty($search_process) && $search_process !== '%') {
-//         $conditions[] = "process LIKE ?";
-//         $params[] = '%' . $search_process . '%';
-//     }
-
-//     if (!empty($search_line_no) && $search_line_no !== '%') {
-//         $conditions[] = "line_no LIKE ?";
-//         $params[] = '%' . $search_line_no . '%';
-//     }
-
-//     if (!empty($search_defect_category) && $search_defect_category !== '%') {
-//         $conditions[] = "defect_category LIKE ?";
-//         $params[] = '%' . $search_defect_category . '%';
-//     }
-
-//     if (!empty($search_defect_details) && $search_defect_details !== '%') {
-//         $conditions[] = "defect_details LIKE ?";
-//         $params[] = '%' . $search_defect_details . '%';
-//     }
-
-//     if (!empty($conditions)) {
-//         $query .= " WHERE " . implode(" AND ", $conditions);
-//     }
-
-//     $query .= " ORDER BY date_added DESC";
-
-//     $query .= " LIMIT " . $page_first_result . ", " . $results_per_page;
-
-//     $stmt = $conn->prepare($query);
-//     $stmt->execute($params);
-
-//     if ($stmt->rowCount() > 0) {
-//         foreach ($stmt->fetchALL() as $row) {
-//             $c++;
-//             echo '<tr>';
-//             echo '<td style="text-align:center;">' . $c . '</td>';
-//             echo '<td style="text-align:center;">' . $row['date_detected'] . '</td>';
-//             echo '<td style="text-align:center;">' . $row['car_maker'] . '</td>';
-//             echo '<td style="text-align:center;">' . $row['car_model'] . '</td>';
-//             echo '<td style="text-align:center;">' . $row['line_no'] . '</td>';
-//             echo '<td style="text-align:center;">' . $row['process'] . '</td>';
-//             echo '<td style="text-align:center;">' . $row['group_d'] . '</td>';
-//             echo '<td style="text-align:center;">' . $row['shift'] . '</td>';
-//             echo '<td style="text-align:center;">' . $row['product_no'] . '</td>';
-//             echo '<td style="text-align:center;">' . $row['lot_no'] . '</td>';
-//             echo '<td style="text-align:center;">' . $row['serial_no'] . '</td>';
-//             echo '<td>' . $row['defect_category'] . '</td>';
-//             echo '<td>' . $row['defect_details'] . '</td>';
-//             echo '<td style="text-align:center;">' . $row['sequence_no'] . '</td>';
-//             echo '<td style="text-align:center;">' . $row['connector_no'] . '</td>';
-//             echo '<td style="text-align:center;">' . $row['repaired_by'] . '</td>';
-//             echo '<td style="text-align:center;">' . $row['verified_by'] . '</td>';
-//             echo '</tr>';
-//         }
-//     } else {
-//         echo '<tr>';
-//         echo '<td colspan="10" style="text-align:center; color:red;">No Record Found</td>';
-//         echo '</tr>';
-//     }
-// }
-
 if ($method == 'load_defect_list') {
     $current_page = intval($_POST['current_page']);
 
@@ -342,7 +228,7 @@ if ($method == 'load_defect_list') {
             }
         } else {
             echo '<tr>';
-            echo '<td colspan="12" style="text-align:center; color:red;">No Record Found</td>';
+            echo '<td colspan="18" style="text-align:center; color:red;">No Record Found</td>';
             echo '</tr>';
         }
     } catch (PDOException $e) {

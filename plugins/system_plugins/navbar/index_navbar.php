@@ -35,12 +35,6 @@
     .highlight {
         border: 1px solid #CA3F3F;
     }
-
-    /* th,
-    td {
-        border: 1px solid #EEE;
-        text-align: center;
-    } */
 </style>
 
 <!-- Navbar -->
@@ -48,8 +42,7 @@
 <nav class="main-header navbar navbar-expand-md border-bottom-0" style="background:#9e2a2b;">
     <a href="" class="navbar-brand ml-2">
         <img src="dist/img/defect.png" alt="Minor Defect Record System Logo" class="brand-image">
-        <span class="brand-text font-weight-normal text-light" style="color: white; font-size: 22px;">MINOR DEFECT
-            RECORD SYSTEM</span>
+        <span class="brand-text font-weight-normal text-light" style="color: white; font-size: 20px;">MINOR DEFECT RECORD SYSTEM</span>
     </a>
 
     <ul class="order-1 order-md-3 navbar-nav navbar-no-expand ml-auto">
@@ -66,15 +59,24 @@
         const datetimeDisplay = document.getElementById("datetime");
         const now = new Date();
 
-        const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        const dateOptions = {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        };
         const formattedDate = now.toLocaleDateString(undefined, dateOptions);
 
-        const timeOptions = { hour: 'numeric', minute: 'numeric', second: 'numeric' };
+        const timeOptions = {
+            hour: 'numeric',
+            minute: 'numeric',
+            second: 'numeric'
+        };
         const formattedTime = now.toLocaleTimeString(undefined, timeOptions);
 
         const formattedDateTime = `${formattedDate} | ${formattedTime}`;
 
         datetimeDisplay.textContent = formattedDateTime;
     }
-    setInterval(refreshDateTime, 1000); 
+    setInterval(refreshDateTime, 1000);
 </script>
