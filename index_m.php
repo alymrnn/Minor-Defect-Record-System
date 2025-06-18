@@ -86,13 +86,13 @@ if (isset($_SESSION['username'])) {
                                 style="font-size: 14px; border-radius: 3px; border: 1px solid #888888; background: #eaeaea;"
                                 onfocus="changeBorderColor(this, '#792021')"
                                 oninput="changeBorderColor(this, '#792021')"
-                                onblur="changeBorderColor(this, '#9e2a2b')">
+                                onblur="changeBorderColor(this, '#8d0801')">
                         </div>
                         <div class="input-group mb-3">
                             <button type="submit" class="login-btn btn btn-block" name="login_btn" value="login"
-                                style="border-radius: 3px; background: #9e2a2b; color: #FFF;"
+                                style="border-radius: 3px; background: #8d0801; color: #FFF;"
                                 onmouseover="this.style.backgroundColor='#792021'; this.style.color='#FFF';"
-                                onmouseout="this.style.backgroundColor='#9e2a2b'; this.style.color='#FFF';">SIGN IN
+                                onmouseout="this.style.backgroundColor='#8d0801'; this.style.color='#FFF';">SIGN IN
                             </button>
                         </div>
                         <div class="d-flex justify-content-center">

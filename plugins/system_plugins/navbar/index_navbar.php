@@ -39,7 +39,7 @@
 
 <!-- Navbar -->
 <!-- <nav class="main-header navbar navbar-expand-md border-bottom-0" style="background:#163A65;"> -->
-<nav class="main-header navbar navbar-expand-md border-bottom-0" style="background:#9e2a2b;">
+<nav class="main-header navbar navbar-expand-md" style="background:#1b263b; border-bottom: 5px solid #8d0801;">
     <a href="" class="navbar-brand ml-2">
         <img src="dist/img/defect.png" alt="Minor Defect Record System Logo" class="brand-image">
         <span class="brand-text font-weight-normal text-light" style="color: white; font-size: 20px;">MINOR DEFECT RECORD SYSTEM</span>
@@ -47,7 +47,7 @@
 
     <ul class="order-1 order-md-3 navbar-nav navbar-no-expand ml-auto">
         <li class="nav-item mr-4 pt-3">
-            <p style="color: #fff; font-size: 15px;"><i class="fas fa-calendar-check"></i>&nbsp;&nbsp;<span
+            <p style="color: #fff; font-size: 14px;"><i class="fas fa-calendar-check"></i>&nbsp;&nbsp;<span
                     id="datetime"></span> | <a style="color: #EED965;" href="template/Minor-Defect-Record-System_WI.pdf" target="_blank">Work Instruction</a></p>
         </li>
     </ul>

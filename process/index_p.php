@@ -11,7 +11,7 @@ function count_defect_list($conn, $scan_qr, $scan_product_name, $scan_lot_no, $s
     $params = [];
 
     if (!empty($search_date_from) && !empty($search_date_to)) {
-        $conditions[] = "CONVERT(date, date_detected) BETWEEN CONVERT(date, :search_date_from) AND CONVERT(date, :search_date_to)";
+        $conditions[] = "date_detected BETWEEN :search_date_from AND :search_date_to";
         $params[':search_date_from'] = $search_date_from;
         $params[':search_date_to'] = $search_date_to;
     }
@@ -99,7 +99,7 @@ if ($method == 'defect_list_last_page') {
     $search_defect_category = trim($_POST['search_defect_category']);
     $search_defect_details = trim($_POST['search_defect_details']);
 
-    $results_per_page = 50;
+    $results_per_page = 200;
     $number_of_result = count_defect_list($conn, $scan_qr, $scan_product_name, $scan_lot_no, $scan_serial_no, $search_process, $search_line_no, $search_date_from, $search_date_to, $search_defect_category, $search_defect_details);
     $number_of_page = ceil($number_of_result / $results_per_page);
 
@@ -115,26 +115,23 @@ if ($method == 'load_defect_list') {
     $scan_serial_no = trim($_POST['scan_serial_no']);
     $search_process = trim($_POST['search_process']);
     $search_line_no = trim($_POST['search_line_no']);
-    $search_date_from = !empty($_POST['search_date_from']) ? date('Y-m-d', strtotime(trim($_POST['search_date_from']))) : date('Y-m-d');
-    $search_date_to = !empty($_POST['search_date_to']) ? date('Y-m-d', strtotime(trim($_POST['search_date_to']))) : date('Y-m-d');
+    $search_date_from = trim($_POST['search_date_from']);
+    $search_date_to = trim($_POST['search_date_to']);
     $search_defect_category = trim($_POST['search_defect_category']);
     $search_defect_details = trim($_POST['search_defect_details']);
 
     $c = 0;
-    $results_per_page = 50;
+    $results_per_page = 200;
     $page_first_result = ($current_page - 1) * $results_per_page;
     $c = $page_first_result;
 
-    $query = "SELECT date_detected, car_maker, car_model, line_no, process, group_d, 
-            shift, nameplate_value, product_no, lot_no, serial_no, defect_category, defect_details, 
-            sequence_no, connector_no, treatment_content_defect, repaired_by, verified_by 
-            FROM t_minor_defect_f";
+    $query = "SELECT * FROM t_minor_defect_f";
 
     $conditions = [];
     $params = [];
 
     if (!empty($search_date_from) && !empty($search_date_to)) {
-        $conditions[] = "CONVERT(date, date_detected) BETWEEN :search_date_from AND :search_date_to";
+        $conditions[] = "date_detected BETWEEN :search_date_from AND :search_date_to";
         $params[':search_date_from'] = $search_date_from;
         $params[':search_date_to'] = $search_date_to;
     }
@@ -353,4 +350,3 @@ if ($method == 'add_defect_record') {
         echo 'error';
     }
 }
-?>

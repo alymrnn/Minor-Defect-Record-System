@@ -424,6 +424,12 @@
                 icon: 'info',
                 title: 'Missing Required Fields',
                 text: 'Please fill in all required fields before submitting.',
+                background: '#1b263b',
+                color: '#f9f9f9',
+                iconColor: '#8d0801',
+                customClass: {
+                    confirmButton: 'swal-confirm-btn-dark'
+                }
             });
             return;
         }
@@ -598,6 +604,67 @@
         );
     };
 
+    // const get_inspection_details = () => {
+    //     const line_no = $('#a_line_no').val();
+
+    //     $('#a_process').prop('disabled', true).css('background', '#DDD');
+
+    //     $.ajax({
+    //         url: 'process/inspection_p.php',
+    //         type: 'GET',
+    //         data: {
+    //             method: 'get_inspection_details',
+    //             line_no: line_no
+    //         },
+    //         success: function(response) {
+    //             const data = JSON.parse(response);
+    //             if (data.success) {
+    //                 if (!data.car_maker || !data.car_model) {
+    //                     Swal.fire({
+    //                         icon: 'warning',
+    //                         title: 'No Car Maker and Model',
+    //                         text: 'Register car maker and model of the line.',
+    //                         showConfirmButton: true
+    //                     });
+
+    //                     $('#a_process').prop('disabled', true).css('background', '#DDD');
+    //                 } else {
+    //                     $('#a_car_maker').val(data.car_maker);
+    //                     $('#a_car_model').val(data.car_model);
+
+    //                     $('#a_process').empty().append('<option value="" disabled selected>Select Process</option>');
+
+    //                     data.processes.forEach(process => {
+    //                         $('#a_process').append(`<option value="${process}">${process}</option>`);
+    //                     });
+
+    //                     $('#a_process').prop('disabled', false).css('background', '#FFF');
+    //                     $('#a_car_maker').prop('disabled', true).css('background', '#F1F1F1');
+
+    //                     // Initialize QR handler
+    //                     setupQRHandler(data.qr_settings);
+    //                 }
+    //             } else {
+    //                 Swal.fire({
+    //                     icon: 'warning',
+    //                     title: data.error,
+    //                     showConfirmButton: true
+    //                 });
+
+    //                 $('#a_process').prop('disabled', true).css('background', '#DDD');
+    //             }
+    //         },
+    //         error: function(xhr, status, error) {
+    //             console.error('AJAX Error: ', status, error);
+    //             Swal.fire({
+    //                 icon: 'error',
+    //                 title: 'AJAX Error',
+    //                 showConfirmButton: true
+    //             });
+    //         }
+    //     });
+    // };
+
     const get_inspection_details = () => {
         const line_no = $('#a_line_no').val();
 
@@ -613,31 +680,39 @@
             success: function(response) {
                 const data = JSON.parse(response);
                 if (data.success) {
-                    if (!data.car_maker || !data.car_model) {
-                        Swal.fire({
-                            icon: 'warning',
-                            title: 'No Car Maker and Model',
-                            text: 'Register car maker and model of the line.',
-                            showConfirmButton: true
-                        });
+                    $('#a_car_maker').val(data.car_maker);
+                    $('#a_car_model').val(data.car_model);
 
-                        $('#a_process').prop('disabled', true).css('background', '#DDD');
-                    } else {
-                        $('#a_car_maker').val(data.car_maker);
-                        $('#a_car_model').val(data.car_model);
+                    $('#a_process').empty().append('<option value="" disabled selected>Select Process</option>');
 
-                        $('#a_process').empty().append('<option value="" disabled selected>Select Process</option>');
+                    data.processes.forEach(process => {
+                        $('#a_process').append(`<option value="${process}">${process}</option>`);
+                    });
 
-                        data.processes.forEach(process => {
-                            $('#a_process').append(`<option value="${process}">${process}</option>`);
-                        });
+                    $('#a_process').prop('disabled', false).css('background', '#FFF');
 
-                        $('#a_process').prop('disabled', false).css('background', '#FFF');
-                        $('#a_car_maker').prop('disabled', true).css('background', '#F1F1F1');
+                    // if (!data.car_maker || !data.car_model) {
+                    //     Swal.fire({
+                    //         icon: 'warning',
+                    //         title: 'No Car Maker and Model',
+                    //         text: 'Register car maker and model of the line.',
+                    //         showConfirmButton: true
+                    //     });
 
-                        // Initialize QR handler
-                        setupQRHandler(data.qr_settings);
-                    }
+                    //     $('#a_process').prop('disabled', true).css('background', '#DDD');
+                    // } else {
+                    //     $('#a_car_maker').val(data.car_maker);
+                    //     $('#a_car_model').val(data.car_model);
+
+                    //     $('#a_process').empty().append('<option value="" disabled selected>Select Process</option>');
+
+                    //     data.processes.forEach(process => {
+                    //         $('#a_process').append(`<option value="${process}">${process}</option>`);
+                    //     });
+
+                    //     $('#a_process').prop('disabled', false).css('background', '#FFF');
+                    //     $('#a_car_maker').prop('disabled', true).css('background', '#F1F1F1');
+                    // }
                 } else {
                     Swal.fire({
                         icon: 'warning',

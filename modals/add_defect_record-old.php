@@ -2,7 +2,7 @@
     aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content" style="background:#f9f9f9;">
-            <div class="modal-header" style="background:#9e2a2b;">
+            <div class="modal-header" style="background:#8d0801;">
                 <h5 class="modal-title" id="exampleModalLabel" style="font-weight: normal;color: #fff;"><i
                         class="fas fa-plus"></i>&nbsp;
                     Add Record

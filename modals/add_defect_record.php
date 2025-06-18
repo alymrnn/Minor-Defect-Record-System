@@ -2,7 +2,7 @@
     data-keyboard="false">
     <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content" style="background:#f9f9f9;">
-            <div class="modal-header" style="background:#9e2a2b;">
+            <div class="modal-header" style="background:#1b263b; border-bottom: 3px solid #8d0801;">
                 <h5 class="modal-title" id="exampleModalLabel" style="font-weight: normal;color: #fff;"><i
                         class="fas fa-plus"></i>&nbsp;
                     Add Record
@@ -12,7 +12,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <label style="font-weight: normal;color: #000;font-size:25px"><b>Minor Defect Record</b></label>
+                <label style="font-weight: normal;color: #000;font-size:22px"><b>Minor Defect Record</b></label>
                 <div class="row mb-3">
                     <div class="col-12 col-md-3">
                         <!-- ip address hidden -->
@@ -41,14 +41,14 @@
                         <label class="m-0 p-0" style="color:#CA3F3F">*</label>
                         <input id="a_car_maker" class="form-control" onchange="handleCarMakerChange(this)"
                             style="color: #525252; font-size: 14px;; border-radius: .25rem; background: #F1F1F1; height: 35px; width: 100%;"
-                            required disabled>
+                            required>
                     </div>
                     <div class="col-12 col-md-3">
                         <label class="m-0 p-0" style="font-weight: normal;color: #000;font-size:14px;">Car Model</label>
                         <label class="m-0 p-0" style="color:#CA3F3F">*</label>
                         <input type="text" id="a_car_model" class="form-control" autocomplete="off" placeholder=""
                             style="color: #525252;font-size: 14px;;border-radius: .25rem;background: #F1F1F1;height: 35px; width:100%;"
-                            required disabled>
+                            required>
                     </div>
                 </div>
                 <div class="row mb-4">
@@ -113,7 +113,8 @@
                             style="color: #525252;font-size: 14px;;border-radius: .25rem;background: #FFF;height: 35px; width:100%;">
                     </div>
                 </div>
-                <div class="row mb-3">
+                <hr class="m-0 p-0">
+                <div class="row mb-3 mt-3">
                     <div class="col-12 col-md-4">
                         <label class="m-0 p-0" style="font-weight: normal;color: #000;font-size:14px;">Defect Category</label>
                         <label class="m-0 p-0" style="color:#CA3F3F">*</label>
@@ -184,9 +185,9 @@
                     </div>
                     <div class="float-right">
                         <button class="btn btn-block" onclick="add_defect_record()"
-                            style="color:#fff;height: 35px;width:180px;border-radius:.25rem;background: #226F54;font-size:15px;font-weight:normal;"
-                            onmouseover="this.style.backgroundColor='#1C5944'; this.style.color='#FFF';"
-                            onmouseout="this.style.backgroundColor='#226F54'; this.style.color='#FFF';">
+                            style="color:#fff;height: 35px;width:180px;border-radius:.25rem;background: #8d0801;font-size:15px;font-weight:normal;"
+                            onmouseover="this.style.backgroundColor='#792021'; this.style.color='#FFF';"
+                            onmouseout="this.style.backgroundColor='#8d0801'; this.style.color='#FFF';">
                             Add Record
                         </button>
                     </div>
