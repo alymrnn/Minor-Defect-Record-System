@@ -67,6 +67,7 @@
                             style="color: #525252; font-size: 14px;; border-radius: .25rem; background: #FFF; height: 35px; width: 100%;"
                             required>
                             <option value="" disabled selected>Select Group</option>
+                            <option value="ADS">ADS</option>
                             <option value="A">A</option>
                             <option value="B">B</option>
                         </select>
@@ -77,7 +78,8 @@
                         <select id="a_shift" class="form-control"
                             style="color: #525252; font-size: 14px;; border-radius: .25rem; background: #FFF; height: 35px; width: 100%;"
                             required>
-                            <option value="" disabled selected>Select Shift</option>
+                            <option value="" disabled >Select Shift</option>
+                            <option value="N/A" selected>N/A</option>
                             <option value="DS">DS</option>
                             <option value="NS">NS</option>
                         </select>

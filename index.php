@@ -141,7 +141,7 @@ include('plugins/system_plugins/navbar/index_navbar.php');
 
         <!-- table -->
         <div id="list_of_defect_res" class="card-body table-responsive m-0 p-0" style="max-height: 450px;">
-          <table class="table col-12 mt-3 table-sm table-head-fixed text-nowrap table-hover" id="defect_table"
+          <table class="table col-12 mt-3 table-sm table-head-fixed text-nowrap table-hover table-bordered" id="defect_table"
             style="background: #F9F9F9;">
             <thead style="text-align: center; font-size:14px;">
               <th>#</th>
