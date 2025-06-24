@@ -677,40 +677,41 @@
             },
             success: function(response) {
                 const data = JSON.parse(response);
+
                 if (data.success) {
                     $('#a_car_maker').val(data.car_maker);
-                    $('#a_car_model').val(data.car_model);
 
+                    // Handle car_model
+                    if (Array.isArray(data.car_model)) {
+                        let selectHtml = `
+                                            <select id="a_car_model" class="form-control" required
+                                                    style="color: #525252;font-size: 14px;border-radius: .25rem;background: #FFF;height: 35px; width:100%;">
+                                                <option value="" disabled selected>Select Car Model</option>
+                                        `;
+                        data.car_model.forEach(model => {
+                            selectHtml += `<option value="${model}">${model}</option>`;
+                        });
+                        selectHtml += `</select>`;
+
+                        // Replace existing input with select
+                        $('#a_car_model').replaceWith(selectHtml);
+                    } else {
+                        // If single car model, ensure it's a text input
+                        const inputHtml = `
+                                                <input type="text" id="a_car_model" class="form-control" autocomplete="off"
+                                                    style="color: #525252;font-size: 14px;border-radius: .25rem;background: #FFF;height: 35px; width:100%;"
+                                                    value="${data.car_model}" required>
+                                            `;
+                        $('#a_car_model').replaceWith(inputHtml);
+                    }
+
+                    // Handle processes
                     $('#a_process').empty().append('<option value="" disabled selected>Select Process</option>');
-
                     data.processes.forEach(process => {
                         $('#a_process').append(`<option value="${process}">${process}</option>`);
                     });
 
                     $('#a_process').prop('disabled', false).css('background', '#FFF');
-
-                    // if (!data.car_maker || !data.car_model) {
-                    //     Swal.fire({
-                    //         icon: 'warning',
-                    //         title: 'No Car Maker and Model',
-                    //         text: 'Register car maker and model of the line.',
-                    //         showConfirmButton: true
-                    //     });
-
-                    //     $('#a_process').prop('disabled', true).css('background', '#DDD');
-                    // } else {
-                    //     $('#a_car_maker').val(data.car_maker);
-                    //     $('#a_car_model').val(data.car_model);
-
-                    //     $('#a_process').empty().append('<option value="" disabled selected>Select Process</option>');
-
-                    //     data.processes.forEach(process => {
-                    //         $('#a_process').append(`<option value="${process}">${process}</option>`);
-                    //     });
-
-                    //     $('#a_process').prop('disabled', false).css('background', '#FFF');
-                    //     $('#a_car_maker').prop('disabled', true).css('background', '#F1F1F1');
-                    // }
                 } else {
                     Swal.fire({
                         icon: 'warning',
@@ -721,6 +722,53 @@
                     $('#a_process').prop('disabled', true).css('background', '#DDD');
                 }
             },
+
+            // success: function(response) {
+            //     const data = JSON.parse(response);
+            //     if (data.success) {
+            //         $('#a_car_maker').val(data.car_maker);
+            //         $('#a_car_model').val(data.car_model);
+
+            //         $('#a_process').empty().append('<option value="" disabled selected>Select Process</option>');
+
+            //         data.processes.forEach(process => {
+            //             $('#a_process').append(`<option value="${process}">${process}</option>`);
+            //         });
+
+            //         $('#a_process').prop('disabled', false).css('background', '#FFF');
+
+            //         // if (!data.car_maker || !data.car_model) {
+            //         //     Swal.fire({
+            //         //         icon: 'warning',
+            //         //         title: 'No Car Maker and Model',
+            //         //         text: 'Register car maker and model of the line.',
+            //         //         showConfirmButton: true
+            //         //     });
+
+            //         //     $('#a_process').prop('disabled', true).css('background', '#DDD');
+            //         // } else {
+            //         //     $('#a_car_maker').val(data.car_maker);
+            //         //     $('#a_car_model').val(data.car_model);
+
+            //         //     $('#a_process').empty().append('<option value="" disabled selected>Select Process</option>');
+
+            //         //     data.processes.forEach(process => {
+            //         //         $('#a_process').append(`<option value="${process}">${process}</option>`);
+            //         //     });
+
+            //         //     $('#a_process').prop('disabled', false).css('background', '#FFF');
+            //         //     $('#a_car_maker').prop('disabled', true).css('background', '#F1F1F1');
+            //         // }
+            //     } else {
+            //         Swal.fire({
+            //             icon: 'warning',
+            //             title: data.error,
+            //             showConfirmButton: true
+            //         });
+
+            //         $('#a_process').prop('disabled', true).css('background', '#DDD');
+            //     }
+            // },
             error: function(xhr, status, error) {
                 console.error('AJAX Error: ', status, error);
                 Swal.fire({
