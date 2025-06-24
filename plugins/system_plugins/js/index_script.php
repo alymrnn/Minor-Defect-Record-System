@@ -838,4 +838,74 @@
             }
         });
     };
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const input = document.getElementById('auth_id_no');
+
+        input.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                const inputValue = input.value.trim();
+                if (inputValue !== '') {
+                    checkAuthId(inputValue);
+                }
+            }
+        });
+    });
+
+    function checkAuthId(inputValue) {
+        console.log(`Checking scanned ID: ${inputValue}`);
+        $.ajax({
+            url: 'process/index_p.php',
+            type: 'POST',
+            data: {
+                method: 'check_auth_id',
+                id_no: inputValue
+            },
+            success: function(response) {
+                handleServerResponse(response);
+            },
+            error: function(xhr, status, error) {
+                console.error(`AJAX Error [${status}]: ${error}`);
+                showAlert('error', 'Error', 'There was a problem connecting to the server.');
+            }
+        });
+    }
+
+    function handleServerResponse(response) {
+        try {
+            const res = JSON.parse(response);
+
+            if (res.success) {
+                // Close auth modal
+                $('#add_record_auth').modal('hide');
+
+                // Open defect modal
+                $('#add_defect_record').modal('show');
+
+                document.getElementById("auth_id_no").value = "";
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'ID Not Registered',
+                    text: res.error || 'The entered ID number is not registered in the system.',
+                    confirmButtonColor: '#d33',
+                    background: '#1b263b',
+                    color: '#fff',
+                    customClass: {
+                        popup: 'custom-swal-popup'
+                    }
+                });
+
+                document.getElementById("auth_id_no").value = "";
+            }
+        } catch (e) {
+            console.error('Response parsing error:', e);
+            Swal.fire({
+                icon: 'error',
+                title: 'Unexpected Error',
+                text: 'Something went wrong while processing the response.',
+                confirmButtonColor: '#d33'
+            });
+        }
+    }
 </script>

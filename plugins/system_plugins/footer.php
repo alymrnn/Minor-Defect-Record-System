@@ -1,7 +1,7 @@
 <footer class="main-footer" style="background:#2b2d42; color:white; font-size: 13px; border-top: 2px solid #8d0801;">
     Copyright &copy; 2024. Ally Maranan. All Rights Reserved. <a href="index_m.php">ADMIN</a>
     <div class="float-right d-none d-sm-inline-block">
-        Version 1.0.5 | <i style="font-size:12px;">IP Address: &nbsp;</i><input
+        Version 1.0.9 | <i style="font-size:12px;">IP Address: &nbsp;</i><input
             style="font-size:12px;border:none;background:none;color:#FFF;text-align:right;width:80px;"
             value="<?= $_SERVER['REMOTE_ADDR']; ?>" disabled>
     </div>
@@ -9,6 +9,7 @@
 <?php
 //MODALS
 include 'modals/add_defect_record.php';
+include 'modals/add_record_auth.php';
 ?>
 <!-- jQuery -->
 <script src="plugins/jquery/dist/jquery.min.js"></script>

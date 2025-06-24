@@ -109,7 +109,7 @@ include('plugins/system_plugins/navbar/index_navbar.php');
             <!-- add button -->
             <label></label>
             <button id="add_record_btn" class="btn btn-block d-flex justify-content-left" data-toggle="modal"
-              data-target="#add_defect_record"
+              data-target="#add_record_auth"
               style="color:#fff;height:35px;background: #8d0801;font-size:14px;font-weight:normal;"
               onmouseover="this.style.backgroundColor='#792021'; this.style.color='#FFF';"
               onmouseout="this.style.backgroundColor='#8d0801'; this.style.color='#FFF';"><i class="fas fa-plus" style="margin-top: 2px;"></i>&nbsp;Add Record</button>

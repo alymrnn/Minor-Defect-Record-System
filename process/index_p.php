@@ -350,3 +350,27 @@ if ($method == 'add_defect_record') {
         echo 'error';
     }
 }
+
+if ($method == 'check_auth_id') {
+    $id_no = $_POST['id_no'] ?? '';
+
+    if (!empty($id_no)) {
+        $query = "SELECT emp_no FROM m_auth_accounts WHERE emp_no = ?";
+        $stmt = $conn->prepare($query);
+
+        if ($stmt) {
+            $stmt->execute([$id_no]);
+            $result = $stmt->fetch();
+
+            if ($result) {
+                echo json_encode(['success' => true]);
+            } else {
+                echo json_encode(['success' => false, 'error' => 'Please contact IT-System Group to register your ID number.']);
+            }
+        } else {
+            echo json_encode(['success' => false, 'error' => 'Failed to prepare statement']);
+        }
+    } else {
+        echo json_encode(['success' => false, 'error' => 'ID number is empty']);
+    }
+}
