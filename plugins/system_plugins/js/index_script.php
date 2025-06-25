@@ -1,6 +1,5 @@
 <script type="text/javascript">
     $(document).ready(function() {
-        fetch_defect_category();
         fetch_search_defect_category();
         fetch_search_defect_details();
         fetch_search_process();
@@ -8,32 +7,26 @@
         toggleQRField();
 
         $('#a_process').prop('disabled', true).css('background', '#DDD');
-        $('#a_defect_details').prop('disabled', true).css('background', '#DDD');
+        $('#a_defect_category').prop('disabled', true).css('background', '#F1F1F1');
+        $('#a_defect_details').prop('disabled', true).css('background', '#F1F1F1');
         $('#a_treatment_content_defect').prop('disabled', true).css('background', '#F1F1F1');
-
-        $('#a_defect_category').change(function() {
-            const select_defect_category = $(this).val();
-            $('#a_treatment_content_defect').val('');
-            if (select_defect_category === '') {
-                $('#a_defect_details').prop('disabled', true).css('background', '#DDD').val('');
-                $('#a_treatment_content_defect').prop('disabled', true).css('background', '#F1F1F1').val('');
-            } else {
-                fetch_defect_details(select_defect_category);
-            }
-        });
-
-        $('#a_defect_details').change(function() {
-            const select_defect_details = $(this).val();
-            if (select_defect_details === '') {
-                $('#a_treatment_content_defect').prop('disabled', true).css('background', '#F1F1F1').val('');
-            } else {
-                fetch_defect_treatment();
-            }
-        });
 
         $('#a_line_no').on('keypress', function(e) {
             if (e.which === 13) {
                 get_inspection_details();
+            }
+        });
+
+        $('#a_defect_category_code').on('input', function() {
+            if (!$(this).val()) {
+                $('#a_defect_category').val('');
+            }
+        });
+
+        $('#a_defect_details_code').on('input', function() {
+            if (!$(this).val()) {
+                $('#a_defect_details').val('');
+                $('#a_treatment_content_defect').val('');
             }
         });
 
@@ -358,35 +351,61 @@
         });
     }
 
-    const fetch_defect_category = () => {
-        $.ajax({
-            url: 'process/index_p.php',
-            type: 'POST',
-            cache: false,
-            data: {
-                method: 'fetch_defect_category',
-            },
-            success: function(response) {
-                $('#a_defect_category').html(response);
-            },
-        });
-    };
+    // When user presses Enter in category code input
+    $('#a_defect_category_code').on('keydown', function(e) {
+        if (e.key === 'Enter') {
+            e.preventDefault(); // prevent form submission if inside a form
+            const code = $(this).val().trim().toUpperCase();
 
-    const fetch_defect_details = (category_value) => {
-        $.ajax({
-            url: 'process/index_p.php',
-            type: 'POST',
-            cache: false,
-            data: {
-                method: 'fetch_defect_details',
-                category_value: category_value
-            },
-            success: function(response) {
-                $('#a_defect_details').html(response);
-                $('#a_defect_details').prop('disabled', false).css('background', '#FFF');
-            },
-        });
-    };
+            if (code !== '') {
+                $.ajax({
+                    url: 'process/index_p.php',
+                    type: 'POST',
+                    data: {
+                        method: 'fetch_defect_category_by_code',
+                        code: code
+                    },
+                    success: function(response) {
+                        $('#a_defect_category').val(response).prop('disabled', true);
+                    }
+                });
+            } else {
+                $('#a_defect_category').val('').prop('disabled', true);
+            }
+        }
+    });
+
+    // When user presses Enter in defect details code input
+    $('#a_defect_details_code').on('keydown', function(e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            const detailsCode = $(this).val().trim().toUpperCase();
+
+            if (detailsCode !== '') {
+                $.ajax({
+                    url: 'process/index_p.php',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {
+                        method: 'fetch_defect_details_by_code',
+                        details_code: detailsCode
+                    },
+                    success: function(data) {
+                        if (data.error) {
+                            $('#a_defect_details').val('').prop('disabled', true);
+                            $('#a_treatment_content_defect').val('').prop('disabled', true);
+                        } else {
+                            $('#a_defect_details').val(data.details).prop('disabled', true);
+                            $('#a_treatment_content_defect').val(data.treatment).prop('disabled', true);
+                        }
+                    }
+                });
+            } else {
+                $('#a_defect_details').val('').prop('disabled', true);
+                $('#a_treatment_content_defect').val('').prop('disabled', true);
+            }
+        }
+    });
 
     const fetch_defect_treatment = () => {
         const treatment = $('#a_defect_details option:selected').data('treatment');
@@ -544,7 +563,7 @@
         document.getElementById("a_scan_qr").value = '';
 
         document.getElementById("a_defect_details").value = '';
-        $('#a_defect_details').prop('disabled', true).css('background', '#DDD');
+        // $('#a_defect_details').prop('disabled', true).css('background', '#DDD');
         $('#a_process').prop('disabled', true).css('background', '#DDD');
 
         $('#a_process').empty().append('<option value="" disabled selected>Select Process</option>');

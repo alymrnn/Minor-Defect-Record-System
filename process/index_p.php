@@ -214,18 +214,21 @@ if ($method == 'load_defect_list') {
                 echo '<td style="text-align:center;">' . $row['product_no'] . '</td>';
                 echo '<td style="text-align:center;">' . $row['lot_no'] . '</td>';
                 echo '<td style="text-align:center;">' . $row['serial_no'] . '</td>';
+                echo '<td style="text-align:center;">' . $row['defect_category_code'] . '</td>';
                 echo '<td>' . $row['defect_category'] . '</td>';
+                echo '<td style="text-align:center;">' . $row['defect_details_code'] . '</td>';
                 echo '<td>' . $row['defect_details'] . '</td>';
                 echo '<td style="text-align:center;">' . $row['sequence_no'] . '</td>';
                 echo '<td style="text-align:center;">' . $row['connector_no'] . '</td>';
                 echo '<td>' . $row['treatment_content_defect'] . '</td>';
                 echo '<td style="text-align:center;">' . $row['repaired_by'] . '</td>';
                 echo '<td style="text-align:center;">' . $row['verified_by'] . '</td>';
+                echo '<td style="text-align:center;">' . $row['record_added_by'] . '</td>';
                 echo '</tr>';
             }
         } else {
             echo '<tr>';
-            echo '<td colspan="18" style="text-align:center; color:red;">No Record Found</td>';
+            echo '<td colspan="21" style="text-align:center; color:red;">No Record Found</td>';
             echo '</tr>';
         }
     } catch (PDOException $e) {
@@ -276,34 +279,39 @@ if ($method == 'fetch_search_process') {
     }
 }
 
-if ($method == 'fetch_defect_category') {
-    $query = "SELECT defect_category_dc FROM m_defect_category ORDER BY defect_category_dc ASC";
-    $stmt = $conn->prepare($query, array(PDO::ATTR_CURSOR => PDO::CURSOR_SCROLL));
+if ($method == 'fetch_defect_category_by_code' && isset($_POST['code'])) {
+    $code = strtoupper(trim($_POST['code']));
+    $query = "SELECT TOP 1 defect_code_value_dd 
+                FROM m_defect_details 
+                WHERE defect_code_dd = :code";
+    $stmt = $conn->prepare($query);
+    $stmt->bindParam(':code', $code);
     $stmt->execute();
-    if ($stmt->rowCount() > 0) {
-        echo '<option value="" disabled selected>Select Defect Category</option>';
-        foreach ($stmt->fetchAll() as $row) {
-            echo '<option value="' . htmlspecialchars($row['defect_category_dc']) . '">' . htmlspecialchars($row['defect_category_dc']) . '</option>';
-        }
+    if ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        echo htmlspecialchars($row['defect_code_value_dd']);
     } else {
-        echo '<option value="">Select Defect Category</option>';
+        echo '';
     }
 }
 
-if ($method == 'fetch_defect_details' && isset($_POST['category_value'])) {
-    $category_value = $_POST['category_value'];
-    $query = "SELECT defect_details_dd, defect_treatment_dd FROM m_defect_details WHERE defect_code_value_dd = :category_value ORDER BY defect_details_dd ASC";
-    $stmt = $conn->prepare($query, array(PDO::ATTR_CURSOR => PDO::CURSOR_SCROLL));
-    $stmt->bindParam(':category_value', $category_value);
+if ($method == 'fetch_defect_details_by_code' && isset($_POST['details_code'])) {
+    $details_code = strtoupper(trim($_POST['details_code']));
+
+    $query = "SELECT TOP 1 defect_details_dd, defect_treatment_dd 
+              FROM m_defect_details 
+              WHERE defect_sub_code_dd = :details_code";
+
+    $stmt = $conn->prepare($query);
+    $stmt->bindParam(':details_code', $details_code);
     $stmt->execute();
-    if ($stmt->rowCount() > 0) {
-        $options = '<option value="" disabled selected>Select Defect Details</option>';
-        foreach ($stmt->fetchAll() as $row) {
-            $options .= '<option value="' . htmlspecialchars($row['defect_details_dd']) . '" data-treatment="' . htmlspecialchars($row['defect_treatment_dd']) . '">' . htmlspecialchars($row['defect_details_dd']) . '</option>';
-        }
-        echo $options;
+
+    if ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        echo json_encode([
+            'details' => $row['defect_details_dd'],
+            'treatment' => $row['defect_treatment_dd']
+        ]);
     } else {
-        echo '<option value="">Select Defect Details</option>';
+        echo json_encode(['error' => true]);
     }
 }
 

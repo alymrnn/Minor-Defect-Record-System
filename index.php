@@ -155,17 +155,20 @@ include('plugins/system_plugins/navbar/index_navbar.php');
               <th>Product Name</th>
               <th>Lot No.</th>
               <th>Serial No.</th>
+              <th>Defect Category Code</th>
               <th>Defect Category</th>
+              <th>Defect Details Code</th>
               <th>Defect Details</th>
               <th>Sequence No.</th>
               <th>Connector No.</th>
               <th>Treatment Content of Defect</th>
               <th>Repaired By</th>
               <th>Verified By</th>
+              <th>Added By</th>
             </thead>
             <tbody class="mb-0" id="list_of_defect" style="font-size: 13px;">
               <tr>
-                <td colspan="18" style="text-align: center;">
+                <td colspan="21" style="text-align: center;">
                   <div class="spinner-border text-dark" role="status">
                     <span class="sr-only">Loading...</span>
                   </div>
