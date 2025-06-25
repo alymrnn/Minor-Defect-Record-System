@@ -422,8 +422,8 @@
         const fieldIds = [
             "a_date_detected", "a_car_maker", "a_car_model", "a_line_no", "a_process",
             "a_group", "a_shift", "a_product_name", "a_lot_no", "a_serial_no",
-            "a_defect_category", "a_defect_details", "a_sequence_no", "a_connector_no",
-            "a_treatment_content_defect", "a_repaired_by", "a_verified_by", "a_ip_address"
+            "a_defect_category_code", "a_defect_category", "a_defect_details", "a_defect_details_code", "a_sequence_no",
+            "a_connector_no", "a_treatment_content_defect", "a_repaired_by", "a_verified_by", "a_ip_address"
         ];
 
         let hasEmpty = false;
@@ -462,7 +462,9 @@
         var lot_no = document.getElementById("a_lot_no");
         var serial_no = document.getElementById("a_serial_no");
 
+        var defect_category_code = document.getElementById("a_defect_category_code").value;
         var defect_category = document.getElementById("a_defect_category").value;
+        var defect_details_code = document.getElementById("a_defect_details_code").value;
         var defect_details = document.getElementById("a_defect_details").value;
         var sequence_no = document.getElementById("a_sequence_no").value;
         var connector_no = document.getElementById("a_connector_no").value;
@@ -474,6 +476,9 @@
         var ip_address = document.getElementById("a_ip_address").value;
 
         var nameplate_value = document.getElementById("nameplate_value").value;
+
+        var auth_id_no = sessionStorage.getItem('auth_id_no');
+        var auth_name = sessionStorage.getItem('auth_name');
 
         // Enable fields before sending data
         product_name.disabled = false;
@@ -496,7 +501,9 @@
                 product_name: product_name.value,
                 lot_no: lot_no.value,
                 serial_no: serial_no.value,
+                defect_category_code: defect_category_code,
                 defect_category: defect_category,
+                defect_details_code: defect_details_code,
                 defect_details: defect_details,
                 sequence_no: sequence_no,
                 connector_no: connector_no,
@@ -505,7 +512,9 @@
                 verified_by: verified_by,
                 defect_id: defect_id,
                 ip_address: ip_address,
-                nameplate_value: nameplate_value
+                nameplate_value: nameplate_value,
+                auth_id_no: auth_id_no,
+                auth_name: auth_name
             },
             success: function(response) {
                 if (response == 'success') {
@@ -516,17 +525,14 @@
                         showConfirmButton: false,
                         timer: 1100
                     });
+                    $('#a_defect_category_code').val('');
                     $('#a_defect_category').val('');
+                    $('#a_defect_details_code').val('');
                     $('#a_defect_details').val('');
                     $('#a_sequence_no').val('');
                     $('#a_connector_no').val('');
                     $('#a_treatment_content_defect').val('');
                     $('#defect_id_no').val('');
-
-                    const defect_details_input = document.getElementById("a_defect_details");
-                    defect_details_input.value = '';
-                    defect_details_input.disabled = true;
-                    defect_details_input.style.backgroundColor = "#DDD"
 
                     load_defect_table(1);
 
@@ -865,6 +871,7 @@
             if (event.key === 'Enter') {
                 const inputValue = input.value.trim();
                 if (inputValue !== '') {
+                    sessionStorage.setItem('auth_id_no', inputValue);
                     checkAuthId(inputValue);
                 }
             }
@@ -895,6 +902,12 @@
             const res = JSON.parse(response);
 
             if (res.success) {
+                // ✅ Store emp_name in hidden input and sessionStorage
+                if (res.emp_name) {
+                    document.getElementById("auth_name").value = res.emp_name;
+                    sessionStorage.setItem('auth_name', res.emp_name);
+                }
+
                 // Close auth modal
                 $('#add_record_auth').modal('hide');
 

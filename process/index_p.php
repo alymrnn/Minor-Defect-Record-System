@@ -218,9 +218,9 @@ if ($method == 'load_defect_list') {
                 echo '<td>' . $row['defect_category'] . '</td>';
                 echo '<td style="text-align:center;">' . $row['defect_details_code'] . '</td>';
                 echo '<td>' . $row['defect_details'] . '</td>';
+                echo '<td>' . $row['treatment_content_defect'] . '</td>';
                 echo '<td style="text-align:center;">' . $row['sequence_no'] . '</td>';
                 echo '<td style="text-align:center;">' . $row['connector_no'] . '</td>';
-                echo '<td>' . $row['treatment_content_defect'] . '</td>';
                 echo '<td style="text-align:center;">' . $row['repaired_by'] . '</td>';
                 echo '<td style="text-align:center;">' . $row['verified_by'] . '</td>';
                 echo '<td style="text-align:center;">' . $row['record_added_by'] . '</td>';
@@ -337,7 +337,9 @@ if ($method == 'add_defect_record') {
     $product_name = trim($_POST['product_name']);
     $lot_no = trim($_POST['lot_no']);
     $serial_no = trim($_POST['serial_no']);
+    $defect_category_code = trim($_POST['defect_category_code']);
     $defect_category = trim($_POST['defect_category']);
+    $defect_details_code = trim($_POST['defect_details_code']);
     $defect_details = trim($_POST['defect_details']);
     $sequence_no = trim($_POST['sequence_no']);
     $connector_no = trim($_POST['connector_no']);
@@ -346,10 +348,23 @@ if ($method == 'add_defect_record') {
     $verified_by = trim($_POST['verified_by']);
     $defect_id = trim($_POST['defect_id']);
     $ip_address = trim($_POST['ip_address']);
+    $auth_id_no = trim($_POST['auth_id_no']);
+    $auth_name = trim($_POST['auth_name']);
 
     $defect_id = generate_defect_id($defect_id);
 
-    $query = "INSERT INTO t_minor_defect_f (defect_id,date_detected,car_maker,car_model,line_no,process,group_d,shift,nameplate_value,product_no,lot_no,serial_no,defect_category,defect_details,sequence_no,connector_no,treatment_content_defect, repaired_by,verified_by,ip_address) VALUES ('$defect_id','$date_detected','$car_maker','$car_model','$line_no','$process','$group','$shift','$nameplate_value','$product_name','$lot_no','$serial_no','$defect_category','$defect_details','$sequence_no','$connector_no','$treatment_content_defect','$repaired_by','$verified_by','$ip_address')";
+    $query = "INSERT INTO t_minor_defect_f 
+            (defect_id, date_detected, car_maker, car_model, line_no,
+            process, group_d, shift, nameplate_value, product_no,
+            lot_no, serial_no, defect_category_code, defect_category, defect_details_code,
+            defect_details, sequence_no, connector_no, treatment_content_defect, repaired_by,
+            verified_by, ip_address, record_by_id_no, record_added_by) 
+            VALUES ('$defect_id','$date_detected','$car_maker','$car_model','$line_no',
+            '$process','$group','$shift','$nameplate_value','$product_name',
+            '$lot_no','$serial_no','$defect_category_code','$defect_category','$defect_details_code',
+            '$defect_details','$sequence_no','$connector_no','$treatment_content_defect','$repaired_by',
+            '$verified_by','$ip_address','$auth_id_no','$auth_name')";
+
     $stmt = $conn->prepare($query);
 
     if ($stmt->execute()) {
@@ -363,22 +378,34 @@ if ($method == 'check_auth_id') {
     $id_no = $_POST['id_no'] ?? '';
 
     if (!empty($id_no)) {
-        $query = "SELECT emp_no FROM m_auth_accounts WHERE emp_no = ?";
+        $query = "SELECT emp_no, emp_name FROM m_auth_accounts WHERE emp_no = ?";
         $stmt = $conn->prepare($query);
 
         if ($stmt) {
             $stmt->execute([$id_no]);
-            $result = $stmt->fetch();
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
             if ($result) {
-                echo json_encode(['success' => true]);
+                echo json_encode([
+                    'success' => true,
+                    'emp_name' => $result['emp_name']
+                ]);
             } else {
-                echo json_encode(['success' => false, 'error' => 'Please contact IT-System Group to register your ID number.']);
+                echo json_encode([
+                    'success' => false,
+                    'error' => 'Please contact IT-System Group to register your ID number.'
+                ]);
             }
         } else {
-            echo json_encode(['success' => false, 'error' => 'Failed to prepare statement']);
+            echo json_encode([
+                'success' => false,
+                'error' => 'Failed to prepare statement'
+            ]);
         }
     } else {
-        echo json_encode(['success' => false, 'error' => 'ID number is empty']);
+        echo json_encode([
+            'success' => false,
+            'error' => 'ID number is empty'
+        ]);
     }
 }

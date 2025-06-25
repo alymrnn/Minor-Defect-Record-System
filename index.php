@@ -159,9 +159,9 @@ include('plugins/system_plugins/navbar/index_navbar.php');
               <th>Defect Category</th>
               <th>Defect Details Code</th>
               <th>Defect Details</th>
+              <th>Treatment Content of Defect</th>
               <th>Sequence No.</th>
               <th>Connector No.</th>
-              <th>Treatment Content of Defect</th>
               <th>Repaired By</th>
               <th>Verified By</th>
               <th>Added By</th>

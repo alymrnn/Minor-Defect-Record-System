@@ -16,6 +16,7 @@
                 </div>
                 <div class="row justify-content-center">
                     <div class="col-6">
+                        <input type="hidden" id="auth_name" class="form-control">
                         <input class="form-control form-control-md text-center border-0 shadow-sm" id="auth_id_no"
                             placeholder="Input here" type="text" style="font-size: 1.2rem; background-color: #f4f4f4;"
                             oncopy="return false;" onpaste="return false;">
