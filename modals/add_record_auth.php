@@ -11,7 +11,7 @@
             <div class="modal-body py-4">
                 <div class="row">
                     <div class="col-12">
-                        <p class="text-center"><i class="fas fa-user"></i> Enter your correct ID number to proceed with adding a record.</p>
+                        <p class="text-center"><i class="fas fa-user"></i> Enter your registered ID number to proceed with adding a record.</p>
                     </div>
                 </div>
                 <div class="row justify-content-center">
@@ -20,7 +20,7 @@
                         <input class="form-control form-control-md text-center border-0 shadow-sm" id="auth_id_no"
                             placeholder="Input here" type="text" style="font-size: 1.2rem; background-color: #f4f4f4;"
                             oncopy="return false;" onpaste="return false;">
-                        <small class="text-muted d-block mt-2 text-center">Please make sure you are registered in the system.</small>
+                        <small class="text-muted d-block mt-2 text-center">Click enter button to proceed.</small>
                     </div>
                 </div>
             </div>
