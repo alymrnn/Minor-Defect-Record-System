@@ -168,7 +168,15 @@ if ($method == 'get_inspection_details') {
         $processes = $stmt_process->fetchAll(PDO::FETCH_COLUMN);
     }
 
-    // If no processes found, get from m_final_process
+    // First fallback: m_line_process based on line_no from $conn
+    if (!$processes || count($processes) === 0) {
+        $query_line_process = "SELECT DISTINCT process FROM m_line_process WHERE line_no = ?";
+        $stmt_line_process = $conn->prepare($query_line_process);
+        $stmt_line_process->execute([$line_no]);
+        $processes = $stmt_line_process->fetchAll(PDO::FETCH_COLUMN);
+    }
+
+    // Second fallback: m_final_process
     if (!$processes || count($processes) === 0) {
         $query_fallback = "SELECT DISTINCT final_process FROM m_final_process";
         $stmt_fallback = $conn_pcad->query($query_fallback);

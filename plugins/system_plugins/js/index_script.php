@@ -366,7 +366,26 @@
                         code: code
                     },
                     success: function(response) {
-                        $('#a_defect_category').val(response).prop('disabled', true);
+                        if (response === '' || response === null) {
+                            Swal.fire({
+                                icon: 'info',
+                                title: 'Defect Category Code Not Found',
+                                text: `No defect category found for code: ${code}`,
+                                background: '#1b263b',
+                                color: '#f9f9f9',
+                                iconColor: '#8d0801',
+                            });
+                            $('#a_defect_category').val('').prop('disabled', true);
+                        } else {
+                            $('#a_defect_category').val(response).prop('disabled', true);
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'AJAX Error',
+                            text: error
+                        });
                     }
                 });
             } else {
@@ -392,12 +411,28 @@
                     },
                     success: function(data) {
                         if (data.error) {
+                            Swal.fire({
+                                icon: 'info',
+                                title: 'Defect Details Code Not Found',
+                                text: `No defect details found for code: ${detailsCode}`,
+                                background: '#1b263b',
+                                color: '#f9f9f9',
+                                iconColor: '#8d0801'
+                            });
+
                             $('#a_defect_details').val('').prop('disabled', true);
                             $('#a_treatment_content_defect').val('').prop('disabled', true);
                         } else {
                             $('#a_defect_details').val(data.details).prop('disabled', true);
                             $('#a_treatment_content_defect').val(data.treatment).prop('disabled', true);
                         }
+                    },
+                    error: function(xhr, status, error) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'AJAX Error',
+                            text: error
+                        });
                     }
                 });
             } else {
@@ -406,6 +441,7 @@
             }
         }
     });
+
 
     const fetch_defect_treatment = () => {
         const treatment = $('#a_defect_details option:selected').data('treatment');
@@ -559,6 +595,7 @@
         document.getElementById("a_product_name").value = '';
         document.getElementById("a_lot_no").value = '';
         document.getElementById("a_serial_no").value = '';
+        document.getElementById("a_defect_category_code").value = '';
         document.getElementById("a_defect_category").value = '';
         document.getElementById("a_sequence_no").value = '';
         document.getElementById("a_connector_no").value = '';
@@ -568,6 +605,7 @@
         document.getElementById("nameplate_value").value = '';
         document.getElementById("a_scan_qr").value = '';
 
+        document.getElementById("a_defect_details_code").value = '';
         document.getElementById("a_defect_details").value = '';
         // $('#a_defect_details').prop('disabled', true).css('background', '#DDD');
         $('#a_process').prop('disabled', true).css('background', '#DDD');
@@ -741,7 +779,10 @@
                     Swal.fire({
                         icon: 'warning',
                         title: data.error,
-                        showConfirmButton: true
+                        showConfirmButton: true,
+                        background: '#1b263b',
+                        color: '#f9f9f9',
+                        iconColor: '#8d0801'
                     });
 
                     $('#a_process').prop('disabled', true).css('background', '#DDD');
@@ -799,7 +840,10 @@
                 Swal.fire({
                     icon: 'error',
                     title: 'AJAX Error',
-                    showConfirmButton: true
+                    showConfirmButton: true,
+                    background: '#1b263b',
+                    color: '#f9f9f9',
+                    iconColor: '#8d0801'
                 });
             }
         });
