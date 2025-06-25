@@ -17,14 +17,10 @@
             }
         });
 
-        $('#a_defect_category_code').on('input', function() {
-            if (!$(this).val()) {
-                $('#a_defect_category').val('');
-            }
-        });
-
         $('#a_defect_details_code').on('input', function() {
             if (!$(this).val()) {
+                $('#a_defect_category_code').val('');
+                $('#a_defect_category').val('');
                 $('#a_defect_details').val('');
                 $('#a_treatment_content_defect').val('');
             }
@@ -351,56 +347,126 @@
         });
     }
 
-    // When user presses Enter in category code input
-    $('#a_defect_category_code').on('keydown', function(e) {
-        if (e.key === 'Enter') {
-            e.preventDefault(); // prevent form submission if inside a form
-            const code = $(this).val().trim().toUpperCase();
+    // // When user presses Enter in category code input
+    // $('#a_defect_category_code').on('keydown', function(e) {
+    //     if (e.key === 'Enter') {
+    //         e.preventDefault(); // prevent form submission if inside a form
+    //         const code = $(this).val().trim().toUpperCase();
 
-            if (code !== '') {
-                $.ajax({
-                    url: 'process/index_p.php',
-                    type: 'POST',
-                    data: {
-                        method: 'fetch_defect_category_by_code',
-                        code: code
-                    },
-                    success: function(response) {
-                        if (response === '' || response === null) {
-                            Swal.fire({
-                                icon: 'info',
-                                title: 'Defect Category Code Not Found',
-                                text: `No defect category found for code: ${code}`,
-                                background: '#1b263b',
-                                color: '#f9f9f9',
-                                iconColor: '#8d0801',
-                            });
-                            $('#a_defect_category').val('').prop('disabled', true);
-                        } else {
-                            $('#a_defect_category').val(response).prop('disabled', true);
-                        }
-                    },
-                    error: function(xhr, status, error) {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'AJAX Error',
-                            text: error
-                        });
-                    }
-                });
-            } else {
-                $('#a_defect_category').val('').prop('disabled', true);
-            }
-        }
-    });
+    //         if (code !== '') {
+    //             $.ajax({
+    //                 url: 'process/index_p.php',
+    //                 type: 'POST',
+    //                 data: {
+    //                     method: 'fetch_defect_category_by_code',
+    //                     code: code
+    //                 },
+    //                 success: function(response) {
+    //                     if (response === '' || response === null) {
+    //                         Swal.fire({
+    //                             icon: 'info',
+    //                             title: 'Defect Category Code Not Found',
+    //                             text: `No defect category found for code: ${code}`,
+    //                             background: '#1b263b',
+    //                             color: '#f9f9f9',
+    //                             iconColor: '#8d0801',
+    //                         });
+    //                         $('#a_defect_category').val('').prop('disabled', true);
+    //                     } else {
+    //                         $('#a_defect_category').val(response).prop('disabled', true);
+    //                     }
+    //                 },
+    //                 error: function(xhr, status, error) {
+    //                     Swal.fire({
+    //                         icon: 'error',
+    //                         title: 'AJAX Error',
+    //                         text: error
+    //                     });
+    //                 }
+    //             });
+    //         } else {
+    //             $('#a_defect_category').val('').prop('disabled', true);
+    //         }
+    //     }
+    // });
 
-    // When user presses Enter in defect details code input
+    // // When user presses Enter in defect details code input
+    // $('#a_defect_details_code').on('keydown', function(e) {
+    //     if (e.key === 'Enter') {
+    //         e.preventDefault();
+    //         const detailsCode = $(this).val().trim().toUpperCase();
+
+    //         if (detailsCode !== '') {
+    //             $.ajax({
+    //                 url: 'process/index_p.php',
+    //                 type: 'POST',
+    //                 dataType: 'json',
+    //                 data: {
+    //                     method: 'fetch_defect_details_by_code',
+    //                     details_code: detailsCode
+    //                 },
+    //                 success: function(data) {
+    //                     if (data.error) {
+    //                         Swal.fire({
+    //                             icon: 'info',
+    //                             title: 'Defect Details Code Not Found',
+    //                             text: `No defect details found for code: ${detailsCode}`,
+    //                             background: '#1b263b',
+    //                             color: '#f9f9f9',
+    //                             iconColor: '#8d0801'
+    //                         });
+
+    //                         $('#a_defect_details').val('').prop('disabled', true);
+    //                         $('#a_treatment_content_defect').val('').prop('disabled', true);
+    //                     } else {
+    //                         $('#a_defect_details').val(data.details).prop('disabled', true);
+    //                         $('#a_treatment_content_defect').val(data.treatment).prop('disabled', true);
+    //                     }
+    //                 },
+    //                 error: function(xhr, status, error) {
+    //                     Swal.fire({
+    //                         icon: 'error',
+    //                         title: 'AJAX Error',
+    //                         text: error
+    //                     });
+    //                 }
+    //             });
+    //         } else {
+    //             $('#a_defect_details').val('').prop('disabled', true);
+    //             $('#a_treatment_content_defect').val('').prop('disabled', true);
+    //         }
+    //     }
+    // });
+
     $('#a_defect_details_code').on('keydown', function(e) {
         if (e.key === 'Enter') {
             e.preventDefault();
             const detailsCode = $(this).val().trim().toUpperCase();
 
             if (detailsCode !== '') {
+                // Step 1: Extract category code (letters only before first digit)
+                const categoryCode = detailsCode.match(/^[A-Za-z]+/);
+                if (categoryCode) {
+                    const defectCategoryCode = categoryCode[0];
+
+                    // Step 2: Set the category code field
+                    $('#a_defect_category_code').val(defectCategoryCode);
+
+                    // Step 3: Fetch defect category value
+                    $.ajax({
+                        url: 'process/index_p.php',
+                        type: 'POST',
+                        data: {
+                            method: 'fetch_defect_category_by_code',
+                            code: defectCategoryCode
+                        },
+                        success: function(categoryValue) {
+                            $('#a_defect_category').val(categoryValue).prop('disabled', true);
+                        }
+                    });
+                }
+
+                // Step 4: Fetch defect details and treatment
                 $.ajax({
                     url: 'process/index_p.php',
                     type: 'POST',
@@ -419,7 +485,6 @@
                                 color: '#f9f9f9',
                                 iconColor: '#8d0801'
                             });
-
                             $('#a_defect_details').val('').prop('disabled', true);
                             $('#a_treatment_content_defect').val('').prop('disabled', true);
                         } else {
@@ -441,7 +506,6 @@
             }
         }
     });
-
 
     const fetch_defect_treatment = () => {
         const treatment = $('#a_defect_details option:selected').data('treatment');

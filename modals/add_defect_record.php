@@ -120,7 +120,7 @@
                 </div>
                 <hr class="m-0 p-0">
                 <div class="row mb-3 mt-3">
-                    <div class="col-12 col-md-3">
+                    <div class="col-12 col-md-3" style="display: none;">
                         <label class="m-0 p-0" style="font-weight: normal;color: #000;font-size:14px;">Defect Category Code</label>
                         <label class="m-0 p-0" style="color:#CA3F3F">*</label>
                         <input type="text" id="a_defect_category_code" class="form-control"
@@ -128,21 +128,6 @@
                             style="color: #525252; font-size: 14px; border-radius: .25rem; background: #FFF; height: 35px; width:100%; text-transform: uppercase;"
                             oninput="this.value = this.value.toUpperCase();">
                     </div>
-                    <div class="col-12 col-md-4">
-                        <label class="m-0 p-0" style="font-weight: normal;color: #000;font-size:14px;">Defect Category</label>
-                        <label class="m-0 p-0" style="color:#CA3F3F">*</label>
-                        <!-- <select id="a_defect_category" class="form-control"
-                            style="color: #525252; font-size: 14px;; border-radius: .25rem; background: #FFF; height: 35px; width: 100%;"
-                            required>
-                            <option value="" disabled selected>Select Defect Category</option>
-                        </select> -->
-
-                        <input id="a_defect_category" class="form-control"
-                            style="color: #525252; font-size: 14px;; border-radius: .25rem; height: 35px; width: 100%;"
-                            required disabled>
-                    </div>
-                </div>
-                <div class="row mb-3 mt-3">
                     <div class="col-12 col-md-3">
                         <label class="m-0 p-0" style="font-weight: normal;color: #000;font-size:14px;">Defect Details Code</label>
                         <label class="m-0 p-0" style="color:#CA3F3F">*</label>
@@ -151,20 +136,23 @@
                             style="color: #525252; font-size: 14px; border-radius: .25rem; background: #FFF; height: 35px; width:100%; text-transform: uppercase;"
                             oninput="this.value = this.value.toUpperCase();">
                     </div>
+                    <div class="col-12 col-md-5">
+                        <label class="m-0 p-0" style="font-weight: normal;color: #000;font-size:14px;">Defect Category</label>
+                        <label class="m-0 p-0" style="color:#CA3F3F">*</label>
+                        <input id="a_defect_category" class="form-control"
+                            style="color: #525252; font-size: 14px;; border-radius: .25rem; height: 35px; width: 100%;"
+                            required disabled>
+                    </div>
                     <div class="col-12 col-md-4">
                         <label class="m-0 p-0" style="font-weight: normal;color: #000;font-size:14px;">Defect Details</label>
                         <label class="m-0 p-0" style="color:#CA3F3F">*</label>
-                        <!-- <select id="a_defect_details" class="form-control"
-                            style="color: #525252; font-size: 14px;; border-radius: .25rem; background: #DDD; height: 35px; width: 100%;"
-                            required>
-                            <option value="" disabled selected>Select Defect Details</option>
-                        </select> -->
-
                         <input id="a_defect_details" class="form-control"
                             style="color: #525252; font-size: 14px;; border-radius: .25rem; height: 35px; width: 100%;"
                             required disabled>
                     </div>
-                    <div class="col-12 col-md-5">
+                </div>
+                <div class="row mb-3 mt-3">
+                    <div class="col-12 col-md-5 offset-3">
                         <label class="m-0 p-0" style="font-weight: normal;color: #000;font-size:14px;">Treatment Content of Defect</label>
                         <label class="m-0 p-0" style="color:#CA3F3F">*</label>
                         <input id="a_treatment_content_defect" class="form-control"
