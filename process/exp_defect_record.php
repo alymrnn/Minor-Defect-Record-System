@@ -23,7 +23,6 @@ $delimiter = ',';
 
 $headers = array(
     'Date Detected',
-    // 'Time Detected',
     'Car Model',
     'Line No.',
     'Process',
@@ -56,7 +55,7 @@ $conditions = [];
 $params = [];
 
 if (!empty($search_date_from) && !empty($search_date_to)) {
-    $conditions[] = "CAST(date_detected AS DATE) BETWEEN ? AND ?";
+    $conditions[] = "date_detected BETWEEN ? AND ?";
     $params[] = $search_date_from;
     $params[] = $search_date_to;
 }
@@ -105,13 +104,10 @@ $stmt->execute($params);
 
 if ($stmt->rowCount() > 0) {
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-        $datetime = new DateTime($row['date_detected']);
-        $date_part = $datetime->format('Y-m-d');
-        // $time_part = $datetime->format('H:i:s');
+        $date_part = substr($row['date_detected'], 0, 10);
 
         $lineData = array(
             $date_part,
-            // $time_part,
             $row['car_model'],
             $row['line_no'],
             $row['process'],

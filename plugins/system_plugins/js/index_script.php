@@ -732,12 +732,12 @@
         var search_defect_category = document.getElementById('search_defect_category').value.trim();
         var search_defect_details = document.getElementById('search_defect_details').value.trim();
 
-        if (search_date_from === '') {
-            search_date_from = new Date().toISOString().slice(0, 10);
-        }
-        if (search_date_to === '') {
-            search_date_to = new Date().toISOString().slice(0, 10);
-        }
+        // if (search_date_from === '') {
+        //     search_date_from = new Date().toISOString().slice(0, 10);
+        // }
+        // if (search_date_to === '') {
+        //     search_date_to = new Date().toISOString().slice(0, 10);
+        // }
 
         window.open(
             'process/exp_defect_record.php?scan_product_name=' + encodeURIComponent(scan_product_name) +
