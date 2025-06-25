@@ -23,7 +23,7 @@ $delimiter = ',';
 
 $headers = array(
     'Date Detected',
-    'Time Detected',
+    // 'Time Detected',
     'Car Model',
     'Line No.',
     'Process',
@@ -32,18 +32,25 @@ $headers = array(
     'Product Number',
     'Lot Number',
     'Serial Number',
+    'Defect Category Code',
     'Defect Category',
+    'Defect Details Code',
     'Defect Details',
+    'Treatment Content of Defect',
     'Sequence No.',
     'Connector No.',
-    'Treatment Content of Defect',
     'Repaired By',
-    'Verified By'
+    'Verified By',
+    'Added By'
 );
 
 fputcsv($f, $headers, $delimiter);
 
-$query = "SELECT date_detected, car_model, line_no, process, group_d, shift, product_no, lot_no, serial_no, defect_category, defect_details, sequence_no, connector_no, treatment_content_defect, repaired_by, verified_by FROM t_minor_defect_f WHERE 1=1";
+$query = "SELECT date_detected, car_model, line_no, process, group_d, 
+                shift, product_no, lot_no, serial_no, defect_category_code, 
+                defect_category, defect_details_code, defect_details, sequence_no, connector_no, 
+                treatment_content_defect, repaired_by, verified_by, record_added_by 
+                FROM t_minor_defect_f WHERE 1=1";
 
 $conditions = [];
 $params = [];
@@ -100,11 +107,11 @@ if ($stmt->rowCount() > 0) {
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         $datetime = new DateTime($row['date_detected']);
         $date_part = $datetime->format('Y-m-d');
-        $time_part = $datetime->format('H:i:s');
+        // $time_part = $datetime->format('H:i:s');
 
         $lineData = array(
             $date_part,
-            $time_part,
+            // $time_part,
             $row['car_model'],
             $row['line_no'],
             $row['process'],
@@ -113,13 +120,16 @@ if ($stmt->rowCount() > 0) {
             $row['product_no'],
             $row['lot_no'],
             $row['serial_no'],
+            $row['defect_category_code'],
             $row['defect_category'],
+            $row['defect_details_code'],
             $row['defect_details'],
+            $row['treatment_content_defect'],
             $row['sequence_no'],
             $row['connector_no'],
-            $row['treatment_content_defect'],
             $row['repaired_by'],
-            $row['verified_by']
+            $row['verified_by'],
+            $row['record_added_by']
         );
         fputcsv($f, $lineData, $delimiter);
     }
@@ -131,5 +141,3 @@ fseek($f, 0);
 fpassthru($f);
 
 $conn = null;
-
-?>
