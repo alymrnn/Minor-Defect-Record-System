@@ -12,8 +12,16 @@
                 </button>
             </div>
             <div class="modal-body">
-                <label style="font-weight: normal;color: #000;font-size:22px"><b>Minor Defect Record</b></label>
-                <div class="row mb-3">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <label style="font-weight: normal; color: #000; font-size: 22px;">
+                        <b>Minor Defect Record</b>
+                    </label>
+                    <label class="p-1" style="font-weight: normal; color: #000; font-size: 15px; border-bottom: 2px solid #8d0801;">
+                        <i class="far fa-user"></i> User: <b><span id="authNameDisplay"></span></b>
+                    </label>
+                </div>
+
+                <div class="row mb-3 mt-2">
                     <div class="col-12 col-md-3">
                         <!-- ip address hidden -->
                         <input type="hidden" name="a_ip_address" id="a_ip_address"

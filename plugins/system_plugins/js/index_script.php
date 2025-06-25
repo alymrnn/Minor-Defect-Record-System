@@ -45,6 +45,30 @@
         load_defect_table(1);
     });
 
+    // Function to update the UI from sessionStorage
+    function updateAuthNameDisplay() {
+        const authName = sessionStorage.getItem('auth_name');
+        document.getElementById('authNameDisplay').textContent = authName || 'Guest';
+    }
+
+    document.addEventListener('DOMContentLoaded', updateAuthNameDisplay);
+
+    // Update when sessionStorage changes in other tabs/windows (optional but useful)
+    window.addEventListener('storage', function(e) {
+        if (e.key === 'auth_name') {
+            updateAuthNameDisplay();
+        }
+    });
+
+    // OPTIONAL: If user changes are triggered dynamically, observe sessionStorage changes
+    const originalSetItem = sessionStorage.setItem;
+    sessionStorage.setItem = function(key, value) {
+        originalSetItem.apply(this, arguments);
+        if (key === 'auth_name') {
+            updateAuthNameDisplay();
+        }
+    };
+
     const toggleQRField = () => {
         const lineNo = $('#a_line_no').val();
         const isValidLineNo = /^[0-9]{4}$/.test(lineNo); // Check if it contains exactly 4 digits
