@@ -187,6 +187,7 @@ include('plugins/system_plugins/navbar/index_navbar.php');
             onmouseout="this.style.backgroundColor='#032b43'; this.style.color='#FFF';">Load more</button>
         </div>
       </div>
+    </div>
   </section>
 </div>
 
