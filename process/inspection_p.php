@@ -161,23 +161,52 @@ if ($method == 'get_inspection_details') {
 
     // Step 2: Try to fetch distinct processes from m_inspection_ip
     $processes = [];
+
+    // Step 1: Fetch from m_inspection_ip (PCAD)
+    $processes_pcad = [];
     if ($ircs_line) {
         $query_process = "SELECT DISTINCT process FROM m_inspection_ip WHERE ircs_line = ?";
         $stmt_process = $conn_pcad->prepare($query_process);
         $stmt_process->execute([$ircs_line]);
-        $processes = $stmt_process->fetchAll(PDO::FETCH_COLUMN);
+        $processes_pcad = $stmt_process->fetchAll(PDO::FETCH_COLUMN);
     }
 
-    // First fallback: m_line_process based on line_no from $conn
-    if (!$processes || count($processes) === 0) {
-        $query_line_process = "SELECT DISTINCT process FROM m_line_process WHERE line_no = ?";
-        $stmt_line_process = $conn->prepare($query_line_process);
-        $stmt_line_process->execute([$line_no]);
-        $processes = $stmt_line_process->fetchAll(PDO::FETCH_COLUMN);
+    // Step 2: Fetch from m_line_process (Main DB)
+    $query_line_process = "SELECT DISTINCT process FROM m_line_process WHERE line_no = ?";
+    $stmt_line_process = $conn->prepare($query_line_process);
+    $stmt_line_process->execute([$line_no]);
+    $processes_main = $stmt_line_process->fetchAll(PDO::FETCH_COLUMN);
+
+    // Step 3: Combine and deduplicate, prioritizing longer names
+    $combined_raw = array_merge($processes_pcad, $processes_main);
+    $normalized_map = [];
+
+    // Sort by length descending to prioritize longer names (e.g., Appearance_1 over Appearance)
+    usort($combined_raw, function ($a, $b) {
+        return strlen($b) - strlen($a);
+    });
+
+    foreach ($combined_raw as $proc) {
+        $normalized = strtolower(trim($proc));
+        $is_duplicate = false;
+
+        foreach ($normalized_map as $existing => $original) {
+            // If shorter one exists inside the longer one, skip it
+            if (strpos($existing, $normalized) !== false || strpos($normalized, $existing) !== false) {
+                $is_duplicate = true;
+                break;
+            }
+        }
+
+        if (!$is_duplicate) {
+            $normalized_map[$normalized] = $proc; // store original casing
+        }
     }
 
-    // Second fallback: m_final_process
-    if (!$processes || count($processes) === 0) {
+    $processes = array_values($normalized_map);
+
+    // Step 4: Fallback if still empty
+    if (count($processes) === 0) {
         $query_fallback = "SELECT DISTINCT final_process FROM m_final_process";
         $stmt_fallback = $conn_pcad->query($query_fallback);
         $processes = $stmt_fallback->fetchAll(PDO::FETCH_COLUMN);
