@@ -680,7 +680,7 @@
         document.getElementById("a_line_no").value = '';
         document.getElementById("a_process").value = '';
         document.getElementById("a_group").value = '';
-        document.getElementById("a_product_name").value = '';
+        document.getElementById("a_product_name").value = 'N/A';
         document.getElementById("a_lot_no").value = '';
         document.getElementById("a_serial_no").value = '';
         document.getElementById("a_defect_category_code").value = '';

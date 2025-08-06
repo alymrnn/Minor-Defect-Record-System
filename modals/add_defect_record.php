@@ -106,7 +106,7 @@
                     <div class="col-12 col-md-4">
                         <label class="m-0 p-0" style="font-weight: normal;color: #000;font-size:14px;">Product Number</label>
                         <label class="m-0 p-0" style="color:#CA3F3F">*</label>
-                        <input type="text" id="a_product_name" class="form-control" autocomplete="off"
+                        <input type="text" id="a_product_name" class="form-control" autocomplete="off" value="N/A"
                             style="color: #525252; font-size: 14px; border-radius: .25rem; background: #FFF; height: 35px; width:100%; text-transform: uppercase;"
                             oninput="this.value = this.value.toUpperCase();">
                         <br>
