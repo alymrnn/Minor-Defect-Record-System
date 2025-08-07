@@ -141,7 +141,7 @@
                         <label class="m-0 p-0" style="font-weight: normal;color: #000;font-size:14px;">Defect Details Code</label>
                         <label class="m-0 p-0" style="color:#CA3F3F">*</label>
                         <input type="text" id="a_defect_details_code" class="form-control"
-                            autocomplete="off"
+                            autocomplete="off" maxlength="3"
                             style="color: #525252; font-size: 14px; border-radius: .25rem; background: #FFF; height: 35px; width:100%; text-transform: uppercase;"
                             oninput="this.value = this.value.toUpperCase();">
                     </div>
