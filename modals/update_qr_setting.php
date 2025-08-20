@@ -94,19 +94,13 @@
                 </div>
             </div>
 
-            <div class="modal-footer" style="background:#c2c2c2;">
+            <div class="modal-footer" style="background:#e9e9e9;">
                 <div class="col-12">
-                    <div class="float-left">
-                        <button class="btn btn-block" onclick="delete_setting()"
-                            style="color:#fff;height:34px;width:150px;border-radius:.25rem;background: #CA3F3F;font-size:15px;font-weight:normal;"
-                            onmouseover="this.style.backgroundColor='#AC3737'; this.style.color='#FFF';"
-                            onmouseout="this.style.backgroundColor='#CA3F3F'; this.style.color='#FFF';">Delete
-                            Settings</button>
+                    <div class="float-left w-25">
+                        <button class="btn btn-outline-danger btn-block" onclick="delete_setting()">Delete</button>
                     </div>
-                    <div class="float-right">
-                        <button class="btn btn-block" onclick="update_setting()"
-                            style="color:#fff;height:34px;width:150px;border-radius:.25rem;background: #226F54;font-size:15px;font-weight:normal;">Update
-                            Settings</button>
+                    <div class="float-right w-25">
+                        <button class="btn btn-success btn-block" onclick="update_setting()">Update</button>
                     </div>
                 </div>
             </div>

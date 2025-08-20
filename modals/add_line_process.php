@@ -1,11 +1,11 @@
-<div class="modal fade bd-example-modal-xl" id="add_account" tabindex="-1" role="dialog" data-backdrop="static"
+<div class="modal fade bd-example-modal-xl" id="add_line_process" tabindex="-1" role="dialog" data-backdrop="static"
     data-keyboard="false">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content" style="background:#f9f9f9;">
             <div class="modal-header" style="background:#343a40;">
                 <h5 class="modal-title" id="exampleModalLabel" style="font-weight: normal;color: #fff;"><i
                         class="fas fa-plus-circle"></i>&nbsp;
-                    Add New Account
+                    Add New Line / Process
                 </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color: #fff;">
                     <span aria-hidden="true"><i class="fas fa-times"></i></span>
@@ -14,17 +14,15 @@
             <div class="modal-body" style="max-height: 550px; overflow-y: auto;">
                 <div class="row">
                     <div class="col-4">
-                        <label class="m-0 p-0" style="font-weight: normal;">Username</label>
-                        <input class="form-control" id="username_m" style="width: 100%; text-align: center;"
+                        <label class="m-0 p-0" style="font-weight: normal;">Line No.</label>
+                        <input class="form-control" id="line_m" style="width: 100%; text-align: center;"
                             type="text">
                     </div>
                     <div class="col-4">
-                        <label class="m-0 p-0" style="font-weight: normal;">Role</label>
-                        <select class="form-control" id="role_m" style="width: 100%;">
-                            <option value="ADMIN" selected>ADMIN</option>
-                        </select>
+                        <label class="m-0 p-0" style="font-weight: normal;">Process</label>
+                        <input class="form-control" id="process_m" style="width: 100%; text-align: center;"
+                            type="text">
                     </div>
-
                 </div>
             </div>
 
@@ -34,7 +32,7 @@
                         <button class="btn btn-outline-danger btn-block" data-dismiss="modal">Cancel</button>
                     </div>
                     <div class="float-right w-25">
-                        <button class="btn btn-success btn-block" onclick="register_account()">Add</button>
+                        <button class="btn btn-success btn-block" onclick="register_line_process()">Add</button>
                     </div>
                 </div>
             </div>

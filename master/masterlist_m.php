@@ -1,7 +1,7 @@
 <?php include 'plugins/navbar.php'; ?>
 <?php include 'plugins/sidebar/index_m_bar.php'; ?>
 
-<div class="content-wrapper" style="background: #FFF;">
+<div class="content-wrapper" style="background: #f8f9fa;">
     <!-- Content Header (Page header) -->
     <div class="content-header">
         <div class="container-fluid">
@@ -22,7 +22,7 @@
     <!-- Main content -->
     <section class="content">
         <div class="col-md-12">
-            <div class="card card-tabs">
+            <div class="card card-tabs" style="background-color: #f8f9fa;">
                 <div class="card-header p-0 border-bottom-0">
                     <ul class="nav nav-tabs" id="masterlist-record-tab" role="tablist">
                         <li class="nav-item">
@@ -33,12 +33,22 @@
                         <li class="nav-item">
                             <a class="nav-link" id="masterlist-record-2-tab" data-toggle="pill"
                                 href="#masterlist-record-2" role="tab" aria-controls="masterlist-record-2"
-                                aria-selected="true">Defect Category, Details, and Treatment Content</a>
+                                aria-selected="true">Defect Details</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" id="masterlist-record-3-tab" data-toggle="pill"
                                 href="#masterlist-record-3" role="tab" aria-controls="masterlist-record-3"
-                                aria-selected="true">Account Management</a>
+                                aria-selected="true">Admin Account</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="masterlist-record-4-tab" data-toggle="pill"
+                                href="#masterlist-record-4" role="tab" aria-controls="masterlist-record-4"
+                                aria-selected="true">Line / Process</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="masterlist-record-5-tab" data-toggle="pill"
+                                href="#masterlist-record-5" role="tab" aria-controls="masterlist-record-5"
+                                aria-selected="true">Authorized Account</a>
                         </li>
                     </ul>
                 </div>
@@ -49,19 +59,19 @@
                         <div class="tab-pane fade show active" id="masterlist-record-1" role="tabpanel"
                             aria-labelledby="masterlist-record-1-tab">
                             <!-- Main Content -->
-                            <div class="row mb-3">
+                            <div class="row">
                                 <div class="col-12 col-sm-2">
-                                    <button class="btn btn-block btn-dark d-flex justify-content-left"
-                                        data-toggle="modal" data-target="#add_qr_setting"
-                                        style="color:#fff;height:34px;border-radius:.25rem;font-size:15px;font-weight:normal;">Add
-                                        Model Settings</button>
+                                    <button class="btn btn-secondary d-flex justify-content-left w-100"
+                                        data-toggle="modal" data-target="#add_qr_setting">
+                                        Add Model Settings
+                                    </button>
                                 </div>
                             </div>
 
                             <!-- table -->
                             <div id="" class="card-body table-responsive m-0 p-0" style="max-height: 500px;">
-                                <table class="table col-12 mt-3 table-head-fixed text-nowrap table-hover"
-                                    id="qr_setting_table" style="background: #F9F9F9;">
+                                <table class="table col-12 mt-3 table-head-fixed text-nowrap table-hover table-sm"
+                                    id="qr_setting_table" style="background: #F9F9F9; font-size: 14px;">
                                     <thead style="text-align: center;">
                                         <th style="width: 10%;">#</th>
                                         <th style="width: 10%;">Car Maker</th>
@@ -91,19 +101,19 @@
                         <!-- Defect Details -->
                         <div class="tab-pane fade" id="masterlist-record-2" role="tabpanel"
                             aria-labelledby="masterlist-record-2-tab">
-                            <div class="row mb-3">
+                            <div class="row">
                                 <div class="col-12 col-sm-2">
-                                    <button class="btn btn-block btn-dark d-flex justify-content-left"
-                                        data-toggle="modal" data-target="#add_defect_details"
-                                        style="color:#fff;height:34px;border-radius:.25rem;font-size:15px;font-weight:normal;">Add
-                                        Defect Details</button>
+                                    <button class="btn btn-secondary d-flex justify-content-left w-100"
+                                        data-toggle="modal" data-target="#add_defect_details">
+                                        Add Defect Details
+                                    </button>
                                 </div>
                             </div>
 
                             <!-- table -->
                             <div id="" class="card-body table-responsive m-0 p-0" style="max-height: 500px;">
-                                <table class="table col-12 mt-3 table-head-fixed text-nowrap table-hover"
-                                    id="defect_details_table" style="background: #F9F9F9;">
+                                <table class="table col-12 mt-3 table-head-fixed text-nowrap table-hover table-sm"
+                                    id="defect_details_table" style="background: #F9F9F9; font-size: 14px;">
                                     <thead style="text-align: center;">
                                         <th style="text-align:right">#</th>
                                         <th style="text-align:left">Action</th>
@@ -129,19 +139,19 @@
                         <!-- Account Management -->
                         <div class="tab-pane fade" id="masterlist-record-3" role="tabpanel"
                             aria-labelledby="masterlist-record-3-tab">
-                            <div class="row mb-3">
+                            <div class="row">
                                 <div class="col-12 col-sm-2">
-                                    <button class="btn btn-block btn-dark d-flex justify-content-left"
-                                        data-toggle="modal" data-target="#add_account"
-                                        style="color:#fff;height:34px;border-radius:.25rem;font-size:15px;font-weight:normal;">Add
-                                        Account</button>
+                                    <button class="btn btn-secondary d-flex justify-content-left w-100"
+                                        data-toggle="modal" data-target="#add_account">
+                                        Add Account
+                                    </button>
                                 </div>
                             </div>
 
                             <!-- table -->
                             <div id="" class="card-body table-responsive m-0 p-0" style="max-height: 500px;">
-                                <table class="table col-12 mt-3 table-head-fixed text-nowrap table-hover"
-                                    id="accounts_table" style="background: #F9F9F9;">
+                                <table class="table col-12 mt-3 table-head-fixed text-nowrap table-hover table-sm"
+                                    id="accounts_table" style="background: #F9F9F9; font-size: 14px;">
                                     <thead style="text-align: center;">
                                         <th style="text-align:right">#</th>
                                         <th style="text-align:center">Action</th>
@@ -149,6 +159,77 @@
                                         <th style="text-align:center">Role</th>
                                     </thead>
                                     <tbody class="mb-0" id="list_of_accounts">
+                                        <tr>
+                                            <td colspan="10" style="text-align: center;">
+                                                <div class="spinner-border text-dark" role="status">
+                                                    <span class="sr-only">Loading...</span>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Line / Process -->
+                        <div class="tab-pane fade" id="masterlist-record-4" role="tabpanel"
+                            aria-labelledby="masterlist-record-4-tab">
+                            <div class="row">
+                                <div class="col-12 col-sm-2">
+                                    <button class="btn btn-secondary d-flex justify-content-left w-100"
+                                        data-toggle="modal" data-target="#add_line_process">
+                                        Add Line / Process
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- table -->
+                            <div id="" class="card-body table-responsive m-0 p-0" style="max-height: 500px;">
+                                <table class="table col-12 mt-3 table-head-fixed text-nowrap table-hover table-sm"
+                                    id="line_process_table" style="background: #F9F9F9; font-size: 14px;">
+                                    <thead style="text-align: center;">
+                                        <th style="text-align:right">#</th>
+                                        <th style="text-align:center">Action</th>
+                                        <th style="text-align:center">Line</th>
+                                        <th style="text-align:center">Process</th>
+                                    </thead>
+                                    <tbody class="mb-0" id="list_of_line_process">
+                                        <tr>
+                                            <td colspan="10" style="text-align: center;">
+                                                <div class="spinner-border text-dark" role="status">
+                                                    <span class="sr-only">Loading...</span>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- authorized accounts -->
+                        <div class="tab-pane fade" id="masterlist-record-5" role="tabpanel"
+                            aria-labelledby="masterlist-record-5-tab">
+                            <div class="row">
+                                <div class="col-12 col-sm-2">
+                                    <button class="btn btn-secondary d-flex justify-content-left w-100"
+                                        data-toggle="modal" data-target="#add_auth_account">
+                                        Add Authorized Account
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- table -->
+                            <div id="" class="card-body table-responsive m-0 p-0" style="max-height: 500px;">
+                                <table class="table col-12 mt-3 table-head-fixed text-nowrap table-hover table-sm"
+                                    id="auth_account_table" style="background: #F9F9F9; font-size: 14px;">
+                                    <thead style="text-align: center;">
+                                        <th style="text-align:right">#</th>
+                                        <th style="text-align:center">Action</th>
+                                        <th style="text-align:center">Employee ID</th>
+                                        <th style="text-align:center">Name</th>
+                                        <th style="text-align:center">Department</th>
+                                    </thead>
+                                    <tbody class="mb-0" id="list_of_auth_account">
                                         <tr>
                                             <td colspan="10" style="text-align: center;">
                                                 <div class="spinner-border text-dark" role="status">

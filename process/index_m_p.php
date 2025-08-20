@@ -222,8 +222,111 @@ if ($method == 'delete_added_account') {
     }
 }
 
+if ($method == 'line_process_list') {
+    $c = 0;
 
+    $query = "SELECT * FROM m_line_process ORDER BY date_updated DESC";
+    $stmt = $conn->prepare($query, array(PDO::ATTR_CURSOR => PDO::CURSOR_SCROLL));
+    $stmt->execute();
+    if ($stmt->rowCount() > 0) {
+        foreach ($stmt->fetchALL() as $row) {
+            $c++;
+            echo '<tr style="cursor:pointer;">';
+            echo '<td style="text-align:right;">' . $c . '</td>';
+            echo '<td style="text-align:center;">';
+            echo '<button type="button" class="btn btn-outline-danger btn-xs" onclick="delete_added_line_process(event)" data-id="' . $row["id"] . '"><i class="fas fa-trash"></i> Delete</button>';
+            echo '</td>';
+            echo '<td style="text-align:center;">' . $row['line_no'] . '</td>';
+            echo '<td style="text-align:center;">' . $row['process'] . '</td>';
 
+            echo '</tr>';
+        }
+    } else {
+        echo '<tr>';
+        echo '<td colspan="4" style="text-align:center; color:red;">No Result</td>';
+        echo '</tr>';
+    }
+}
+
+if ($method == 'register_line_process') {
+    $line_no = trim($_POST['line_no']);
+    $process = trim($_POST['process']);
+
+    $stmt = NULL;
+    $query = "INSERT INTO m_line_process (line_no,process,date_updated) VALUES ('$line_no','$process', GETDATE())";
+
+    $stmt = $conn->prepare($query, array(PDO::ATTR_CURSOR => PDO::CURSOR_SCROLL));
+    if ($stmt->execute()) {
+        echo 'success';
+    } else {
+        echo 'error';
+    }
+}
+
+if ($method == 'delete_added_line_process') {
+    $query = "DELETE FROM m_line_process WHERE id = :id";
+    $stmt = $conn->prepare($query, array(PDO::ATTR_CURSOR => PDO::CURSOR_SCROLL));
+    $stmt->bindParam(':id', $_POST['id']);
+    if ($stmt->execute()) {
+        echo 'success';
+    } else {
+        echo 'error';
+    }
+}
+
+if ($method == 'auth_account_list') {
+    $c = 0;
+
+    $query = "SELECT * FROM m_auth_accounts ORDER BY date_added DESC";
+    $stmt = $conn->prepare($query, array(PDO::ATTR_CURSOR => PDO::CURSOR_SCROLL));
+    $stmt->execute();
+    if ($stmt->rowCount() > 0) {
+        foreach ($stmt->fetchALL() as $row) {
+            $c++;
+            echo '<tr style="cursor:pointer;">';
+            echo '<td style="text-align:right;">' . $c . '</td>';
+            echo '<td style="text-align:center;">';
+            echo '<button type="button" class="btn btn-outline-danger btn-xs" onclick="delete_added_auth_account(event)" data-id="' . $row["id"] . '"><i class="fas fa-trash"></i> Delete</button>';
+            echo '</td>';
+            echo '<td style="text-align:center;">' . $row['emp_no'] . '</td>';
+            echo '<td style="text-align:center;">' . $row['emp_name'] . '</td>';
+            echo '<td style="text-align:center;">' . $row['department'] . '</td>';
+
+            echo '</tr>';
+        }
+    } else {
+        echo '<tr>';
+        echo '<td colspan="5" style="text-align:center; color:red;">No Result</td>';
+        echo '</tr>';
+    }
+}
+
+if ($method == 'register_auth_account') {
+    $emp_id = trim($_POST['emp_id']);
+    $emp_name = trim($_POST['emp_name']);
+    $emp_dept = trim($_POST['emp_dept']);
+
+    $stmt = NULL;
+    $query = "INSERT INTO m_auth_accounts (emp_no, emp_name, department, date_added) VALUES ('$emp_id','$emp_name', '$emp_dept', GETDATE())";
+
+    $stmt = $conn->prepare($query, array(PDO::ATTR_CURSOR => PDO::CURSOR_SCROLL));
+    if ($stmt->execute()) {
+        echo 'success';
+    } else {
+        echo 'error';
+    }
+}
+
+if ($method == 'delete_added_auth_account') {
+    $query = "DELETE FROM m_auth_accounts WHERE id = :id";
+    $stmt = $conn->prepare($query, array(PDO::ATTR_CURSOR => PDO::CURSOR_SCROLL));
+    $stmt->bindParam(':id', $_POST['id']);
+    if ($stmt->execute()) {
+        echo 'success';
+    } else {
+        echo 'error';
+    }
+}
 
 $conn = NULL;
 ?>

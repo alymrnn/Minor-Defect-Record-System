@@ -45,19 +45,12 @@
             </div>
 
             <div class="modal-footer" style="background:#e9e9e9;">
-                <div class="col-12">
-                    <div class="float-left">
-                        <button class="btn btn-block" data-dismiss="modal"
-                            style="color:#fff;height:34px;width:150px;border-radius:.25rem;background: #CA3F3F;font-size:15px;font-weight:normal;"
-                            onmouseover="this.style.backgroundColor='#AC3737'; this.style.color='#FFF';"
-                            onmouseout="this.style.backgroundColor='#CA3F3F'; this.style.color='#FFF';">Cancel</button>
+                 <div class="col-12">
+                    <div class="float-left w-25">
+                        <button class="btn btn-outline-danger btn-block" data-dismiss="modal">Cancel</button>
                     </div>
-                    <div class="float-right">
-                        <button class="btn btn-block" onclick="register_defect_details()"
-                            style="color:#fff;height:34px;width:150px;border-radius:.25rem;background: #226F54;font-size:15px;font-weight:normal;"
-                            onmouseover="this.style.backgroundColor='#164B39'; this.style.color='#FFF';"
-                            onmouseout="this.style.backgroundColor='#226F54'; this.style.color='#FFF';">Add
-                        </button>
+                    <div class="float-right w-25">
+                        <button class="btn btn-success btn-block" onclick="register_defect_details()">Add</button>
                     </div>
                 </div>
             </div>

@@ -1,8 +1,10 @@
 <script type="text/javascript">
-    $(document).ready(function () {
+    $(document).ready(function() {
         load_car_settings();
         load_defect_details();
         load_accounts();
+        load_line_process();
+        load_auth_account();
     });
 
     // for qr settings
@@ -13,7 +15,8 @@
             cache: false,
             data: {
                 method: 'qr_setting_list'
-            }, success: function (response) {
+            },
+            success: function(response) {
                 $('#list_of_qr_setting').html(response);
                 $('#spinner').fadeOut();
             }
@@ -46,8 +49,7 @@
                 showConfirmButton: false,
                 timer: 1500
             });
-        }
-        else {
+        } else {
             $.ajax({
                 url: '../process/index_m_p.php',
                 type: 'POST',
@@ -65,7 +67,7 @@
                     serial_no_start: serial_no_start,
                     serial_no_length: serial_no_length
                 },
-                success: function (response) {
+                success: function(response) {
                     if (response == 'success') {
                         Swal.fire({
                             icon: 'success',
@@ -164,7 +166,7 @@
                 serial_no_start: serial_no_start,
                 serial_no_length: serial_no_length
             },
-            success: function (response) {
+            success: function(response) {
                 if (response == 'success') {
                     Swal.fire({
                         icon: 'success',
@@ -207,7 +209,7 @@
                 method: 'delete_setting',
                 id: id
             },
-            success: function (response) {
+            success: function(response) {
                 if (response == 'success') {
                     Swal.fire({
                         icon: 'info',
@@ -237,7 +239,8 @@
             cache: false,
             data: {
                 method: 'defect_details_list'
-            }, success: function (response) {
+            },
+            success: function(response) {
                 $('#list_of_defect_details').html(response);
                 $('#spinner').fadeOut();
             }
@@ -263,7 +266,7 @@
                 defect_details: defect_details,
                 defect_treatment: defect_treatment
             },
-            success: function (response) {
+            success: function(response) {
                 if (response == 'success') {
                     Swal.fire({
                         icon: 'success',
@@ -309,7 +312,7 @@
                 method: 'delete_added_defect',
                 id: id
             },
-            success: function (response) {
+            success: function(response) {
                 if (response == 'success') {
                     Swal.fire({
                         icon: 'info',
@@ -323,15 +326,16 @@
         });
     }
 
-     // for accounts
-     const load_accounts = () => {
+    // for accounts
+    const load_accounts = () => {
         $.ajax({
             url: '../process/index_m_p.php',
             type: 'POST',
             cache: false,
             data: {
                 method: 'accounts_list'
-            }, success: function (response) {
+            },
+            success: function(response) {
                 $('#list_of_accounts').html(response);
                 $('#spinner').fadeOut();
             }
@@ -341,7 +345,7 @@
     const register_account = () => {
         var username = document.getElementById('username_m').value;
         var role = document.getElementById('role_m').value;
-        
+
         $.ajax({
             url: '../process/index_m_p.php',
             type: 'POST',
@@ -351,7 +355,7 @@
                 username: username,
                 role: role
             },
-            success: function (response) {
+            success: function(response) {
                 if (response == 'success') {
                     Swal.fire({
                         icon: 'success',
@@ -394,7 +398,7 @@
                 method: 'delete_added_account',
                 id: id
             },
-            success: function (response) {
+            success: function(response) {
                 if (response == 'success') {
                     Swal.fire({
                         icon: 'info',
@@ -403,6 +407,181 @@
                         timer: 1500
                     });
                     load_accounts();
+                }
+            }
+        });
+    }
+
+    // for line process
+    const load_line_process = () => {
+        $.ajax({
+            url: '../process/index_m_p.php',
+            type: 'POST',
+            cache: false,
+            data: {
+                method: 'line_process_list'
+            },
+            success: function(response) {
+                $('#list_of_line_process').html(response);
+                $('#spinner').fadeOut();
+            }
+        });
+    }
+
+    const register_line_process = () => {
+        var line_no = document.getElementById('line_m').value;
+        var process = document.getElementById('process_m').value;
+
+        $.ajax({
+            url: '../process/index_m_p.php',
+            type: 'POST',
+            cache: false,
+            data: {
+                method: 'register_line_process',
+                line_no: line_no,
+                process: process
+            },
+            success: function(response) {
+                if (response == 'success') {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Line No. / Process Added',
+                        text: 'Success',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                    $('#line_m').val('');
+                    $('#process_m').val('');
+                    load_line_process();
+                    $('#add_line_process').modal('hide');
+                } else if (response == 'Already Exist') {
+                    Swal.fire({
+                        icon: 'info',
+                        title: 'Duplicate Data',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                }
+            }
+        });
+    }
+
+    const delete_added_line_process = (event) => {
+        var id = event.target.dataset.id;
+
+        $.ajax({
+            url: '../process/index_m_p.php',
+            type: 'POST',
+            cache: false,
+            data: {
+                method: 'delete_added_line_process',
+                id: id
+            },
+            success: function(response) {
+                if (response == 'success') {
+                    Swal.fire({
+                        icon: 'info',
+                        text: 'Deleted, please wait.',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                    load_line_process();
+                }
+            }
+        });
+    }
+
+    // for auth account
+    const load_auth_account = () => {
+        $.ajax({
+            url: '../process/index_m_p.php',
+            type: 'POST',
+            cache: false,
+            data: {
+                method: 'auth_account_list'
+            },
+            success: function(response) {
+                $('#list_of_auth_account').html(response);
+                $('#spinner').fadeOut();
+            }
+        });
+    }
+
+     const register_auth_account = () => {
+        var emp_id = document.getElementById('emp_id_m').value;
+        var emp_name = document.getElementById('name_m').value;
+        var emp_dept = document.getElementById('department_m').value;
+
+        $.ajax({
+            url: '../process/index_m_p.php',
+            type: 'POST',
+            cache: false,
+            data: {
+                method: 'register_auth_account',
+                emp_id: emp_id,
+                emp_name: emp_name,
+                emp_dept: emp_dept
+            },
+            success: function(response) {
+                if (response == 'success') {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Authorized Account Added',
+                        text: 'Success',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                    $('#emp_id_m').val('');
+                    $('#name_m').val('');
+                    $('#department_m').val('');
+                    load_auth_account();
+                    $('#add_auth_account').modal('hide');
+                } else if (response == 'Already Exist') {
+                    Swal.fire({
+                        icon: 'info',
+                        title: 'Duplicate Data',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                }
+            }
+        });
+    }
+
+     const delete_added_auth_account = (event) => {
+        var id = event.target.dataset.id;
+
+        $.ajax({
+            url: '../process/index_m_p.php',
+            type: 'POST',
+            cache: false,
+            data: {
+                method: 'delete_added_auth_account',
+                id: id
+            },
+            success: function(response) {
+                if (response == 'success') {
+                    Swal.fire({
+                        icon: 'info',
+                        text: 'Deleted, please wait.',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                    load_auth_account();
                 }
             }
         });
