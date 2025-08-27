@@ -69,14 +69,14 @@ include('plugins/system_plugins/navbar/index_navbar.php');
         <div class="row mt-1">
           <div class="col-12 col-sm-4 col-md-2 mb-2">
             <!-- date from -->
-            <label style="font-weight:normal;margin:0;padding:0;color:#000;font-size:14px;">Date From</label>
+            <label style="font-weight:normal;margin:0;padding:0;color:#000;font-size:14px;">Date Detected From</label>
             <input type="date" name="date_from" class="form-control" id="search_date_from" placeholder="Date From"
               onfocus="(this.type='date')"
               style="color: #525252;font-size: 14px;border-radius: .25rem;border: 1px solid #adb5bd;background: #FFF;height:35px; width:100%;">
           </div>
           <div class="col-12 col-sm-4 col-md-2 mb-2">
             <!-- date to -->
-            <label style="font-weight:normal;margin:0;padding:0;color:#000;font-size:14px;">Date To</label>
+            <label style="font-weight:normal;margin:0;padding:0;color:#000;font-size:14px;">Date Detected To</label>
             <input type="date" name="date_to" class="form-control" id="search_date_to" placeholder="Date To"
               onfocus="(this.type='date')"
               style="color: #525252;font-size: 14px;border-radius: .25rem;border: 1px solid #adb5bd;background: #FFF;height:35px; width:100%;">
