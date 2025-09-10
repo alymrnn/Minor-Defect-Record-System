@@ -33,10 +33,10 @@ include('plugins/system_plugins/navbar/index_navbar.php');
 
                   <!-- date range -->
                   <p class="m-0 p-0 text-left" style="font-size: 12px;">Date From</p>
-                  <input type="text" name="date_from" class="form-control form-control-sm form-control-border mb-1" id="d_date_from" placeholder="Date From" style="font-size: 13px;"
+                  <input type="text" name="date_from" class="form-control form-control-sm form-control-border mb-1" id="d_date_from" placeholder="Date From"
                      onfocus="this.type='date';" onblur="if(this.value==''){this.type='text';}">
                   <p class="m-0 p-0 text-left" style="font-size: 12px;">Date To</p>
-                  <input type="text" name="date_to" class="form-control form-control-sm form-control-border mb-1" id="d_date_to" placeholder="Date To" style="font-size: 13px;"
+                  <input type="text" name="date_to" class="form-control form-control-sm form-control-border mb-1" id="d_date_to" placeholder="Date To"
                      onfocus="this.type='date';" onblur="if(this.value==''){this.type='text';}">
                </div>
             </div>

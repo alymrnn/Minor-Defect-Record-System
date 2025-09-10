@@ -5,7 +5,7 @@
             <div class="modal-header" style="background:#343a40;">
                 <h5 class="modal-title" id="exampleModalLabel" style="font-weight: normal;color: #fff;"><i
                         class="fas fa-plus-circle"></i>&nbsp;
-                    Add New Line / Process
+                    Add New Process
                 </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color: #fff;">
                     <span aria-hidden="true"><i class="fas fa-times"></i></span>

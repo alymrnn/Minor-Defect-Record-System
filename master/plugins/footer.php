@@ -1,7 +1,7 @@
 <footer class="main-footer" style="background:#f8f9fa; color:#000; font-size: 13px;">
     Copyright &copy; 2024. Ally Maranan. All Rights Reserved.
     <div class="float-right d-none d-sm-inline-block">
-        Version 1.0.9
+        Version 2.0.0
     </div>
 </footer>
 

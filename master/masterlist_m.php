@@ -43,12 +43,12 @@
                         <li class="nav-item">
                             <a class="nav-link" id="masterlist-record-4-tab" data-toggle="pill"
                                 href="#masterlist-record-4" role="tab" aria-controls="masterlist-record-4"
-                                aria-selected="true">Line / Process</a>
+                                aria-selected="true">Process</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" id="masterlist-record-5-tab" data-toggle="pill"
                                 href="#masterlist-record-5" role="tab" aria-controls="masterlist-record-5"
-                                aria-selected="true">Line / Car Model</a>
+                                aria-selected="true">Car Model</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" id="masterlist-record-6-tab" data-toggle="pill"
@@ -183,7 +183,7 @@
                                 <div class="col-12 col-sm-2">
                                     <button class="btn btn-secondary d-flex justify-content-left w-100"
                                         data-toggle="modal" data-target="#add_line_process">
-                                        Add Line / Process
+                                        Add Process
                                     </button>
                                 </div>
                             </div>
@@ -218,7 +218,7 @@
                                 <div class="col-12 col-sm-2">
                                     <button class="btn btn-secondary d-flex justify-content-left w-100"
                                         data-toggle="modal" data-target="#add_line_car_model">
-                                        Add Line / Car Model
+                                        Add Car Model
                                     </button>
                                 </div>
                             </div>

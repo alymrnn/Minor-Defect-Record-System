@@ -835,8 +835,7 @@
                     // Handle car_model
                     if (Array.isArray(data.car_model)) {
                         let selectHtml = `
-                                            <select id="a_car_model" class="form-control" required
-                                                    style="color: #525252;font-size: 14px;border-radius: .25rem;background: #FFF;height: 35px; width:100%;">
+                                            <select id="a_car_model" class="form-control form-control-sm form-control-border" required>
                                                 <option value="" disabled selected>Select Car Model</option>
                                         `;
                         data.car_model.forEach(model => {
@@ -849,8 +848,7 @@
                     } else {
                         // If single car model, ensure it's a text input
                         const inputHtml = `
-                                                <input type="text" id="a_car_model" class="form-control" autocomplete="off"
-                                                    style="color: #525252;font-size: 14px;border-radius: .25rem;background: #FFF;height: 35px; width:100%;"
+                                                <input type="text" id="a_car_model" class="form-control form-control-sm form-control-border" autocomplete="off"
                                                     value="${data.car_model}" required>
                                             `;
                         $('#a_car_model').replaceWith(inputHtml);
