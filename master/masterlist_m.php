@@ -26,12 +26,12 @@
                 <div class="card-header p-0 border-bottom-0">
                     <ul class="nav nav-tabs" id="masterlist-record-tab" role="tablist">
                         <li class="nav-item">
-                            <a class="nav-link active" id="masterlist-record-1-tab" data-toggle="pill"
+                            <a class="nav-link" id="masterlist-record-1-tab" data-toggle="pill"
                                 href="#masterlist-record-1" role="tab" aria-controls="masterlist-record-1"
                                 aria-selected="true">QR Settings</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" id="masterlist-record-2-tab" data-toggle="pill"
+                            <a class="nav-link active" id="masterlist-record-2-tab" data-toggle="pill"
                                 href="#masterlist-record-2" role="tab" aria-controls="masterlist-record-2"
                                 aria-selected="true">Defect Details</a>
                         </li>
@@ -48,6 +48,11 @@
                         <li class="nav-item">
                             <a class="nav-link" id="masterlist-record-5-tab" data-toggle="pill"
                                 href="#masterlist-record-5" role="tab" aria-controls="masterlist-record-5"
+                                aria-selected="true">Line / Car Model</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="masterlist-record-6-tab" data-toggle="pill"
+                                href="#masterlist-record-6" role="tab" aria-controls="masterlist-record-5"
                                 aria-selected="true">Authorized Account</a>
                         </li>
                     </ul>
@@ -56,7 +61,7 @@
                 <div class="card-body">
                     <div class="tab-content" id="masterlist-record-tab-content">
                         <!-- QR SETTINGS -->
-                        <div class="tab-pane fade show active" id="masterlist-record-1" role="tabpanel"
+                        <div class="tab-pane fade" id="masterlist-record-1" role="tabpanel"
                             aria-labelledby="masterlist-record-1-tab">
                             <!-- Main Content -->
                             <div class="row">
@@ -87,7 +92,7 @@
                                     </thead>
                                     <tbody class="mb-0" id="list_of_qr_setting">
                                         <tr>
-                                            <td colspan="10" style="text-align: center;">
+                                            <td colspan="11" style="text-align: center;">
                                                 <div class="spinner-border text-dark" role="status">
                                                     <span class="sr-only">Loading...</span>
                                                 </div>
@@ -99,7 +104,7 @@
                         </div>
 
                         <!-- Defect Details -->
-                        <div class="tab-pane fade" id="masterlist-record-2" role="tabpanel"
+                        <div class="tab-pane fade show active" id="masterlist-record-2" role="tabpanel"
                             aria-labelledby="masterlist-record-2-tab">
                             <div class="row">
                                 <div class="col-12 col-sm-2">
@@ -125,7 +130,7 @@
                                     </thead>
                                     <tbody class="mb-0" id="list_of_defect_details">
                                         <tr>
-                                            <td colspan="10" style="text-align: center;">
+                                            <td colspan="7" style="text-align: center;">
                                                 <div class="spinner-border text-dark" role="status">
                                                     <span class="sr-only">Loading...</span>
                                                 </div>
@@ -160,7 +165,7 @@
                                     </thead>
                                     <tbody class="mb-0" id="list_of_accounts">
                                         <tr>
-                                            <td colspan="10" style="text-align: center;">
+                                            <td colspan="4" style="text-align: center;">
                                                 <div class="spinner-border text-dark" role="status">
                                                     <span class="sr-only">Loading...</span>
                                                 </div>
@@ -195,7 +200,44 @@
                                     </thead>
                                     <tbody class="mb-0" id="list_of_line_process">
                                         <tr>
-                                            <td colspan="10" style="text-align: center;">
+                                            <td colspan="4" style="text-align: center;">
+                                                <div class="spinner-border text-dark" role="status">
+                                                    <span class="sr-only">Loading...</span>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Line / Car Model -->
+                        <div class="tab-pane fade" id="masterlist-record-5" role="tabpanel"
+                            aria-labelledby="masterlist-record-5-tab">
+                            <div class="row">
+                                <div class="col-12 col-sm-2">
+                                    <button class="btn btn-secondary d-flex justify-content-left w-100"
+                                        data-toggle="modal" data-target="#add_line_car_model">
+                                        Add Line / Car Model
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- table -->
+                            <div id="" class="card-body table-responsive m-0 p-0" style="max-height: 500px;">
+                                <table class="table col-12 mt-3 table-head-fixed text-nowrap table-hover table-sm"
+                                    id="line_car_model_table" style="background: #F9F9F9; font-size: 14px;">
+                                    <thead style="text-align: center;">
+                                        <th style="text-align:right">#</th>
+                                        <th style="text-align:center">Action</th>
+                                        <th style="text-align:center">Line</th>
+                                        <th style="text-align:center">Section</th>
+                                        <th style="text-align:center">Car Maker</th>
+                                        <th style="text-align:center">Car Model</th>
+                                    </thead>
+                                    <tbody class="mb-0" id="list_of_line_car_model">
+                                        <tr>
+                                            <td colspan="6" style="text-align: center;">
                                                 <div class="spinner-border text-dark" role="status">
                                                     <span class="sr-only">Loading...</span>
                                                 </div>
@@ -207,8 +249,8 @@
                         </div>
 
                         <!-- authorized accounts -->
-                        <div class="tab-pane fade" id="masterlist-record-5" role="tabpanel"
-                            aria-labelledby="masterlist-record-5-tab">
+                        <div class="tab-pane fade" id="masterlist-record-6" role="tabpanel"
+                            aria-labelledby="masterlist-record-6-tab">
                             <div class="row">
                                 <div class="col-12 col-sm-2">
                                     <button class="btn btn-secondary d-flex justify-content-left w-100"
@@ -231,7 +273,7 @@
                                     </thead>
                                     <tbody class="mb-0" id="list_of_auth_account">
                                         <tr>
-                                            <td colspan="10" style="text-align: center;">
+                                            <td colspan="5" style="text-align: center;">
                                                 <div class="spinner-border text-dark" role="status">
                                                     <span class="sr-only">Loading...</span>
                                                 </div>

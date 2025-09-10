@@ -5,6 +5,7 @@
         load_accounts();
         load_line_process();
         load_auth_account();
+        load_line_car_model();
     });
 
     // for qr settings
@@ -514,7 +515,7 @@
         });
     }
 
-     const register_auth_account = () => {
+    const register_auth_account = () => {
         var emp_id = document.getElementById('emp_id_m').value;
         var emp_name = document.getElementById('name_m').value;
         var emp_dept = document.getElementById('department_m').value;
@@ -562,7 +563,7 @@
         });
     }
 
-     const delete_added_auth_account = (event) => {
+    const delete_added_auth_account = (event) => {
         var id = event.target.dataset.id;
 
         $.ajax({
@@ -582,6 +583,98 @@
                         timer: 1500
                     });
                     load_auth_account();
+                }
+            }
+        });
+    }
+
+    // for line car model
+    const load_line_car_model = () => {
+        $.ajax({
+            url: '../process/index_m_p.php',
+            type: 'POST',
+            cache: false,
+            data: {
+                method: 'line_car_model_list'
+            },
+            success: function(response) {
+                $('#list_of_line_car_model').html(response);
+                $('#spinner').fadeOut();
+            }
+        });
+    }
+
+    const register_line_car_model = () => {
+        var line_no = document.getElementById('cm_line_no').value;
+        var section = document.getElementById('cm_section').value;
+        var car_maker = document.getElementById('cm_car_maker').value;
+        var car_model = document.getElementById('cm_car_model').value;
+
+        $.ajax({
+            url: '../process/index_m_p.php',
+            type: 'POST',
+            cache: false,
+            data: {
+                method: 'register_line_car_model',
+                line_no: line_no,
+                section: section,
+                car_maker: car_maker,
+                car_model: car_model
+            },
+            success: function(response) {
+                if (response == 'success') {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Car Model Added',
+                        text: 'Success',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                    $('#cm_line_no').val('');
+                    $('#cm_section').val('');
+                    $('#cm_car_maker').val('');
+                    $('#cm_car_model').val('');
+                    load_line_car_model();
+                    $('#add_line_car_model').modal('hide');
+                } else if (response == 'Already Exist') {
+                    Swal.fire({
+                        icon: 'info',
+                        title: 'Duplicate Data',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                }
+            }
+        });
+    }
+
+    const delete_added_line_car_model = (event) => {
+        var id = event.target.dataset.id;
+
+        $.ajax({
+            url: '../process/index_m_p.php',
+            type: 'POST',
+            cache: false,
+            data: {
+                method: 'delete_added_line_car_model',
+                id: id
+            },
+            success: function(response) {
+                if (response == 'success') {
+                    Swal.fire({
+                        icon: 'info',
+                        text: 'Deleted, please wait.',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                    load_line_car_model();
                 }
             }
         });

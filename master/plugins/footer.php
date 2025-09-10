@@ -15,6 +15,7 @@ include '../modals/update_qr_setting.php';
 include '../modals/add_account.php';
 include '../modals/add_line_process.php';
 include '../modals/add_auth_account.php';
+include '../modals/add_line_car_model.php';
 
 ?>
 

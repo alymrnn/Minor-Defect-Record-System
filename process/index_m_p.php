@@ -79,7 +79,6 @@ if ($method == 'update_setting') {
     } else {
         echo 'error';
     }
-
 }
 
 if ($method == 'delete_setting') {
@@ -107,7 +106,7 @@ if ($method == 'defect_details_list') {
             echo '<tr style="cursor:pointer;">';
             echo '<td style="text-align:right;">' . $c . '</td>';
             echo '<td style="text-align:center;">';
-            echo '<button type="button" class="btn btn-outline-danger btn-xs" onclick="delete_added_defect(event)" data-id="' . $row["id"] . '"><i class="fas fa-trash"></i> Delete</button>';
+            echo '<button type="button" class="btn btn-outline-danger btn-xs" onclick="delete_added_defect(event)" data-id="' . $row["id"] . '">Delete</button>';
             echo '</td>';
             echo '<td style="text-align:center;">' . $row['defect_code_dd'] . '</td>';
             echo '<td style="text-align:center;">' . $row['defect_code_value_dd'] . '</td>';
@@ -182,7 +181,7 @@ if ($method == 'accounts_list') {
             echo '<tr style="cursor:pointer;">';
             echo '<td style="text-align:right;">' . $c . '</td>';
             echo '<td style="text-align:center;">';
-            echo '<button type="button" class="btn btn-outline-danger btn-xs" onclick="delete_added_account(event)" data-id="' . $row["id"] . '"><i class="fas fa-trash"></i> Delete</button>';
+            echo '<button type="button" class="btn btn-outline-danger btn-xs" onclick="delete_added_account(event)" data-id="' . $row["id"] . '">Delete</button>';
             echo '</td>';
             echo '<td style="text-align:center;">' . $row['username'] . '</td>';
             echo '<td style="text-align:center;">' . $row['role'] . '</td>';
@@ -234,7 +233,7 @@ if ($method == 'line_process_list') {
             echo '<tr style="cursor:pointer;">';
             echo '<td style="text-align:right;">' . $c . '</td>';
             echo '<td style="text-align:center;">';
-            echo '<button type="button" class="btn btn-outline-danger btn-xs" onclick="delete_added_line_process(event)" data-id="' . $row["id"] . '"><i class="fas fa-trash"></i> Delete</button>';
+            echo '<button type="button" class="btn btn-outline-danger btn-xs" onclick="delete_added_line_process(event)" data-id="' . $row["id"] . '">Delete</button>';
             echo '</td>';
             echo '<td style="text-align:center;">' . $row['line_no'] . '</td>';
             echo '<td style="text-align:center;">' . $row['process'] . '</td>';
@@ -286,7 +285,7 @@ if ($method == 'auth_account_list') {
             echo '<tr style="cursor:pointer;">';
             echo '<td style="text-align:right;">' . $c . '</td>';
             echo '<td style="text-align:center;">';
-            echo '<button type="button" class="btn btn-outline-danger btn-xs" onclick="delete_added_auth_account(event)" data-id="' . $row["id"] . '"><i class="fas fa-trash"></i> Delete</button>';
+            echo '<button type="button" class="btn btn-outline-danger btn-xs" onclick="delete_added_auth_account(event)" data-id="' . $row["id"] . '">Delete</button>';
             echo '</td>';
             echo '<td style="text-align:center;">' . $row['emp_no'] . '</td>';
             echo '<td style="text-align:center;">' . $row['emp_name'] . '</td>';
@@ -328,5 +327,60 @@ if ($method == 'delete_added_auth_account') {
     }
 }
 
+if ($method == 'line_car_model_list') {
+    $c = 0;
+
+    $query = "SELECT * FROM m_line_no ORDER BY date_updated DESC";
+    $stmt = $conn->prepare($query, array(PDO::ATTR_CURSOR => PDO::CURSOR_SCROLL));
+    $stmt->execute();
+    if ($stmt->rowCount() > 0) {
+        foreach ($stmt->fetchALL() as $row) {
+            $c++;
+            echo '<tr style="cursor:pointer;">';
+            echo '<td style="text-align:right;">' . $c . '</td>';
+            echo '<td style="text-align:center;">';
+            echo '<button type="button" class="btn btn-outline-danger btn-xs" onclick="delete_added_line_car_model(event)" data-id="' . $row["id"] . '">Delete</button>';
+            echo '</td>';
+            echo '<td style="text-align:center;">' . $row['line_no'] . '</td>';
+            echo '<td style="text-align:center;">' . $row['car_maker'] . '</td>';
+            echo '<td style="text-align:center;">' . $row['car_model'] . '</td>';
+            echo '<td style="text-align:center;">' . $row['section'] . '</td>';
+            echo '</tr>';
+        }
+    } else {
+        echo '<tr>';
+        echo '<td colspan="6" style="text-align:center; color:red;">No Result</td>';
+        echo '</tr>';
+    }
+}
+
+if ($method == 'register_line_car_model') {
+    $line_no = trim($_POST['line_no']);
+    $section = trim($_POST['section']);
+    $car_maker = trim($_POST['car_maker']);
+    $car_model = trim($_POST['car_model']);
+
+    $stmt = NULL;
+    $query = "INSERT INTO m_line_no (line_no, car_maker, car_model, section, date_updated) VALUES ('$line_no','$car_maker', '$car_model', '$section', GETDATE())";
+
+    $stmt = $conn->prepare($query, array(PDO::ATTR_CURSOR => PDO::CURSOR_SCROLL));
+    if ($stmt->execute()) {
+        echo 'success';
+    } else {
+        echo 'error';
+    }
+}
+
+if ($method == 'delete_added_line_car_model') {
+    $query = "DELETE FROM m_line_no WHERE id = :id";
+    $stmt = $conn->prepare($query, array(PDO::ATTR_CURSOR => PDO::CURSOR_SCROLL));
+    $stmt->bindParam(':id', $_POST['id']);
+    if ($stmt->execute()) {
+        echo 'success';
+    } else {
+        echo 'error';
+    }
+}
+
+
 $conn = NULL;
-?>
