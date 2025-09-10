@@ -1,9 +1,19 @@
-<footer class="main-footer" style="background:#2b2d42; color:white; font-size: 13px; border-top: 2px solid #8d0801;">
-    Copyright &copy; 2024. Ally Maranan. All Rights Reserved. <a href="index_m.php" class="text-warning">ADMIN</a>
-    <div class="float-right d-none d-sm-inline-block">
-        Version 2.0.0 | <i style="font-size:12px;">IP Address: &nbsp;</i><input
-            style="font-size:12px;border:none;background:none;color:#FFF;text-align:right;width:80px;"
-            value="<?= $_SERVER['REMOTE_ADDR']; ?>" disabled>
+<footer class="main-footer"
+    style="background:#2b2d42; color:white; font-size: 13px; border-top: 1px solid #8d0801;">
+    <div class="row">
+        <div class="col-10 offset-2 d-flex justify-content-between">
+            <span>
+                &copy; 2024. Ally Maranan. All Rights Reserved.
+                <a href="index_m.php" class="text-warning text-decoration-none">ADMIN</a>
+            </span>
+
+            <span>
+                Version 2.0.0 |
+                <i style="font-size:12px;">IP Address:</i>
+                <input style="font-size:12px; border:none; background:none; color:#FFF; text-align:right; width:80px;"
+                    value="<?= $_SERVER['REMOTE_ADDR']; ?>" disabled>
+            </span>
+        </div>
     </div>
 </footer>
 

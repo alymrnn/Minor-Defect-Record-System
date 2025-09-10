@@ -35,11 +35,37 @@
     .highlight {
         border: 1px solid #CA3F3F;
     }
+
+    .d-side-nav {
+        position: fixed;
+        top: 50px;
+        bottom: 0;
+        left: 0;
+        width: 16.6667%;
+        height: calc(100vh - 50px);
+        overflow-y: auto;
+        background: #1b263b;
+        color: #FFF;
+        padding: 10px;
+        border-right: 1px solid #8d0801;
+        z-index: 10;
+        box-sizing: border-box;
+    }
+
+    @media screen and (max-width: 768px) {
+        .d-side-nav {
+            width: 100%;
+            position: relative;
+            height: auto;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+    }
 </style>
 
 <!-- Navbar -->
 <!-- <nav class="main-header navbar navbar-expand-md border-bottom-0" style="background:#163A65;"> -->
-<nav class="main-header navbar navbar-expand-md" style="background:#1b263b; border-bottom: 5px solid #8d0801;">
+<nav class="main-header navbar" style="background:#1b263b; border-bottom: 3px solid #8d0801;">
     <a href="" class="navbar-brand ml-2">
         <img src="dist/img/defect.png" alt="Minor Defect Record System Logo" class="brand-image">
         <span class="brand-text font-weight-normal text-light" style="color: white; font-size: 20px;">MINOR DEFECT RECORD SYSTEM</span>
@@ -47,8 +73,10 @@
 
     <ul class="order-1 order-md-3 navbar-nav navbar-no-expand ml-auto">
         <li class="nav-item mr-4 pt-3">
-            <p style="color: #fff; font-size: 14px;"><i class="fas fa-calendar-check"></i>&nbsp;&nbsp;<span
-                    id="datetime"></span> | <a style="color: #EED965;" href="template/Minor-Defect-Record-System_WI_rev.2.pdf" target="_blank">Work Instruction</a></p>
+            <p style="color: #fff; font-size: 14px;"><i class="fas fa-calendar-check"></i>&nbsp;&nbsp;
+                <span id="datetime"></span> |
+                <a style="color: #EED965;" href="template/Minor-Defect-Record-System_WI_rev.2.pdf" target="_blank">Work Instruction</a>
+            </p>
         </li>
     </ul>
 </nav>
