@@ -61,6 +61,14 @@
             overflow-y: auto;
         }
     }
+
+    .chart-border {
+        border: none;
+        background-color: #fff;
+        padding: 8px;
+        border-radius: 8px;
+        height: 100%;
+    }
 </style>
 
 <!-- Navbar -->

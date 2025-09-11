@@ -5,7 +5,7 @@ include('plugins/system_plugins/preloader.php');
 include('plugins/system_plugins/navbar/index_navbar.php');
 ?>
 
-<div class="content-wrapper text-white" style="background: #1b263b;">
+<div class="content-wrapper" style="background: #1b263b;">
    <!-- Main content -->
    <section class="content">
       <div class="row">
@@ -44,8 +44,40 @@ include('plugins/system_plugins/navbar/index_navbar.php');
 
          <!-- main content -->
          <div class="col-10 offset-2">
-            charts
+            <div class="row mt-2">
+               <div class="col-2">
+                  <div class="chart-border">
+                     <p class="m-0 p-0" style="font-size: 14px;">Defect Record</p>
+                     <h2 id="total_record_count"></h2>
 
+                     <p for="prev-comparison-label" class="mt-3 m-0 p-0" style="font-size: 14px;">Previous Month Record</p>
+                     <h2 id="total_comparison_count"></h2>
+                  </div>
+               </div>
+               <div class="col-10">
+                  <div class="chart-border">
+                     <div id="daily_trend_chart" style="border-radius: 8px;"></div>
+                  </div>
+               </div>
+            </div>
+
+            <div class="row mt-2">
+               <div class="col-4">
+                  <div class="chart-border">
+                     <div id="top_lot_no_chart" style="border-radius: 8px;"></div>
+                  </div>
+               </div>
+               <div class="col-4">
+                  <div class="chart-border">
+                     <div id="top_sequence_no_chart" style="border-radius: 8px;"></div>
+                  </div>
+               </div>
+               <div class="col-4">
+                  <div class="chart-border">
+                     <div id="top_connector_no_chart" style="border-radius: 8px;"></div>
+                  </div>
+               </div>
+            </div>
          </div>
 
 
