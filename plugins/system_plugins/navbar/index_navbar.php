@@ -80,7 +80,6 @@
 </style>
 
 <!-- Navbar -->
-<!-- <nav class="main-header navbar navbar-expand-md border-bottom-0" style="background:#163A65;"> -->
 <nav class="main-header navbar sticky-top" style="background:#1b263b; border-bottom: 3px solid #8d0801; z-index: 1030;">
     <a href="" class="navbar-brand ml-2">
         <img src="dist/img/defect.png" alt="Minor Defect Record System Logo" class="brand-image">

@@ -44,37 +44,23 @@ include('plugins/system_plugins/navbar/index_navbar.php');
                <div class="col-2">
                   <div class="count-border">
                      <p class="m-0 p-0" style="font-size: 14px;">Defect Record</p>
-                     <h2 id="total_record_count"></h2>
+                     <h2 id="total_record_count" class="text-bold"></h2>
                      <hr>
                      <p for="prev-comparison-label" class="mt-3 m-0 p-0" style="font-size: 14px;">Previous Month Record</p>
-                     <h2 id="total_comparison_count"></h2>
+                     <h2 id="total_comparison_count" class="text-bold"></h2>
                   </div>
                </div>
-               <div class="col-10">
+               <div class="col-6">
                   <div class="chart-border">
-                     <div id="daily_trend_chart" style="border-radius: 8px;"></div>
-                  </div>
-               </div>
-            </div>
-            <div class="row mx-1 mt-3">
-               <div class="col-8">
-                  <div class="chart-border">
-                     <div id="top_daily_defect_category_chart" style="border-radius: 8px;">
-                        <blockquote class="blockquote quote-secondary text-left m-2">
-                           <p id="defect_category_chart_placeholder" class="mb-0" style="font-size: 12px; color: #6c757d;">
-                              Select a date from Daily Defect Trend Chart to generate Top Defect Category
-                           </p>
-                        </blockquote>
-                     </div>
-
+                     <div id="top_overall_defect_category" style="border-radius: 8px;"></div>
                   </div>
                </div>
                <div class="col-4">
                   <div class="chart-border">
-                     <div id="top_daily_line_no_chart" style="border-radius: 8px;">
+                     <div id="top_overall_line_no" style="border-radius: 8px;">
                         <blockquote class="blockquote quote-secondary text-left m-2">
-                           <p id="line_no_chart_placeholder" class="mb-0" style="font-size: 12px; color: #6c757d;">
-                              Select a date from Daily Defect Trend Chart to generate Top Line No.
+                           <p id="overall_line_no_chart_placeholder" class="mb-0" style="font-size: 12px; color: #6c757d;">
+                              Select from Top Defect Category Chart to generate Top Line No.'s with Selected Defect
                            </p>
                         </blockquote>
                      </div>
@@ -98,14 +84,40 @@ include('plugins/system_plugins/navbar/index_navbar.php');
                   </div>
                </div>
             </div>
-
+            <div class="row mx-1 mt-3">
+               <div class="col-12">
+                  <div class="chart-border">
+                     <div id="daily_trend_chart" style="border-radius: 8px;"></div>
+                  </div>
+               </div>
+            </div>
+            <div class="row mx-1 mt-3 mb-3">
+               <div class="col-8">
+                  <div class="chart-border">
+                     <div id="top_daily_defect_category_chart" style="border-radius: 8px;">
+                        <blockquote class="blockquote quote-secondary text-left m-2">
+                           <p id="defect_category_chart_placeholder" class="mb-0" style="font-size: 12px; color: #6c757d;">
+                              Select a date from Daily Defect Trend Chart to generate Top Defect Category
+                           </p>
+                        </blockquote>
+                     </div>
+                  </div>
+               </div>
+               <div class="col-4">
+                  <div class="chart-border">
+                     <div id="top_daily_line_no_chart" style="border-radius: 8px;">
+                        <blockquote class="blockquote quote-secondary text-left m-2">
+                           <p id="line_no_chart_placeholder" class="mb-0" style="font-size: 12px; color: #6c757d;">
+                              Select a date from Daily Defect Trend Chart to generate Top Line No.
+                           </p>
+                        </blockquote>
+                     </div>
+                  </div>
+               </div>
+            </div>
          </div>
       </div>
    </section>
-</div>
-
-
-</section>
 </div>
 
 <?php

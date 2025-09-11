@@ -15,6 +15,87 @@ if ($method == 'fetch_line_no') {
     }
 }
 
+if ($method == 'fetch_overall_defect_category') {
+    $line_no   = $_POST['line_no'] ?? null;
+    $date_from = $_POST['date_from'] ?? null;
+    $date_to   = $_POST['date_to'] ?? null;
+
+    try {
+        $query = "SELECT 
+                    defect_category,
+                    COUNT(*) AS total
+                  FROM t_minor_defect_f
+                  WHERE date_detected BETWEEN :start_date AND :end_date";
+
+        if (!empty($line_no)) {
+            $query .= " AND line_no = :line_no";
+        }
+
+        $query .= " GROUP BY defect_category
+                    ORDER BY total DESC
+                    OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY";
+
+        $stmt = $conn->prepare($query);
+
+        $params = [
+            ':start_date' => $date_from,
+            ':end_date'   => $date_to
+        ];
+        if (!empty($line_no)) {
+            $params[':line_no'] = $line_no;
+        }
+
+        $stmt->execute($params);
+
+        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        echo json_encode($data);
+    } catch (PDOException $e) {
+        echo json_encode(['error' => $e->getMessage()]);
+    }
+}
+
+if ($method == 'fetch_overall_line_no') {
+    $line_no         = $_POST['line_no'] ?? null;
+    $defect_category = $_POST['defect_category'] ?? null;
+    $date_from       = $_POST['date_from'] ?? null;
+    $date_to         = $_POST['date_to'] ?? null;
+
+    try {
+        $query = "SELECT 
+                    line_no,
+                    COUNT(*) AS total
+                  FROM t_minor_defect_f
+                  WHERE date_detected BETWEEN :start_date AND :end_date
+                    AND defect_category = :defect_category";
+
+        if (!empty($line_no)) {
+            $query .= " AND line_no = :line_no";
+        }
+
+        $query .= " GROUP BY line_no
+                    ORDER BY total DESC
+                    OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY";
+
+        $stmt = $conn->prepare($query);
+
+        $params = [
+            ':start_date' => $date_from,
+            ':end_date'   => $date_to,
+            ':defect_category' => $defect_category
+        ];
+        if (!empty($line_no)) {
+            $params[':line_no'] = $line_no;
+        }
+
+        $stmt->execute($params);
+        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        echo json_encode($data);
+    } catch (PDOException $e) {
+        echo json_encode(['error' => $e->getMessage()]);
+    }
+}
+
 if ($method == 'fetch_total_defect_record') {
     $line_no   = $_POST['line_no'] ?? null;
     $date_from = $_POST['date_from'] ?? null;
