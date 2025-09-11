@@ -128,6 +128,50 @@ if ($method == 'fetch_daily_trend') {
     }
 }
 
+if ($method == 'fetch_top_daily_line_no') {
+    $defect_date = $_POST['defect_date'] ?? null;
+
+    try {
+        $query = "SELECT TOP 10 
+                     line_no,
+                     COUNT(*) AS total
+                  FROM t_minor_defect_f
+                  WHERE CAST(date_detected AS DATE) = :defect_date
+                  GROUP BY line_no
+                  ORDER BY total DESC";
+
+        $stmt = $conn->prepare($query);
+        $stmt->execute([':defect_date' => $defect_date]);
+
+        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        echo json_encode($data);
+    } catch (PDOException $e) {
+        echo json_encode(['error' => $e->getMessage()]);
+    }
+}
+
+if ($method == 'fetch_top_daily_defect_category') {
+    $defect_date = $_POST['defect_date'] ?? null;
+
+    try {
+        $query = "SELECT TOP 10 
+                     defect_category,
+                     COUNT(*) AS total
+                  FROM t_minor_defect_f
+                  WHERE CAST(date_detected AS DATE) = :defect_date
+                  GROUP BY defect_category
+                  ORDER BY total DESC";
+
+        $stmt = $conn->prepare($query);
+        $stmt->execute([':defect_date' => $defect_date]);
+
+        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        echo json_encode($data);
+    } catch (PDOException $e) {
+        echo json_encode(['error' => $e->getMessage()]);
+    }
+}
+
 if ($method == 'fetch_top_lot_no') {
     $line_no   = $_POST['line_no'] ?? null;
     $date_from = $_POST['date_from'] ?? null;

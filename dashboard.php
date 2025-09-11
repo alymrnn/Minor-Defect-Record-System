@@ -13,21 +13,17 @@ include('plugins/system_plugins/navbar/index_navbar.php');
             <div class="row">
                <div class="col-12">
                   <!-- commands -->
-                  <div class="mt-2" style="display: flex; justify-content: space-between; align-items: center;">
-                     <p class="m-0 p-0 btn" style="font-size: 12px; transition: 0.3s; cursor: pointer; color: #FFF;"
-                        onclick="clear_dashboard_filter()" onmouseover="this.style.color='red'"
-                        onmouseout="this.style.color='#FFF'">
-                        Clear Display
-                     </p>
-                     <p class="m-0 p-0 btn btn-warning btn-sm" style="font-size: 12px; transition: 0.3s; cursor: pointer;"
+                  <div class="mt-2" style="display: flex; justify-content: flex-end; align-items: center;">
+                     <p class="m-0 p-0 btn btn-warning btn-sm"
+                        style="font-size: 12px; transition: 0.3s; cursor: pointer;"
                         onclick="generate_dashboard_filter()">
                         Generate
                      </p>
                   </div>
 
                   <!-- line no -->
-                  <p class="m-0 p-0 text-left" style="font-size: 12px;">Line No.</p>
-                  <select name="d_pd_type" id="d_line_no" autocomplete="off" class="pl-2 form-control form-control-sm form-control-border mb-1" style="font-size: 13px;" required>
+                  <p class="m-0 p-0 text-left d-none" style="font-size: 12px;">Line No.</p>
+                  <select name="d_pd_type" id="d_line_no" autocomplete="off" class="pl-2 form-control form-control-sm form-control-border mb-1 d-none" style="font-size: 13px;" required>
                      <option value="" disabled selected>Line No.</option>
                   </select>
 
@@ -44,12 +40,12 @@ include('plugins/system_plugins/navbar/index_navbar.php');
 
          <!-- main content -->
          <div class="col-10 offset-2">
-            <div class="row mt-2">
+            <div class="row mx-1 mt-3">
                <div class="col-2">
-                  <div class="chart-border">
+                  <div class="count-border">
                      <p class="m-0 p-0" style="font-size: 14px;">Defect Record</p>
                      <h2 id="total_record_count"></h2>
-
+                     <hr>
                      <p for="prev-comparison-label" class="mt-3 m-0 p-0" style="font-size: 14px;">Previous Month Record</p>
                      <h2 id="total_comparison_count"></h2>
                   </div>
@@ -60,8 +56,32 @@ include('plugins/system_plugins/navbar/index_navbar.php');
                   </div>
                </div>
             </div>
+            <div class="row mx-1 mt-3">
+               <div class="col-8">
+                  <div class="chart-border">
+                     <div id="top_daily_defect_category_chart" style="border-radius: 8px;">
+                        <blockquote class="blockquote quote-secondary text-left m-2">
+                           <p id="defect_category_chart_placeholder" class="mb-0" style="font-size: 12px; color: #6c757d;">
+                              Select a date from Daily Defect Trend Chart to generate Top Defect Category
+                           </p>
+                        </blockquote>
+                     </div>
 
-            <div class="row mt-2">
+                  </div>
+               </div>
+               <div class="col-4">
+                  <div class="chart-border">
+                     <div id="top_daily_line_no_chart" style="border-radius: 8px;">
+                        <blockquote class="blockquote quote-secondary text-left m-2">
+                           <p id="line_no_chart_placeholder" class="mb-0" style="font-size: 12px; color: #6c757d;">
+                              Select a date from Daily Defect Trend Chart to generate Top Line No.
+                           </p>
+                        </blockquote>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div class="row mx-1 mt-3">
                <div class="col-4">
                   <div class="chart-border">
                      <div id="top_lot_no_chart" style="border-radius: 8px;"></div>
@@ -78,10 +98,8 @@ include('plugins/system_plugins/navbar/index_navbar.php');
                   </div>
                </div>
             </div>
+
          </div>
-
-
-
       </div>
    </section>
 </div>

@@ -1,7 +1,7 @@
 <script type="text/javascript">
    $(document).ready(function() {
       fetch_line_no();
-      
+
       // set filter date
       const today = new Date();
       const firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
@@ -44,7 +44,7 @@
 
    const generate_dashboard_filter = () => {
       Swal.fire({
-         title: 'Loading minor dashboard...',
+         text: 'Fetching data, please wait...',
          allowOutsideClick: false,
          background: '#1b263b',
          color: '#f8f9fa',
@@ -68,6 +68,18 @@
             Swal.fire('Error', 'Failed to load some charts', 'error');
          });
    };
+
+   function styledChartTitle(text) {
+      return `<span style="
+              background-color: #F2F2F7; 
+              padding: 3px 6px; 
+              border-radius: 4px;
+              color: #000;
+              font-family: Poppins, sans-serif;
+              font-weight: normal;
+              font-size: 12px;
+           ">${text}</span>`;
+   }
 
    const fetch_total_defect_record = () => {
       return new Promise((resolve, reject) => {
@@ -115,11 +127,11 @@
                // Previous month comparison text
                let comparisonText = "";
                if (response.comparison === "increase") {
-                  comparisonText = `${response.previous_total} <br><span style="font-size:12px; color:red;">▲ Increased by ${percentageChange}%</span>`;
+                  comparisonText = `${response.previous_total} <br><span style="font-size:13px; color:red;">▲ Increased by ${percentageChange}%</span>`;
                } else if (response.comparison === "decrease") {
-                  comparisonText = `${response.previous_total} <br><span style="font-size:12px; color:green;">▼ Decreased by ${Math.abs(percentageChange)}%</span>`;
+                  comparisonText = `${response.previous_total} <br><span style="font-size:13px; color:green;">▼ Decreased by ${Math.abs(percentageChange)}%</span>`;
                } else {
-                  comparisonText = `${response.previous_total} <br><span style="font-size:12px; color:gray;">▬ No change</span>`;
+                  comparisonText = `${response.previous_total} <br><span style="font-size:13px; color:gray;">▬ No change</span>`;
                }
 
                $('#total_comparison_count').html(comparisonText);
@@ -174,7 +186,10 @@
                });
 
                // Fill missing dates with 0
-               const categories = dateRange;
+               const categories = dateRange.map(d => {
+                  const parts = d.split("-"); // ["2025","09","01"]
+                  return `${parts[1]}-${parts[2]}`; // "09-01"
+               });
                const values = dateRange.map(d => defectMap[d] || 0);
 
                Highcharts.chart('daily_trend_chart', {
@@ -186,18 +201,15 @@
                      }
                   },
                   title: {
-                     text: `Daily Defect Trend (${line_no} | ${date_from} - ${date_to})`,
-                     align: 'left',
-                     style: {
-                        fontFamily: 'Poppins, sans-serif',
-                        fontWeight: 'normal',
-                        fontSize: '12px'
-                     }
+                     useHTML: true,
+                     text: styledChartTitle(`Daily Defect Trend (${date_from} - ${date_to})`),
+                     align: 'left'
                   },
                   xAxis: {
                      categories: categories,
                      tickmarkPlacement: 'on',
                      labels: {
+                        rotation: -45,
                         style: {
                            fontFamily: 'Poppins, sans-serif',
                            fontSize: '11px'
@@ -238,30 +250,258 @@
                      area: {
                         marker: {
                            enabled: true,
-                           radius: 3,
+                           radius: 5,
                            symbol: 'diamond'
                         },
                         lineWidth: 2,
-                        lineColor: '#2DC7FF',
-                        fillOpacity: 0.25,
-                        states: {
-                           hover: {
-                              lineWidth: 3
-                           }
-                        }
+                        lineColor: '#339BFF',
+                        fillOpacity: 0.25
                      },
                      series: {
-                        linecap: 'round'
+                        point: {
+                           events: {
+                              click: function() {
+                                 let clickedDate = this.category;
+                                 let fullDate = "2025-" + clickedDate;
+
+                                 Swal.fire({
+                                    title: 'Loading...',
+                                    text: 'Fetching top records for ' + fullDate,
+                                    allowOutsideClick: false,
+                                    didOpen: () => {
+                                       Swal.showLoading();
+                                    },
+                                    background: '#1b263b',
+                                    color: '#f8f9fa'
+                                 });
+
+                                 Promise.all([
+                                       fetch_top_daily_line_no(fullDate),
+                                       fetch_top_daily_defect_category(fullDate)
+                                    ])
+                                    .then(() => {
+                                       Swal.close();
+                                    })
+                                    .catch(() => {
+                                       Swal.fire('Error', 'Failed to load data.', 'error');
+                                    });
+                              }
+                           }
+                        }
                      }
                   },
                   series: [{
                      name: 'Record',
                      data: values,
-                     color: '#2DC7FF'
+                     color: '#339BFF'
                   }]
                });
 
                resolve();
+            },
+            error: function(xhr, status, error) {
+               console.error("AJAX Error:", status, error);
+               reject(error);
+            }
+         });
+      });
+   };
+
+   const fetch_top_daily_line_no = (clickedDate) => {
+      return new Promise((resolve, reject) => {
+         $.ajax({
+            url: 'process/dashboard_p.php',
+            type: 'POST',
+            dataType: 'json',
+            data: {
+               method: 'fetch_top_daily_line_no',
+               defect_date: clickedDate
+            },
+            success: function(response) {
+               if (response.error) {
+                  console.error(response.error);
+                  reject(response.error);
+                  return;
+               }
+
+               const categories = response.map(item => item.line_no);
+               const values = response.map(item => parseInt(item.total));
+
+               $('#defect_category_chart_placeholder').hide();
+
+               Highcharts.chart('top_daily_line_no_chart', {
+                  chart: {
+                     type: 'bar',
+                     height: '300px',
+                     style: {
+                        fontFamily: 'Poppins, sans-serif'
+                     }
+                  },
+                  title: {
+                     useHTML: true,
+                     text: styledChartTitle(`Top 10 Line No. (${clickedDate})`),
+                     align: 'left'
+                  },
+                  xAxis: {
+                     categories: categories,
+                     title: {
+                        text: 'Line No.',
+                        style: {
+                           fontFamily: 'Poppins, sans-serif',
+                           fontSize: '11px'
+                        }
+                     },
+                     labels: {
+                        style: {
+                           fontFamily: 'Poppins, sans-serif',
+                           fontSize: '11px'
+                        }
+                     }
+                  },
+                  yAxis: {
+                     min: 0,
+                     title: {
+                        text: null
+                     },
+                     labels: {
+                        style: {
+                           fontFamily: 'Poppins, sans-serif',
+                           fontSize: '11px'
+                        }
+                     }
+                  },
+                  tooltip: {
+                     shared: true,
+                     valueSuffix: ' defects',
+                     style: {
+                        fontFamily: 'Poppins, sans-serif',
+                        fontSize: '11px'
+                     }
+                  },
+                  credits: {
+                     enabled: false
+                  },
+                  legend: {
+                     enabled: false
+                  },
+                  plotOptions: {
+                     bar: {
+                        borderRadius: 3,
+                        pointPadding: 0.1,
+                        groupPadding: 0.05,
+                        pointWidth: 18
+                     }
+                  },
+                  series: [{
+                     name: 'Records',
+                     data: values,
+                     color: '#339BFF'
+                  }]
+               });
+
+               resolve(response);
+            },
+            error: function(xhr, status, error) {
+               console.error("AJAX Error:", status, error);
+               reject(error);
+            }
+         });
+      });
+   };
+
+   const fetch_top_daily_defect_category = (clickedDate) => {
+      return new Promise((resolve, reject) => {
+         $.ajax({
+            url: 'process/dashboard_p.php',
+            type: 'POST',
+            dataType: 'json',
+            data: {
+               method: 'fetch_top_daily_defect_category',
+               defect_date: clickedDate
+            },
+            success: function(response) {
+               if (response.error) {
+                  console.error(response.error);
+                  reject(response.error);
+                  return;
+               }
+
+               const categories = response.map(item => item.defect_category);
+               const values = response.map(item => parseInt(item.total));
+
+               $('#defect_category_chart_placeholder').hide();
+
+               Highcharts.chart('top_daily_defect_category_chart', {
+                  chart: {
+                     type: 'bar',
+                     height: '300px',
+                     style: {
+                        fontFamily: 'Poppins, sans-serif'
+                     }
+                  },
+                  title: {
+                     useHTML: true,
+                     text: styledChartTitle(`Top 10 Defect Category (${clickedDate})`),
+                     align: 'left'
+                  },
+                  xAxis: {
+                     categories: categories,
+                     title: {
+                        text: 'Defect Category',
+                        style: {
+                           fontFamily: 'Poppins, sans-serif',
+                           fontSize: '11px'
+                        }
+                     },
+                     labels: {
+                        style: {
+                           fontFamily: 'Poppins, sans-serif',
+                           fontSize: '11px'
+                        }
+                     }
+                  },
+                  yAxis: {
+                     min: 0,
+                     title: {
+                        text: null
+                     },
+                     labels: {
+                        style: {
+                           fontFamily: 'Poppins, sans-serif',
+                           fontSize: '11px'
+                        }
+                     }
+                  },
+                  tooltip: {
+                     shared: true,
+                     valueSuffix: ' defects',
+                     style: {
+                        fontFamily: 'Poppins, sans-serif',
+                        fontSize: '11px'
+                     }
+                  },
+                  credits: {
+                     enabled: false
+                  },
+                  legend: {
+                     enabled: false
+                  },
+                  plotOptions: {
+                     bar: {
+                        borderRadius: 3,
+                        pointPadding: 0.1,
+                        groupPadding: 0.05,
+                        pointWidth: 18
+                     }
+                  },
+                  series: [{
+                     name: 'Records',
+                     data: values,
+                     color: '#339BFF'
+                  }]
+               });
+
+               resolve(response);
             },
             error: function(xhr, status, error) {
                console.error("AJAX Error:", status, error);
@@ -306,13 +546,9 @@
                      }
                   },
                   title: {
-                     text: `Top 10 Lot No. Records (${line_no} | ${date_from} - ${date_to})`,
-                     align: 'left',
-                     style: {
-                        fontFamily: 'Poppins, sans-serif',
-                        fontWeight: 'normal',
-                        fontSize: '12px'
-                     }
+                     useHTML: true,
+                     text: styledChartTitle(`Top 10 Lot No. (${date_from} - ${date_to})`),
+                     align: 'left'
                   },
                   xAxis: {
                      categories: categories,
@@ -368,7 +604,7 @@
                   series: [{
                      name: 'Record',
                      data: values,
-                     color: '#2DC7FF'
+                     color: '#339BFF'
                   }]
                });
 
@@ -417,13 +653,9 @@
                      }
                   },
                   title: {
-                     text: `Top 10 Sequence No. Records (${line_no} | ${date_from} - ${date_to})`,
-                     align: 'left',
-                     style: {
-                        fontFamily: 'Poppins, sans-serif',
-                        fontWeight: 'normal',
-                        fontSize: '12px'
-                     }
+                     useHTML: true,
+                     text: styledChartTitle(`Top 10 Sequence No. (${date_from} - ${date_to})`),
+                     align: 'left'
                   },
                   xAxis: {
                      categories: categories,
@@ -479,7 +711,7 @@
                   series: [{
                      name: 'Record',
                      data: values,
-                     color: '#2DC7FF'
+                     color: '#339BFF'
                   }]
                });
 
@@ -528,13 +760,9 @@
                      }
                   },
                   title: {
-                     text: `Top 10 Connector No. Records (${line_no} | ${date_from} - ${date_to})`,
-                     align: 'left',
-                     style: {
-                        fontFamily: 'Poppins, sans-serif',
-                        fontWeight: 'normal',
-                        fontSize: '12px'
-                     }
+                     useHTML: true,
+                     text: styledChartTitle(`Top 10 Connector No. (${date_from} - ${date_to})`),
+                     align: 'left'
                   },
                   xAxis: {
                      categories: categories,
@@ -590,7 +818,7 @@
                   series: [{
                      name: 'Record',
                      data: values,
-                     color: '#2DC7FF'
+                     color: '#339BFF'
                   }]
                });
 

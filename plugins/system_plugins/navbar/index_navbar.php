@@ -62,18 +62,26 @@
         }
     }
 
+    .count-border {
+        border: none;
+        background-color: #fff;
+        padding: 15px;
+        border-radius: 6px;
+        height: 100%;
+    }
+
     .chart-border {
         border: none;
         background-color: #fff;
         padding: 8px;
-        border-radius: 8px;
+        border-radius: 6px;
         height: 100%;
     }
 </style>
 
 <!-- Navbar -->
 <!-- <nav class="main-header navbar navbar-expand-md border-bottom-0" style="background:#163A65;"> -->
-<nav class="main-header navbar" style="background:#1b263b; border-bottom: 3px solid #8d0801;">
+<nav class="main-header navbar sticky-top" style="background:#1b263b; border-bottom: 3px solid #8d0801; z-index: 1030;">
     <a href="" class="navbar-brand ml-2">
         <img src="dist/img/defect.png" alt="Minor Defect Record System Logo" class="brand-image">
         <span class="brand-text font-weight-normal text-light" style="color: white; font-size: 20px;">MINOR DEFECT RECORD SYSTEM</span>
@@ -81,7 +89,8 @@
 
     <ul class="order-1 order-md-3 navbar-nav navbar-no-expand ml-auto">
         <li class="nav-item mr-4 pt-3">
-            <p style="color: #fff; font-size: 14px;"><i class="fas fa-calendar-check"></i>&nbsp;&nbsp;
+            <p style="color: #fff; font-size: 14px;">
+                <i class="fas fa-calendar-check"></i>&nbsp;&nbsp;
                 <span id="datetime"></span> |
                 <a style="color: #EED965;" href="template/Minor-Defect-Record-System_WI_rev.2.pdf" target="_blank">Work Instruction</a>
             </p>
