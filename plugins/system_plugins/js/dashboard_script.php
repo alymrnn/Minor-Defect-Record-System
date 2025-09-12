@@ -74,7 +74,7 @@
       return `<span style="
               background-color: #F2F2F7; 
               padding: 3px 6px; 
-              border-radius: 4px;
+              border-left: 2px solid #8d0801;
               color: #000;
               font-family: Poppins, sans-serif;
               font-weight: normal;
@@ -271,7 +271,7 @@
                      color: '#339BFF'
                   }],
 
-                  
+
                });
 
                resolve();
