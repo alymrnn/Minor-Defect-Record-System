@@ -33,7 +33,7 @@ if ($method == 'fetch_overall_defect_category') {
 
         $query .= " GROUP BY defect_category
                     ORDER BY total DESC
-                    OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY";
+                    OFFSET 0 ROWS FETCH NEXT 12 ROWS ONLY";
 
         $stmt = $conn->prepare($query);
 
@@ -48,6 +48,48 @@ if ($method == 'fetch_overall_defect_category') {
         $stmt->execute($params);
 
         $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        echo json_encode($data);
+    } catch (PDOException $e) {
+        echo json_encode(['error' => $e->getMessage()]);
+    }
+}
+
+if ($method == 'fetch_overall_defect_details') {
+    $line_no         = $_POST['line_no'] ?? null;
+    $defect_category = $_POST['defect_category'] ?? null;
+    $date_from       = $_POST['date_from'] ?? null;
+    $date_to         = $_POST['date_to'] ?? null;
+
+    try {
+        $query = "SELECT 
+                    defect_details,
+                    COUNT(*) AS total
+                  FROM t_minor_defect_f
+                  WHERE date_detected BETWEEN :start_date AND :end_date
+                    AND defect_category = :defect_category";
+
+        if (!empty($line_no)) {
+            $query .= " AND line_no = :line_no";
+        }
+
+        $query .= " GROUP BY defect_details
+                    ORDER BY total DESC
+                    OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY";
+
+        $stmt = $conn->prepare($query);
+
+        $params = [
+            ':start_date' => $date_from,
+            ':end_date'   => $date_to,
+            ':defect_category' => $defect_category
+        ];
+        if (!empty($line_no)) {
+            $params[':line_no'] = $line_no;
+        }
+
+        $stmt->execute($params);
+        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
         echo json_encode($data);
     } catch (PDOException $e) {
         echo json_encode(['error' => $e->getMessage()]);
@@ -235,7 +277,7 @@ if ($method == 'fetch_top_daily_defect_category') {
     $defect_date = $_POST['defect_date'] ?? null;
 
     try {
-        $query = "SELECT TOP 10 
+        $query = "SELECT TOP 12 
                      defect_category,
                      COUNT(*) AS total
                   FROM t_minor_defect_f
@@ -364,6 +406,45 @@ if ($method == 'fetch_top_connector_no') {
         }
 
         $stmt->execute($params);
+
+        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        echo json_encode($data);
+    } catch (PDOException $e) {
+        echo json_encode(['error' => $e->getMessage()]);
+    }
+}
+
+if ($method == 'fetch_top_defect_category_per_section') {
+    try {
+        $date_from = $_POST['date_from'] ?? null;
+        $date_to = $_POST['date_to'] ?? null;
+
+        $query = "
+            WITH RankedDefects AS (
+                SELECT 
+                    ml.section, 
+                    f.defect_category, 
+                    COUNT(*) AS total,
+                    ROW_NUMBER() OVER (
+                        PARTITION BY ml.section 
+                        ORDER BY COUNT(*) DESC
+                    ) AS rn
+                FROM t_minor_defect_f f
+                INNER JOIN m_line_no ml ON f.line_no = ml.line_no
+                WHERE f.date_detected BETWEEN :start_date AND :end_date
+                GROUP BY ml.section, f.defect_category
+            )
+            SELECT section, defect_category, total
+            FROM RankedDefects
+            WHERE rn <= 5
+            ORDER BY section, total DESC;
+        ";
+
+        $stmt = $conn->prepare($query);
+        $stmt->execute([
+            ':start_date' => $date_from,
+            ':end_date'   => $date_to
+        ]);
 
         $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
         echo json_encode($data);

@@ -59,7 +59,8 @@
             fetch_daily_trend(),
             fetch_top_lot_no(),
             fetch_top_sequence_no(),
-            fetch_top_connector_no()
+            fetch_top_connector_no(),
+            fetch_top_defect_category_per_section()
          ])
          .then(() => {
             Swal.close();
@@ -74,7 +75,7 @@
       return `<span style="
               background-color: #F2F2F7; 
               padding: 3px 6px; 
-              border-left: 2px solid #8d0801;
+              border-left: 3px solid #1b263b;
               color: #000;
               font-family: Poppins, sans-serif;
               font-weight: normal;
@@ -175,25 +176,21 @@
 
                Highcharts.chart('top_overall_defect_category', {
                   chart: {
-                     type: 'bar',
-                     height: '290px',
+                     type: 'column',
+                     height: '300px',
                      style: {
                         fontFamily: 'Poppins, sans-serif'
                      }
                   },
                   title: {
                      useHTML: true,
-                     text: styledChartTitle(`Top 10 Defect Category (${date_from} - ${date_to})`),
+                     text: styledChartTitle(`Defect Category Record (${date_from} - ${date_to})`),
                      align: 'left'
                   },
                   xAxis: {
                      categories: categories,
                      title: {
-                        text: 'Defect Category',
-                        style: {
-                           fontFamily: 'Poppins, sans-serif',
-                           fontSize: '11px'
-                        }
+                        text: null,
                      },
                      labels: {
                         style: {
@@ -230,11 +227,11 @@
                      enabled: false
                   },
                   plotOptions: {
-                     bar: {
+                     column: {
                         borderRadius: 3,
                         pointPadding: 0.2,
-                        groupPadding: 0.5,
-                        pointWidth: 16,
+                        groupPadding: 0.2,
+                        pointWidth: 70,
                         cursor: 'pointer',
                         point: {
                            events: {
@@ -253,6 +250,7 @@
                                  });
 
                                  fetch_overall_line_no(defectCategory, date_from, date_to, line_no)
+                                 fetch_overall_defect_details(defectCategory, date_from, date_to, line_no)
                                     .then(() => {
                                        Swal.close();
                                     })
@@ -268,10 +266,8 @@
                   series: [{
                      name: 'Record',
                      data: values,
-                     color: '#339BFF'
-                  }],
-
-
+                     color: '#0D47A1'
+                  }]
                });
 
                resolve();
@@ -283,6 +279,115 @@
          });
       });
    }
+
+   const fetch_overall_defect_details = (defectCategory, date_from, date_to, line_no) => {
+      return new Promise((resolve, reject) => {
+         $.ajax({
+            url: 'process/dashboard_p.php',
+            type: 'POST',
+            data: {
+               method: 'fetch_overall_defect_details',
+               defect_category: defectCategory,
+               date_from: date_from,
+               date_to: date_to,
+               line_no: line_no
+            },
+            dataType: 'json',
+            success: function(response) {
+               if (response.error) {
+                  console.error(response.error);
+                  reject(response.error);
+                  return;
+               }
+
+               $('#overall_defect_details_chart_placeholder').hide();
+
+               const pieData = response.map(item => ({
+                  name: item.defect_details,
+                  y: parseInt(item.total)
+               }));
+
+               Highcharts.chart('top_overall_defect_details_chart', {
+                  chart: {
+                     type: 'pie',
+                     height: '290px',
+                     style: {
+                        fontFamily: 'Poppins, sans-serif'
+                     }
+                  },
+                  title: {
+                     useHTML: true,
+                     text: styledChartTitle(
+                        `Top 10 Defect Details for "${defectCategory}" (${date_from} - ${date_to})`
+                     ),
+                     align: 'left'
+                  },
+                  colors: [
+                     "#1F77B4", // blue
+                     "#2CA02C", // green
+                     "#FF4136", // red
+                     "#17BECF", // teal
+                     "#0074D9", // bright blue
+                     "#3D9970", // darker green/teal
+                     "#FF6347", // tomato red
+                     "#4E79A7", // muted blue
+                     "#76B7B2", // soft teal
+                     "#E15759" // soft red
+                  ],
+                  tooltip: {
+                     useHTML: true,
+                     formatter: function() {
+                        return `<b>${this.point.name}</b>: ${this.y} defects (${Highcharts.numberFormat(this.percentage, 1)}%)`;
+                     },
+                     style: {
+                        fontFamily: 'Poppins, sans-serif',
+                        fontSize: '11px'
+                     }
+                  },
+                  credits: {
+                     enabled: false
+                  },
+                  legend: {
+                     align: 'right',
+                     verticalAlign: 'middle',
+                     layout: 'vertical',
+                     itemStyle: {
+                        fontFamily: 'Poppins, sans-serif',
+                        fontSize: '11px'
+                     }
+                  },
+                  plotOptions: {
+                     pie: {
+                        allowPointSelect: true,
+                        cursor: 'pointer',
+                        borderRadius: 3,
+                        dataLabels: {
+                           enabled: true,
+                           format: '<b>{point.name}</b>: {point.y}',
+                           style: {
+                              fontFamily: 'Poppins, sans-serif',
+                              fontSize: '10px'
+                           }
+                        },
+                        showInLegend: true
+                     }
+                  },
+                  series: [{
+                     name: 'Defects',
+                     colorByPoint: true,
+                     data: pieData
+                  }]
+               });
+
+               resolve();
+            },
+            error: function(xhr, status, error) {
+               console.error("AJAX Error:", status, error);
+               reject(error);
+            }
+         });
+      });
+   };
 
    const fetch_overall_line_no = (defectCategory, date_from, date_to, line_no) => {
       return new Promise((resolve, reject) => {
@@ -309,7 +414,7 @@
                const categories = response.map(item => item.line_no);
                const values = response.map(item => parseInt(item.total));
 
-               Highcharts.chart('top_overall_line_no', {
+               Highcharts.chart('top_overall_line_no_chart', {
                   chart: {
                      type: 'bar',
                      height: '290px',
@@ -368,7 +473,7 @@
                   plotOptions: {
                      bar: {
                         borderRadius: 3,
-                        pointWidth: 16,
+                        pointWidth: 14,
                         groupPadding: 0.5,
                         pointPadding: 0.2
                      }
@@ -439,14 +544,14 @@
                Highcharts.chart('daily_trend_chart', {
                   chart: {
                      type: 'area',
-                     height: '290px',
+                     height: '350px',
                      style: {
                         fontFamily: 'Poppins, sans-serif'
                      }
                   },
                   title: {
                      useHTML: true,
-                     text: styledChartTitle(`Daily Defect Trend (${date_from} - ${date_to})`),
+                     text: styledChartTitle(`Daily Defect Record Trend (${date_from} - ${date_to})`),
                      align: 'left'
                   },
                   xAxis: {
@@ -579,7 +684,7 @@
                   },
                   title: {
                      useHTML: true,
-                     text: styledChartTitle(`Top 10 Line No. (${clickedDate})`),
+                     text: styledChartTitle(`Daily Top 10 Line No. (${clickedDate})`),
                      align: 'left'
                   },
                   xAxis: {
@@ -627,7 +732,7 @@
                   plotOptions: {
                      bar: {
                         borderRadius: 3,
-                        pointWidth: 16,
+                        pointWidth: 14,
                         groupPadding: 0.5,
                         pointPadding: 0.2
                      }
@@ -635,7 +740,7 @@
                   series: [{
                      name: 'Records',
                      data: values,
-                     color: '#339BFF'
+                     color: '#1F77B4'
                   }]
                });
 
@@ -681,7 +786,7 @@
                   },
                   title: {
                      useHTML: true,
-                     text: styledChartTitle(`Top 10 Defect Category (${clickedDate})`),
+                     text: styledChartTitle(`Daily Defect Category Record (${clickedDate})`),
                      align: 'left'
                   },
                   xAxis: {
@@ -729,7 +834,7 @@
                   plotOptions: {
                      bar: {
                         borderRadius: 3,
-                        pointWidth: 16,
+                        pointWidth: 14,
                         groupPadding: 0.5,
                         pointPadding: 0.2
                      }
@@ -836,7 +941,7 @@
                   plotOptions: {
                      bar: {
                         borderRadius: 3,
-                        pointWidth: 16,
+                        pointWidth: 14,
                         groupPadding: 0.5,
                         pointPadding: 0.2
                      }
@@ -844,7 +949,7 @@
                   series: [{
                      name: 'Record',
                      data: values,
-                     color: '#339BFF'
+                     color: '#42A5F5'
                   }]
                });
 
@@ -943,7 +1048,7 @@
                   plotOptions: {
                      bar: {
                         borderRadius: 3,
-                        pointWidth: 16,
+                        pointWidth: 14,
                         groupPadding: 0.5,
                         pointPadding: 0.2
                      }
@@ -1050,7 +1155,7 @@
                   plotOptions: {
                      bar: {
                         borderRadius: 3,
-                        pointWidth: 16,
+                        pointWidth: 14,
                         groupPadding: 0.5,
                         pointPadding: 0.2
                      }
@@ -1058,8 +1163,165 @@
                   series: [{
                      name: 'Record',
                      data: values,
-                     color: '#339BFF'
+                     color: '#90CAF9'
                   }]
+               });
+
+               resolve();
+            },
+            error: function(xhr, status, error) {
+               console.error("AJAX Error:", status, error);
+               reject(error);
+            }
+         });
+      });
+   };
+
+   const fetch_top_defect_category_per_section = () => {
+      return new Promise((resolve, reject) => {
+         let date_from = $('#d_date_from').val();
+         let date_to = $('#d_date_to').val();
+
+         $.ajax({
+            url: "process/dashboard_p.php",
+            type: "POST",
+            dataType: "json",
+            data: {
+               method: "fetch_top_defect_category_per_section",
+               date_from: date_from,
+               date_to: date_to
+            },
+            success: function(response) {
+               if (response.error) {
+                  console.error(response.error);
+                  reject(response.error);
+                  return;
+               }
+
+               // Collect unique sections and defect categories
+               let sections = [...new Set(response.map(item => item.section))];
+               let defectCategories = [...new Set(response.map(item => item.defect_category))];
+
+               // Build raw series per defect category
+               let series = defectCategories.map(cat => {
+                  return {
+                     name: cat,
+                     data: sections.map(sec => {
+                        const found = response.find(r => r.section === sec && r.defect_category === cat);
+                        return found ? parseInt(found.total) : 0;
+                     })
+                  };
+               });
+
+               // Exclude sections where all values = 0
+               sections = sections.filter((sec, idx) => {
+                  return series.some(s => s.data[idx] > 0);
+               });
+
+               // Rebuild series aligned to filtered sections
+               series = series.map(s => {
+                  return {
+                     ...s,
+                     data: sections.map(sec => {
+                        const found = response.find(r => r.section === sec && r.defect_category === s.name);
+                        return found ? parseInt(found.total) : 0;
+                     })
+                  };
+               });
+
+               // Exclude defect categories that are all 0
+               series = series.filter(s => s.data.some(val => val > 0));
+
+               // Chart rendering
+               Highcharts.chart("top_defect_category_per_section_chart", {
+                  chart: {
+                     type: "column",
+                     height: "350px",
+                     style: {
+                        fontFamily: "Poppins, sans-serif"
+                     }
+                  },
+                  colors: ["#0D47A1", "#1565C0", "#42A5F5", "#90CAF9", "#004D40",
+                     "#009688", "#4DB6AC", "#1B5E20", "#43A047", "#A5D6A7"
+                  ],
+                  title: {
+                     useHTML: true,
+                     text: styledChartTitle(
+                        `Top 5 Defect Categories per Section (${date_from} to ${date_to})`
+                     ),
+                     align: "left"
+                  },
+                  xAxis: {
+                     categories: sections.map(sec => `Section ${sec}`),
+                     title: {
+                        text: null
+                     },
+                     labels: {
+                        style: {
+                           fontFamily: "Poppins, sans-serif",
+                           fontSize: "11px"
+                        }
+                     }
+                  },
+                  yAxis: {
+                     min: 0,
+                     title: {
+                        text: null
+                     },
+                     labels: {
+                        style: {
+                           fontFamily: "Poppins, sans-serif",
+                           fontSize: "11px"
+                        }
+                     },
+                     stackLabels: {
+                        enabled: true,
+                        style: {
+                           fontFamily: "Poppins, sans-serif",
+                           fontSize: "10px",
+                           fontWeight: "bold"
+                        }
+                     }
+                  },
+                  legend: {
+                     itemStyle: {
+                        fontSize: "10px",
+                        fontFamily: "Poppins, sans-serif"
+                     },
+                     itemMarginTop: 0,
+                     itemMarginBottom: 0,
+                     symbolHeight: 8,
+                     symbolWidth: 8,
+                     symbolRadius: 2
+                  },
+                  tooltip: {
+                     shared: true,
+                     useHTML: true,
+                     formatter: function() {
+                        let header = `<b>${this.key}</b><br/>`;
+                        let points = this.points
+                           .filter(p => p.y > 0)
+                           .map(p => `<span style="color:${p.color}">\u25CF</span> ${p.series.name}: <b>${p.y}</b>`)
+                           .join("<br/>");
+                        return header + points;
+                     },
+                     style: {
+                        fontFamily: "Poppins, sans-serif",
+                        fontSize: "11px"
+                     }
+                  },
+                  plotOptions: {
+                     column: {
+                        stacking: "normal",
+                        borderRadius: 3,
+                        pointPadding: 0.1,
+                        groupPadding: 0.05
+                     }
+                  },
+                  credits: {
+                     enabled: false
+                  },
+                  series: series
                });
 
                resolve();

@@ -40,7 +40,7 @@ include('plugins/system_plugins/navbar/index_navbar.php');
 
          <!-- main content -->
          <div class="col-10 offset-2">
-            <div class="row mx-1 mt-3">
+            <div class="row mt-3">
                <div class="col-2">
                   <div class="count-border">
                      <p class="m-0 p-0" style="font-size: 14px;">Defect Record</p>
@@ -50,14 +50,17 @@ include('plugins/system_plugins/navbar/index_navbar.php');
                      <h2 id="total_comparison_count" class="text-bold"></h2>
                   </div>
                </div>
-               <div class="col-6">
+               <div class="col-10">
                   <div class="chart-border">
                      <div id="top_overall_defect_category" style="border-radius: 8px;"></div>
                   </div>
                </div>
-               <div class="col-4">
+            </div>
+
+            <div class="row mt-3">
+               <div class="col-6">
                   <div class="chart-border">
-                     <div id="top_overall_line_no" style="border-radius: 8px;">
+                     <div id="top_overall_line_no_chart" style="border-radius: 8px;">
                         <blockquote class="blockquote quote-secondary text-left m-2">
                            <p id="overall_line_no_chart_placeholder" class="mb-0" style="font-size: 12px; color: #6c757d;">
                               Select from Top Defect Category Chart to generate Top Line No.'s with Selected Defect
@@ -66,8 +69,20 @@ include('plugins/system_plugins/navbar/index_navbar.php');
                      </div>
                   </div>
                </div>
+               <div class="col-6">
+                  <div class="chart-border">
+                     <div id="top_overall_defect_details_chart" style="border-radius: 8px;">
+                        <blockquote class="blockquote quote-secondary text-left m-2">
+                           <p id="overall_defect_details_chart_placeholder" class="mb-0" style="font-size: 12px; color: #6c757d;">
+                              Select from Top Defect Category Chart to generate Defect Details
+                           </p>
+                        </blockquote>
+                     </div>
+                  </div>
+               </div>
             </div>
-            <div class="row mx-1 mt-3">
+
+            <div class="row mt-3">
                <div class="col-4">
                   <div class="chart-border">
                      <div id="top_lot_no_chart" style="border-radius: 8px;"></div>
@@ -84,15 +99,41 @@ include('plugins/system_plugins/navbar/index_navbar.php');
                   </div>
                </div>
             </div>
-            <div class="row mx-1 mt-3">
+
+            <p class="mt-4 m-0 p-0 text-white" style="font-size: 14px;">Section Monitoring</p>
+            <hr class="m-0 p-0" style="background: #8d0801;">
+            <div class="row mt-2">
+               <div class="col-12">
+                  <div class="chart-border">
+                     <div id="top_defect_category_per_section_chart" style="border-radius: 8px;"></div>
+                  </div>
+               </div>
+            </div>
+            <div class="row mt-3">
+               <div class="col-8">
+                  <div class="chart-border">
+                     <div id="defect_record_per_section_chart" style="border-radius: 8px;"> defect record per section
+                     </div>
+                  </div>
+               </div>
+               <div class="col-4">
+                  <div class="chart-border">
+                     <div id="top_defect_category_section_based_chart" style="border-radius: 8px;"> top 5 defect category based on selected section</div>
+                  </div>
+               </div>
+            </div>
+
+            <p class="mt-4 m-0 p-0 text-white" style="font-size: 14px;">Daily Trend Monitoring</p>
+            <hr class="m-0 p-0" style="background: #8d0801;">
+            <div class="row mt-2">
                <div class="col-12">
                   <div class="chart-border">
                      <div id="daily_trend_chart" style="border-radius: 8px;"></div>
                   </div>
                </div>
             </div>
-            <div class="row mx-1 mt-3 mb-3">
-               <div class="col-8">
+            <div class="row mt-3 mb-3">
+               <div class="col-7">
                   <div class="chart-border">
                      <div id="top_daily_defect_category_chart" style="border-radius: 8px;">
                         <blockquote class="blockquote quote-secondary text-left m-2">
@@ -103,7 +144,7 @@ include('plugins/system_plugins/navbar/index_navbar.php');
                      </div>
                   </div>
                </div>
-               <div class="col-4">
+               <div class="col-5">
                   <div class="chart-border">
                      <div id="top_daily_line_no_chart" style="border-radius: 8px;">
                         <blockquote class="blockquote quote-secondary text-left m-2">
