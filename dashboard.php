@@ -112,13 +112,18 @@ include('plugins/system_plugins/navbar/index_navbar.php');
             <div class="row mt-3">
                <div class="col-8">
                   <div class="chart-border">
-                     <div id="defect_record_per_section_chart" style="border-radius: 8px;"> defect record per section
-                     </div>
+                     <div id="defect_record_per_section_chart" style="border-radius: 8px;"></div>
                   </div>
                </div>
                <div class="col-4">
                   <div class="chart-border">
-                     <div id="top_defect_category_section_based_chart" style="border-radius: 8px;"> top 5 defect category based on selected section</div>
+                     <div id="top_line_no_section_based_chart" style="border-radius: 8px;">
+                        <blockquote class="blockquote quote-secondary text-left m-2">
+                           <p id="line_no_section_based_chart_placeholder" class="mb-0" style="font-size: 12px; color: #6c757d;">
+                              Select a section from Defect Records per Section Chart to generate its Top Line No.
+                           </p>
+                        </blockquote>
+                     </div>
                   </div>
                </div>
             </div>

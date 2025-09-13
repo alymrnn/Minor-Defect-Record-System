@@ -1,6 +1,6 @@
 <div class="modal fade bd-example-modal-xl" id="add_defect_record" tabindex="-1" role="dialog" data-backdrop="static"
     data-keyboard="false">
-    <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content" style="background:#f9f9f9;">
             <div class="modal-header" style="background:#1b263b; border-bottom: 3px solid #8d0801;">
                 <h5 class="modal-title" id="exampleModalLabel" style="font-weight: normal;color: #fff;"><i

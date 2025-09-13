@@ -452,3 +452,64 @@ if ($method == 'fetch_top_defect_category_per_section') {
         echo json_encode(['error' => $e->getMessage()]);
     }
 }
+
+if ($method == 'fetch_defect_record_per_section') {
+    try {
+        $date_from = $_POST['date_from'] ?? null;
+        $date_to = $_POST['date_to'] ?? null;
+
+        $query = "
+            SELECT 
+                ml.section, 
+                COUNT(*) AS total
+            FROM t_minor_defect_f f
+            INNER JOIN m_line_no ml ON f.line_no = ml.line_no
+            WHERE f.date_detected BETWEEN :start_date AND :end_date
+            GROUP BY ml.section
+            ORDER BY total DESC;
+        ";
+
+        $stmt = $conn->prepare($query);
+        $stmt->execute([
+            ':start_date' => $date_from,
+            ':end_date'   => $date_to
+        ]);
+
+        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        echo json_encode($data);
+    } catch (PDOException $e) {
+        echo json_encode(['error' => $e->getMessage()]);
+    }
+}
+
+if ($method == 'fetch_top_line_no_per_section') {
+    try {
+        $section   = $_POST['section'] ?? null;
+        $date_from = $_POST['date_from'] ?? null;
+        $date_to   = $_POST['date_to'] ?? null;
+
+        $query = "
+            SELECT TOP 10 
+                f.line_no, 
+                COUNT(*) AS total
+            FROM t_minor_defect_f f
+            INNER JOIN m_line_no ml ON f.line_no = ml.line_no
+            WHERE ml.section = :section
+              AND f.date_detected BETWEEN :start_date AND :end_date
+            GROUP BY f.line_no
+            ORDER BY total DESC;
+        ";
+
+        $stmt = $conn->prepare($query);
+        $stmt->execute([
+            ':section'   => $section,
+            ':start_date' => $date_from,
+            ':end_date'  => $date_to
+        ]);
+
+        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        echo json_encode($data);
+    } catch (PDOException $e) {
+        echo json_encode(['error' => $e->getMessage()]);
+    }
+}

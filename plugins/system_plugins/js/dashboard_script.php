@@ -60,7 +60,8 @@
             fetch_top_lot_no(),
             fetch_top_sequence_no(),
             fetch_top_connector_no(),
-            fetch_top_defect_category_per_section()
+            fetch_top_defect_category_per_section(),
+            fetch_defect_record_per_section()
          ])
          .then(() => {
             Swal.close();
@@ -177,7 +178,7 @@
                Highcharts.chart('top_overall_defect_category', {
                   chart: {
                      type: 'column',
-                     height: '300px',
+                     height: '290px',
                      style: {
                         fontFamily: 'Poppins, sans-serif'
                      }
@@ -318,7 +319,7 @@
                   title: {
                      useHTML: true,
                      text: styledChartTitle(
-                        `Top 10 Defect Details for "${defectCategory}" (${date_from} - ${date_to})`
+                        `Defect Details Record for "${defectCategory}" (${date_from} - ${date_to})`
                      ),
                      align: 'left'
                   },
@@ -354,7 +355,12 @@
                      itemStyle: {
                         fontFamily: 'Poppins, sans-serif',
                         fontSize: '11px'
-                     }
+                     },
+                     itemMarginTop: 0,
+                     itemMarginBottom: 0,
+                     symbolHeight: 8,
+                     symbolWidth: 8,
+                     symbolRadius: 2
                   },
                   plotOptions: {
                      pie: {
@@ -481,7 +487,7 @@
                   series: [{
                      name: 'Record',
                      data: values,
-                     color: '#4A90E2'
+                     color: '#0074D9'
                   }]
                });
 
@@ -1241,8 +1247,8 @@
                         fontFamily: "Poppins, sans-serif"
                      }
                   },
-                  colors: ["#0D47A1", "#1565C0", "#42A5F5", "#90CAF9", "#004D40",
-                     "#009688", "#4DB6AC", "#1B5E20", "#43A047", "#A5D6A7"
+                  colors: ["#0D47A1", "#90CAF9", "#004D40", "#009688", "#4DB6AC",
+                     "#A5D6A7", "#1565C0", "#42A5F5", "#1B5E20", "#43A047",
                   ],
                   title: {
                      useHTML: true,
@@ -1284,8 +1290,11 @@
                      }
                   },
                   legend: {
+                     align: "right",
+                     verticalAlign: "middle",
+                     layout: "vertical",
                      itemStyle: {
-                        fontSize: "10px",
+                        fontSize: "11px",
                         fontFamily: "Poppins, sans-serif"
                      },
                      itemMarginTop: 0,
@@ -1322,6 +1331,223 @@
                      enabled: false
                   },
                   series: series
+               });
+
+               resolve();
+            },
+            error: function(xhr, status, error) {
+               console.error("AJAX Error:", status, error);
+               reject(error);
+            }
+         });
+      });
+   };
+
+   const fetch_defect_record_per_section = () => {
+      return new Promise((resolve, reject) => {
+         let date_from = $('#d_date_from').val();
+         let date_to = $('#d_date_to').val();
+
+         $.ajax({
+            url: "process/dashboard_p.php",
+            type: "POST",
+            dataType: "json",
+            data: {
+               method: "fetch_defect_record_per_section",
+               date_from: date_from,
+               date_to: date_to
+            },
+            success: function(response) {
+               if (response.error) {
+                  console.error(response.error);
+                  reject(response.error);
+                  return;
+               }
+
+               // Sort by section number (numeric)
+               response.sort((a, b) => parseInt(a.section) - parseInt(b.section));
+
+               let sections = response.map(item => item.section);
+               let totals = response.map(item => parseInt(item.total));
+
+               Highcharts.chart("defect_record_per_section_chart", {
+                  chart: {
+                     type: "column",
+                     height: "290px",
+                     style: {
+                        fontFamily: "Poppins, sans-serif"
+                     }
+                  },
+                  colors: ["#1976D2"],
+                  title: {
+                     useHTML: true,
+                     text: styledChartTitle(
+                        `Defect Records per Section (${date_from} to ${date_to})`
+                     ),
+                     align: "left"
+                  },
+                  xAxis: {
+                     categories: sections.map(sec => `Section ${sec}`),
+                     title: {
+                        text: null
+                     },
+                     labels: {
+                        style: {
+                           fontFamily: "Poppins, sans-serif",
+                           fontSize: "11px"
+                        }
+                     }
+                  },
+                  yAxis: {
+                     min: 0,
+                     title: {
+                        text: null
+                     },
+                     labels: {
+                        style: {
+                           fontFamily: "Poppins, sans-serif",
+                           fontSize: "11px"
+                        }
+                     }
+                  },
+                  legend: {
+                     enabled: false
+                  },
+                  tooltip: {
+                     shared: true,
+                     valueSuffix: ' defects',
+                     style: {
+                        fontFamily: 'Poppins, sans-serif',
+                        fontSize: '11px'
+                     }
+                  },
+                  plotOptions: {
+                     column: {
+                        borderRadius: 3,
+                        pointPadding: 0.1,
+                        groupPadding: 0.05
+                     }
+                  },
+                  credits: {
+                     enabled: false
+                  },
+                  series: [{
+                     name: "Record",
+                     data: totals,
+                     point: {
+                        events: {
+                           click: function() {
+                              let clickedSection = this.category.replace("Section ", "");
+                              fetch_top_line_no_per_section(clickedSection, date_from, date_to);
+                           }
+                        }
+                     }
+                  }]
+               });
+
+               resolve();
+            },
+            error: function(xhr, status, error) {
+               console.error("AJAX Error:", status, error);
+               reject(error);
+            }
+         });
+      });
+   };
+
+   const fetch_top_line_no_per_section = (section, date_from, date_to) => {
+      return new Promise((resolve, reject) => {
+         $.ajax({
+            url: "process/dashboard_p.php",
+            type: "POST",
+            dataType: "json",
+            data: {
+               method: "fetch_top_line_no_per_section",
+               section: section,
+               date_from: date_from,
+               date_to: date_to
+            },
+            success: function(response) {
+               if (response.error) {
+                  console.error(response.error);
+                  reject(response.error);
+                  return;
+               }
+
+               let lineNos = response.map(item => `${item.line_no}`);
+               let totals = response.map(item => parseInt(item.total));
+
+               $('#line_no_section_based_chart_placeholder').hide();
+
+               Highcharts.chart("top_line_no_section_based_chart", {
+                  chart: {
+                     type: "bar",
+                     height: "300px",
+                     style: {
+                        fontFamily: "Poppins, sans-serif"
+                     }
+                  },
+                  colors: ["#0288D1"],
+                  title: {
+                     useHTML: true,
+                     text: styledChartTitle(
+                        `Top 10 Lines in Section ${section} (${date_from} to ${date_to})`
+                     ),
+                     align: "left"
+                  },
+                  xAxis: {
+                     categories: lineNos,
+                     title: {
+                        text: "Line No.",
+                        style: {
+                           fontFamily: "Poppins, sans-serif",
+                           fontSize: "11px"
+                        }
+                     },
+                     labels: {
+                        style: {
+                           fontFamily: "Poppins, sans-serif",
+                           fontSize: "11px"
+                        }
+                     }
+                  },
+                  yAxis: {
+                     min: 0,
+                     title: {
+                        text: null
+                     },
+                     labels: {
+                        style: {
+                           fontFamily: "Poppins, sans-serif",
+                           fontSize: "11px"
+                        }
+                     }
+                  },
+                  legend: {
+                     enabled: false
+                  },
+                  tooltip: {
+                     shared: true,
+                     valueSuffix: ' defects',
+                     style: {
+                        fontFamily: 'Poppins, sans-serif',
+                        fontSize: '11px'
+                     }
+                  },
+                  plotOptions: {
+                     bar: {
+                        borderRadius: 3,
+                        pointPadding: 0.1,
+                        groupPadding: 0.05
+                     }
+                  },
+                  credits: {
+                     enabled: false
+                  },
+                  series: [{
+                     name: "Record",
+                     data: totals
+                  }]
                });
 
                resolve();
