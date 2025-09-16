@@ -80,19 +80,62 @@
 </style>
 
 <!-- Navbar -->
-<nav class="main-header navbar sticky-top" style="background:#1b263b; border-bottom: 3px solid #8d0801; z-index: 1030;">
-    <a href="" class="navbar-brand ml-2">
-        <img src="dist/img/defect.png" alt="Minor Defect Record System Logo" class="brand-image">
-        <span class="brand-text font-weight-normal text-light" style="color: white; font-size: 20px;">MINOR DEFECT RECORD SYSTEM</span>
+<?php
+$current_page = basename($_SERVER['PHP_SELF']);
+?>
+
+<nav class="main-header navbar sticky-top d-flex align-items-center justify-content-between"
+    style="background:#1b263b; border-bottom: 3px solid #8d0801; z-index:1030;">
+
+    <!-- Brand -->
+    <a href="" class="navbar-brand d-flex align-items-center ml-2">
+        <img src="dist/img/defect.png" alt="Minor Defect Record System Logo" class="brand-image mr-2">
+        <span class="brand-text font-weight-normal text-light" style="font-size:20px;">
+            MINOR DEFECT RECORD SYSTEM
+        </span>
     </a>
 
-    <ul class="order-1 order-md-3 navbar-nav navbar-no-expand ml-auto">
-        <li class="nav-item mr-4 pt-3">
-            <p style="color: #fff; font-size: 14px;">
-                <i class="fas fa-calendar-check"></i>&nbsp;&nbsp;
-                <span id="datetime"></span> |
-                <a style="color: #EED965;" href="template/Minor-Defect-Record-System_WI_rev.2.pdf" target="_blank">Work Instruction</a>
-            </p>
+    <!-- Nav Buttons -->
+    <ul class="navbar-nav d-flex flex-row ml-auto align-items-center">
+        <!-- Main -->
+        <li class="nav-item mr-1">
+            <a class="btn btn-sm <?php echo ($current_page == 'index.php') ? 'btn-light text-dark' : 'text-white'; ?>"
+                href="index.php">
+                <i class="fas fa-home"></i> Main
+            </a>
+        </li>
+
+        <!-- Dashboard with Dropdown -->
+        <li class="nav-item dropdown mr-1">
+            <a class="btn btn-sm <?php echo ($current_page == 'main_dashboard.php') ? 'btn-light text-dark' : 'text-white'; ?> dropdown-toggle"
+                href="#" id="dashboardDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fas fa-tachometer-alt"></i> Dashboard
+            </a>
+            <div class="dropdown-menu" aria-labelledby="dashboardDropdown" style="position: absolute; z-index: 1050;">
+                <a class="btn btn-sm dropdown-item <?php echo ($current_page == 'main_dashboard.php') ? 'active' : ''; ?>" href="main_dashboard.php">
+                    <i class="fas fa-desktop mr-1"></i> Main Monitoring
+                </a>
+                <a class="btn btn-sm dropdown-item <?php echo ($current_page == 'weekly_monitoring.php') ? 'active' : ''; ?>" href="weekly_monitoring.php">
+                    <i class="fas fa-calendar-week mr-1"></i> Weekly Monitoring
+                </a>
+            </div>
+        </li>
+
+        <!-- Work Instruction -->
+        <li class="nav-item mr-1">
+            <a class="btn btn-sm <?php echo ($current_page == 'Minor-Defect-Record-System_WI_rev.2.pdf') ? 'btn-light text-dark' : 'text-white'; ?>"
+
+                href="template/Minor-Defect-Record-System_WI_rev.2.pdf" target="_blank">
+                <i class="fas fa-file-alt"></i> Work Instruction
+            </a>
+        </li>
+
+        <!-- Admin -->
+        <li class="nav-item mr-1">
+            <a class="btn btn-sm <?php echo ($current_page == 'index_m.php') ? 'btn-light text-dark' : 'text-white'; ?>"
+                href="index_m.php">
+                <i class="fas fa-user-cog"></i> Admin
+            </a>
         </li>
     </ul>
 </nav>

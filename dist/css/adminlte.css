@@ -2963,20 +2963,20 @@ fieldset:disabled a.btn {
 
 .btn-danger {
   color: #fff;
-  background-color: #dc3545;
-  border-color: #dc3545;
+  background-color: #8d0801;
+  border-color: #8d0801;
   box-shadow: none;
 }
 
 .btn-danger:hover {
   color: #fff;
-  background-color: #c82333;
+  background-color: #792021;
   border-color: #bd2130;
 }
 
 .btn-danger:focus, .btn-danger.focus {
   color: #fff;
-  background-color: #c82333;
+  background-color: #792021;
   border-color: #bd2130;
   box-shadow: 0 0 0 0 rgba(225, 83, 97, 0.5);
 }
