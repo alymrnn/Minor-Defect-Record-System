@@ -77,6 +77,20 @@
         border-radius: 6px;
         height: 100%;
     }
+
+    .navbar-nav .nav-item a.btn {
+        transition: background-color 0.3s, color 0.3s;
+    }
+
+    .navbar-nav .nav-item a.btn:hover {
+        background-color: #415a77 !important;
+        color: #fff !important;
+    }
+
+    .dropdown-menu .dropdown-item:hover {
+        background-color: #415a77 !important;
+        color: #fff !important;
+    }
 </style>
 
 <!-- Navbar -->
@@ -107,7 +121,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
 
         <!-- Dashboard with Dropdown -->
         <li class="nav-item dropdown mr-1">
-            <a class="btn btn-sm <?php echo ($current_page == 'main_dashboard.php') ? 'btn-light text-dark' : 'text-white'; ?> dropdown-toggle"
+            <a class="btn btn-sm <?php echo ($current_page == 'main_dashboard.php' || $current_page == 'weekly_monitoring.php') ? 'btn-light text-dark' : 'text-white'; ?> dropdown-toggle"
                 href="#" id="dashboardDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="fas fa-tachometer-alt"></i> Dashboard
             </a>

@@ -31,37 +31,37 @@
                         <input type="hidden" id="defect_id_no" class="form-control">
 
                         <label class="m-0 p-0" style="font-weight: normal;color: #000;font-size:14px;">Date Detected</label>
-                        <label class="m-0 p-0" style="color:#CA3F3F">*</label>
+                        <label class="m-0 p-0 text-danger">*</label>
 
                         <input type="date" id="a_date_detected" class="form-control form-control-sm form-control-border" autocomplete="off" required>
                     </div>
                     <div class="col-12 col-md-3">
                         <label class="m-0 p-0" style="font-weight: normal;color: #000;font-size:14px;">Line No.</label>
-                        <label class="m-0 p-0" style="color:#CA3F3F">*</label>
+                        <label class="m-0 p-0 text-danger">*</label>
                         <input type="text" id="a_line_no" class="form-control form-control-sm form-control-border" autocomplete="off" required>
                     </div>
                     <div class="col-12 col-md-3">
                         <label class="m-0 p-0" style="font-weight: normal;color: #000;font-size:14px;">Car Maker</label>
-                        <label class="m-0 p-0" style="color:#CA3F3F">*</label>
+                        <label class="m-0 p-0 text-danger">*</label>
                         <input id="a_car_maker" class="form-control form-control-sm form-control-border" onchange="handleCarMakerChange(this)" required disabled>
                     </div>
                     <div class="col-12 col-md-3">
                         <label class="m-0 p-0" style="font-weight: normal;color: #000;font-size:14px;">Car Model</label>
-                        <label class="m-0 p-0" style="color:#CA3F3F">*</label>
+                        <label class="m-0 p-0 text-danger">*</label>
                         <input type="text" id="a_car_model" class="form-control form-control-sm form-control-border" autocomplete="off" required>
                     </div>
                 </div>
                 <div class="row mb-4">
                     <div class="col-12 col-md-3 offset-3">
                         <label class="m-0 p-0" style="font-weight: normal;color: #000;font-size:14px;">Process</label>
-                        <label class="m-0 p-0" style="color:#CA3F3F">*</label>
+                        <label class="m-0 p-0 text-danger">*</label>
                         <select id="a_process" class="form-control form-control-sm form-control-border" required>
                             <option value="" disabled selected>Select Process</option>
                         </select>
                     </div>
                     <div class="col-12 col-md-3">
                         <label class="m-0 p-0" style="font-weight: normal;color: #000;font-size:14px;">Group</label>
-                        <label class="m-0 p-0" style="color:#CA3F3F">*</label>
+                        <label class="m-0 p-0 text-danger">*</label>
                         <select id="a_group" class="form-control form-control-sm form-control-border" required>
                             <option value="" disabled selected>Select Group</option>
                             <option value="ADS">ADS</option>
@@ -71,7 +71,7 @@
                     </div>
                     <div class="col-12 col-md-3">
                         <label class="m-0 p-0" style="font-weight: normal;color: #000;font-size:14px;">Shift</label>
-                        <label class="m-0 p-0" style="color:#CA3F3F">*</label>
+                        <label class="m-0 p-0 text-danger">*</label>
                         <select id="a_shift" class="form-control form-control-sm form-control-border" required>
                             <option value="" disabled>Select Shift</option>
                             <option value="N/A" selected>N/A</option>
@@ -90,20 +90,20 @@
                 <div class="row">
                     <div class="col-12 col-md-4">
                         <label class="m-0 p-0" style="font-weight: normal;color: #000;font-size:14px;">Product Number</label>
-                        <label class="m-0 p-0" style="color:#CA3F3F">*</label>
+                        <label class="m-0 p-0 text-danger">*</label>
                         <input type="text" id="a_product_name" class="form-control form-control-sm form-control-border" autocomplete="off" value="N/A" oninput="this.value = this.value.toUpperCase();">
                         <br>
                     </div>
                     <div class="col-12 col-md-4">
                         <label class="m-0 p-0" style="font-weight: normal;color: #000;font-size:14px;">Lot No.</label>
-                        <label class="m-0 p-0" style="color:#CA3F3F">*</label>
+                        <label class="m-0 p-0 text-danger">*</label>
                         <input type="text" id="a_lot_no" class="form-control form-control-sm form-control-border" autocomplete="off"
                             maxlength="6"
                             oninput="this.value = this.value.toUpperCase();">
                     </div>
                     <div class="col-12 col-md-4">
                         <label class="m-0 p-0" style="font-weight: normal;color: #000;font-size:14px;">Serial No.</label>
-                        <label class="m-0 p-0" style="color:#CA3F3F">*</label>
+                        <label class="m-0 p-0 text-danger">*</label>
                         <input type="text" id="a_serial_no" class="form-control form-control-sm form-control-border" autocomplete="off"
                             oninput="this.value = this.value.toUpperCase();">
                     </div>
@@ -112,27 +112,27 @@
                 <div class="row mb-3 mt-3">
                     <div class="col-12 col-md-3" style="display: none;">
                         <label class="m-0 p-0" style="font-weight: normal;color: #000;font-size:14px;">Defect Category Code</label>
-                        <label class="m-0 p-0" style="color:#CA3F3F">*</label>
+                        <label class="m-0 p-0 text-danger">*</label>
                         <input type="text" id="a_defect_category_code" class="form-control form-control-sm form-control-border"
                             autocomplete="off"
                             oninput="this.value = this.value.toUpperCase();">
                     </div>
                     <div class="col-12 col-md-3">
                         <label class="m-0 p-0" style="font-weight: normal;color: #000;font-size:14px;">Defect Details Code</label>
-                        <label class="m-0 p-0" style="color:#CA3F3F">*</label>
+                        <label class="m-0 p-0 text-danger">*</label>
                         <input type="text" id="a_defect_details_code" class="form-control form-control-sm form-control-border"
                             autocomplete="off" maxlength="3"
                             oninput="this.value = this.value.toUpperCase();">
                     </div>
                     <div class="col-12 col-md-5">
                         <label class="m-0 p-0" style="font-weight: normal;color: #000;font-size:14px;">Defect Category</label>
-                        <label class="m-0 p-0" style="color:#CA3F3F">*</label>
+                        <label class="m-0 p-0 text-danger">*</label>
                         <input id="a_defect_category" class="form-control form-control-sm form-control-border"
                             required disabled>
                     </div>
                     <div class="col-12 col-md-4">
                         <label class="m-0 p-0" style="font-weight: normal;color: #000;font-size:14px;">Defect Details</label>
-                        <label class="m-0 p-0" style="color:#CA3F3F">*</label>
+                        <label class="m-0 p-0 text-danger">*</label>
                         <input id="a_defect_details" class="form-control form-control-sm form-control-border"
                             required disabled>
                     </div>
@@ -140,7 +140,7 @@
                 <div class="row mb-3 mt-3">
                     <div class="col-12 col-md-5 offset-3">
                         <label class="m-0 p-0" style="font-weight: normal;color: #000;font-size:14px;">Treatment Content of Defect</label>
-                        <label class="m-0 p-0" style="color:#CA3F3F">*</label>
+                        <label class="m-0 p-0 text-danger">*</label>
                         <input id="a_treatment_content_defect" class="form-control form-control-sm form-control-border"
                             required disabled>
                     </div>
@@ -148,51 +148,41 @@
                 <div class="row">
                     <div class="col-12 col-md-3">
                         <label class="m-0 p-0" style="font-weight: normal;color: #000;font-size:14px;">Sequence No.</label>
-                        <label class="m-0 p-0" style="color:#CA3F3F">*</label>
+                        <label class="m-0 p-0 text-danger">*</label>
                         <input type="text" id="a_sequence_no" class="form-control form-control-sm form-control-border" autocomplete="off"
                             oninput="this.value = this.value.toUpperCase();"
                             required>
                     </div>
                     <div class="col-12 col-md-3">
                         <label class="m-0 p-0" style="font-weight: normal;color: #000;font-size:14px;">Connector No.</label>
-                        <label class="m-0 p-0" style="color:#CA3F3F">*</label>
+                        <label class="m-0 p-0 text-danger">*</label>
                         <input type="text" id="a_connector_no" class="form-control form-control-sm form-control-border" autocomplete="off"
                             oninput="this.value = this.value.toUpperCase();"
                             required>
                     </div>
                     <div class="col-12 col-md-3">
                         <label class="m-0 p-0" style="font-weight: normal;color: #000;font-size:14px;">Repaired By <i style="font-size: 10px">(PD ID No.)</i></label>
-                        <label class="m-0 p-0" style="color:#CA3F3F">*</label>
+                        <label class="m-0 p-0 text-danger">*</label>
                         <input type="text" id="a_repaired_by" class="form-control form-control-sm form-control-border" autocomplete="off" value="N/A"
                             required>
                     </div>
                     <div class="col-12 col-md-3">
                         <label class="m-0 p-0" style="font-weight: normal;color: #000;font-size:14px;">Verified By <i style="font-size: 10px">(QA ID No.)</i></label>
-                        <label class="m-0 p-0" style="color:#CA3F3F">*</label>
+                        <label class="m-0 p-0 text-danger">*</label>
                         <input type="text" id="a_verified_by" class="form-control form-control-sm form-control-border" autocomplete="off" value="N/A"
                             required>
                     </div>
                 </div>
             </div>
 
-            <div class="modal-footer" style="background:#e9e9e9;">
-                <div class="col-12">
-                    <div class="float-left">
-                        <button class="btn btn-block" id="clear_btn" onclick="clear_add_defect_record()"
-                            style="color:#fff;height: 35px;width:180px;border-radius:.25rem;background: #474747;font-size:15px;font-weight:normal;"
-                            onmouseover="this.style.backgroundColor='#2D2D2D'; this.style.color='#FFF';"
-                            onmouseout="this.style.backgroundColor='#474747'; this.style.color='#FFF';">
-                            Clear All
-                        </button>
-                    </div>
-                    <div class="float-right">
-                        <button class="btn btn-block" onclick="add_defect_record()"
-                            style="color:#fff;height: 35px;width:180px;border-radius:.25rem;background: #8d0801;font-size:15px;font-weight:normal;"
-                            onmouseover="this.style.backgroundColor='#792021'; this.style.color='#FFF';"
-                            onmouseout="this.style.backgroundColor='#8d0801'; this.style.color='#FFF';">
-                            Add Record
-                        </button>
-                    </div>
+            <div class="modal-footer bg-light">
+                <div class="col-12 d-flex justify-content-between">
+                    <button class="btn btn-outline-secondary btn-sm w-25" id="clear_btn" onclick="clear_add_defect_record()">
+                        Clear All
+                    </button>
+                    <button class="btn btn-danger btn-sm w-25" onclick="add_defect_record()">
+                        Add Record
+                    </button>
                 </div>
             </div>
         </div>

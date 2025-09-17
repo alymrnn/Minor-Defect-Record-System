@@ -9,7 +9,7 @@ include('plugins/system_plugins/navbar/index_navbar.php');
    <!-- Main content -->
    <section class="content">
       <div class="row">
-         <div class="col-2 d-side-nav pt-4">
+         <div class="col-2 d-side-nav pt-3">
             <div class="row">
                <div class="col-12">
                   <!-- commands -->
@@ -168,5 +168,5 @@ include('plugins/system_plugins/navbar/index_navbar.php');
 
 <?php
 include('plugins/system_plugins/footer_dashboard.php');
-include('plugins/system_plugins/js/dashboard_script.php');
+include('plugins/system_plugins/js/main_dashboard_script.php');
 ?>

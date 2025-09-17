@@ -4,7 +4,6 @@
         <div class="col-10 offset-2 d-flex justify-content-between">
             <span>
                 &copy; 2024. Ally Maranan. All Rights Reserved.
-                <a href="index_m.php" class="text-warning text-decoration-none">ADMIN</a>
             </span>
 
             <span>

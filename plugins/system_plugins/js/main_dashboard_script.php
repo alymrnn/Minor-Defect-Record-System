@@ -16,11 +16,15 @@
       $('#d_date_to').val(formatDate(lastDay));
 
       generate_dashboard_filter();
+
+      setInterval(() => {
+         generate_dashboard_filter();
+      }, 60000);
    });
 
    const fetch_line_no = () => {
       $.ajax({
-         url: 'process/dashboard_p.php',
+         url: 'process/main_dashboard_p.php',
          type: 'POST',
          data: {
             method: 'fetch_line_no'
@@ -91,7 +95,7 @@
          var date_to = $('#d_date_to').val();
 
          $.ajax({
-            url: 'process/dashboard_p.php',
+            url: 'process/main_dashboard_p.php',
             type: 'POST',
             dataType: 'json',
             cache: false,
@@ -156,7 +160,7 @@
          var date_to = $('#d_date_to').val();
 
          $.ajax({
-            url: 'process/dashboard_p.php',
+            url: 'process/main_dashboard_p.php',
             type: 'POST',
             data: {
                method: 'fetch_overall_defect_category',
@@ -284,7 +288,7 @@
    const fetch_overall_defect_details = (defectCategory, date_from, date_to, line_no) => {
       return new Promise((resolve, reject) => {
          $.ajax({
-            url: 'process/dashboard_p.php',
+            url: 'process/main_dashboard_p.php',
             type: 'POST',
             data: {
                method: 'fetch_overall_defect_details',
@@ -398,7 +402,7 @@
    const fetch_overall_line_no = (defectCategory, date_from, date_to, line_no) => {
       return new Promise((resolve, reject) => {
          $.ajax({
-            url: 'process/dashboard_p.php',
+            url: 'process/main_dashboard_p.php',
             type: 'POST',
             data: {
                method: 'fetch_overall_line_no',
@@ -508,7 +512,7 @@
          var date_to = $('#d_date_to').val();
 
          $.ajax({
-            url: 'process/dashboard_p.php',
+            url: 'process/main_dashboard_p.php',
             type: 'POST',
             data: {
                method: 'fetch_daily_trend',
@@ -661,7 +665,7 @@
    const fetch_top_daily_line_no = (clickedDate) => {
       return new Promise((resolve, reject) => {
          $.ajax({
-            url: 'process/dashboard_p.php',
+            url: 'process/main_dashboard_p.php',
             type: 'POST',
             dataType: 'json',
             data: {
@@ -763,7 +767,7 @@
    const fetch_top_daily_defect_category = (clickedDate) => {
       return new Promise((resolve, reject) => {
          $.ajax({
-            url: 'process/dashboard_p.php',
+            url: 'process/main_dashboard_p.php',
             type: 'POST',
             dataType: 'json',
             data: {
@@ -869,7 +873,7 @@
          var date_to = $('#d_date_to').val();
 
          $.ajax({
-            url: 'process/dashboard_p.php',
+            url: 'process/main_dashboard_p.php',
             type: 'POST',
             data: {
                method: 'fetch_top_lot_no',
@@ -976,7 +980,7 @@
          var date_to = $('#d_date_to').val();
 
          $.ajax({
-            url: 'process/dashboard_p.php',
+            url: 'process/main_dashboard_p.php',
             type: 'POST',
             data: {
                method: 'fetch_top_sequence_no',
@@ -1083,7 +1087,7 @@
          var date_to = $('#d_date_to').val();
 
          $.ajax({
-            url: 'process/dashboard_p.php',
+            url: 'process/main_dashboard_p.php',
             type: 'POST',
             data: {
                method: 'fetch_top_connector_no',
@@ -1189,7 +1193,7 @@
          let date_to = $('#d_date_to').val();
 
          $.ajax({
-            url: "process/dashboard_p.php",
+            url: "process/main_dashboard_p.php",
             type: "POST",
             dataType: "json",
             data: {
@@ -1349,7 +1353,7 @@
          let date_to = $('#d_date_to').val();
 
          $.ajax({
-            url: "process/dashboard_p.php",
+            url: "process/main_dashboard_p.php",
             type: "POST",
             dataType: "json",
             data: {
@@ -1458,7 +1462,7 @@
    const fetch_top_line_no_per_section = (section, date_from, date_to) => {
       return new Promise((resolve, reject) => {
          $.ajax({
-            url: "process/dashboard_p.php",
+            url: "process/main_dashboard_p.php",
             type: "POST",
             dataType: "json",
             data: {

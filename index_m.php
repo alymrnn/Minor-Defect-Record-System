@@ -81,7 +81,7 @@ if (isset($_SESSION['username'])) {
 
                     <form class="px-3" method="POST" id="login_form">
                         <div class="input-group mb-3">
-                            <input type="text" class="form-control" id="username" name="username" placeholder="Username"
+                            <input type="text" class="form-control" id="username" name="username" placeholder="ID Number"
                                 autocomplete="off" required
                                 style="font-size: 14px; border-radius: 3px; border: 1px solid #888888; background: #eaeaea;"
                                 onfocus="changeBorderColor(this, '#792021')"
@@ -96,7 +96,7 @@ if (isset($_SESSION['username'])) {
                             </button>
                         </div>
                         <div class="d-flex justify-content-center">
-                            <a href="template/Minor-Defect-Record-System_WI.pdf" target="_blank"><button type="button"
+                            <a href="template/Minor-Defect-Record-System_WI_rev.2.pdf" target="_blank"><button type="button"
                                     class="btn btn-block btn-sm"
                                     style="border-radius: 3px; background: #3E3E3E; width: 190px; color: #FFF;"
                                     onmouseover="this.style.backgroundColor='#242424'; this.style.color='#FFF';"
