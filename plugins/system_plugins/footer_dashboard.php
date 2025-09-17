@@ -3,7 +3,7 @@
     <div class="row">
         <div class="col-10 offset-2 d-flex justify-content-between">
             <span>
-                &copy; 2024. Ally Maranan. All Rights Reserved.
+                Copyright © 2024. All Rights Reserved. Developed by: <i>Ally Maranan.</i>
             </span>
 
             <span>

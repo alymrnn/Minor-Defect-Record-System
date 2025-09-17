@@ -75,6 +75,72 @@ if ($method == 'fetch_weekly_defect_category_count') {
     exit;
 }
 
+if ($method == 'fetch_weekly_top_lines_based_on_defect_category') {
+    $defectCategory = $_POST['defect_category'];
+
+    $query = "
+        WITH LineTotals AS (
+            SELECT 
+                t.line_no,
+                COUNT(*) AS total_defects
+            FROM t_minor_defect_f t
+            WHERE t.defect_category = :defect_category1
+              AND t.date_detected >= '2025-08-01'
+              AND t.date_detected < '2025-09-01'
+            GROUP BY t.line_no
+        ),
+        TopLines AS (
+            SELECT TOP 10 line_no
+            FROM LineTotals
+            ORDER BY total_defects DESC
+        )
+        SELECT 
+            t.line_no,
+            DATEPART(WEEK, t.date_detected) AS week_no,
+            CAST(DATEADD(WEEK, DATEDIFF(WEEK, 0, t.date_detected), 0) AS DATE) AS week_start,
+            CAST(DATEADD(DAY, 6, DATEADD(WEEK, DATEDIFF(WEEK, 0, t.date_detected), 0)) AS DATE) AS week_end,
+            COUNT(*) AS defect_count
+        FROM t_minor_defect_f t
+        INNER JOIN TopLines tl ON t.line_no = tl.line_no
+        WHERE t.defect_category = :defect_category2
+          AND t.date_detected >= '2025-08-01'
+          AND t.date_detected < '2025-09-01'
+        GROUP BY 
+            t.line_no,
+            DATEPART(WEEK, t.date_detected),
+            DATEADD(WEEK, DATEDIFF(WEEK, 0, t.date_detected), 0),
+            DATEADD(DAY, 6, DATEADD(WEEK, DATEDIFF(WEEK, 0, t.date_detected), 0))
+        ORDER BY t.line_no, week_start;
+    ";
+
+    try {
+        $stmt = $conn->prepare($query);
+        $stmt->bindParam(":defect_category1", $defectCategory);
+        $stmt->bindParam(":defect_category2", $defectCategory);
+        $stmt->execute();
+
+        $data = [];
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $data[] = [
+                "line_no"      => $row['line_no'],
+                "week_no"      => (int)$row['week_no'],
+                "week_range"   => date("M d", strtotime($row['week_start'])) . " - " .
+                                  date("M d", strtotime($row['week_end'])),
+                "defect_count" => (int)$row['defect_count']
+            ];
+        }
+
+        echo json_encode($data);
+    } catch (PDOException $e) {
+        echo json_encode(["error" => $e->getMessage()]);
+    }
+    exit;
+}
+
+
+
+
+
 if ($method == 'fetch_weekly_defect_per_section') {
     $year  = $_POST['year'] ?? date("Y");
     $month = $_POST['month'] ?? date("n"); // numeric month
@@ -117,8 +183,8 @@ if ($method == 'fetch_weekly_defect_per_section') {
             $data[] = [
                 "section"      => $row['section'],
                 "week_no"      => (int)$row['week_no'],
-                "week_range"   => date("M d", strtotime($row['week_start'])) . " - " . 
-                                  date("M d", strtotime($row['week_end'])),
+                "week_range"   => date("M d", strtotime($row['week_start'])) . " - " .
+                    date("M d", strtotime($row['week_end'])),
                 "defect_count" => (int)$row['defect_count']
             ];
         }

@@ -169,7 +169,7 @@
                   tooltip: {
                      shared: true,
                      headerFormat: "<b>{point.key}</b><br>",
-                     pointFormat: "{series.name}: <b>{point.y}</b><br>",
+                     pointFormat: "{series.name}: <b>{point.y}</b> defects<br>",
                      style: {
                         fontFamily: "Poppins, sans-serif",
                         fontSize: "11px"
@@ -195,6 +195,32 @@
                         pointPadding: 0.2,
                         groupPadding: 0.2,
                         cursor: "pointer",
+                        point: {
+                           events: {
+                              click: function() {
+                                 const defectCategory = this.category;
+
+                                 Swal.fire({
+                                    title: "Loading...",
+                                    text: `Fetching top lines for ${defectCategory}...`,
+                                    allowOutsideClick: false,
+                                    background: '#1b263b',
+                                    color: '#f8f9fa',
+                                    didOpen: () => {
+                                       Swal.showLoading();
+                                    }
+                                 });
+
+                                 fetch_weekly_top_lines_based_on_defect_category(defectCategory)
+                                    .then(() => {
+                                       Swal.close();
+                                    })
+                                    .catch(() => {
+                                       Swal.fire("Error", "Failed to load data", "error");
+                                    });
+                              }
+                           }
+                        },
                         dataLabels: {
                            enabled: true,
                            style: {
@@ -207,6 +233,121 @@
                   colors: [
                      "#0D47A1", "#1976D2", "#64B5F6", // Blue shades
                      "#1B5E20", "#388E3C", "#81C784", // Green shades
+                  ],
+                  series: seriesData
+               });
+
+               resolve();
+            },
+            error: function(xhr, status, error) {
+               console.error("AJAX Error:", error);
+            }
+         });
+      })
+   };
+
+   const fetch_weekly_top_lines_based_on_defect_category = (defectCategory) => {
+      return new Promise((resolve, reject) => {
+         $.ajax({
+            url: "process/weekly_monitoring_p.php",
+            type: "POST",
+            data: {
+               method: "fetch_weekly_top_lines_based_on_defect_category",
+               defect_category: defectCategory
+            },
+            dataType: "json",
+            success: function(data) {
+               $('#weekly_top_lines_chart_placeholder').hide();
+
+               const weeks = [...new Set(data.map(r => r.week_range))];
+               const lines = [...new Set(data.map(r => r.line_no))];
+
+               const seriesData = weeks.map(week => ({
+                  name: week,
+                  data: lines.map(line => {
+                     const found = data.find(d => d.line_no === line && d.week_range === week);
+                     return found ? found.defect_count : 0;
+                  })
+               }));
+
+               Highcharts.chart("weekly_top_lines_based_on_defect_category_chart", {
+                  chart: {
+                     type: "column",
+                     height: "290px",
+                     style: {
+                        fontFamily: "Poppins, sans-serif"
+                     }
+                  },
+                  title: {
+                     useHTML: true,
+                     text: styledChartTitle(`Weekly Top 10 Lines with ${defectCategory}`),
+                     align: "left"
+                  },
+                  xAxis: {
+                     categories: lines,
+                     title: {
+                        text: null
+                     },
+                     labels: {
+                        style: {
+                           fontFamily: "Poppins, sans-serif",
+                           fontSize: "11px"
+                        }
+                     }
+                  },
+                  yAxis: {
+                     min: 0,
+                     title: {
+                        text: null
+                     },
+                     labels: {
+                        enabled: true,
+                        style: {
+                           fontFamily: "Poppins, sans-serif",
+                           fontSize: "11px"
+                        }
+                     }
+                  },
+                  tooltip: {
+                     shared: true,
+                     headerFormat: "<b>{point.key}</b><br>",
+                     pointFormat: "{series.name}: <b>{point.y}</b> defects<br>",
+                     style: {
+                        fontFamily: "Poppins, sans-serif",
+                        fontSize: "11px"
+                     }
+                  },
+                  credits: {
+                     enabled: false
+                  },
+                  legend: {
+                     itemStyle: {
+                        fontFamily: 'Poppins, sans-serif',
+                        fontSize: '10px'
+                     },
+                     itemMarginTop: 0,
+                     itemMarginBottom: 0,
+                     symbolHeight: 8,
+                     symbolWidth: 8,
+                     symbolRadius: 2
+                  },
+                  plotOptions: {
+                     column: {
+                        borderRadius: 3,
+                        pointPadding: 0.2,
+                        groupPadding: 0.2,
+                        dataLabels: {
+                           enabled: true,
+                           style: {
+                              fontFamily: "Poppins, sans-serif",
+                              fontSize: "9px"
+                           }
+                        }
+                     }
+                  },
+                  colors: [
+                     "#1565C0", "#1E88E5", "#42A5F5", // blue shades
+                     "#F57C00", "#FB8C00", "#FFB74D" //orange shades
                   ],
                   series: seriesData
                });

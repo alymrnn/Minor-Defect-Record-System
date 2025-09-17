@@ -46,6 +46,20 @@ include('plugins/system_plugins/navbar/index_navbar.php');
             <div class="row mt-2">
                <div class="col-12">
                   <div class="chart-border">
+                     <div id="weekly_top_lines_based_on_defect_category_chart" style="border-radius: 8px;">
+                        <blockquote class="blockquote quote-secondary text-left m-2">
+                           <p id="weekly_top_lines_chart_placeholder" class="mb-0" style="font-size: 12px; color: #6c757d;">
+                              Select from Weekly Record per Defect Category to generate Top 10 Lines of Selected Defect Category per Week
+                           </p>
+                        </blockquote>
+                     </div>
+                  </div>
+               </div>
+            </div>
+
+            <div class="row mt-2">
+               <div class="col-12">
+                  <div class="chart-border">
                      <div id="weekly_defect_per_section_chart" style="border-radius: 8px;"></div>
                   </div>
                </div>
