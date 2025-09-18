@@ -14,7 +14,7 @@
 
       setInterval(() => {
          generate_weekly_dashboard_filter();
-      }, 60000);
+      }, 300000); // refersh every 5 mins
    });
 
    const generate_weekly_dashboard_filter = () => {
@@ -304,8 +304,17 @@
                $('#weekly_top_lines_chart_placeholder').hide();
 
                const weeks = [...new Set(data.map(r => r.week_range))];
-               const lines = [...new Set(data.map(r => r.line_no))];
 
+               // 1. Compute total defects per line
+               const lineTotals = {};
+               data.forEach(d => {
+                  lineTotals[d.line_no] = (lineTotals[d.line_no] || 0) + d.defect_count;
+               });
+
+               // 2. Sort lines by total defects (descending)
+               const lines = Object.keys(lineTotals).sort((a, b) => lineTotals[b] - lineTotals[a]);
+
+               // 3. Build series data based on sorted lines
                const seriesData = weeks.map(week => ({
                   name: week,
                   data: lines.map(line => {
@@ -313,6 +322,13 @@
                      return found ? found.defect_count : 0;
                   })
                }));
+
+               // 🔹 Convert month number to full name
+               const monthNames = [
+                  "January", "February", "March", "April", "May", "June",
+                  "July", "August", "September", "October", "November", "December"
+               ];
+               const monthName = monthNames[selectedMonth - 1];
 
                Highcharts.chart("weekly_top_lines_based_on_defect_category_chart", {
                   chart: {
@@ -324,7 +340,7 @@
                   },
                   title: {
                      useHTML: true,
-                     text: styledChartTitle(`Weekly Top 10 Lines (${selectedYear}-${selectedMonth}) with ${defectCategory}`),
+                     text: styledChartTitle(`Weekly Top 10 Lines (${monthName} ${selectedYear}) with ${defectCategory}`),
                      align: "left"
                   },
                   xAxis: {
@@ -388,6 +404,7 @@
             },
             error: function(xhr, status, error) {
                console.error("AJAX Error:", error);
+               reject(error);
             }
          });
       });
