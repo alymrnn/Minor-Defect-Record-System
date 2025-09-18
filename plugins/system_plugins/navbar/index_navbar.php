@@ -154,30 +154,3 @@ $current_page = basename($_SERVER['PHP_SELF']);
     </ul>
 </nav>
 <!-- /.navbar -->
-
-<script>
-    function refreshDateTime() {
-        const datetimeDisplay = document.getElementById("datetime");
-        const now = new Date();
-
-        const dateOptions = {
-            weekday: 'long',
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric'
-        };
-        const formattedDate = now.toLocaleDateString(undefined, dateOptions);
-
-        const timeOptions = {
-            hour: 'numeric',
-            minute: 'numeric',
-            second: 'numeric'
-        };
-        const formattedTime = now.toLocaleTimeString(undefined, timeOptions);
-
-        const formattedDateTime = `${formattedDate} | ${formattedTime}`;
-
-        datetimeDisplay.textContent = formattedDateTime;
-    }
-    setInterval(refreshDateTime, 1000);
-</script>
