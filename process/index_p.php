@@ -208,6 +208,7 @@ if ($method == 'load_defect_list') {
                 echo '<td style="text-align:center;">' . $row['car_maker'] . '</td>';
                 echo '<td style="text-align:center;">' . $row['car_model'] . '</td>';
                 echo '<td style="text-align:center;">' . $row['line_no'] . '</td>';
+                echo '<td style="text-align:center;">' . $row['line_category'] . '</td>';
                 echo '<td style="text-align:center;">' . $row['process'] . '</td>';
                 echo '<td style="text-align:center;">' . $row['group_d'] . '</td>';
                 echo '<td style="text-align:center;">' . $row['shift'] . '</td>';
@@ -228,7 +229,7 @@ if ($method == 'load_defect_list') {
             }
         } else {
             echo '<tr>';
-            echo '<td colspan="21" style="text-align:center; color:red;">No Record Found</td>';
+            echo '<td colspan="22" style="text-align:center; color:red;">No Record Found</td>';
             echo '</tr>';
         }
     } catch (PDOException $e) {
@@ -351,27 +352,62 @@ if ($method == 'add_defect_record') {
     $auth_id_no = trim($_POST['auth_id_no']);
     $auth_name = trim($_POST['auth_name']);
 
+    if ($line_no === "2130" || $line_no === "2132") {
+        if (isset($_POST['category']) && trim($_POST['category']) !== '') {
+            $category = trim($_POST['category']);
+        } else {
+            echo 'error_category_required';
+            exit;
+        }
+    } else {
+        $category = "N/A";
+    }
+
     $defect_id = generate_defect_id($defect_id);
 
     $query = "INSERT INTO t_minor_defect_f 
-            (defect_id, date_detected, car_maker, car_model, line_no,
-            process, group_d, shift, nameplate_value, product_no,
-            lot_no, serial_no, defect_category_code, defect_category, defect_details_code,
-            defect_details, sequence_no, connector_no, treatment_content_defect, repaired_by,
-            verified_by, ip_address, record_by_id_no, record_added_by) 
-            VALUES ('$defect_id','$date_detected','$car_maker','$car_model','$line_no',
-            '$process','$group','$shift','$nameplate_value','$product_name',
-            '$lot_no','$serial_no','$defect_category_code','$defect_category','$defect_details_code',
-            '$defect_details','$sequence_no','$connector_no','$treatment_content_defect','$repaired_by',
-            '$verified_by','$ip_address','$auth_id_no','$auth_name')";
+        (defect_id, date_detected, car_maker, car_model, line_no,
+        process, group_d, shift, nameplate_value, product_no,
+        lot_no, serial_no, defect_category_code, defect_category, defect_details_code,
+        defect_details, sequence_no, connector_no, treatment_content_defect, repaired_by,
+        verified_by, ip_address, record_by_id_no, record_added_by, line_category) 
+        VALUES (:defect_id, :date_detected, :car_maker, :car_model, :line_no,
+        :process, :group_d, :shift, :nameplate_value, :product_no,
+        :lot_no, :serial_no, :defect_category_code, :defect_category, :defect_details_code,
+        :defect_details, :sequence_no, :connector_no, :treatment_content_defect, :repaired_by,
+        :verified_by, :ip_address, :record_by_id_no, :record_added_by, :category)";
 
     $stmt = $conn->prepare($query);
 
-    if ($stmt->execute()) {
-        echo 'success';
-    } else {
-        echo 'error';
-    }
+    $success = $stmt->execute([
+        ':defect_id' => $defect_id,
+        ':date_detected' => $date_detected,
+        ':car_maker' => $car_maker,
+        ':car_model' => $car_model,
+        ':line_no' => $line_no,
+        ':process' => $process,
+        ':group_d' => $group,
+        ':shift' => $shift,
+        ':nameplate_value' => $nameplate_value,
+        ':product_no' => $product_name,
+        ':lot_no' => $lot_no,
+        ':serial_no' => $serial_no,
+        ':defect_category_code' => $defect_category_code,
+        ':defect_category' => $defect_category,
+        ':defect_details_code' => $defect_details_code,
+        ':defect_details' => $defect_details,
+        ':sequence_no' => $sequence_no,
+        ':connector_no' => $connector_no,
+        ':treatment_content_defect' => $treatment_content_defect,
+        ':repaired_by' => $repaired_by,
+        ':verified_by' => $verified_by,
+        ':ip_address' => $ip_address,
+        ':record_by_id_no' => $auth_id_no,
+        ':record_added_by' => $auth_name,
+        ':category' => $category
+    ]);
+
+    echo $success ? 'success' : 'error';
 }
 
 if ($method == 'check_auth_id') {

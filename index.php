@@ -128,6 +128,7 @@ include('plugins/system_plugins/navbar/index_navbar.php');
               <th>Car Maker</th>
               <th>Car Model</th>
               <th>Line No.</th>
+              <th>Category</th>
               <th>Process</th>
               <th>Group</th>
               <th>Shift</th>
@@ -147,7 +148,7 @@ include('plugins/system_plugins/navbar/index_navbar.php');
             </thead>
             <tbody class="mb-0" id="list_of_defect" style="font-size: 13px;">
               <tr>
-                <td colspan="21" style="text-align: center;">
+                <td colspan="22" style="text-align: center;">
                   <div class="spinner-border text-dark" role="status">
                     <span class="sr-only">Loading...</span>
                   </div>

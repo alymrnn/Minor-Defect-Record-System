@@ -43,6 +43,34 @@
         $('#search_date_to').val(currentDate);
 
         load_defect_table(1);
+
+        $('#a_line_no').on('keypress', function(e) {
+            if (e.which === 13) { // Enter key
+                let lineNo = $(this).val().trim();
+
+                if (lineNo === "2130" || lineNo === "2132") {
+                    $('#category_section').removeClass('d-none');
+                } else {
+                    $('#category_section').addClass('d-none');
+                    $('input[name="category_type"]').prop('checked', false);
+                }
+            }
+        });
+
+        // Trigger when clearing (backspace/delete or manual clear)
+        $('#a_line_no').on('input', function() {
+            let lineNo = $(this).val().trim();
+
+            if (lineNo === "") {
+                $('#category_section').addClass('d-none');
+                $('input[name="category_type"]').prop('checked', false);
+            }
+        });
+
+        // When Prime or Re-assy is clicked, update hidden input
+        $('input[name="category_type"]').on('change', function() {
+            $('#a_category').val($(this).val());
+        });
     });
 
     // Function to update the UI from sessionStorage
@@ -578,6 +606,26 @@
         var car_maker = document.getElementById("a_car_maker").value;
         var car_model = document.getElementById("a_car_model").value;
         var line_no = document.getElementById("a_line_no").value;
+
+        var category = document.getElementById("a_category").value.trim();
+
+        if ((line_no === "2130" || line_no === "2132") && category === "") {
+            Swal.fire({
+                icon: 'info',
+                title: 'Missing Required Field',
+                text: 'Category is required for Line No. 2130 and 2132.',
+                background: '#1b263b',
+                color: '#f9f9f9',
+                iconColor: '#8d0801'
+            });
+            return;
+        }
+
+        if (line_no !== "2130" && line_no !== "2132") {
+            category = "N/A";
+            document.getElementById("a_category").value = "N/A";
+        }
+
         var process = document.getElementById("a_process").value;
         var group = document.getElementById("a_group").value;
         var shift = document.getElementById("a_shift").value;
@@ -598,7 +646,6 @@
         var defect_id = document.getElementById('defect_id_no').value;
 
         var ip_address = document.getElementById("a_ip_address").value;
-
         var nameplate_value = document.getElementById("nameplate_value").value;
 
         var auth_id_no = sessionStorage.getItem('auth_id_no');
@@ -619,6 +666,7 @@
                 car_maker: car_maker,
                 car_model: car_model,
                 line_no: line_no,
+                category: category,
                 process: process,
                 group: group,
                 shift: shift,
@@ -695,10 +743,14 @@
 
         document.getElementById("a_defect_details_code").value = '';
         document.getElementById("a_defect_details").value = '';
-        // $('#a_defect_details').prop('disabled', true).css('background', '#DDD');
-        $('#a_process').prop('disabled', true).css('background', '#DDD');
 
+        $('#a_process').prop('disabled', true).css('background', '#DDD');
         $('#a_process').empty().append('<option value="" disabled selected>Select Process</option>');
+
+        $('#category_section').addClass('d-none');
+        $('input[name="category_type"]').prop('checked', false);
+
+        $('#a_category').val('');
     };
 
     const clear_search_defect_record = () => {
