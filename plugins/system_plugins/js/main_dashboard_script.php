@@ -2,7 +2,15 @@
    $(document).ready(function() {
       fetch_line_no();
 
-      // set filter date
+      fetch_date();
+      generate_dashboard_filter();
+
+      setInterval(() => {
+         generate_dashboard_filter();
+      }, 60000);
+   });
+
+   function fetch_date() {
       const today = new Date();
       const firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
       const lastDay = new Date(today.getFullYear(), today.getMonth() + 1, 0);
@@ -14,13 +22,7 @@
 
       $('#d_date_from').val(formatDate(firstDay));
       $('#d_date_to').val(formatDate(lastDay));
-
-      generate_dashboard_filter();
-
-      setInterval(() => {
-         generate_dashboard_filter();
-      }, 60000);
-   });
+   }
 
    const fetch_line_no = () => {
       $.ajax({
@@ -68,6 +70,46 @@
             fetch_defect_record_per_section()
          ])
          .then(() => {
+            document.getElementById("top_overall_line_no_chart").innerHTML = `
+               <blockquote class="blockquote quote-secondary text-left m-2">
+                  <p id="overall_line_no_chart_placeholder" class="mb-0" style="font-size: 12px; color: #6c757d;">
+                        Select from Top Defect Category Chart to generate Top Line No.'s with Selected Defect
+                  </p>
+               </blockquote>
+            `;
+
+            document.getElementById("top_overall_defect_details_chart").innerHTML = `
+               <blockquote class="blockquote quote-secondary text-left m-2">
+                  <p id="overall_defect_details_chart_placeholder" class="mb-0" style="font-size: 12px; color: #6c757d;">
+                        Select from Top Defect Category Chart to generate Defect Details
+                  </p>
+               </blockquote>
+            `;
+
+            document.getElementById("top_line_no_section_based_chart").innerHTML = `
+               <blockquote class="blockquote quote-secondary text-left m-2">
+                  <p id="line_no_section_based_chart_placeholder" class="mb-0" style="font-size: 12px; color: #6c757d;">
+                        Select a section from Defect Records per Section Chart to generate its Top Line No.
+                  </p>
+               </blockquote>
+            `;
+
+            document.getElementById("top_daily_defect_category_chart").innerHTML = `
+               <blockquote class="blockquote quote-secondary text-left m-2">
+                  <p id="defect_category_chart_placeholder" class="mb-0" style="font-size: 12px; color: #6c757d;">
+                        Select a date from Daily Defect Trend Chart to generate Top Defect Category
+                  </p>
+               </blockquote>
+            `;
+
+            document.getElementById("top_daily_line_no_chart").innerHTML = `
+               <blockquote class="blockquote quote-secondary text-left m-2">
+                  <p id="line_no_chart_placeholder" class="mb-0" style="font-size: 12px; color: #6c757d;">
+                        Select a date from Daily Defect Trend Chart to generate Top Line No.
+                  </p>
+               </blockquote>
+            `;
+
             Swal.close();
          })
          .catch((error) => {

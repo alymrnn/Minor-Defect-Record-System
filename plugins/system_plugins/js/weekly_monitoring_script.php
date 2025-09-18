@@ -11,6 +11,10 @@
       fetch_year_month_options().then(() => {
          generate_weekly_dashboard_filter();
       });
+
+      setInterval(() => {
+         generate_weekly_dashboard_filter();
+      }, 60000);
    });
 
    const generate_weekly_dashboard_filter = () => {
