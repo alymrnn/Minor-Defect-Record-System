@@ -57,16 +57,13 @@ include('plugins/system_plugins/navbar/index_navbar.php');
                </div>
             </div>
 
-            <div class="row mt-3">
+            <div class="row mt-3 mb-3">
                <div class="col-12">
                   <div class="chart-border">
                      <div id="weekly_defect_per_section_chart" style="border-radius: 8px;"></div>
                   </div>
                </div>
             </div>
-
-
-
          </div>
       </div>
    </section>
