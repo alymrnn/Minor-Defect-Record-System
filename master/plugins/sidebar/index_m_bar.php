@@ -1,9 +1,9 @@
-<aside class="main-sidebar sidebar-light-primary elevation-2"
-    style="background: #F6F6F6; position: fixed; top: 0; bottom: 0; overflow-y: auto;">
+<aside class="main-sidebar sidebar-light-primary"
+    style="position: fixed; top: 0; bottom: 0; overflow-y: auto; border-right: 1px solid #8d0801;">
     <!-- Brand Logo -->
     <a href="masterlist_m.php" class="brand-link">
         <img src="../dist/img/defect.png" alt="Logo" class="brand-image" style="opacity: .8;">
-        <span class="brand-text" style="font-size:15px;color:black">Minor Defect Record</span>
+        <span class="brand-text" style="font-size:15px;color:black">Minor Defect System</span>
     </a>
 
     <!-- Sidebar -->
@@ -14,8 +14,7 @@
                 <img src="../dist/img/user.png" class="img-circle" alt="User Image">
             </div>
             <div class="info">
-                <a href="masterlist_m.php" class="d-block"
-                    style="font-size:16px; color:black"><?= htmlspecialchars($_SESSION['username']); ?></a>
+                <a href="masterlist_m.php" class="d-block text-sm text-primary"><?= htmlspecialchars($_SESSION['username']); ?></a>
             </div>
         </div>
 

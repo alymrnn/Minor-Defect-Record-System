@@ -342,9 +342,9 @@ if ($method == 'line_car_model_list') {
             echo '<button type="button" class="btn btn-outline-danger btn-xs" onclick="delete_added_line_car_model(event)" data-id="' . $row["id"] . '">Delete</button>';
             echo '</td>';
             echo '<td style="text-align:center;">' . $row['line_no'] . '</td>';
+            echo '<td style="text-align:center;">' . $row['section'] . '</td>';
             echo '<td style="text-align:center;">' . $row['car_maker'] . '</td>';
             echo '<td style="text-align:center;">' . $row['car_model'] . '</td>';
-            echo '<td style="text-align:center;">' . $row['section'] . '</td>';
             echo '</tr>';
         }
     } else {

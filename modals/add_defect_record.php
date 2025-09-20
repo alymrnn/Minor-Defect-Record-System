@@ -1,22 +1,21 @@
 <div class="modal fade bd-example-modal-xl" id="add_defect_record" tabindex="-1" role="dialog" data-backdrop="static"
     data-keyboard="false">
     <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content" style="background:#f9f9f9;">
+        <div class="modal-content bg-light">
             <div class="modal-header" style="background:#1b263b; border-bottom: 3px solid #8d0801;">
-                <h5 class="modal-title" id="exampleModalLabel" style="font-weight: normal;color: #fff;"><i
-                        class="fas fa-plus"></i>&nbsp;
-                    Add Record
-                </h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color: #fff;">
-                    <span aria-hidden="true">&times;</span>
+                <h6 class="modal-title font-weight-normal text-white"><i
+                        class="fas fa-plus mr-2"></i>Add Record
+                </h6>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"><i class="fas fa-times text-white"></i></span>
                 </button>
             </div>
             <div class="modal-body">
                 <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <label style="font-weight: normal; color: #000; font-size: 22px;">
-                        <b>Minor Defect Record</b>
+                    <label class="font-weight-bold text-lg">
+                        Minor Defect Record
                     </label>
-                    <label class="p-1" style="font-weight: normal; color: #000; font-size: 15px; border-bottom: 2px solid #8d0801;">
+                    <label class="p-1 font-weight-normal text-sm" style="border-bottom: 2px solid #8d0801;">
                         <i class="far fa-user"></i> User: <b><span id="authNameDisplay"></span></b>
                     </label>
                 </div>

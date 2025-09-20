@@ -5,7 +5,7 @@ include '../process/login.php';
 if (!isset($_SESSION['username'])) {
     header('location:../');
     exit;
-} 
+}
 
 ?>
 <!DOCTYPE html>
@@ -14,7 +14,7 @@ if (!isset($_SESSION['username'])) {
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Minor Defect Record System System</title>
+    <title>Minor Defect Record System</title>
 
     <link rel="icon" href="../dist/img/defect.png" type="image/x-icon" />
     <!-- Google Font: Source Sans Pro -->
@@ -85,48 +85,12 @@ if (!isset($_SESSION['username'])) {
         ::-webkit-scrollbar-thumb:hover {
             background: #332D2D;
         }
-
-        /* return to top button */
-        .return-to-top {
-            position: fixed;
-            right: 15px;
-            bottom: 15px;
-            /* border: 3px solid #332D2D; */
-            border: none;
-            background: none;
-            border-radius: 15%;
-        }
-
-        .nav-icon-top {
-            font-size: 38px;
-            color: #636363;
-            font-weight: 100;
-        }
-
-        .return-to-top:hover {
-            /* border: 3px solid #3B71CA; */
-            border: none;
-            /* background: #3B71CA; */
-        }
-
-        .nav-icon-top:hover {
-            color: #2b2b2b;
-            opacity: 1.0;
-        }
     </style>
 </head>
 
 <body class="hold-transition sidebar-mini sidebar-collapse">
     <div class="wrapper">
-
-        <!-- Preloader -->
-        <!-- <div class="preloader flex-column justify-content-center align-items-center" style="background: #00375C;">
-      <img class="animation__shake" src="../../dist/img/tool-box.png" alt="logo" height="100" width="100">
-    </div> -->
-
-        <!-- Navbar -->
-        <nav class="main-header navbar navbar-expand navbar-white" style="background: #343a40;">
-            <!-- Left navbar links -->
+        <nav class="main-header navbar navbar-expand navbar-white" style="background:#1b263b; border-bottom: 3px solid #8d0801;">
             <ul class="navbar-nav">
                 <li class="nav-item">
                     <a class="nav-link" data-widget="pushmenu" href="#" role="button" style="color: #fff;"><i
@@ -134,7 +98,6 @@ if (!isset($_SESSION['username'])) {
                 </li>
             </ul>
 
-            <!-- Right navbar links -->
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
                     <a class="nav-link" data-widget="fullscreen" href="#" role="button" style="color: #fff;">
@@ -143,6 +106,5 @@ if (!isset($_SESSION['username'])) {
                 </li>
             </ul>
         </nav>
-        <!-- /.navbar -->
 
 </html>

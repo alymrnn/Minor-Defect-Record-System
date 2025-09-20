@@ -1,4 +1,4 @@
-<footer class="main-footer" style="background:#f8f9fa; color:#000; font-size: 13px;">
+<footer class="main-footer bg-white text-xs text-dark" style="border-top: 1px solid #8d0801;">
     Copyright © 2024. All Rights Reserved. Developed by: <i>Ally Maranan.</i>
     <div class="float-right d-none d-sm-inline-block">
         Version 2.1.0
