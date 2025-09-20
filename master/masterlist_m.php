@@ -38,7 +38,7 @@
                         <li class="nav-item">
                             <a class="nav-link" id="masterlist-record-3-tab" data-toggle="pill"
                                 href="#masterlist-record-3" role="tab" aria-controls="masterlist-record-3"
-                                aria-selected="true">Admin Account</a>
+                                aria-selected="true">Car Model</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" id="masterlist-record-4-tab" data-toggle="pill"
@@ -48,7 +48,7 @@
                         <li class="nav-item">
                             <a class="nav-link" id="masterlist-record-5-tab" data-toggle="pill"
                                 href="#masterlist-record-5" role="tab" aria-controls="masterlist-record-5"
-                                aria-selected="true">Car Model</a>
+                                aria-selected="true">Admin Account</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" id="masterlist-record-6-tab" data-toggle="pill"
@@ -75,7 +75,7 @@
 
                             <!-- table -->
                             <div class="card-body table-responsive m-0 p-0 mt-3" style="max-height: 500px;">
-                                <table class="table table-head-fixed text-nowrap table-hover table-sm"
+                                <table class="table table-head-fixed text-nowrap table-hover table-sm table-bordered"
                                     id="qr_setting_table">
                                     <thead class="text-center text-sm">
                                         <th style="width: 10%;">#</th>
@@ -117,7 +117,7 @@
 
                             <!-- table -->
                             <div class="card-body table-responsive m-0 p-0 mt-3" style="max-height: 500px;">
-                                <table class="table table-head-fixed text-nowrap table-hover table-sm" id="defect_details_table">
+                                <table class="table table-head-fixed text-nowrap table-hover table-sm table-bordered" id="defect_details_table">
                                     <thead class="text-sm text-center">
                                         <th>#</th>
                                         <th>Action</th>
@@ -141,8 +141,8 @@
                         </div>
 
                         <!-- Account Management -->
-                        <div class="tab-pane fade" id="masterlist-record-3" role="tabpanel"
-                            aria-labelledby="masterlist-record-3-tab">
+                        <div class="tab-pane fade" id="masterlist-record-5" role="tabpanel"
+                            aria-labelledby="masterlist-record-5-tab">
                             <div class="row">
                                 <div class="col-12 col-sm-2">
                                     <button class="btn btn-primary btn-sm w-100"
@@ -154,7 +154,7 @@
 
                             <!-- table -->
                             <div class="card-body table-responsive m-0 p-0 mt-3" style="max-height: 500px;">
-                                <table class="table col-12 table-head-fixed text-nowrap table-hover table-sm" id="accounts_table">
+                                <table class="table col-12 table-head-fixed text-nowrap table-hover table-sm table-bordered" id="accounts_table">
                                     <thead class="text-center text-sm">
                                         <th class="text-right">#</th>
                                         <th>Action</th>
@@ -188,7 +188,7 @@
 
                             <!-- table -->
                             <div class="card-body table-responsive m-0 p-0 mt-3" style="max-height: 500px;">
-                                <table class="table col-12 table-head-fixed text-nowrap table-hover table-sm" id="line_process_table">
+                                <table class="table col-12 table-head-fixed text-nowrap table-hover table-sm table-bordered" id="line_process_table">
                                     <thead class="text-center text-sm">
                                         <th class="text-right">#</th>
                                         <th>Action</th>
@@ -209,8 +209,8 @@
                         </div>
 
                         <!-- Line / Car Model -->
-                        <div class="tab-pane fade" id="masterlist-record-5" role="tabpanel"
-                            aria-labelledby="masterlist-record-5-tab">
+                        <div class="tab-pane fade" id="masterlist-record-3" role="tabpanel"
+                            aria-labelledby="masterlist-record-3-tab">
                             <div class="row">
                                 <div class="col-12 col-sm-2">
                                     <button class="btn btn-primary btn-sm w-100"
@@ -222,7 +222,7 @@
 
                             <!-- table -->
                             <div class="card-body table-responsive m-0 p-0 mt-3" style="max-height: 500px;">
-                                <table class="table col-12 table-head-fixed text-nowrap table-hover table-sm" id="line_car_model_table">
+                                <table class="table col-12 table-head-fixed text-nowrap table-hover table-sm table-bordered" id="line_car_model_table">
                                     <thead class="text-center text-sm">
                                         <th class="text-right">#</th>
                                         <th>Action</th>
@@ -258,7 +258,7 @@
 
                             <!-- table -->
                             <div class="card-body table-responsive m-0 p-0 mt-3" style="max-height: 500px;">
-                                <table class="table col-12 table-head-fixed text-nowrap table-hover table-sm" id="auth_account_table">
+                                <table class="table col-12 table-head-fixed text-nowrap table-hover table-sm table-bordered" id="auth_account_table">
                                     <thead class="text-center text-sm">
                                         <th class="text-right">#</th>
                                         <th>Action</th>

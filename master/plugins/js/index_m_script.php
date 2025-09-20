@@ -25,89 +25,89 @@
     }
 
     const register_setting = () => {
-        var car_maker = document.getElementById('car_maker_qr').value;
-        var car_model = document.getElementById('car_model_qr').value;
-        var car_value = document.getElementById('car_value_qr').value;
-        var total_length = document.getElementById('total_length_qr').value;
-        var pro_name_start = document.getElementById('pro_name_start_qr').value;
-        var pro_name_length = document.getElementById('pro_name_length_qr').value;
-        var lot_no_start = document.getElementById('lot_no_start_qr').value;
-        var lot_no_length = document.getElementById('lot_no_length_qr').value;
-        var serial_no_start = document.getElementById('serial_no_start_qr').value;
-        var serial_no_length = document.getElementById('serial_no_length_qr').value;
+        const fields = [
+            'car_maker_qr',
+            'car_model_qr',
+            'car_value_qr',
+            'total_length_qr',
+            'pro_name_start_qr',
+            'pro_name_length_qr',
+            'lot_no_start_qr',
+            'lot_no_length_qr',
+            'serial_no_start_qr',
+            'serial_no_length_qr'
+        ];
 
-        if (car_maker == '') {
+        let hasEmpty = false;
+
+        fields.forEach(id => {
+            const field = document.getElementById(id);
+            if (field.value.trim() === '') {
+                field.classList.add('is-invalid');
+                hasEmpty = true;
+            } else {
+                field.classList.remove('is-invalid');
+            }
+        });
+
+        if (hasEmpty) {
             Swal.fire({
                 icon: 'info',
-                title: 'Please input car maker.',
+                title: 'Missing Information',
+                text: 'Please fill in all required fields before submission.',
                 showConfirmButton: false,
-                timer: 1500
+                timer: 2000
             });
-        } else if (car_value == '') {
-            Swal.fire({
-                icon: 'info',
-                title: 'Please input car value.',
-                showConfirmButton: false,
-                timer: 1500
-            });
-        } else {
-            $.ajax({
-                url: '../process/index_m_p.php',
-                type: 'POST',
-                cache: false,
-                data: {
-                    method: 'register_setting',
-                    car_maker: car_maker,
-                    car_model: car_model,
-                    car_value: car_value,
-                    total_length: total_length,
-                    pro_name_start: pro_name_start,
-                    pro_name_length: pro_name_length,
-                    lot_no_start: lot_no_start,
-                    lot_no_length: lot_no_length,
-                    serial_no_start: serial_no_start,
-                    serial_no_length: serial_no_length
-                },
-                success: function(response) {
-                    if (response == 'success') {
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'QR Settings Added',
-                            text: 'Success',
-                            showConfirmButton: false,
-                            timer: 1500
-                        });
-                        $('#car_maker_qr').val('');
-                        $('#car_model_qr').val('');
-                        $('#car_value_qr').val('');
-                        $('#total_length_qr').val('');
-                        $('#pro_name_start_qr').val('');
-                        $('#pro_name_length_qr').val('');
-                        $('#lot_no_start_qr').val('');
-                        $('#lot_no_length_qr').val('');
-                        $('#serial_no_start_qr').val('');
-                        $('#serial_no_length_qr').val('');
-                        load_car_settings();
-                        $('#add_qr_setting').modal('hide');
-                    } else if (response == 'Already Exist') {
-                        Swal.fire({
-                            icon: 'info',
-                            title: 'Duplicate Data',
-                            showConfirmButton: false,
-                            timer: 1500
-                        });
-                    } else {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Error',
-                            showConfirmButton: false,
-                            timer: 1500
-                        });
-                    }
-                }
-            });
+            return;
         }
-    }
+
+        const data = {};
+        fields.forEach(id => {
+            data[id.replace('_qr', '')] = document.getElementById(id).value.trim();
+        });
+
+        $.ajax({
+            url: '../process/index_m_p.php',
+            type: 'POST',
+            cache: false,
+            data: {
+                method: 'register_setting',
+                ...data
+            },
+            success: function(response) {
+                if (response === 'success') {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'QR Settings Added',
+                        text: 'Success',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+
+                    fields.forEach(id => {
+                        $('#' + id).val('').removeClass('is-invalid');
+                    });
+
+                    load_car_settings();
+                    $('#add_qr_setting').modal('hide');
+                } else if (response === 'Already Exist') {
+                    Swal.fire({
+                        icon: 'info',
+                        title: 'Duplicate Data',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                }
+            }
+        });
+    };
 
     const get_car_setting_details = (param) => {
         var string = param.split('~!~');
@@ -249,11 +249,36 @@
     }
 
     const register_defect_details = () => {
-        var defect_code = document.getElementById('defect_code_m').value;
-        var defect_category = document.getElementById('defect_category_m').value;
-        var defect_sub_code = document.getElementById('defect_sub_code_m').value;
-        var defect_details = document.getElementById('defect_details_m').value;
-        var defect_treatment = document.getElementById('defect_treatment_m').value;
+        const fields = [
+            'defect_code_m',
+            'defect_category_m',
+            'defect_sub_code_m',
+            'defect_details_m',
+            'defect_treatment_m'
+        ];
+
+        let hasEmpty = false;
+
+        fields.forEach(id => {
+            const field = document.getElementById(id);
+            if (field.value.trim() === '') {
+                field.classList.add('is-invalid');
+                hasEmpty = true;
+            } else {
+                field.classList.remove('is-invalid');
+            }
+        });
+
+        if (hasEmpty) {
+            Swal.fire({
+                icon: 'info',
+                title: 'Missing Information',
+                text: 'Please fill in all required fields before submission.',
+                showConfirmButton: false,
+                timer: 2000
+            });
+            return;
+        }
 
         $.ajax({
             url: '../process/index_m_p.php',
@@ -261,29 +286,27 @@
             cache: false,
             data: {
                 method: 'register_defect_details',
-                defect_code: defect_code,
-                defect_category: defect_category,
-                defect_sub_code: defect_sub_code,
-                defect_details: defect_details,
-                defect_treatment: defect_treatment
+                defect_code: document.getElementById('defect_code_m').value.trim(),
+                defect_category: document.getElementById('defect_category_m').value.trim(),
+                defect_sub_code: document.getElementById('defect_sub_code_m').value.trim(),
+                defect_details: document.getElementById('defect_details_m').value.trim(),
+                defect_treatment: document.getElementById('defect_treatment_m').value.trim()
             },
             success: function(response) {
-                if (response == 'success') {
+                if (response === 'success') {
                     Swal.fire({
                         icon: 'success',
-                        title: 'QR Settings Added',
+                        title: 'Defect Details Added',
                         text: 'Success',
                         showConfirmButton: false,
                         timer: 1500
                     });
-                    $('#defect_code_m').val('');
-                    $('#defect_category_m').val('');
-                    $('#defect_sub_code_m').val('');
-                    $('#defect_details_m').val('');
-                    $('#defect_treatment_m').val('');
+
+                    fields.forEach(id => $('#' + id).val('').removeClass('is-invalid'));
+
                     load_defect_details();
                     $('#add_defect_details').modal('hide');
-                } else if (response == 'Already Exist') {
+                } else if (response === 'Already Exist') {
                     Swal.fire({
                         icon: 'info',
                         title: 'Duplicate Data',
@@ -300,7 +323,7 @@
                 }
             }
         });
-    }
+    };
 
     const delete_added_defect = (event) => {
         var id = event.target.dataset.id;
@@ -344,8 +367,28 @@
     }
 
     const register_account = () => {
-        var username = document.getElementById('username_m').value;
-        var role = document.getElementById('role_m').value;
+        var usernameField = document.getElementById('username_m');
+        var roleField = document.getElementById('role_m');
+
+        var username = usernameField.value.trim();
+        var role = roleField.value.trim();
+
+        usernameField.classList.remove('is-invalid');
+        roleField.classList.remove('is-invalid');
+
+        if (!username || !role) {
+            if (!username) usernameField.classList.add('is-invalid');
+            if (!role) roleField.classList.add('is-invalid');
+
+            Swal.fire({
+                icon: 'warning',
+                title: 'Missing Information',
+                text: 'Please fill out all required fields.',
+                showConfirmButton: false,
+                timer: 1500
+            });
+            return;
+        }
 
         $.ajax({
             url: '../process/index_m_p.php',
@@ -365,8 +408,8 @@
                         showConfirmButton: false,
                         timer: 1500
                     });
-                    $('#username_m').val('');
-                    $('#role_m').val('');
+                    $('#username_m').val('').removeClass('is-invalid');
+                    $('#role_m').val('').removeClass('is-invalid');
                     load_accounts();
                     $('#add_account').modal('hide');
                 } else if (response == 'Already Exist') {
@@ -428,10 +471,29 @@
             }
         });
     }
-
     const register_line_process = () => {
-        var line_no = document.getElementById('line_m').value;
-        var process = document.getElementById('process_m').value;
+        var lineField = document.getElementById('line_m');
+        var processField = document.getElementById('process_m');
+
+        var line_no = lineField.value.trim();
+        var process = processField.value.trim();
+
+        lineField.classList.remove('is-invalid');
+        processField.classList.remove('is-invalid');
+
+        if (!line_no || !process) {
+            if (!line_no) lineField.classList.add('is-invalid');
+            if (!process) processField.classList.add('is-invalid');
+
+            Swal.fire({
+                icon: 'warning',
+                title: 'Missing Information',
+                text: 'Please fill out all required fields.',
+                showConfirmButton: false,
+                timer: 1500
+            });
+            return;
+        }
 
         $.ajax({
             url: '../process/index_m_p.php',
@@ -451,8 +513,8 @@
                         showConfirmButton: false,
                         timer: 1500
                     });
-                    $('#line_m').val('');
-                    $('#process_m').val('');
+                    $('#line_m').val('').removeClass('is-invalid');
+                    $('#process_m').val('').removeClass('is-invalid');
                     load_line_process();
                     $('#add_line_process').modal('hide');
                 } else if (response == 'Already Exist') {
@@ -516,9 +578,32 @@
     }
 
     const register_auth_account = () => {
-        var emp_id = document.getElementById('emp_id_m').value;
-        var emp_name = document.getElementById('name_m').value;
-        var emp_dept = document.getElementById('department_m').value;
+        var empIdField = document.getElementById('emp_id_m');
+        var empNameField = document.getElementById('name_m');
+        var empDeptField = document.getElementById('department_m');
+
+        var emp_id = empIdField.value.trim();
+        var emp_name = empNameField.value.trim();
+        var emp_dept = empDeptField.value.trim();
+
+        empIdField.classList.remove('is-invalid');
+        empNameField.classList.remove('is-invalid');
+        empDeptField.classList.remove('is-invalid');
+
+        if (!emp_id || !emp_name || !emp_dept) {
+            if (!emp_id) empIdField.classList.add('is-invalid');
+            if (!emp_name) empNameField.classList.add('is-invalid');
+            if (!emp_dept) empDeptField.classList.add('is-invalid');
+
+            Swal.fire({
+                icon: 'warning',
+                title: 'Missing Information',
+                text: 'Please fill out all required fields.',
+                showConfirmButton: false,
+                timer: 1500
+            });
+            return;
+        }
 
         $.ajax({
             url: '../process/index_m_p.php',
@@ -539,9 +624,9 @@
                         showConfirmButton: false,
                         timer: 1500
                     });
-                    $('#emp_id_m').val('');
-                    $('#name_m').val('');
-                    $('#department_m').val('');
+                    $('#emp_id_m').val('').removeClass('is-invalid');
+                    $('#name_m').val('').removeClass('is-invalid');
+                    $('#department_m').val('').removeClass('is-invalid');
                     load_auth_account();
                     $('#add_auth_account').modal('hide');
                 } else if (response == 'Already Exist') {
@@ -605,10 +690,36 @@
     }
 
     const register_line_car_model = () => {
-        var line_no = document.getElementById('cm_line_no').value;
-        var section = document.getElementById('cm_section').value;
-        var car_maker = document.getElementById('cm_car_maker').value;
-        var car_model = document.getElementById('cm_car_model').value;
+        var lineNoField = document.getElementById('cm_line_no');
+        var sectionField = document.getElementById('cm_section');
+        var carMakerField = document.getElementById('cm_car_maker');
+        var carModelField = document.getElementById('cm_car_model');
+
+        var line_no = lineNoField.value.trim();
+        var section = sectionField.value.trim();
+        var car_maker = carMakerField.value.trim();
+        var car_model = carModelField.value.trim();
+
+        lineNoField.classList.remove('is-invalid');
+        sectionField.classList.remove('is-invalid');
+        carMakerField.classList.remove('is-invalid');
+        carModelField.classList.remove('is-invalid');
+
+        if (!line_no || !section || !car_maker || !car_model) {
+            if (!line_no) lineNoField.classList.add('is-invalid');
+            if (!section) sectionField.classList.add('is-invalid');
+            if (!car_maker) carMakerField.classList.add('is-invalid');
+            if (!car_model) carModelField.classList.add('is-invalid');
+
+            Swal.fire({
+                icon: 'warning',
+                title: 'Missing Information',
+                text: 'Please fill out all required fields.',
+                showConfirmButton: false,
+                timer: 1500
+            });
+            return;
+        }
 
         $.ajax({
             url: '../process/index_m_p.php',
@@ -630,10 +741,12 @@
                         showConfirmButton: false,
                         timer: 1500
                     });
-                    $('#cm_line_no').val('');
-                    $('#cm_section').val('');
-                    $('#cm_car_maker').val('');
-                    $('#cm_car_model').val('');
+
+                    $('#cm_line_no').val('').removeClass('is-invalid');
+                    $('#cm_section').val('').removeClass('is-invalid');
+                    $('#cm_car_maker').val('').removeClass('is-invalid');
+                    $('#cm_car_model').val('').removeClass('is-invalid');
+
                     load_line_car_model();
                     $('#add_line_car_model').modal('hide');
                 } else if (response == 'Already Exist') {
