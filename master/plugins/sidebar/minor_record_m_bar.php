@@ -21,7 +21,7 @@
                     <p class="nav-link">AD</p>
                 </li>
                 <li class="nav-item mb-1">
-                    <a href="masterlist_m.php" class="nav-link active">
+                    <a href="masterlist_m.php" class="nav-link">
                         <i class="fas fa-file-alt" style="color: #000"></i>
                         <p class="pl-1" style="font-size:14px; color:black">
                             Masterlist
@@ -29,7 +29,7 @@
                     </a>
                 </li>
                 <li class="nav-item mb-1">
-                    <a href="minor_record_m.php" class="nav-link">
+                    <a href="minor_record_m.php" class="nav-link active">
                         <i class="fas fa-file-alt" style="color: #000"></i>
                         <p class="pl-1" style="font-size:14px; color:black">
                             Minor Record List

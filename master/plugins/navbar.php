@@ -38,8 +38,8 @@ if (!isset($_SESSION['username'])) {
         }
 
         .sidebar-light-primary .nav-sidebar>.nav-item>.nav-link.active {
-            background-color: #DFDFDF;
-            margin-bottom: 0px;
+            background: #fff;
+            border: 1px solid #DDD;
         }
 
         .spinner {

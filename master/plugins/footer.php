@@ -1,4 +1,4 @@
-<footer class="main-footer bg-white text-xs text-dark" style="border-top: 1px solid #8d0801;">
+<footer class="main-footer bg-white text-xs text-dark" style="border-top: 1px solid #ddd;">
     Copyright © 2024. All Rights Reserved. Developed by: <i>Ally Maranan.</i>
     <div class="float-right d-none d-sm-inline-block">
         Version 2.1.0
@@ -16,6 +16,7 @@ include '../modals/add_account.php';
 include '../modals/add_line_process.php';
 include '../modals/add_auth_account.php';
 include '../modals/add_line_car_model.php';
+include '../modals/edit_defect_record.php';
 
 ?>
 

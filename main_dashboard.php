@@ -40,13 +40,13 @@ include('plugins/system_plugins/navbar/index_navbar.php');
 
          <!-- main content -->
          <div class="col-10 offset-2">
-            <div class="row mt-3">
+            <div class="row mt-2">
                <div class="col-2">
                   <div class="count-border">
                      <p class="m-0 p-0" style="font-size: 14px;">Defect Record</p>
                      <h2 id="total_record_count" class="text-bold"></h2>
                      <hr>
-                     <p for="prev-comparison-label" class="mt-3 m-0 p-0" style="font-size: 14px;">Previous Month Record</p>
+                     <p for="prev-comparison-label" class="mt-2 m-0 p-0" style="font-size: 14px;">Previous Month Record</p>
                      <h2 id="total_comparison_count" class="text-bold"></h2>
                   </div>
                </div>
@@ -57,7 +57,7 @@ include('plugins/system_plugins/navbar/index_navbar.php');
                </div>
             </div>
 
-            <div class="row mt-3">
+            <div class="row mt-2">
                <div class="col-6">
                   <div class="chart-border">
                      <div id="top_overall_line_no_chart" style="border-radius: 8px;">
@@ -82,7 +82,7 @@ include('plugins/system_plugins/navbar/index_navbar.php');
                </div>
             </div>
 
-            <div class="row mt-3">
+            <div class="row mt-2">
                <div class="col-4">
                   <div class="chart-border">
                      <div id="top_lot_no_chart" style="border-radius: 8px;"></div>
@@ -109,7 +109,7 @@ include('plugins/system_plugins/navbar/index_navbar.php');
                   </div>
                </div>
             </div>
-            <div class="row mt-3">
+            <div class="row mt-2">
                <div class="col-8">
                   <div class="chart-border">
                      <div id="defect_record_per_section_chart" style="border-radius: 8px;"></div>
@@ -137,7 +137,7 @@ include('plugins/system_plugins/navbar/index_navbar.php');
                   </div>
                </div>
             </div>
-            <div class="row mt-3 mb-3">
+            <div class="row mt-2 mb-3">
                <div class="col-7">
                   <div class="chart-border">
                      <div id="top_daily_defect_category_chart" style="border-radius: 8px;">
