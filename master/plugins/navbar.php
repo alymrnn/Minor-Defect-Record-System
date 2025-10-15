@@ -90,7 +90,7 @@ if (!isset($_SESSION['username'])) {
 
 <body class="hold-transition sidebar-mini sidebar-collapse">
     <div class="wrapper">
-        <nav class="main-header navbar navbar-expand navbar-white" style="background:#1b263b; border-bottom: 3px solid #8d0801;">
+        <nav class="main-header navbar navbar-expand navbar-white" style="background:#00375C;">
             <ul class="navbar-nav">
                 <li class="nav-item">
                     <a class="nav-link" data-widget="pushmenu" href="#" role="button" style="color: #fff;"><i

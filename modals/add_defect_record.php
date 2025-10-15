@@ -2,12 +2,12 @@
     data-keyboard="false">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content bg-light">
-            <div class="modal-header" style="background:#1b263b; border-bottom: 3px solid #8d0801;">
-                <h6 class="modal-title font-weight-normal text-white"><i
-                        class="fas fa-plus mr-2"></i>Add Record
+            <div class="modal-header" style="border-bottom: 1px solid #ddd;">
+                <h6 class="modal-title font-weight-normal text-primary">
+                    <i class="fas fa-plus mr-2 text-primary"></i>Add Record
                 </h6>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true"><i class="fas fa-times text-white"></i></span>
+                    <span aria-hidden="true"><i class="fas fa-times"></i></span>
                 </button>
             </div>
             <div class="modal-body">
@@ -15,7 +15,7 @@
                     <label class="font-weight-bold text-lg">
                         Minor Defect Record
                     </label>
-                    <label class="p-1 font-weight-normal text-sm" style="border-bottom: 2px solid #8d0801;">
+                    <label class="p-1 font-weight-normal text-sm">
                         <i class="far fa-user"></i> User: <b><span id="authNameDisplay"></span></b>
                     </label>
                 </div>
@@ -196,7 +196,7 @@
                     <button class="btn btn-outline-secondary btn-sm w-25" id="clear_btn" onclick="clear_add_defect_record()">
                         Clear All
                     </button>
-                    <button class="btn btn-danger btn-sm w-25" onclick="add_defect_record()">
+                    <button class="btn btn-primary btn-sm w-25" onclick="add_defect_record()">
                         Add Record
                     </button>
                 </div>

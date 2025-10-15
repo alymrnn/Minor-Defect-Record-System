@@ -5,10 +5,10 @@ include('plugins/system_plugins/preloader.php');
 include('plugins/system_plugins/navbar/index_navbar.php');
 ?>
 
-<div class="content-wrapper" style="background: #1b263b;">
+<div class="content-wrapper" style="background: #f5f6fa;">
   <!-- Main content -->
   <section class="content pt-3">
-    <div class="card mx-2" style="background: #f9f9f9;">
+    <div class="card mx-2 border-0 shadow-none" style="background-color: #f8f9fa;">
       <!-- SEARCH FIELD -->
       <div class="card-body">
         <div class="row">
@@ -18,7 +18,7 @@ include('plugins/system_plugins/navbar/index_navbar.php');
             <input type="text" id="search_line_no" class="form-control form-control-sm form-control-border" placeholder="Line No." autocomplete="off"
               class="pl-3">
           </div>
-          <div class="col-12 col-sm-6 col-md-4 mb-2" style="display: none;">
+          <div class="col-12 col-sm-6 col-md-4 mb-2 d-none">
             <!-- qr scan -->
             <label class="m-0 p-0 text-sm font-weight-normal">Scan here</label>
             <input type="text" id="scan_qr" class="form-control form-control-sm form-control-border" autocomplete="off">
@@ -90,12 +90,12 @@ include('plugins/system_plugins/navbar/index_navbar.php');
           <div class="col-12 col-sm-4 col-md-2">
             <!-- add button -->
             <label></label>
-            <button id="add_record_btn" class="btn btn-danger btn-sm w-100" data-toggle="modal"
+            <button id="add_record_btn" class="btn btn-primary btn-sm w-100" data-toggle="modal"
               data-target="#add_record_auth"><i class="fas fa-plus"></i>&nbsp;Add Record</button>
           </div>
         </div>
         <div class="row">
-          <div class="col-12 col-sm-4 col-md-2 mt-2 offset-6" style="display: none;">
+          <div class="col-12 col-sm-4 col-md-2 mt-2 offset-6 d-none">
             <!-- clear all button -->
             <button class="btn btn-block d-flex justify-content-left" id="clear_btn"
               onclick="clear_search_defect_record()"
@@ -109,8 +109,10 @@ include('plugins/system_plugins/navbar/index_navbar.php');
       </div>
     </div>
 
+    <hr class="mx-2" style="background: #ddd;">
+
     <!-- MAIN FIELD -->
-    <div class="card mx-2" style="background: #f9f9f9; border-top: 2px solid #8d0801;">
+    <div class="card mx-2 border-0 shadow-none" style="background-color: #f8f9fa;">
       <div class="card-body">
         <p class="p-0 m-0" style="color:#525252; font-size: 15px;"><i class="far fa-folder"></i>&nbsp;Minor Defect Record Table</p>
         <div class="col-sm-3">
@@ -120,9 +122,8 @@ include('plugins/system_plugins/navbar/index_navbar.php');
 
         <!-- table -->
         <div id="list_of_defect_res" class="card-body table-responsive m-0 p-0" style="max-height: 450px;">
-          <table class="table col-12 mt-3 table-sm table-head-fixed text-nowrap table-hover table-bordered" id="defect_table"
-            style="background: #F9F9F9;">
-            <thead style="text-align: center; font-size:14px;">
+          <table class="table col-12 mt-3 table-sm table-head-fixed text-nowrap table-hover table-bordered" id="defect_table">
+            <thead class="text-center text-sm">
               <th>#</th>
               <th>Date Detected</th>
               <th>Car Maker</th>
@@ -146,15 +147,7 @@ include('plugins/system_plugins/navbar/index_navbar.php');
               <th>Verified By</th>
               <th>Added By</th>
             </thead>
-            <tbody class="mb-0" id="list_of_defect" style="font-size: 13px;">
-              <tr>
-                <td colspan="22" style="text-align: center;">
-                  <div class="spinner-border text-dark" role="status">
-                    <span class="sr-only">Loading...</span>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
+            <tbody class="mb-0 text-xs" id="list_of_defect"></tbody>
           </table>
         </div>
         <br>
@@ -162,9 +155,8 @@ include('plugins/system_plugins/navbar/index_navbar.php');
           <div class="dataTables_info" id="defect_table_info" role="status" aria-live="polite"></div>
         </div>
         <div class="d-flex justify-content-sm-center">
-          <button type="button" class="btn" style="background: #032b43; color: #fff;" id="btnNextPage"
-            onclick="get_next_page()" onmouseover="this.style.backgroundColor='#032031'; this.style.color='#FFF';"
-            onmouseout="this.style.backgroundColor='#032b43'; this.style.color='#FFF';">Load more</button>
+          <button type="button" class="btn btn-outline-dark btn-sm" id="btnNextPage"
+            onclick="get_next_page()">Load more</button>
         </div>
       </div>
     </div>

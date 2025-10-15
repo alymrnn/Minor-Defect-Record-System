@@ -1,5 +1,4 @@
-<footer class="main-footer"
-    style="background:#2b2d42; color:white; font-size: 13px; border-top: 1px solid #8d0801;">
+<footer class="main-footer bg-white text-xs">
     <div class="row">
         <div class="col-10 offset-2 d-flex justify-content-between">
             <span>
@@ -9,7 +8,7 @@
             <span>
                 Version 2.1.0 |
                 <i style="font-size:12px;">IP Address:</i>
-                <input style="font-size:12px; border:none; background:none; color:#FFF; text-align:right; width:80px;"
+                <input style="font-size:12px; border:none; background:none; text-align:right; width:80px;"
                     value="<?= $_SERVER['REMOTE_ADDR']; ?>" disabled>
             </span>
         </div>

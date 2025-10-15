@@ -30,7 +30,7 @@ if (isset($_SESSION['username'])) {
 <style type="text/css">
     .login-page {
         width: 100%;
-        background-image: url('dist/img/splat-bg.svg');
+        background-image: url('dist/img/furukawa-bg.jpg');
         background-size: cover;
     }
 
@@ -68,55 +68,99 @@ if (isset($_SESSION['username'])) {
 </style>
 
 <body class="hold-transition login-page">
-    <div class="login-box">
-        <div class="container d-flex justify-content-center align-items-center min-vh-100">
-            <div class="card shadow-sm" style="border-radius: 15px;background: #F4F4F4; max-width: 100%; width: 400px;">
-                <div class="card-body login-card-body" style="border-radius: 15px; background:#eaeaea">
-                    <div class="login-logo mt-3 text-center">
-                        <img class="pb-1" src="dist/img/defect.png" style="height: 120px;" alt="Minor Defect">
-                        <h2 class="pb-2 text-bold" style="color: #313131; font-size: 25px;">MINOR DEFECT<br>RECORD
-                            SYSTEM
+    <div class="wrapper login-page">
+        <div class="row">
+            <!-- Left Side -->
+            <div class="col-md-6 position-relative d-flex align-items-center justify-content-center p-4"
+                style="background-color: rgba(0, 45, 77, 0.30); border-radius: 12px 0px 0px 12px;">
+
+                <!-- Top-left FAS logo -->
+                <img src="dist/img/fas-name.png"
+                    alt="FAS Logo"
+                    class="position-absolute"
+                    style="top: 20px; left: 20px; height: 37px;">
+
+                <!-- Centered logo + text layout -->
+                <div class="d-flex align-items-center flex-wrap justify-content-center w-100">
+                    <img src="dist/img/defect.png"
+                        class="mt-3 mb-2"
+                        style="height: 90px; max-width: 100%;">
+
+                    <div class="ml-4 d-flex align-items-center justify-content-start" style="height: 100%;">
+                        <h2 class="text-white font-weight-bold m-0" style="text-align: left;">
+                            MINOR <br> DEFECT <br> RECORD <br> SYSTEM
                         </h2>
                     </div>
+                </div>
+            </div>
 
-                    <form class="px-3" method="POST" id="login_form">
-                        <div class="input-group mb-3">
-                            <input type="text" class="form-control" id="username" name="username" placeholder="Username"
-                                autocomplete="off" required
-                                style="font-size: 14px; border-radius: 3px; border: 1px solid #888888; background: #eaeaea;"
-                                onfocus="changeBorderColor(this, '#792021')"
-                                oninput="changeBorderColor(this, '#792021')"
-                                onblur="changeBorderColor(this, '#8d0801')">
-                        </div>
-                        <div class="input-group mb-3">
-                            <button type="submit" class="login-btn btn btn-block" name="login_btn" value="login"
-                                style="border-radius: 3px; background: #8d0801; color: #FFF;"
-                                onmouseover="this.style.backgroundColor='#792021'; this.style.color='#FFF';"
-                                onmouseout="this.style.backgroundColor='#8d0801'; this.style.color='#FFF';">SIGN IN
+            <!-- Right Side (Login Form) -->
+            <div class="col-6" style="background-color: #FEFEFE; border-radius: 0px 12px 12px 0px; width: 450px;">
+                <p class="text-center p-0 m-0 pt-5" style="font-size: 20px; font-weight: bold;">Login to your account</p>
+                <p class="text-center p-0 m-0" style="font-size: 13px; color: #444;">
+                    Health and Safety First!
+                </p>
+
+                <form class="form-horizontal mt-5 mr-4 ml-4" method="POST" id="login_form">
+                    <div class="input-group mb-3">
+                        <label class="m-0 p-0" style="font-weight: 100; font-size: 13px; color: #444;">User ID</label>
+                        <input type="text" class="form-control" id="username" name="username" placeholder="Enter your credential"
+                            autocomplete="off" required
+                            style="width: 100%; height: 40px; font-size: 13px; border-radius: 10px; border-color: #E9E9E9; transition: 0.4s ease;"
+                            onfocus="this.style.borderColor='#0F78DC';"
+                            onblur="this.style.borderColor='#E9E9E9';"
+                            onmouseover="this.style.borderColor='#0F78DC';"
+                            onmouseout="this.style.borderColor='#E9E9E9';"
+                            autofocus>
+                    </div>
+
+                    <div class="input-group mb-3">
+                        <button type="submit" class="btn btn-block" name="login_btn" value="login"
+                            style="background-color: #0F78DC; color: #fff; font-size: 14px; border-radius: 10px; height: 40px; transition: 0.3s ease;"
+                            onmouseover="this.style.backgroundColor='#00497A'; this.style.color='#fff';"
+                            onmouseout="this.style.backgroundColor='#0F78DC'; this.style.color='#fff';">Login</button>
+                    </div>
+                </form>
+
+                <div class="mr-4 ml-4">
+                    <div style="display: flex; align-items: center;">
+                        <hr style="flex: 1; border: none; border-top: 1px solid #E0E0E0;">
+                        <p class="text-center" style="font-size: 12px; color: #BCBCBC; margin: 0 10px;">Or proceed to</p>
+                        <hr style="flex: 1; border: none; border-top: 1px solid #E0E0E0;">
+                    </div>
+
+                    <div class="row mt-3 mb-5">
+                        <div class="col-6 d-flex justify-content-center">
+                            <button class="btn btn-block"
+                                style="color: #353535; border-radius: 10px; border: 1px solid #E9E9E9; height: 40px; font-size: 13px; background-color: #fff; transition: 0.3s ease;"
+                                onclick="window.open('template/Minor-Defect-Record-System_WI_rev.2.pdf', '_blank');"
+                                onmouseover="this.style.backgroundColor='#00497A'; this.style.color='#fff';"
+                                onmouseout="this.style.backgroundColor='#fff'; this.style.color='#353535';">
+                                <i class="far fa-file"></i>&nbsp;Work Instruction
                             </button>
                         </div>
-                        <div class="d-flex justify-content-center">
-                            <a href="template/Minor-Defect-Record-System_WI_rev.2.pdf" target="_blank"><button type="button"
-                                    class="btn btn-block btn-sm"
-                                    style="border-radius: 3px; background: #3E3E3E; width: 190px; color: #FFF;"
-                                    onmouseover="this.style.backgroundColor='#242424'; this.style.color='#FFF';"
-                                    onmouseout="this.style.backgroundColor='#3E3E3E'; this.style.color='#FFF';">Work
-                                    Instruction</button></a>
+
+                        <div class="col-6 d-flex justify-content-center">
+                            <button class="btn btn-block"
+                                style="color: #353535; border-radius: 10px; border: 1px solid #E9E9E9; height: 40px; font-size: 13px; background-color: #fff; transition: 0.3s ease;"
+                                onmouseover="this.style.backgroundColor='#00497A'; this.style.color='#fff';"
+                                onmouseout="this.style.backgroundColor='#fff'; this.style.color='#353535';"
+                                onclick="window.location.href='index.php';">
+                                <i class="far fa-eye"></i>&nbsp;Main Page
+                            </button>
                         </div>
-                        <a href="index.php" class="nav-link mt-2 d-flex justify-content-center"
-                            style="font-size: 15px;">Main Page</a>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</body>
 
-<script>
-    function changeBorderColor(element, color) {
-        element.style.borderColor = color;
-    }
-</script>
+    <script>
+        function changeBorderColor(element, color) {
+            element.style.borderColor = color;
+        }
+    </script>
+</body>
 
 <!-- jQuery -->
 <script src="plugins/jquery/dist/jquery.min.js"></script>

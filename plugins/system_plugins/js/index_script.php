@@ -333,26 +333,42 @@
                 search_date_to: search_date_to,
                 search_defect_category: search_defect_category,
                 search_defect_details: search_defect_details,
-
                 current_page: current_page
             },
             beforeSend: () => {
-                var loading = `<tr id="loading"><td colspan="18" style="text-align:center;"><div class="spinner-border text-dark role="status"><span class="sr-only">Loading...</span></div></td></tr>`;
-                if (current_page == 1) {
-                    document.getElementById("list_of_defect").innerHTML = loading;
-                } else {
-                    $('#defect_table tbody').append(loading);
-                }
+                Swal.fire({
+                    title: 'Loading...',
+                    text: 'Please wait while we fetch the defect list.',
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    },
+                    background: '#00375C',
+                    color: '#fff',
+                });
             },
             success: function(response) {
+                Swal.close();
                 $('#loading').remove();
+
                 if (current_page == 1) {
                     $('#defect_table tbody').html(response);
                 } else {
                     $('#defect_table tbody').append(response);
                 }
+
                 sessionStorage.setItem('defect_table_pagination', current_page);
                 count_defect();
+            },
+            error: function() {
+                Swal.close();
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Something went wrong while loading data!',
+                    confirmButtonColor: '#0F78DC'
+                });
             }
         });
     };

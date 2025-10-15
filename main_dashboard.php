@@ -5,7 +5,7 @@ include('plugins/system_plugins/preloader.php');
 include('plugins/system_plugins/navbar/index_navbar.php');
 ?>
 
-<div class="content-wrapper" style="background: #1b263b;">
+<div class="content-wrapper" style="background: #f5f6fa;">
    <!-- Main content -->
    <section class="content">
       <div class="row">
@@ -14,7 +14,7 @@ include('plugins/system_plugins/navbar/index_navbar.php');
                <div class="col-12">
                   <!-- commands -->
                   <div class="mt-2" style="display: flex; justify-content: flex-end; align-items: center;">
-                     <p class="m-0 p-0 btn btn-warning btn-sm"
+                     <p class="m-0 p-0 btn btn-primary btn-sm"
                         style="font-size: 12px; transition: 0.3s; cursor: pointer;"
                         onclick="generate_dashboard_filter()">
                         Generate
@@ -28,10 +28,10 @@ include('plugins/system_plugins/navbar/index_navbar.php');
                   </select>
 
                   <!-- date range -->
-                  <p class="m-0 p-0 text-left" style="font-size: 12px;">Date From</p>
+                  <p class="m-0 p-0 text-left text-dark text-xs">Date From</p>
                   <input type="text" name="date_from" class="form-control form-control-sm form-control-border mb-1" id="d_date_from" placeholder="Date From"
                      onfocus="this.type='date';" onblur="if(this.value==''){this.type='text';}">
-                  <p class="m-0 p-0 text-left" style="font-size: 12px;">Date To</p>
+                  <p class="m-0 p-0 text-left text-dark text-xs">Date To</p>
                   <input type="text" name="date_to" class="form-control form-control-sm form-control-border mb-1" id="d_date_to" placeholder="Date To"
                      onfocus="this.type='date';" onblur="if(this.value==''){this.type='text';}">
                </div>
@@ -100,8 +100,8 @@ include('plugins/system_plugins/navbar/index_navbar.php');
                </div>
             </div>
 
-            <p class="mt-4 m-0 p-0 text-white" style="font-size: 14px;">Section Monitoring</p>
-            <hr class="m-0 p-0" style="background: #8d0801;">
+            <p class="mt-4 m-0 p-0 text-sm">Section Monitoring</p>
+            <hr class="m-0 p-0" style="background: #00375C;">
             <div class="row mt-2">
                <div class="col-12">
                   <div class="chart-border">
@@ -128,8 +128,8 @@ include('plugins/system_plugins/navbar/index_navbar.php');
                </div>
             </div>
 
-            <p class="mt-4 m-0 p-0 text-white" style="font-size: 14px;">Daily Trend Monitoring</p>
-            <hr class="m-0 p-0" style="background: #8d0801;">
+            <p class="mt-4 m-0 p-0 text-sm">Daily Trend Monitoring</p>
+            <hr class="m-0 p-0" style="background: #00375C;">
             <div class="row mt-2">
                <div class="col-12">
                   <div class="chart-border">

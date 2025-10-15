@@ -5,7 +5,7 @@ include('plugins/system_plugins/preloader.php');
 include('plugins/system_plugins/navbar/index_navbar.php');
 ?>
 
-<div class="content-wrapper" style="background: #1b263b;">
+<div class="content-wrapper" style="background: #f5f6fa;">
    <!-- Main content -->
    <section class="content">
       <div class="row">
@@ -14,17 +14,17 @@ include('plugins/system_plugins/navbar/index_navbar.php');
                <div class="col-12">
                   <!-- commands -->
                   <div class="mt-2" style="display: flex; justify-content: flex-end; align-items: center;">
-                     <p class="m-0 p-0 btn btn-warning btn-sm"
+                     <p class="m-0 p-0 btn btn-primary btn-sm"
                         style="font-size: 12px; transition: 0.3s; cursor: pointer;"
                         onclick="generate_weekly_dashboard_filter()">
                         Generate
                      </p>
                   </div>
 
-                  <p class="m-0 p-0 text-left" style="font-size: 12px;">Year</p>
+                  <p class="m-0 p-0 text-left text-dark text-xs">Year</p>
                   <select id="d_year" class="form-control form-control-sm form-control-border mb-1"></select>
 
-                  <p class="m-0 p-0 text-left" style="font-size: 12px;">Month</p>
+                  <p class="m-0 p-0 text-left text-dark text-xs">Month</p>
                   <select id="d_month" class="form-control form-control-sm form-control-border mb-1"></select>
                </div>
             </div>
@@ -32,8 +32,8 @@ include('plugins/system_plugins/navbar/index_navbar.php');
 
          <!-- main content -->
          <div class="col-10 offset-2">
-            <p class="pt-3 m-0 p-0 text-white" style="font-size: 14px;">Weekly Trend Monitoring</p>
-            <hr class="m-0 p-0" style="background: #8d0801;">
+            <p class="pt-3 m-0 p-0 text-sm">Weekly Trend Monitoring</p>
+            <hr class="m-0 p-0" style="background: #00375C;">
 
             <div class="row mt-2">
                <div class="col-12">

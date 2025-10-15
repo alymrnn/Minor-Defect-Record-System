@@ -2,7 +2,7 @@
     <div class="wrapper">
 
         <!-- Preloader -->
-        <div class="preloader flex-column justify-content-center align-items-center" style="background: #1b263b;">
+        <div class="preloader flex-column justify-content-center align-items-center" style="background: #00375C;">
             <img class="animation__shake" src="dist/img/defect.png" alt="Web Template" height="100" width="100">
             <noscript>
                 <br>

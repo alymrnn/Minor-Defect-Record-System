@@ -44,10 +44,10 @@
         width: 16.6667%;
         height: calc(100vh - 50px);
         overflow-y: auto;
-        background: #1b263b;
+        background: #f5f6fa;
         color: #FFF;
         padding: 10px;
-        border-right: 1px solid #8d0801;
+        border-right: 1px solid #ddd;
         z-index: 10;
         box-sizing: border-box;
     }
@@ -99,7 +99,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
 ?>
 
 <nav class="main-header navbar sticky-top d-flex align-items-center justify-content-between"
-    style="background:#1b263b; border-bottom: 3px solid #8d0801; z-index:1030;">
+    style="background:#00375C;">
 
     <!-- Brand -->
     <a href="" class="navbar-brand d-flex align-items-center ml-2">
