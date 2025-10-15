@@ -1,7 +1,7 @@
-<footer class="main-footer bg-white text-xs">
+<footer class="main-footer text-xs" style="background-color: #f5f6fa; border-top: 1px solid #ddd;">
     Copyright © 2024. All Rights Reserved. Developed by: <i>Ally Maranan.</i>
     <div class="float-right d-none d-sm-inline-block">
-        Version 2.1.0 | <i style="font-size:12px;">IP Address: &nbsp;</i><input
+        Version 3.0.0 | <i style="font-size:12px;">IP Address: &nbsp;</i><input
             style="font-size:12px;border:none;background:none;text-align:right;width:80px;"
             value="<?= $_SERVER['REMOTE_ADDR']; ?>" disabled>
     </div>

@@ -179,29 +179,29 @@ if ($method == 'load_defect_list') {
         if ($rows) {
             foreach ($rows as $row) {
                 $counter++;
-                echo '<tr>';
-                echo '<td class="text-center">' . $counter . '</td>';
-                echo '<td class="text-center">' . htmlspecialchars($row['date_detected']) . '</td>';
-                echo '<td class="text-center">' . htmlspecialchars($row['car_maker']) . '</td>';
-                echo '<td class="text-center">' . htmlspecialchars($row['car_model']) . '</td>';
-                echo '<td class="text-center">' . htmlspecialchars($row['line_no']) . '</td>';
-                echo '<td class="text-center">' . htmlspecialchars($row['line_category']) . '</td>';
-                echo '<td class="text-center">' . htmlspecialchars($row['process']) . '</td>';
-                echo '<td class="text-center">' . htmlspecialchars($row['group_d']) . '</td>';
-                echo '<td class="text-center">' . htmlspecialchars($row['shift']) . '</td>';
-                echo '<td class="text-center">' . htmlspecialchars($row['product_no']) . '</td>';
-                echo '<td class="text-center">' . htmlspecialchars($row['lot_no']) . '</td>';
-                echo '<td class="text-center">' . htmlspecialchars($row['serial_no']) . '</td>';
-                echo '<td class="text-center">' . htmlspecialchars($row['defect_category_code']) . '</td>';
+                echo '<tr class="text-center">';
+                echo '<td>' . $counter . '</td>';
+                echo '<td>' . htmlspecialchars($row['date_detected']) . '</td>';
+                echo '<td>' . htmlspecialchars($row['car_maker']) . '</td>';
+                echo '<td>' . htmlspecialchars($row['car_model']) . '</td>';
+                echo '<td>' . htmlspecialchars($row['line_no']) . '</td>';
+                echo '<td>' . htmlspecialchars($row['line_category']) . '</td>';
+                echo '<td>' . htmlspecialchars($row['process']) . '</td>';
+                echo '<td>' . htmlspecialchars($row['group_d']) . '</td>';
+                echo '<td>' . htmlspecialchars($row['shift']) . '</td>';
+                echo '<td>' . htmlspecialchars($row['product_no']) . '</td>';
+                echo '<td>' . htmlspecialchars($row['lot_no']) . '</td>';
+                echo '<td>' . htmlspecialchars($row['serial_no']) . '</td>';
+                echo '<td>' . htmlspecialchars($row['defect_category_code']) . '</td>';
                 echo '<td>' . htmlspecialchars($row['defect_category']) . '</td>';
-                echo '<td class="text-center">' . htmlspecialchars($row['defect_details_code']) . '</td>';
+                echo '<td>' . htmlspecialchars($row['defect_details_code']) . '</td>';
                 echo '<td>' . htmlspecialchars($row['defect_details']) . '</td>';
                 echo '<td>' . htmlspecialchars($row['treatment_content_defect']) . '</td>';
-                echo '<td class="text-center">' . htmlspecialchars($row['sequence_no']) . '</td>';
-                echo '<td class="text-center">' . htmlspecialchars($row['connector_no']) . '</td>';
-                echo '<td class="text-center">' . htmlspecialchars($row['repaired_by']) . '</td>';
-                echo '<td class="text-center">' . htmlspecialchars($row['verified_by']) . '</td>';
-                echo '<td class="text-center">' . htmlspecialchars($row['record_added_by']) . '</td>';
+                echo '<td>' . htmlspecialchars($row['sequence_no']) . '</td>';
+                echo '<td>' . htmlspecialchars($row['connector_no']) . '</td>';
+                echo '<td>' . htmlspecialchars($row['repaired_by']) . '</td>';
+                echo '<td>' . htmlspecialchars($row['verified_by']) . '</td>';
+                echo '<td>' . htmlspecialchars($row['record_added_by']) . '</td>';
                 echo '</tr>';
             }
         } else {

@@ -112,7 +112,7 @@ include('plugins/system_plugins/navbar/index_navbar.php');
     <hr class="mx-2" style="background: #ddd;">
 
     <!-- MAIN FIELD -->
-    <div class="card mx-2 border-0 shadow-none" style="background-color: #f8f9fa;">
+    <div class="card mx-2 border-0 shadow-none">
       <div class="card-body">
         <p class="p-0 m-0" style="color:#525252; font-size: 15px;"><i class="far fa-folder"></i>&nbsp;Minor Defect Record Table</p>
         <div class="col-sm-3">
@@ -122,7 +122,7 @@ include('plugins/system_plugins/navbar/index_navbar.php');
 
         <!-- table -->
         <div id="list_of_defect_res" class="card-body table-responsive m-0 p-0" style="max-height: 450px;">
-          <table class="table col-12 mt-3 table-sm table-head-fixed text-nowrap table-hover table-bordered" id="defect_table">
+          <table class="table col-12 mt-3 table-sm table-head-fixed text-nowrap table-hover" id="defect_table">
             <thead class="text-center text-sm">
               <th>#</th>
               <th>Date Detected</th>
