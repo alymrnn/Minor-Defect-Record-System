@@ -185,6 +185,7 @@ if ($method == 'load_defect_list') {
                 echo '<td>' . htmlspecialchars($row['car_maker']) . '</td>';
                 echo '<td>' . htmlspecialchars($row['car_model']) . '</td>';
                 echo '<td>' . htmlspecialchars($row['line_no']) . '</td>';
+                echo '<td>' . htmlspecialchars($row['harness_type']) . '</td>';
                 echo '<td>' . htmlspecialchars($row['line_category']) . '</td>';
                 echo '<td>' . htmlspecialchars($row['process']) . '</td>';
                 echo '<td>' . htmlspecialchars($row['group_d']) . '</td>';
@@ -199,16 +200,17 @@ if ($method == 'load_defect_list') {
                 echo '<td>' . htmlspecialchars($row['treatment_content_defect']) . '</td>';
                 echo '<td>' . htmlspecialchars($row['sequence_no']) . '</td>';
                 echo '<td>' . htmlspecialchars($row['connector_no']) . '</td>';
+                echo '<td>' . htmlspecialchars($row['total_mins']) . '</td>';
                 echo '<td>' . htmlspecialchars($row['repaired_by']) . '</td>';
                 echo '<td>' . htmlspecialchars($row['verified_by']) . '</td>';
                 echo '<td>' . htmlspecialchars($row['record_added_by']) . '</td>';
                 echo '</tr>';
             }
         } else {
-            echo '<tr><td colspan="22" class="text-center text-danger">No Record Found</td></tr>';
+            echo '<tr><td colspan="18" class="text-center text-danger">No Record Found</td></tr>';
         }
     } catch (PDOException $e) {
-        echo '<tr><td colspan="22" class="text-center text-danger">Query failed: ' . htmlspecialchars($e->getMessage()) . '</td></tr>';
+        echo '<tr><td colspan="18" class="text-center text-danger">Query failed: ' . htmlspecialchars($e->getMessage()) . '</td></tr>';
     }
 }
 

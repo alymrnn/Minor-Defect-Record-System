@@ -127,6 +127,7 @@ include('plugins/system_plugins/navbar/index_navbar.php');
               <th>Car Maker</th>
               <th>Car Model</th>
               <th>Line No.</th>
+              <th>Harness Type</th>
               <th>Category</th>
               <th>Process</th>
               <th>Group</th>
@@ -141,6 +142,7 @@ include('plugins/system_plugins/navbar/index_navbar.php');
               <th>Treatment Content of Defect</th>
               <th>Sequence No.</th>
               <th>Connector No.</th>
+              <th>Total Time (mins)</th>
               <th>Repaired By</th>
               <th>Verified By</th>
               <th>Added By</th>
