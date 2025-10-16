@@ -330,7 +330,7 @@ if ($method == 'delete_added_auth_account') {
 if ($method == 'line_car_model_list') {
     $c = 0;
 
-    $query = "SELECT * FROM m_line_no ORDER BY date_updated DESC";
+    $query = "SELECT * FROM m_line_no ORDER BY line_no ASC";
     $stmt = $conn->prepare($query, array(PDO::ATTR_CURSOR => PDO::CURSOR_SCROLL));
     $stmt->execute();
     if ($stmt->rowCount() > 0) {
@@ -345,6 +345,7 @@ if ($method == 'line_car_model_list') {
             echo '<td style="text-align:center;">' . $row['section'] . '</td>';
             echo '<td style="text-align:center;">' . $row['car_maker'] . '</td>';
             echo '<td style="text-align:center;">' . $row['car_model'] . '</td>';
+            echo '<td style="text-align:center;">' . $row['harness_type'] . '</td>';
             echo '</tr>';
         }
     } else {
@@ -359,9 +360,10 @@ if ($method == 'register_line_car_model') {
     $section = trim($_POST['section']);
     $car_maker = trim($_POST['car_maker']);
     $car_model = trim($_POST['car_model']);
+    $harness_type = trim($_POST['harness_type']);
 
     $stmt = NULL;
-    $query = "INSERT INTO m_line_no (line_no, car_maker, car_model, section, date_updated) VALUES ('$line_no','$car_maker', '$car_model', '$section', GETDATE())";
+    $query = "INSERT INTO m_line_no (line_no, car_maker, car_model, section, harness_type, date_updated) VALUES ('$line_no','$car_maker', '$car_model', '$section', '$harness_type', GETDATE())";
 
     $stmt = $conn->prepare($query, array(PDO::ATTR_CURSOR => PDO::CURSOR_SCROLL));
     if ($stmt->execute()) {

@@ -26,9 +26,17 @@
                     </div>
                 </div>
                 <div class="row mt-2">
-                    <div class="col-8 offset-4">
+                    <div class="col-4 offset-4">
                         <label class="m-0 p-0 font-weight-normal text-sm">Car Model</label>
                         <input class="form-control form-control-sm form-control-border" id="cm_car_model" type="text">
+                    </div>
+                    <div class="col-4">
+                        <label class="m-0 p-0 font-weight-normal text-sm">Harness Type</label>
+                        <select class="form-control form-control-sm form-control-border" id="cm_harness_type">
+                            <option value="" disabled selected>Select Type</option>
+                            <option value="B">BIG</option>
+                            <option value="S">SMALL</option>
+                        </select>
                     </div>
                 </div>
             </div>

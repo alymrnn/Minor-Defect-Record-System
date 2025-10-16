@@ -694,22 +694,26 @@
         var sectionField = document.getElementById('cm_section');
         var carMakerField = document.getElementById('cm_car_maker');
         var carModelField = document.getElementById('cm_car_model');
+        var harnessTypeField = document.getElementById('cm_harness_type');
 
         var line_no = lineNoField.value.trim();
         var section = sectionField.value.trim();
         var car_maker = carMakerField.value.trim();
         var car_model = carModelField.value.trim();
+        var harness_type = harnessTypeField.value.trim();
 
         lineNoField.classList.remove('is-invalid');
         sectionField.classList.remove('is-invalid');
         carMakerField.classList.remove('is-invalid');
         carModelField.classList.remove('is-invalid');
+        harnessTypeField.classList.remove('is-invalid');
 
-        if (!line_no || !section || !car_maker || !car_model) {
+        if (!line_no || !section || !car_maker || !car_model || !harness_type) {
             if (!line_no) lineNoField.classList.add('is-invalid');
             if (!section) sectionField.classList.add('is-invalid');
             if (!car_maker) carMakerField.classList.add('is-invalid');
             if (!car_model) carModelField.classList.add('is-invalid');
+            if (!harness_type) harnessTypeField.classList.add('is-invalid');
 
             Swal.fire({
                 icon: 'warning',
@@ -730,7 +734,8 @@
                 line_no: line_no,
                 section: section,
                 car_maker: car_maker,
-                car_model: car_model
+                car_model: car_model,
+                harness_type: harness_type
             },
             success: function(response) {
                 if (response == 'success') {
@@ -746,6 +751,7 @@
                     $('#cm_section').val('').removeClass('is-invalid');
                     $('#cm_car_maker').val('').removeClass('is-invalid');
                     $('#cm_car_model').val('').removeClass('is-invalid');
+                    $('#cm_harness_type').val('').removeClass('is-invalid');
 
                     load_line_car_model();
                     $('#add_line_car_model').modal('hide');

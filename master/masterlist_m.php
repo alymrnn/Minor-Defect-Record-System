@@ -230,6 +230,7 @@
                                         <th>Section</th>
                                         <th>Car Maker</th>
                                         <th>Car Model</th>
+                                        <th>Harness Type</th>
                                     </thead>
                                     <tbody class="mb-0 text-xs" id="list_of_line_car_model">
                                         <tr>
