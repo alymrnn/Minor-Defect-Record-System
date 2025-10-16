@@ -25,6 +25,7 @@ $headers = array(
     'Date Detected',
     'Car Model',
     'Line No.',
+    'Harness Type',
     'Category',
     'Process',
     'Group',
@@ -39,6 +40,7 @@ $headers = array(
     'Treatment Content of Defect',
     'Sequence No.',
     'Connector No.',
+    'Total Time (mins)',
     'Repaired By',
     'Verified By',
     'Added By'
@@ -49,7 +51,7 @@ fputcsv($f, $headers, $delimiter);
 $query = "SELECT date_detected, car_model, line_no, line_category, process, group_d, 
                 shift, product_no, lot_no, serial_no, defect_category_code, 
                 defect_category, defect_details_code, defect_details, sequence_no, connector_no, 
-                treatment_content_defect, repaired_by, verified_by, record_added_by 
+                treatment_content_defect, repaired_by, verified_by, record_added_by, harness_type, total_time 
                 FROM t_minor_defect_f WHERE 1=1";
 
 $conditions = [];
@@ -111,6 +113,7 @@ if ($stmt->rowCount() > 0) {
             $date_part,
             $row['car_model'],
             $row['line_no'],
+            $row['harness_type'],
             $row['line_category'],
             $row['process'],
             $row['group_d'],
@@ -125,6 +128,7 @@ if ($stmt->rowCount() > 0) {
             $row['treatment_content_defect'],
             $row['sequence_no'],
             $row['connector_no'],
+            $row['total_time'],
             $row['repaired_by'],
             $row['verified_by'],
             $row['record_added_by']
