@@ -90,6 +90,7 @@
                     $('#edit_car_maker').val(data.car_maker);
                     $('#edit_car_model').val(data.car_model);
                     $('#edit_line_no').val(data.line_no);
+                    $('#edit_harness_type').val(data.harness_type);
                     $('#edit_category').val(data.line_category);
                     $('#edit_process').val(data.process);
                     $('#edit_group_d').val(data.group_d);
@@ -104,6 +105,7 @@
                     $('#edit_treatment_content').val(data.treatment_content_defect);
                     $('#edit_sequence_no').val(data.sequence_no);
                     $('#edit_connector_no').val(data.connector_no);
+                    $('#edit_total_time').val(data.total_time);
                     $('#edit_repaired_by').val(data.repaired_by);
                     $('#edit_verified_by').val(data.verified_by);
 
@@ -132,6 +134,7 @@
         const car_maker = $('#edit_car_maker').val();
         const car_model = $('#edit_car_model').val();
         const line_no = $('#edit_line_no').val();
+        const harness_type = $('#edit_harness_type').val();
         const line_category = $('#edit_category').val();
         const process = $('#edit_process').val();
         const group_d = $('#edit_group_d').val();
@@ -146,6 +149,7 @@
         const treatment_content_defect = $('#edit_treatment_content').val();
         const sequence_no = $('#edit_sequence_no').val();
         const connector_no = $('#edit_connector_no').val();
+        const total_time = $('#edit_total_time').val();
         const repaired_by = $('#edit_repaired_by').val();
         const verified_by = $('#edit_verified_by').val();
 
@@ -161,6 +165,7 @@
                 car_maker: car_maker,
                 car_model: car_model,
                 line_no: line_no,
+                harness_type: harness_type,
                 line_category: line_category,
                 process: process,
                 group_d: group_d,
@@ -175,6 +180,7 @@
                 treatment_content_defect: treatment_content_defect,
                 sequence_no: sequence_no,
                 connector_no: connector_no,
+                total_time: total_time,
                 repaired_by: repaired_by,
                 verified_by: verified_by
             },

@@ -78,6 +78,17 @@
                         </select>
                     </div>
                 </div>
+                <div class="row mb-4">
+                    <div class="col-12 col-md-3">
+                        <label class="m-0 p-0 text-sm font-weight-normal">Harness Type</label>
+                        <label class="m-0 p-0 text-info text-xs">*</label>
+                        <select id="edit_harness_type" class="form-control form-control-sm form-control-border" required>
+                            <option value="" disabled selected>Select Type</option>
+                            <option value="B">BIG</option>
+                            <option value="S">SMALL</option>
+                        </select>
+                    </div>
+                </div>
                 <div class="row mb-2 d-none">
                     <div class="col-sm-12">
                         <label class="m-0 p-0 text-sm font-weight-normal">Scan QR-Code</label>
@@ -135,11 +146,17 @@
                             required>
                     </div>
                 </div>
-                <div class="row mb-3 mt-3">
+                <div class="row mb-3 mt-2">
                     <div class="col-12 col-md-5 offset-3">
                         <label class="m-0 p-0 text-sm font-weight-normal">Treatment Content of Defect</label>
                         <label class="m-0 p-0 text-info text-xs">*</label>
                         <input id="edit_treatment_content" class="form-control form-control-sm form-control-border"
+                            required>
+                    </div>
+                    <div class="col-12 col-md-4">
+                        <label class="m-0 p-0 text-sm font-weight-normal">Total Time (mins)</label>
+                        <label class="m-0 p-0 text-info text-xs">*</label>
+                        <input type="number" id="edit_total_time" class="form-control form-control-sm form-control-border"
                             required>
                     </div>
                 </div>

@@ -89,6 +89,7 @@ if ($method == 'load_minor_defect_list') {
                 <td style='vertical-align: middle;'>{$row['car_maker']}</td>
                 <td style='vertical-align: middle;'>{$row['car_model']}</td>
                 <td style='vertical-align: middle;'>{$row['line_no']}</td>
+                <td style='vertical-align: middle;'>{$row['harness_type']}</td>
                 <td style='vertical-align: middle;'>{$row['line_category']}</td>
                 <td style='vertical-align: middle;'>{$row['process']}</td>
                 <td style='vertical-align: middle;'>{$row['group_d']}</td>
@@ -103,6 +104,7 @@ if ($method == 'load_minor_defect_list') {
                 <td style='vertical-align: middle;'>{$row['treatment_content_defect']}</td>
                 <td style='vertical-align: middle;'>{$row['sequence_no']}</td>
                 <td style='vertical-align: middle;'>{$row['connector_no']}</td>
+                <td style='vertical-align: middle;'>{$row['total_time']}</td>
                 <td style='vertical-align: middle;'>{$row['repaired_by']}</td>
                 <td style='vertical-align: middle;'>{$row['verified_by']}</td>
                 <td style='vertical-align: middle;'>{$row['record_added_by']}</td>
@@ -184,6 +186,7 @@ if ($method == 'update_minor_defect_record') {
     $car_maker                = trim($_POST['car_maker'] ?? '');
     $car_model                = trim($_POST['car_model'] ?? '');
     $line_no                  = trim($_POST['line_no'] ?? '');
+    $harness_type             = trim($_POST['harness_type'] ?? '');
     $line_category            = trim($_POST['line_category'] ?? '');
     $process                  = trim($_POST['process'] ?? '');
     $group_d                  = trim($_POST['group_d'] ?? '');
@@ -198,6 +201,7 @@ if ($method == 'update_minor_defect_record') {
     $treatment_content_defect = trim($_POST['treatment_content_defect'] ?? '');
     $sequence_no              = trim($_POST['sequence_no'] ?? '');
     $connector_no             = trim($_POST['connector_no'] ?? '');
+    $total_time               = trim($_POST['total_time'] ?? '');
     $repaired_by              = trim($_POST['repaired_by'] ?? '');
     $verified_by              = trim($_POST['verified_by'] ?? '');
 
@@ -211,6 +215,7 @@ if ($method == 'update_minor_defect_record') {
                 car_maker = :car_maker,
                 car_model = :car_model,
                 line_no = :line_no,
+                harness_type = :harness_type,
                 line_category = :line_category,
                 process = :process,
                 group_d = :group_d,
@@ -225,6 +230,7 @@ if ($method == 'update_minor_defect_record') {
                 treatment_content_defect = :treatment_content_defect,
                 sequence_no = :sequence_no,
                 connector_no = :connector_no,
+                total_time = :total_time,
                 repaired_by = :repaired_by,
                 verified_by = :verified_by" .
         ($record_added_by !== null ? ", record_added_by = :record_added_by" : "") . "
@@ -237,6 +243,7 @@ if ($method == 'update_minor_defect_record') {
     $stmt->bindValue(':car_maker', $car_maker);
     $stmt->bindValue(':car_model', $car_model);
     $stmt->bindValue(':line_no', $line_no);
+    $stmt->bindValue(':harness_type', $harness_type);
     $stmt->bindValue(':line_category', $line_category);
     $stmt->bindValue(':process', $process);
     $stmt->bindValue(':group_d', $group_d);
@@ -251,6 +258,7 @@ if ($method == 'update_minor_defect_record') {
     $stmt->bindValue(':treatment_content_defect', $treatment_content_defect);
     $stmt->bindValue(':sequence_no', $sequence_no);
     $stmt->bindValue(':connector_no', $connector_no);
+    $stmt->bindValue(':total_time', $total_time);
     $stmt->bindValue(':repaired_by', $repaired_by);
     $stmt->bindValue(':verified_by', $verified_by);
     $stmt->bindValue(':defect_id', $defect_id);

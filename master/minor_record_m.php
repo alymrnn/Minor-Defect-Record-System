@@ -62,6 +62,7 @@
                      <th>Car Maker</th>
                      <th>Car Model</th>
                      <th>Line No.</th>
+                     <th>Harness Type</th>
                      <th>Category</th>
                      <th>Process</th>
                      <th>Group</th>
@@ -76,6 +77,7 @@
                      <th>Treatment Content of Defect</th>
                      <th>Sequence No.</th>
                      <th>Connector No.</th>
+                     <th>Total Time</th>
                      <th>Repaired By</th>
                      <th>Verified By</th>
                      <th>Added By</th>
