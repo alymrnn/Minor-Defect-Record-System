@@ -132,6 +132,12 @@ if ($method == 'get_inspection_details') {
     $stmt_models->execute([$line_no]);
     $car_models = $stmt_models->fetchAll(PDO::FETCH_COLUMN);
 
+    // fetch harness type
+    $query_harness = "SELECT DISTINCT harness_type FROM m_line_no WHERE line_no = ?";
+    $stmt_harness = $conn->prepare($query_harness);
+    $stmt_harness->execute([$line_no]);
+    $harness_type = $stmt_harness->fetchAll(PDO::FETCH_COLUMN);
+
     // Fetch car_maker (just get one since it's usually the same)
     $query_maker = "SELECT TOP 1 car_maker FROM m_line_no WHERE line_no = ?";
     $stmt_maker = $conn->prepare($query_maker);
@@ -225,7 +231,8 @@ if ($method == 'get_inspection_details') {
         'success' => true,
         'car_maker' => $car_maker,
         'car_model' => $car_model, // Can be string or array
-        'processes' => $processes
+        'processes' => $processes,
+        'harness_type' => $harness_type
     ]);
     exit;
 }

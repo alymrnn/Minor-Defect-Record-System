@@ -551,7 +551,7 @@
                                 text: `No defect details found for code: ${detailsCode}`,
                                 background: '#00375C',
                                 color: '#f9f9f9',
-                                
+
                             });
                             $('#a_defect_details').val('').prop('disabled', true);
                             $('#a_treatment_content_defect').val('').prop('disabled', true);
@@ -591,7 +591,8 @@
             "a_date_detected", "a_car_maker", "a_car_model", "a_line_no", "a_process",
             "a_group", "a_shift", "a_product_name", "a_lot_no", "a_serial_no",
             "a_defect_category_code", "a_defect_category", "a_defect_details", "a_defect_details_code", "a_sequence_no",
-            "a_connector_no", "a_treatment_content_defect", "a_total_time", "a_repaired_by", "a_verified_by", "a_ip_address"
+            "a_connector_no", "a_treatment_content_defect", "a_total_time", "a_repaired_by", "a_verified_by",
+            "a_ip_address", "a_harness_type"
         ];
 
         let hasEmpty = false;
@@ -658,6 +659,7 @@
         var total_time = document.getElementById("a_total_time").value;
         var repaired_by = document.getElementById("a_repaired_by").value;
         var verified_by = document.getElementById("a_verified_by").value;
+        var harness_type = document.getElementById('a_harness_type').value;
         var defect_id = document.getElementById('defect_id_no').value;
 
         var ip_address = document.getElementById("a_ip_address").value;
@@ -698,6 +700,7 @@
                 total_time: total_time,
                 repaired_by: repaired_by,
                 verified_by: verified_by,
+                harness_type: harness_type,
                 defect_id: defect_id,
                 ip_address: ip_address,
                 nameplate_value: nameplate_value,
@@ -743,6 +746,7 @@
         document.getElementById("a_car_maker").value = '';
         document.getElementById("a_car_model").value = '';
         document.getElementById("a_line_no").value = '';
+        document.getElementById("a_harness_type").value = '';
         document.getElementById("a_process").value = '';
         document.getElementById("a_group").value = '';
         document.getElementById("a_product_name").value = 'N/A';
@@ -931,6 +935,8 @@
                     });
 
                     $('#a_process').prop('disabled', false).css('background', '#FFF');
+
+                    $('#a_harness_type').val(data.harness_type);
                 } else {
                     Swal.fire({
                         icon: 'warning',
@@ -938,59 +944,12 @@
                         showConfirmButton: true,
                         background: '#00375C',
                         color: '#f9f9f9',
-                        
+
                     });
 
                     $('#a_process').prop('disabled', true).css('background', '#DDD');
                 }
             },
-
-            // success: function(response) {
-            //     const data = JSON.parse(response);
-            //     if (data.success) {
-            //         $('#a_car_maker').val(data.car_maker);
-            //         $('#a_car_model').val(data.car_model);
-
-            //         $('#a_process').empty().append('<option value="" disabled selected>Select Process</option>');
-
-            //         data.processes.forEach(process => {
-            //             $('#a_process').append(`<option value="${process}">${process}</option>`);
-            //         });
-
-            //         $('#a_process').prop('disabled', false).css('background', '#FFF');
-
-            //         // if (!data.car_maker || !data.car_model) {
-            //         //     Swal.fire({
-            //         //         icon: 'warning',
-            //         //         title: 'No Car Maker and Model',
-            //         //         text: 'Register car maker and model of the line.',
-            //         //         showConfirmButton: true
-            //         //     });
-
-            //         //     $('#a_process').prop('disabled', true).css('background', '#DDD');
-            //         // } else {
-            //         //     $('#a_car_maker').val(data.car_maker);
-            //         //     $('#a_car_model').val(data.car_model);
-
-            //         //     $('#a_process').empty().append('<option value="" disabled selected>Select Process</option>');
-
-            //         //     data.processes.forEach(process => {
-            //         //         $('#a_process').append(`<option value="${process}">${process}</option>`);
-            //         //     });
-
-            //         //     $('#a_process').prop('disabled', false).css('background', '#FFF');
-            //         //     $('#a_car_maker').prop('disabled', true).css('background', '#F1F1F1');
-            //         // }
-            //     } else {
-            //         Swal.fire({
-            //             icon: 'warning',
-            //             title: data.error,
-            //             showConfirmButton: true
-            //         });
-
-            //         $('#a_process').prop('disabled', true).css('background', '#DDD');
-            //     }
-            // },
             error: function(xhr, status, error) {
                 console.error('AJAX Error: ', status, error);
                 Swal.fire({
@@ -999,7 +958,7 @@
                     showConfirmButton: true,
                     background: '#00375C',
                     color: '#f9f9f9',
-                    
+
                 });
             }
         });

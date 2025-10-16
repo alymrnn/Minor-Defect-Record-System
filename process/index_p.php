@@ -305,6 +305,7 @@ if ($method == 'add_defect_record') {
     $car_maker = trim($_POST['car_maker']);
     $car_model = trim($_POST['car_model']);
     $line_no = trim($_POST['line_no']);
+    $harness_type = trim($_POST['harness_type']);
     $process = trim($_POST['process']);
     $group = trim($_POST['group']);
     $shift = trim($_POST['shift']);
@@ -341,12 +342,12 @@ if ($method == 'add_defect_record') {
     $defect_id = generate_defect_id($defect_id);
 
     $query = "INSERT INTO t_minor_defect_f 
-        (defect_id, date_detected, car_maker, car_model, line_no,
+        (defect_id, date_detected, car_maker, car_model, line_no, harness_type,
         process, group_d, shift, nameplate_value, product_no,
         lot_no, serial_no, defect_category_code, defect_category, defect_details_code,
         defect_details, sequence_no, connector_no, treatment_content_defect, repaired_by,
         verified_by, ip_address, record_by_id_no, record_added_by, line_category, total_time) 
-        VALUES (:defect_id, :date_detected, :car_maker, :car_model, :line_no,
+        VALUES (:defect_id, :date_detected, :car_maker, :car_model, :line_no, :harness_type,
         :process, :group_d, :shift, :nameplate_value, :product_no,
         :lot_no, :serial_no, :defect_category_code, :defect_category, :defect_details_code,
         :defect_details, :sequence_no, :connector_no, :treatment_content_defect, :repaired_by,
@@ -381,6 +382,7 @@ if ($method == 'add_defect_record') {
         ':record_added_by' => $auth_name,
         ':category' => $category,
         ':total_time' => $total_time,
+        ':harness_type' => $harness_type,
     ]);
 
     echo $success ? 'success' : 'error';
