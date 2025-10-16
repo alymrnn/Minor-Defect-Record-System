@@ -319,6 +319,7 @@ if ($method == 'add_defect_record') {
     $sequence_no = trim($_POST['sequence_no']);
     $connector_no = trim($_POST['connector_no']);
     $treatment_content_defect = trim($_POST['treatment_content_defect']);
+    $total_time = trim($_POST['total_time']);
     $repaired_by = trim($_POST['repaired_by']);
     $verified_by = trim($_POST['verified_by']);
     $defect_id = trim($_POST['defect_id']);
@@ -344,12 +345,12 @@ if ($method == 'add_defect_record') {
         process, group_d, shift, nameplate_value, product_no,
         lot_no, serial_no, defect_category_code, defect_category, defect_details_code,
         defect_details, sequence_no, connector_no, treatment_content_defect, repaired_by,
-        verified_by, ip_address, record_by_id_no, record_added_by, line_category) 
+        verified_by, ip_address, record_by_id_no, record_added_by, line_category, total_time) 
         VALUES (:defect_id, :date_detected, :car_maker, :car_model, :line_no,
         :process, :group_d, :shift, :nameplate_value, :product_no,
         :lot_no, :serial_no, :defect_category_code, :defect_category, :defect_details_code,
         :defect_details, :sequence_no, :connector_no, :treatment_content_defect, :repaired_by,
-        :verified_by, :ip_address, :record_by_id_no, :record_added_by, :category)";
+        :verified_by, :ip_address, :record_by_id_no, :record_added_by, :category, :total_time)";
 
     $stmt = $conn->prepare($query);
 
@@ -378,7 +379,8 @@ if ($method == 'add_defect_record') {
         ':ip_address' => $ip_address,
         ':record_by_id_no' => $auth_id_no,
         ':record_added_by' => $auth_name,
-        ':category' => $category
+        ':category' => $category,
+        ':total_time' => $total_time,
     ]);
 
     echo $success ? 'success' : 'error';

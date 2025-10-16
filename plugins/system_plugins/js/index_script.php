@@ -435,9 +435,9 @@
     //                             icon: 'info',
     //                             title: 'Defect Category Code Not Found',
     //                             text: `No defect category found for code: ${code}`,
-    //                             background: '#1b263b',
+    //                             background: '#00375C',
     //                             color: '#f9f9f9',
-    //                             iconColor: '#8d0801',
+    //                             ,
     //                         });
     //                         $('#a_defect_category').val('').prop('disabled', true);
     //                     } else {
@@ -479,9 +479,9 @@
     //                             icon: 'info',
     //                             title: 'Defect Details Code Not Found',
     //                             text: `No defect details found for code: ${detailsCode}`,
-    //                             background: '#1b263b',
+    //                             background: '#00375C',
     //                             color: '#f9f9f9',
-    //                             iconColor: '#8d0801'
+    //                             
     //                         });
 
     //                         $('#a_defect_details').val('').prop('disabled', true);
@@ -549,9 +549,9 @@
                                 icon: 'info',
                                 title: 'Defect Details Code Not Found',
                                 text: `No defect details found for code: ${detailsCode}`,
-                                background: '#1b263b',
+                                background: '#00375C',
                                 color: '#f9f9f9',
-                                iconColor: '#8d0801'
+                                
                             });
                             $('#a_defect_details').val('').prop('disabled', true);
                             $('#a_treatment_content_defect').val('').prop('disabled', true);
@@ -591,7 +591,7 @@
             "a_date_detected", "a_car_maker", "a_car_model", "a_line_no", "a_process",
             "a_group", "a_shift", "a_product_name", "a_lot_no", "a_serial_no",
             "a_defect_category_code", "a_defect_category", "a_defect_details", "a_defect_details_code", "a_sequence_no",
-            "a_connector_no", "a_treatment_content_defect", "a_repaired_by", "a_verified_by", "a_ip_address"
+            "a_connector_no", "a_treatment_content_defect", "a_total_time", "a_repaired_by", "a_verified_by", "a_ip_address"
         ];
 
         let hasEmpty = false;
@@ -611,9 +611,8 @@
                 icon: 'info',
                 title: 'Missing Required Fields',
                 text: 'Please fill in all required fields before submitting.',
-                background: '#1b263b',
+                background: '#00375C',
                 color: '#f9f9f9',
-                iconColor: '#8d0801'
             });
             return;
         }
@@ -630,9 +629,8 @@
                 icon: 'info',
                 title: 'Missing Required Field',
                 text: 'Category is required for Line No. 2130 and 2132.',
-                background: '#1b263b',
+                background: '#00375C',
                 color: '#f9f9f9',
-                iconColor: '#8d0801'
             });
             return;
         }
@@ -657,6 +655,7 @@
         var sequence_no = document.getElementById("a_sequence_no").value;
         var connector_no = document.getElementById("a_connector_no").value;
         var treatment_content_defect = document.getElementById("a_treatment_content_defect").value;
+        var total_time = document.getElementById("a_total_time").value;
         var repaired_by = document.getElementById("a_repaired_by").value;
         var verified_by = document.getElementById("a_verified_by").value;
         var defect_id = document.getElementById('defect_id_no').value;
@@ -696,6 +695,7 @@
                 sequence_no: sequence_no,
                 connector_no: connector_no,
                 treatment_content_defect: treatment_content_defect,
+                total_time: total_time,
                 repaired_by: repaired_by,
                 verified_by: verified_by,
                 defect_id: defect_id,
@@ -720,6 +720,7 @@
                     $('#a_sequence_no').val('');
                     $('#a_connector_no').val('');
                     $('#a_treatment_content_defect').val('');
+                    $('#a_total_time').val('');
                     $('#defect_id_no').val('');
 
                     load_defect_table(1);
@@ -752,6 +753,7 @@
         document.getElementById("a_sequence_no").value = '';
         document.getElementById("a_connector_no").value = '';
         document.getElementById("a_treatment_content_defect").value = '';
+        document.getElementById("a_total_time").value = '';
         document.getElementById("a_repaired_by").value = 'N/A';
         document.getElementById("a_verified_by").value = 'N/A';
         document.getElementById("nameplate_value").value = '';
@@ -934,9 +936,9 @@
                         icon: 'warning',
                         title: data.error,
                         showConfirmButton: true,
-                        background: '#1b263b',
+                        background: '#00375C',
                         color: '#f9f9f9',
-                        iconColor: '#8d0801'
+                        
                     });
 
                     $('#a_process').prop('disabled', true).css('background', '#DDD');
@@ -995,9 +997,9 @@
                     icon: 'error',
                     title: 'AJAX Error',
                     showConfirmButton: true,
-                    background: '#1b263b',
+                    background: '#00375C',
                     color: '#f9f9f9',
-                    iconColor: '#8d0801'
+                    
                 });
             }
         });
@@ -1119,7 +1121,7 @@
                     title: 'ID Not Registered',
                     text: res.error || 'The entered ID number is not registered in the system.',
                     confirmButtonColor: '#d33',
-                    background: '#1b263b',
+                    background: '#00375C',
                     color: '#fff',
                     customClass: {
                         popup: 'custom-swal-popup'

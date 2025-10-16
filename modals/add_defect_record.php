@@ -37,7 +37,7 @@
                     <div class="col-12 col-md-3">
                         <label class="m-0 p-0 text-sm font-weight-normal">Line No.</label>
                         <label class="m-0 p-0 text-danger text-xs">*</label>
-                        <input type="text" id="a_line_no" class="form-control form-control-sm form-control-border" autocomplete="off" required>
+                        <input type="number" id="a_line_no" class="form-control form-control-sm form-control-border" autocomplete="off" required>
                     </div>
                     <div class="col-12 col-md-3">
                         <label class="m-0 p-0 text-sm font-weight-normal">Car Maker</label>
@@ -159,6 +159,12 @@
                         <label class="m-0 p-0 text-danger text-xs">*</label>
                         <input id="a_treatment_content_defect" class="form-control form-control-sm form-control-border"
                             required disabled>
+                    </div>
+                    <div class="col-12 col-md-4">
+                        <label class="m-0 p-0 text-sm font-weight-normal">Total Time (mins)</label>
+                        <label class="m-0 p-0 text-danger text-xs">*</label>
+                        <input type="number" id="a_total_time" class="form-control form-control-sm form-control-border"
+                            required>
                     </div>
                 </div>
                 <div class="row">
