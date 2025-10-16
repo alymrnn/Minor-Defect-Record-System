@@ -63,24 +63,12 @@ include('plugins/system_plugins/navbar/index_navbar.php');
                      <h2 id="total_comparison_count" class="text-bold"></h2>
                   </div>
                </div>
-               <div class="col-10">
+               <div class="col-7">
                   <div class="chart-border">
                      <div id="top_overall_defect_category"></div>
                   </div>
                </div>
-            </div>
-
-            <div class="row mt-2">
-               <div class="col-6">
-                  <div class="chart-border">
-                     <div id="top_overall_line_no_chart" class="d-flex align-items-center justify-content-start text-center pl-2" style="height: 100%;">
-                        <p id="overall_line_no_chart_placeholder" class="mb-0 text-info small">
-                           Select from Top Defect Category Chart to generate Top Line No.'s with Selected Defect
-                        </p>
-                     </div>
-                  </div>
-               </div>
-               <div class="col-6">
+               <div class="col-3">
                   <div class="chart-border">
                      <div id="top_overall_defect_details_chart" class="d-flex align-items-center justify-content-start text-center pl-2" style="height: 100%;">
                         <p id="overall_defect_details_chart_placeholder" class="mb-0 text-info small">
@@ -92,19 +80,28 @@ include('plugins/system_plugins/navbar/index_navbar.php');
             </div>
 
             <div class="row mt-2">
-               <div class="col-4">
+               <div class="col-3">
                   <div class="chart-border">
                      <div id="top_lot_no_chart"></div>
                   </div>
                </div>
-               <div class="col-4">
+               <div class="col-3">
                   <div class="chart-border">
                      <div id="top_sequence_no_chart"></div>
                   </div>
                </div>
-               <div class="col-4">
+               <div class="col-3">
                   <div class="chart-border">
                      <div id="top_connector_no_chart"></div>
+                  </div>
+               </div>
+               <div class="col-3">
+                  <div class="chart-border">
+                     <div id="top_overall_line_no_chart" class="d-flex align-items-center justify-content-start text-center pl-2" style="height: 100%;">
+                        <p id="overall_line_no_chart_placeholder" class="mb-0 text-info small">
+                           Select from Top Defect Category Chart to generate Top Line No.'s with Selected Defect
+                        </p>
+                     </div>
                   </div>
                </div>
             </div>
@@ -112,14 +109,12 @@ include('plugins/system_plugins/navbar/index_navbar.php');
             <p class="mt-4 m-0 p-0 text-md text-dark">Section Monitoring</p>
             <hr class="m-0 p-0" style="background: #eee;">
             <div class="row mt-2">
-               <div class="col-12">
+               <div class="col-4">
                   <div class="chart-border">
                      <div id="top_defect_category_per_section_chart"></div>
                   </div>
                </div>
-            </div>
-            <div class="row mt-2">
-               <div class="col-8">
+               <div class="col-4">
                   <div class="chart-border">
                      <div id="defect_record_per_section_chart"></div>
                   </div>

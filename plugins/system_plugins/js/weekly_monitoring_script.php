@@ -1,20 +1,20 @@
 <script type="text/javascript">
    $(document).ready(function() {
-      const now = new Date();
-      if (!$("#d_year").val()) {
-         $("#d_year").val(now.getFullYear());
-      }
-      if (!$("#d_month").val()) {
-         $("#d_month").val(now.getMonth() + 1);
-      }
+      // const now = new Date();
+      // if (!$("#d_year").val()) {
+      //    $("#d_year").val(now.getFullYear());
+      // }
+      // if (!$("#d_month").val()) {
+      //    $("#d_month").val(now.getMonth() + 1);
+      // }
 
-      fetch_year_month_options().then(() => {
-         generate_weekly_dashboard_filter();
-      });
+      // fetch_year_month_options().then(() => {
+      //    generate_weekly_dashboard_filter();
+      // });
 
-      setInterval(() => {
-         generate_weekly_dashboard_filter();
-      }, 300000); // refersh every 5 mins
+      // setInterval(() => {
+      //    generate_weekly_dashboard_filter();
+      // }, 300000); // refersh every 5 mins
    });
 
    const generate_weekly_dashboard_filter = () => {

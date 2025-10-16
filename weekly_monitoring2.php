@@ -1,4 +1,4 @@
-<?php
+<!-- <?php
 include('process/conn.php');
 include('plugins/system_plugins/header.php');
 include('plugins/system_plugins/preloader.php');
@@ -6,9 +6,8 @@ include('plugins/system_plugins/navbar/index_navbar.php');
 ?>
 
 <div class="content-wrapper" style="background: #f8f9fa;">
-   <!-- Main content -->
    <section class="content">
-      <div class="d-side-nav collapse show" id="sidebarOverall">
+      <div class="d-side-nav collapse" id="sidebarOverall">
          <div class="row">
             <div class="col-12">
                <div class="mt-2" style="display: flex; justify-content: flex-end; align-items: center;">
@@ -19,46 +18,15 @@ include('plugins/system_plugins/navbar/index_navbar.php');
                   </p>
                </div>
 
-               
+               <p class="m-0 p-0 text-left text-dark text-xs">Year</p>
+               <select id="d_year" class="form-control form-control-sm form-control-border mb-1"></select>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-               <!-- hide this -->
-               <div class="d-none">
-                  <p class="m-0 p-0 text-left text-dark text-xs">Year</p>
-                  <select id="d_year" class="form-control form-control-sm form-control-border mb-1"></select>
-
-                  <p class="m-0 p-0 text-left text-dark text-xs">Month</p>
-                  <select id="d_month" class="form-control form-control-sm form-control-border mb-1"></select>
-               </div>
+               <p class="m-0 p-0 text-left text-dark text-xs">Month</p>
+               <select id="d_month" class="form-control form-control-sm form-control-border mb-1"></select>
             </div>
          </div>
       </div>
 
-      <!-- Main content -->
       <div class="flex-grow-1" id="mainContentOverall">
          <div id="stickyHeaderOverall" class="sticky-header d-flex align-items-center justify-content-between">
             <div class="d-flex align-items-center m-1">
@@ -71,36 +39,6 @@ include('plugins/system_plugins/navbar/index_navbar.php');
          </div>
 
          <div class="col-12">
-            <!--  -->
-         </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-         <!-- hide this -->
-         <div class="col-12 d-none">
             <p class="pt-3 m-0 p-0 text-sm">Weekly Trend Monitoring</p>
             <hr class="m-0 p-0" style="background: #eee;">
 
@@ -141,4 +79,4 @@ include('plugins/system_plugins/navbar/index_navbar.php');
 
 <?php
 include('plugins/system_plugins/js/weekly_monitoring_script.php');
-?>
+?> -->

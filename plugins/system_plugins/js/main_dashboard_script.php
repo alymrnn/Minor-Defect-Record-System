@@ -263,8 +263,15 @@
                      column: {
                         borderRadius: 3,
                         pointPadding: 0.2,
-                        groupPadding: 0.2,
-                        pointWidth: 70,
+                        groupPadding: 0.05,
+                        dataLabels: {
+                           enabled: false,
+                           style: {
+                              fontFamily: 'Poppins, sans-serif',
+                              fontSize: '10px',
+                              fontWeight: 'normal',
+                           }
+                        },
                         cursor: 'pointer',
                         point: {
                            events: {
@@ -335,14 +342,12 @@
 
                $('#overall_defect_details_chart_placeholder').hide();
 
-               const pieData = response.map(item => ({
-                  name: item.defect_details,
-                  y: parseInt(item.total)
-               }));
+               const categories = response.map(item => item.defect_details);
+               const data = response.map(item => parseInt(item.total));
 
                Highcharts.chart('top_overall_defect_details_chart', {
                   chart: {
-                     type: 'pie',
+                     type: 'bar',
                      height: '290px',
                      style: {
                         fontFamily: 'Poppins, sans-serif'
@@ -356,69 +361,77 @@
                      align: 'left'
                   },
                   colors: [
-                     "#1F77B4", // blue
-                     "#2CA02C", // green
-                     "#FF4136", // red
-                     "#17BECF", // teal
-                     "#0074D9", // bright blue
-                     "#3D9970", // darker green/teal
-                     "#FF6347", // tomato red
-                     "#4E79A7", // muted blue
-                     "#76B7B2", // soft teal
-                     "#E15759" // soft red
+                     "#1F77B4"
                   ],
+                  xAxis: {
+                     categories: categories,
+                     title: {
+                        text: null
+                     },
+                     labels: {
+                        style: {
+                           fontFamily: 'Poppins, sans-serif',
+                           fontSize: '10px'
+                        }
+                     }
+                  },
+                  yAxis: {
+                     min: 0,
+                     title: {
+                        text: null,
+                        align: 'high',
+                        style: {
+                           fontFamily: 'Poppins, sans-serif',
+                           fontSize: '11px'
+                        }
+                     },
+                     labels: {
+                        overflow: 'justify',
+                        style: {
+                           fontFamily: 'Poppins, sans-serif',
+                           fontSize: '10px',
+                        }
+                     }
+                  },
                   tooltip: {
                      useHTML: true,
                      formatter: function() {
-                        return `<b>${this.point.name}</b>: ${this.y} defects (${Highcharts.numberFormat(this.percentage, 1)}%)`;
+                        return `<b>${this.key}</b>: ${this.y} defects`;
                      },
                      style: {
                         fontFamily: 'Poppins, sans-serif',
                         fontSize: '11px'
                      }
                   },
+                  plotOptions: {
+                     bar: {
+                        borderRadius: 3,
+                        dataLabels: {
+                           enabled: false,
+                           style: {
+                              fontFamily: 'Poppins, sans-serif',
+                              fontSize: '10px',
+                              fontWeight: 'normal',
+                           }
+                        }
+                     }
+                  },
+                  legend: {
+                     enabled: false
+                  },
                   credits: {
                      enabled: false
                   },
-                  legend: {
-                     align: 'right',
-                     verticalAlign: 'middle',
-                     layout: 'vertical',
-                     itemStyle: {
-                        fontFamily: 'Poppins, sans-serif',
-                        fontSize: '11px'
-                     },
-                     itemMarginTop: 0,
-                     itemMarginBottom: 0,
-                     symbolHeight: 8,
-                     symbolWidth: 8,
-                     symbolRadius: 2
-                  },
-                  plotOptions: {
-                     pie: {
-                        allowPointSelect: true,
-                        cursor: 'pointer',
-                        borderRadius: 3,
-                        dataLabels: {
-                           enabled: true,
-                           format: '<b>{point.name}</b>: {point.y}',
-                           style: {
-                              fontFamily: 'Poppins, sans-serif',
-                              fontSize: '10px'
-                           }
-                        },
-                        showInLegend: true
-                     }
-                  },
                   series: [{
                      name: 'Defects',
-                     colorByPoint: true,
-                     data: pieData
+                     data: data,
+                     colorByPoint: true
                   }]
                });
 
                resolve();
             },
+
             error: function(xhr, status, error) {
                console.error("AJAX Error:", status, error);
                reject(error);
@@ -513,7 +526,15 @@
                         borderRadius: 3,
                         pointWidth: 14,
                         groupPadding: 0.5,
-                        pointPadding: 0.2
+                        pointPadding: 0.2,
+                        dataLabels: {
+                           enabled: false,
+                           style: {
+                              fontFamily: 'Poppins, sans-serif',
+                              fontSize: '10px',
+                              fontWeight: 'normal',
+                           }
+                        }
                      }
                   },
                   series: [{
@@ -638,7 +659,15 @@
                         },
                         lineWidth: 2,
                         lineColor: '#339BFF',
-                        fillOpacity: 0.25
+                        fillOpacity: 0.25,
+                        dataLabels: {
+                           enabled: false,
+                           style: {
+                              fontFamily: 'Poppins, sans-serif',
+                              fontSize: '10px',
+                              fontWeight: 'normal',
+                           }
+                        }
                      },
                      series: {
                         point: {
@@ -772,7 +801,15 @@
                         borderRadius: 3,
                         pointWidth: 14,
                         groupPadding: 0.5,
-                        pointPadding: 0.2
+                        pointPadding: 0.2,
+                        dataLabels: {
+                           enabled: false,
+                           style: {
+                              fontFamily: 'Poppins, sans-serif',
+                              fontSize: '10px',
+                              fontWeight: 'normal',
+                           }
+                        }
                      }
                   },
                   series: [{
@@ -874,7 +911,15 @@
                         borderRadius: 3,
                         pointWidth: 14,
                         groupPadding: 0.5,
-                        pointPadding: 0.2
+                        pointPadding: 0.2,
+                        dataLabels: {
+                           enabled: false,
+                           style: {
+                              fontFamily: 'Poppins, sans-serif',
+                              fontSize: '10px',
+                              fontWeight: 'normal',
+                           }
+                        }
                      }
                   },
                   series: [{
@@ -981,7 +1026,15 @@
                         borderRadius: 3,
                         pointWidth: 14,
                         groupPadding: 0.5,
-                        pointPadding: 0.2
+                        pointPadding: 0.2,
+                        dataLabels: {
+                           enabled: false,
+                           style: {
+                              fontFamily: 'Poppins, sans-serif',
+                              fontSize: '10px',
+                              fontWeight: 'normal',
+                           }
+                        }
                      }
                   },
                   series: [{
@@ -1088,7 +1141,15 @@
                         borderRadius: 3,
                         pointWidth: 14,
                         groupPadding: 0.5,
-                        pointPadding: 0.2
+                        pointPadding: 0.2,
+                        dataLabels: {
+                           enabled: false,
+                           style: {
+                              fontFamily: 'Poppins, sans-serif',
+                              fontSize: '10px',
+                              fontWeight: 'normal',
+                           }
+                        }
                      }
                   },
                   series: [{
@@ -1195,7 +1256,15 @@
                         borderRadius: 3,
                         pointWidth: 14,
                         groupPadding: 0.5,
-                        pointPadding: 0.2
+                        pointPadding: 0.2,
+                        dataLabels: {
+                           enabled: false,
+                           style: {
+                              fontFamily: 'Poppins, sans-serif',
+                              fontSize: '10px',
+                              fontWeight: 'normal',
+                           }
+                        }
                      }
                   },
                   series: [{
@@ -1317,23 +1386,25 @@
                         style: {
                            fontFamily: "Poppins, sans-serif",
                            fontSize: "10px",
-                           fontWeight: "bold"
+                           fontWeight: "normal"
                         }
                      }
                   },
                   legend: {
-                     align: "right",
-                     verticalAlign: "middle",
-                     layout: "vertical",
+                     align: "center",
+                     verticalAlign: "bottom",
+                     layout: "horizontal",
                      itemStyle: {
                         fontSize: "11px",
                         fontFamily: "Poppins, sans-serif"
                      },
-                     itemMarginTop: 0,
-                     itemMarginBottom: 0,
+                     itemMarginTop: 2,
+                     itemMarginBottom: 2,
                      symbolHeight: 8,
                      symbolWidth: 8,
-                     symbolRadius: 2
+                     symbolRadius: 2,
+                     itemWidth: 150, // width of each legend item
+                     width: 450 // total width → 150 * 3 = 3 items per row
                   },
                   tooltip: {
                      shared: true,
@@ -1355,7 +1426,7 @@
                      column: {
                         stacking: "normal",
                         borderRadius: 3,
-                        pointPadding: 0.1,
+                        pointPadding: 0.2,
                         groupPadding: 0.05
                      }
                   },
@@ -1456,8 +1527,16 @@
                   plotOptions: {
                      column: {
                         borderRadius: 3,
-                        pointPadding: 0.1,
-                        groupPadding: 0.05
+                        pointPadding: 0.2,
+                        groupPadding: 0.05,
+                        dataLabels: {
+                           enabled: false,
+                           style: {
+                              fontFamily: 'Poppins, sans-serif',
+                              fontSize: '10px',
+                              fontWeight: 'normal',
+                           }
+                        }
                      }
                   },
                   credits: {
@@ -1514,7 +1593,7 @@
                Highcharts.chart("top_line_no_section_based_chart", {
                   chart: {
                      type: "bar",
-                     height: "300px",
+                     height: "290px",
                      style: {
                         fontFamily: "Poppins, sans-serif"
                      }
@@ -1569,8 +1648,17 @@
                   plotOptions: {
                      bar: {
                         borderRadius: 3,
-                        pointPadding: 0.1,
-                        groupPadding: 0.05
+                        pointPadding: 0.2,
+                        groupPadding: 0.05,
+                        pointWidth: 14,
+                        dataLabels: {
+                           enabled: false,
+                           style: {
+                              fontFamily: 'Poppins, sans-serif',
+                              fontSize: '10px',
+                              fontWeight: 'normal',
+                           }
+                        }
                      }
                   },
                   credits: {
