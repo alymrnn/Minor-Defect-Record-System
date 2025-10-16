@@ -8,7 +8,7 @@ include('plugins/system_plugins/navbar/index_navbar.php');
 <div class="content-wrapper" style="background: #f5f6fa;">
   <!-- Main content -->
   <section class="content pt-3">
-    <div class="card mx-2 border-0 shadow-none" style="background-color: #f8f9fa;">
+    <div class="card mx-2 border-0 shadow-sm" style="background-color: #f8f9fa;">
       <!-- SEARCH FIELD -->
       <div class="card-body">
         <div class="row">
@@ -109,10 +109,8 @@ include('plugins/system_plugins/navbar/index_navbar.php');
       </div>
     </div>
 
-    <hr class="mx-2" style="background: #ddd;">
-
     <!-- MAIN FIELD -->
-    <div class="card mx-2 border-0 shadow-none">
+    <div class="card mx-2 border-0 shadow-sm" style="background-color: #f8f9fa;">
       <div class="card-body">
         <p class="p-0 m-0" style="color:#525252; font-size: 15px;"><i class="far fa-folder"></i>&nbsp;Minor Defect Record Table</p>
         <div class="col-sm-3">

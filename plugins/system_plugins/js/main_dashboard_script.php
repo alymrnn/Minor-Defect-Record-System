@@ -7,7 +7,7 @@
 
       setInterval(() => {
          generate_dashboard_filter();
-      }, 60000);
+      }, 300000); //refresh rate every 5 minutes
    });
 
    function fetch_date() {
@@ -71,43 +71,33 @@
          ])
          .then(() => {
             document.getElementById("top_overall_line_no_chart").innerHTML = `
-               <blockquote class="blockquote quote-secondary text-left m-2">
-                  <p id="overall_line_no_chart_placeholder" class="mb-0" style="font-size: 12px; color: #6c757d;">
+                  <p id="overall_line_no_chart_placeholder" class="mb-0 text-info small">
                         Select from Top Defect Category Chart to generate Top Line No.'s with Selected Defect
                   </p>
-               </blockquote>
             `;
 
             document.getElementById("top_overall_defect_details_chart").innerHTML = `
-               <blockquote class="blockquote quote-secondary text-left m-2">
-                  <p id="overall_defect_details_chart_placeholder" class="mb-0" style="font-size: 12px; color: #6c757d;">
+                  <p id="overall_defect_details_chart_placeholder" class="mb-0 text-info small">
                         Select from Top Defect Category Chart to generate Defect Details
                   </p>
-               </blockquote>
             `;
 
             document.getElementById("top_line_no_section_based_chart").innerHTML = `
-               <blockquote class="blockquote quote-secondary text-left m-2">
-                  <p id="line_no_section_based_chart_placeholder" class="mb-0" style="font-size: 12px; color: #6c757d;">
+                  <p id="line_no_section_based_chart_placeholder" class="mb-0 text-info small">
                         Select a section from Defect Records per Section Chart to generate its Top Line No.
                   </p>
-               </blockquote>
             `;
 
             document.getElementById("top_daily_defect_category_chart").innerHTML = `
-               <blockquote class="blockquote quote-secondary text-left m-2">
-                  <p id="defect_category_chart_placeholder" class="mb-0" style="font-size: 12px; color: #6c757d;">
+                  <p id="defect_category_chart_placeholder" class="mb-0 text-info small">
                         Select a date from Daily Defect Trend Chart to generate Top Defect Category
                   </p>
-               </blockquote>
             `;
 
             document.getElementById("top_daily_line_no_chart").innerHTML = `
-               <blockquote class="blockquote quote-secondary text-left m-2">
-                  <p id="line_no_chart_placeholder" class="mb-0" style="font-size: 12px; color: #6c757d;">
+                  <p id="line_no_chart_placeholder" class="mb-0 text-info small">
                         Select a date from Daily Defect Trend Chart to generate Top Line No.
                   </p>
-               </blockquote>
             `;
 
             Swal.close();
@@ -120,13 +110,9 @@
 
    function styledChartTitle(text) {
       return `<span style="
-              background-color: #F2F2F7; 
-              padding: 3px 6px; 
-              border-left: 3px solid #1b263b;
-              color: #000;
               font-family: Poppins, sans-serif;
-              font-weight: normal;
-              font-size: 12px;
+              font-weight: 600;
+              font-size: 13px;
            ">${text}</span>`;
    }
 
@@ -1605,4 +1591,38 @@
          });
       });
    };
+
+   document.addEventListener("DOMContentLoaded", function() {
+      const sidebar = document.getElementById('sidebar');
+      const toggleBtn = document.getElementById('toggleBtn');
+      const toggleIcon = toggleBtn.querySelector('i');
+      const mainFooter = document.getElementById('mainFooter');
+
+      const bsCollapse = new bootstrap.Collapse(sidebar, {
+         toggle: false
+      });
+
+      toggleBtn.addEventListener('click', function() {
+         const isShown = sidebar.classList.contains('show');
+
+         if (isShown) {
+            bsCollapse.hide();
+            toggleIcon.classList.replace('fa-times', 'fa-bars');
+            mainFooter.style.marginLeft = '0';
+         } else {
+            bsCollapse.show();
+            toggleIcon.classList.replace('fa-bars', 'fa-times');
+            mainFooter.style.marginLeft = '16.6667%';
+         }
+      });
+   });
+
+   document.addEventListener('scroll', function() {
+      const header = document.getElementById('stickyHeader');
+      if (window.scrollY > 0) {
+         header.classList.add('is-sticky');
+      } else {
+         header.classList.remove('is-sticky');
+      }
+   });
 </script>

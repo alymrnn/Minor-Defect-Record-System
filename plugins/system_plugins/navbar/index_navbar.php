@@ -36,6 +36,15 @@
         border: 1px solid #CA3F3F;
     }
 
+    #stickyHeader {
+        position: sticky;
+        top: 50px;
+        background: #f8f9fa;
+        z-index: 10;
+        padding: 7px;
+        transition: all 0.3s ease;
+    }
+
     .d-side-nav {
         position: fixed;
         top: 50px;
@@ -44,12 +53,75 @@
         width: 16.6667%;
         height: calc(100vh - 50px);
         overflow-y: auto;
-        background: #f5f6fa;
-        color: #FFF;
+        background: #f8f9fa;
         padding: 10px;
         border-right: 1px solid #ddd;
         z-index: 10;
-        box-sizing: border-box;
+        transition: width 0.3s ease, opacity 0.3s ease;
+    }
+
+    .d-side-nav.collapsing {
+        width: 0 !important;
+        opacity: 0;
+        overflow: hidden;
+        transition: width 0.3s ease, opacity 0.3s ease;
+    }
+
+    .d-side-nav.collapse {
+        display: block;
+    }
+
+    .d-side-nav.collapse:not(.show) {
+        width: 0 !important;
+        opacity: 0;
+        overflow: hidden;
+    }
+
+    #mainContent {
+        margin-left: 16.6667%;
+        transition: margin-left 0.3s ease;
+        overflow: visible !important;
+    }
+
+    #sidebar:not(.show)~#mainContent {
+        margin-left: 0 !important;
+    }
+
+    #mainFooter {
+        margin-left: 16.6667%;
+        transition: margin-left 0.3s ease;
+    }
+
+    #sidebar:not(.show)~#mainFooter {
+        margin-left: 0 !important;
+    }
+
+    #stickyHeaderOverall {
+        position: sticky;
+        top: 50px;
+        background: #f8f9fa;
+        z-index: 10;
+        padding: 7px;
+        transition: all 0.3s ease;
+    }
+
+    #mainContentOverall {
+        margin-left: 16.6667%;
+        transition: margin-left 0.3s ease;
+        overflow: visible !important;
+    }
+
+    #sidebarOverall:not(.show)~#mainContentOverall {
+        margin-left: 0 !important;
+    }
+
+    #mainFooterOverall {
+        margin-left: 16.6667%;
+        transition: margin-left 0.3s ease;
+    }
+
+    #sidebarOverall:not(.show)~#mainFooterOverall {
+        margin-left: 0 !important;
     }
 
     @media screen and (max-width: 768px) {
@@ -66,7 +138,8 @@
         border: none;
         background-color: #fff;
         padding: 15px;
-        border-radius: 6px;
+        border-radius: 15px;
+        border: 1px solid #eee;
         height: 100%;
     }
 
@@ -74,7 +147,8 @@
         border: none;
         background-color: #fff;
         padding: 8px;
-        border-radius: 6px;
+        border-radius: 15px;
+        border: 1px solid #eee;
         height: 100%;
     }
 
@@ -127,10 +201,10 @@ $current_page = basename($_SERVER['PHP_SELF']);
             </a>
             <div class="dropdown-menu" aria-labelledby="dashboardDropdown" style="position: absolute; z-index: 1050;">
                 <a class="btn btn-sm dropdown-item <?php echo ($current_page == 'main_dashboard.php') ? 'active' : ''; ?>" href="main_dashboard.php">
-                    <i class="fas fa-desktop mr-1"></i> Main Monitoring
+                    <i class="fas fa-desktop mr-1"></i> Daily Monitoring
                 </a>
                 <a class="btn btn-sm dropdown-item <?php echo ($current_page == 'weekly_monitoring.php') ? 'active' : ''; ?>" href="weekly_monitoring.php">
-                    <i class="fas fa-calendar-week mr-1"></i> Weekly Monitoring
+                    <i class="fas fa-calendar-week mr-1"></i> Overall Monitoring
                 </a>
             </div>
         </li>
@@ -154,3 +228,5 @@ $current_page = basename($_SERVER['PHP_SELF']);
     </ul>
 </nav>
 <!-- /.navbar -->
+
+<body>

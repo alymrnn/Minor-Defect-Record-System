@@ -1,4 +1,4 @@
-<footer class="main-footer text-xs" id="mainFooter" style="background-color: #f5f6fa; border-top: 1px solid #ddd;">
+<footer class="main-footer text-xs" id="mainFooterOverall" style="background-color: #f5f6fa; border-top: 1px solid #ddd;">
     <div class="row">
         <div class="col-12 d-flex justify-content-between">
             <span>
@@ -14,7 +14,6 @@
         </div>
     </div>
 </footer>
-
 
 
 <?php

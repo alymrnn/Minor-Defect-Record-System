@@ -35,11 +35,9 @@
          ])
          .then(() => {
             document.getElementById("weekly_top_lines_based_on_defect_category_chart").innerHTML = `
-            <blockquote class="blockquote quote-secondary text-left m-2">
-               <p id="weekly_top_lines_chart_placeholder" class="mb-0" style="font-size: 12px; color: #6c757d;">
+               <p id="weekly_top_lines_chart_placeholder" class="mb-0 text-info small">
                   Select from Weekly Record per Defect Category to generate Top 10 Lines of Selected Defect Category per Week
                </p>
-            </blockquote>
          `;
 
             Swal.close();
@@ -108,13 +106,9 @@
 
    function styledChartTitle(text) {
       return `<span style="
-              background-color: #F2F2F7; 
-              padding: 3px 6px; 
-              border-left: 3px solid #1b263b;
-              color: #000;
               font-family: Poppins, sans-serif;
-              font-weight: normal;
-              font-size: 12px;
+              font-weight: 600;
+              font-size: 13px;
            ">${text}</span>`;
    }
 
@@ -546,4 +540,38 @@
          });
       });
    };
+
+   document.addEventListener("DOMContentLoaded", function() {
+      const sidebar = document.getElementById('sidebarOverall');
+      const toggleBtn = document.getElementById('toggleBtnOverall');
+      const toggleIcon = toggleBtn.querySelector('i');
+      const mainFooter = document.getElementById('mainFooterOverall');
+
+      const bsCollapse = new bootstrap.Collapse(sidebar, {
+         toggle: false
+      });
+
+      toggleBtn.addEventListener('click', function() {
+         const isShown = sidebar.classList.contains('show');
+
+         if (isShown) {
+            bsCollapse.hide();
+            toggleIcon.classList.replace('fa-times', 'fa-bars');
+            mainFooter.style.marginLeft = '0';
+         } else {
+            bsCollapse.show();
+            toggleIcon.classList.replace('fa-bars', 'fa-times');
+            mainFooter.style.marginLeft = '16.6667%';
+         }
+      });
+   });
+
+   document.addEventListener('scroll', function() {
+      const header = document.getElementById('stickyHeaderOverall');
+      if (window.scrollY > 0) {
+         header.classList.add('is-sticky');
+      } else {
+         header.classList.remove('is-sticky');
+      }
+   });
 </script>
