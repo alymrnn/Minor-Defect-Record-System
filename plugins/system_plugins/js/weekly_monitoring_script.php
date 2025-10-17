@@ -1,5 +1,35 @@
 <script type="text/javascript">
    $(document).ready(function() {
+      fetch_defect_category_list();
+      fetch_year_list();
+      fetch_month_list();
+      fetch_section_list();
+      fetch_line_list();
+      fetch_process_list();
+      fetch_line_category_list();
+
+      $('#week_container').empty().html('<p class="text-muted text-xs">Select year and month.</p>');
+
+      // Detect when year/month checkboxes change
+      $(document).on('change', '.year-check, .month-check', function() {
+         const selectedYears = $('.year-check:checked').map(function() {
+            return $(this).val();
+         }).get();
+
+         const selectedMonths = $('.month-check:checked').map(function() {
+            return $(this).val();
+         }).get();
+
+         console.log("Selected years:", selectedYears);
+         console.log("Selected months:", selectedMonths);
+
+         if (selectedYears.length > 0 && selectedMonths.length > 0) {
+            fetch_week_list(selectedYears, selectedMonths);
+         } else {
+            $('#week_container').empty().html('<p class="text-muted text-xs">Select year and month.</p>');
+         }
+      });
+
       // const now = new Date();
       // if (!$("#d_year").val()) {
       //    $("#d_year").val(now.getFullYear());
@@ -20,7 +50,7 @@
    const generate_weekly_dashboard_filter = () => {
       Swal.fire({
          title: 'Loading...',
-         text: 'Fetching weekly dashboard data',
+         text: 'Fetching dashboard data',
          allowOutsideClick: false,
          background: '#1b263b',
          color: '#f8f9fa',
@@ -574,4 +604,506 @@
          header.classList.remove('is-sticky');
       }
    });
+
+
+
+   // =================================================================================================================
+   // OVERALL MONITORING V2
+   const fetch_defect_category_list = () => {
+      $.ajax({
+         url: 'process/weekly_monitoring_p.php',
+         type: "POST",
+         data: {
+            method: 'fetch_defect_category_list'
+         },
+         dataType: "json",
+         success: function(response) {
+            let container = $('#defect_category_container');
+            container.empty();
+
+            if (response.length === 0) {
+               container.html('<p class="text-muted text-xs">No categories found.</p>');
+               return;
+            }
+
+            // Add Mark All / Unmark All button
+            const markAllButton = $(`
+               <button id="markAllBtn" class="btn btn-xs btn-outline-info m-0 p-0 m-1">
+                  &nbsp;Mark All&nbsp;
+               </button>
+            `);
+            container.append(markAllButton);
+
+            // Generate button-style checkboxes
+            response.forEach(item => {
+               const buttonCheckbox = `
+               <input type="checkbox" class="btn-check defect-checkbox" id="defect_${item}" value="${item}" autocomplete="off">
+               <label class="btn btn-outline-secondary btn-xs text-xs m-0 p-0 font-weight-normal m-1" for="defect_${item}">
+                  &nbsp;${item}&nbsp;
+               </label>
+            `;
+               container.append(buttonCheckbox);
+            });
+
+            // Toggle all function
+            $(document).off('click', '#markAllBtn').on('click', '#markAllBtn', function() {
+               const allBoxes = $('.defect-checkbox');
+               const allChecked = allBoxes.filter(':checked').length === allBoxes.length;
+
+               if (allChecked) {
+                  allBoxes.prop('checked', false);
+                  $(this).html('&nbsp;Mark All&nbsp;');
+               } else {
+                  allBoxes.prop('checked', true);
+                  $(this).html('&nbsp;Unmark All&nbsp;');
+               }
+            });
+         },
+
+         error: function(xhr, status, error) {
+            console.error("Error fetching defect categories:", error);
+         }
+      });
+   };
+
+   const fetch_year_list = () => {
+      $.ajax({
+         url: 'process/weekly_monitoring_p.php',
+         type: "POST",
+         data: {
+            method: 'fetch_year_list'
+         },
+         dataType: 'json',
+         success: function(response) {
+            let container = $('#year_container');
+            container.empty();
+
+            if (response.length === 0) {
+               container.html('<p class="text-muted text-xs">No year data found.</p>');
+               return;
+            }
+
+            // Add Mark/Unmark All button
+            const markAllBtn = $('<button>', {
+               class: 'btn btn-xs btn-outline-info m-0 p-0 m-1',
+               html: '&nbsp;Mark All&nbsp;',
+               id: 'mark_all_years_btn'
+            });
+            container.append(markAllBtn);
+
+            // Generate year buttons
+            response.forEach(year => {
+               const buttonCheckbox = `
+               <input type="checkbox" class="btn-check year-check" id="year_${year}" value="${year}" autocomplete="off">
+               <label class="btn btn-outline-secondary btn-xs text-xs m-0 p-0 font-weight-normal m-1 w-25" for="year_${year}">
+                  &nbsp;${year}&nbsp;
+               </label>
+            `;
+               container.append(buttonCheckbox);
+            });
+
+            // Mark/Unmark All logic
+            $('#mark_all_years_btn').on('click', function() {
+               const allBoxes = $('.year-check');
+               const allChecked = allBoxes.length === allBoxes.filter(':checked').length;
+
+               if (allChecked) {
+                  allBoxes.prop('checked', false);
+                  $(this).html('&nbsp;Mark All&nbsp;');
+               } else {
+                  allBoxes.prop('checked', true);
+                  $(this).html('&nbsp;Unmark All&nbsp;');
+               }
+            });
+         }
+      });
+   };
+
+   const fetch_month_list = () => {
+      $.ajax({
+         url: 'process/weekly_monitoring_p.php',
+         type: "POST",
+         data: {
+            method: 'fetch_month_list'
+         },
+         dataType: 'json',
+         success: function(response) {
+            let container = $('#month_container');
+            container.empty();
+
+            if (response.length === 0) {
+               container.html('<p class="text-muted text-xs">No month data found.</p>');
+               return;
+            }
+
+            // Add Mark/Unmark All button
+            const markAllBtn = $('<button>', {
+               class: 'btn btn-xs btn-outline-info m-0 p-0 m-1',
+               html: '&nbsp;Mark All&nbsp;',
+               id: 'mark_all_months_btn'
+            });
+            container.append(markAllBtn);
+
+            // Generate month buttons
+            response.forEach(month => {
+               const buttonCheckbox = `
+               <input type="checkbox" class="btn-check month-check" id="month_${month.num}" value="${month.num}" autocomplete="off">
+               <label class="btn btn-outline-secondary btn-xs text-xs m-0 p-0 font-weight-normal m-1 w-25" for="month_${month.num}">
+                  &nbsp;${month.name}&nbsp;
+               </label>
+            `;
+               container.append(buttonCheckbox);
+            });
+
+            // Mark/Unmark All logic
+            $('#mark_all_months_btn').on('click', function() {
+               const allBoxes = $('.month-check');
+               const allChecked = allBoxes.length === allBoxes.filter(':checked').length;
+
+               if (allChecked) {
+                  allBoxes.prop('checked', false);
+                  $(this).html('&nbsp;Mark All&nbsp;');
+               } else {
+                  allBoxes.prop('checked', true);
+                  $(this).html('&nbsp;Unmark All&nbsp;');
+               }
+
+               // Trigger week update when mark/unmark all is clicked
+               const selectedYears = $('.year-check:checked').map(function() {
+                  return $(this).val();
+               }).get();
+
+               const selectedMonths = $('.month-check:checked').map(function() {
+                  return $(this).val();
+               }).get();
+
+               if (selectedYears.length > 0 && selectedMonths.length > 0) {
+                  fetch_week_list(selectedYears, selectedMonths);
+               } else {
+                  $('#week_container').empty().html('<p class="text-muted text-xs">Select year and month.</p>');
+               }
+            });
+
+            // Also trigger weeks when any single month checkbox is changed
+            $(document).on('change', '.month-check', function() {
+               const selectedYears = $('.year-check:checked').map(function() {
+                  return $(this).val();
+               }).get();
+
+               const selectedMonths = $('.month-check:checked').map(function() {
+                  return $(this).val();
+               }).get();
+
+               if (selectedYears.length > 0 && selectedMonths.length > 0) {
+                  fetch_week_list(selectedYears, selectedMonths);
+               } else {
+                  $('#week_container').empty().html('<p class="text-muted text-xs">Select year and month.</p>');
+               }
+            });
+         }
+      });
+   };
+
+
+   const fetch_week_list = (years, months) => {
+      $.ajax({
+         url: 'process/weekly_monitoring_p.php',
+         type: 'POST',
+         data: {
+            method: 'fetch_week_list',
+            years: years,
+            months: months
+         },
+         dataType: 'json',
+         success: function(response) {
+            console.log("Weeks response:", response);
+
+            let container = $('#week_container');
+            container.empty();
+
+            if (!response || response.length === 0) {
+               container.html('<p class="text-muted text-xs">No week data found.</p>');
+               return;
+            }
+
+            // Add Mark/Unmark All button
+            const markAllBtn = $('<button>', {
+               class: 'btn btn-xs btn-outline-info m-0 p-0 m-1',
+               html: '&nbsp;Mark All&nbsp;',
+               id: 'mark_all_weeks_btn'
+            });
+            container.append(markAllBtn);
+
+            // Loop through months
+            response.forEach(monthData => {
+               const monthLabel = $('<div>', {
+                  class: 'mt-2 text-xs text-right',
+                  text: monthData.monthLabel
+               });
+               container.append(monthLabel);
+
+               // Append week buttons for this month
+               monthData.weeks.forEach(week => {
+                  const safeId = week.replace(/\s|\(|\)|–/g, '_');
+                  const buttonCheckbox = `
+                     <input type="checkbox" class="btn-check week-check" id="${safeId}" value="${week}" autocomplete="off">
+                     <label class="btn btn-outline-secondary btn-xs text-xs m-0 p-0 font-weight-normal m-1" for="${safeId}">
+                     &nbsp;${week}&nbsp;
+                     </label><br>
+                  `;
+                  container.append(buttonCheckbox);
+               });
+            });
+
+            // Mark/Unmark All logic
+            $('#mark_all_weeks_btn').on('click', function() {
+               const allBoxes = $('.week-check');
+               const allChecked = allBoxes.length === allBoxes.filter(':checked').length;
+
+               if (allChecked) {
+                  allBoxes.prop('checked', false);
+                  $(this).html('&nbsp;Mark All&nbsp;');
+               } else {
+                  allBoxes.prop('checked', true);
+                  $(this).html('&nbsp;Unmark All&nbsp;');
+               }
+            });
+         },
+         error: function(xhr, status, error) {
+            console.error("Error fetching weeks:", error);
+         }
+      });
+   };
+
+   const fetch_section_list = () => {
+      $.ajax({
+         url: 'process/weekly_monitoring_p.php',
+         type: 'POST',
+         data: {
+            method: 'fetch_section_list'
+         },
+         dataType: 'json',
+         success: function(response) {
+            let container = $('#section_container');
+            container.empty();
+
+            if (response.length === 0) {
+               container.html('<p class="text-muted text-xs">No section data found.</p>');
+               return;
+            }
+
+            // Add Mark/Unmark All button
+            const markAllBtn = $('<button>', {
+               class: 'btn btn-xs btn-outline-info m-0 p-0 m-1',
+               html: '&nbsp;Mark All&nbsp;',
+               id: 'mark_all_sections_btn'
+            });
+            container.append(markAllBtn);
+
+            // Generate section checkboxes
+            response.forEach(section => {
+               const safeId = section.replace(/\s+/g, '_');
+               const buttonCheckbox = `
+                  <input type="checkbox" class="btn-check section-check" id="section_${safeId}" value="${section}" autocomplete="off">
+                  <label class="btn btn-outline-secondary btn-xs text-xs m-0 p-0 font-weight-normal m-1 w-25" for="section_${safeId}">
+                     &nbsp;${section}&nbsp;
+                  </label>
+               `;
+               container.append(buttonCheckbox);
+            });
+
+            // Mark/Unmark All logic
+            $('#mark_all_sections_btn').on('click', function() {
+               const allBoxes = $('.section-check');
+               const allChecked = allBoxes.length === allBoxes.filter(':checked').length;
+
+               if (allChecked) {
+                  allBoxes.prop('checked', false);
+                  $(this).html('&nbsp;Mark All&nbsp;');
+               } else {
+                  allBoxes.prop('checked', true);
+                  $(this).html('&nbsp;Unmark All&nbsp;');
+               }
+
+               fetch_line_list();
+            });
+
+            // When any section checkbox changes
+            $('.section-check').on('change', fetch_line_list);
+         }
+      });
+   };
+
+   // Function to update line list based on selected sections
+   const fetch_line_list = () => {
+      const selectedSections = $('.section-check:checked').map(function() {
+         return $(this).val();
+      }).get();
+
+      $.ajax({
+         url: 'process/weekly_monitoring_p.php',
+         type: 'POST',
+         data: {
+            method: 'fetch_line_list',
+            section: selectedSections
+         },
+         dataType: 'json',
+         success: function(response) {
+            let container = $('#line_container');
+            container.empty();
+
+            if (response.length === 0) {
+               container.html('<p class="text-muted text-xs">No line data found for selected section(s).</p>');
+               return;
+            }
+
+            // Make container scrollable and fixed height
+            // container.css({
+            //    'height': '250px',
+            //    'overflow-y': 'auto'
+            // });
+
+            // Add Mark/Unmark All button
+            const markAllBtn = $('<button>', {
+               class: 'btn btn-xs btn-outline-info m-0 p-0 m-1',
+               html: '&nbsp;Mark All&nbsp;',
+               id: 'mark_all_lines_btn'
+            });
+            container.append(markAllBtn);
+
+            response.forEach(line => {
+               const safeId = line.replace(/\s+/g, '_');
+               const buttonCheckbox = `
+                  <input type="checkbox" class="btn-check line-check" id="line_${safeId}" value="${line}" autocomplete="off">
+                  <label class="btn btn-outline-secondary btn-xs text-xs m-0 p-0 font-weight-normal m-1 w-25" for="line_${safeId}">
+                     &nbsp;${line}&nbsp;
+                  </label>
+               `;
+               container.append(buttonCheckbox);
+            });
+
+            // Mark/Unmark All logic for line list
+            $('#mark_all_lines_btn').on('click', function() {
+               const allBoxes = $('.line-check');
+               const allChecked = allBoxes.length === allBoxes.filter(':checked').length;
+
+               if (allChecked) {
+                  allBoxes.prop('checked', false);
+                  $(this).html('&nbsp;Mark All&nbsp;');
+               } else {
+                  allBoxes.prop('checked', true);
+                  $(this).html('&nbsp;Unmark All&nbsp;');
+               }
+            });
+         }
+      });
+   };
+
+   const fetch_process_list = () => {
+      $.ajax({
+         url: 'process/weekly_monitoring_p.php',
+         type: 'POST',
+         data: {
+            method: 'fetch_process_list'
+         },
+         dataType: 'json',
+         success: function(response) {
+            let container = $('#process_container');
+            container.empty();
+
+            if (response.length === 0) {
+               container.html('<p class="text-muted text-xs">No process data found.</p>');
+               return;
+            }
+
+            // Add Mark/Unmark All button
+            const markAllBtn = $('<button>', {
+               class: 'btn btn-xs btn-outline-info m-0 p-0 m-1',
+               html: '&nbsp;Mark All&nbsp;',
+               id: 'mark_all_process_btn'
+            });
+            container.append(markAllBtn);
+
+            // Generate process checkboxes
+            response.forEach(process => {
+               const safeId = process.replace(/\s+/g, '_');
+               const buttonCheckbox = `
+                  <input type="checkbox" class="btn-check process-check" id="process_${safeId}" value="${process}" autocomplete="off">
+                  <label class="btn btn-outline-secondary btn-xs text-xs m-0 p-0 font-weight-normal m-1" for="process_${safeId}">
+                     &nbsp;${process}&nbsp;
+                  </label>
+               `;
+               container.append(buttonCheckbox);
+            });
+
+            // Mark/Unmark All logic
+            $('#mark_all_process_btn').on('click', function() {
+               const allBoxes = $('.process-check');
+               const allChecked = allBoxes.length === allBoxes.filter(':checked').length;
+
+               if (allChecked) {
+                  allBoxes.prop('checked', false);
+                  $(this).html('&nbsp;Mark All&nbsp;');
+               } else {
+                  allBoxes.prop('checked', true);
+                  $(this).html('&nbsp;Unmark All&nbsp;');
+               }
+            });
+         }
+      });
+   };
+
+   const fetch_line_category_list = () => {
+      $.ajax({
+         url: 'process/weekly_monitoring_p.php',
+         type: 'POST',
+         data: {
+            method: 'fetch_line_category_list'
+         },
+         dataType: 'json',
+         success: function(response) {
+            let container = $('#line_category_container');
+            container.empty();
+
+            if (response.length === 0) {
+               container.html('<p class="text-muted text-xs">No line category data found.</p>');
+               return;
+            }
+
+            // Add Mark/Unmark All button
+            const markAllBtn = $('<button>', {
+               class: 'btn btn-xs btn-outline-info m-0 p-0 m-1',
+               html: '&nbsp;Mark All&nbsp;',
+               id: 'mark_all_line_category_btn'
+            });
+            container.append(markAllBtn);
+
+            // Generate line catgeory checkboxes
+            response.forEach(line_category => {
+               const safeId = line_category.replace(/\s+/g, '_');
+               const buttonCheckbox = `
+                  <input type="checkbox" class="btn-check line-category-check" id="line_category_${safeId}" value="${line_category}" autocomplete="off">
+                  <label class="btn btn-outline-secondary btn-xs text-xs m-0 p-0 font-weight-normal m-1 w-25" for="line_category_${safeId}">
+                     &nbsp;${line_category}&nbsp;
+                  </label>
+               `;
+               container.append(buttonCheckbox);
+            });
+
+            // Mark/Unmark All logic
+            $('#mark_all_line_category_btn').on('click', function() {
+               const allBoxes = $('.line-category-check');
+               const allChecked = allBoxes.length === allBoxes.filter(':checked').length;
+
+               if (allChecked) {
+                  allBoxes.prop('checked', false);
+                  $(this).html('&nbsp;Mark All&nbsp;');
+               } else {
+                  allBoxes.prop('checked', true);
+                  $(this).html('&nbsp;Unmark All&nbsp;');
+               }
+            });
+         }
+      });
+   };
 </script>

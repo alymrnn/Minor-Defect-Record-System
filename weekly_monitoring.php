@@ -11,39 +11,52 @@ include('plugins/system_plugins/navbar/index_navbar.php');
       <div class="d-side-nav collapse show" id="sidebarOverall">
          <div class="row">
             <div class="col-12">
-               <div class="mt-2" style="display: flex; justify-content: flex-end; align-items: center;">
-                  <p class="m-0 p-0 btn btn-primary btn-sm"
-                     style="font-size: 12px; transition: 0.3s; cursor: pointer;"
+               <div class="mt-2 d-flex justify-content-end align-items-center">
+                  <button class="m-0 p-0 btn btn-primary btn-xs"
                      onclick="generate_weekly_dashboard_filter()">
                      &nbsp;Generate&nbsp;
-                  </p>
+                  </button>
                </div>
 
-               
+               <div class="filter-border mt-2 mb-2">
+                  <p class="m-0 p-0 mb-1 text-xs">Defect Category</p>
+                  <div id="defect_category_container"></div>
+               </div>
 
+               <div class="filter-border mb-2">
+                  <p class="m-0 p-0 mb-1 text-xs">Year</p>
+                  <div id="year_container"></div>
+               </div>
 
+               <div class="filter-border mb-2">
+                  <p class="m-0 p-0 mb-1 text-xs">Month</p>
+                  <div id="month_container"></div>
+               </div>
 
+               <div class="filter-border mb-2">
+                  <p class="m-0 p-0 mb-1 text-xs">Week</p>
+                  <div id="week_container"></div>
+               </div>
 
+               <div class="filter-border mb-2">
+                  <p class="m-0 p-0 mb-1 text-xs">Section</p>
+                  <div id="section_container"></div>
+               </div>
 
+               <div class="filter-border mb-2">
+                  <p class="m-0 p-0 mb-1 text-xs">Process</p>
+                  <div id="process_container"></div>
+               </div>
 
+               <div class="filter-border mb-2">
+                  <p class="m-0 p-0 mb-1 text-xs">Line Category</p>
+                  <div id="line_category_container"></div>
+               </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+               <div class="filter-border mb-2">
+                  <p class="m-0 p-0 mb-1 text-xs">Line No.</p>
+                  <div id="line_container"></div>
+               </div>
 
 
                <!-- hide this -->
@@ -68,10 +81,10 @@ include('plugins/system_plugins/navbar/index_navbar.php');
                <span style="color: #ddd;">&nbsp; | &nbsp;</span>
                <p class="mb-0 me-2 text-sm text-muted">Overall Monitoring</p>
             </div>
-         </div>
+         </div>=
 
          <div class="col-12">
-            <!--  -->
+
          </div>
 
 

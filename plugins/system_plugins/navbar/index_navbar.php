@@ -151,6 +151,13 @@
         border: 1px solid #eee;
         height: 100%;
     }
+    .filter-border {
+        border: none;
+        background-color: #fff;
+        padding: 15px;
+        border-radius: 15px;
+        border: 1px solid #ddd;
+    }
 
     .navbar-nav .nav-item a.btn {
         transition: background-color 0.3s, color 0.3s;
@@ -165,6 +172,29 @@
         background-color: #415a77 !important;
         color: #fff !important;
     }
+
+    /* overall monitoring */
+    /* Hide the actual checkbox input */
+    .btn-check {
+        position: absolute;
+        clip: rect(0, 0, 0, 0);
+        pointer-events: none;
+    }
+
+    /* Style when checked */
+    .btn-check:checked+.btn-outline-secondary {
+        background-color: #97dffc;
+        color: #020887;
+        border-color: #97dffc;
+    }
+
+    /* Hover effect */
+    .btn-outline-secondary:hover {
+        background-color: #97dffc;
+        color: #020887;
+        border-color: #97dffc;
+    }
+    
 </style>
 
 <!-- Navbar -->
