@@ -33,7 +33,7 @@ include('plugins/system_plugins/navbar/index_navbar.php');
                   <div id="month_container"></div>
                </div>
 
-               <div class="filter-border mb-2">
+               <div class="filter-border mb-2 d-none">
                   <p class="m-0 p-0 mb-1 text-xs">Week</p>
                   <div id="week_container"></div>
                </div>
@@ -81,10 +81,37 @@ include('plugins/system_plugins/navbar/index_navbar.php');
                <span style="color: #ddd;">&nbsp; | &nbsp;</span>
                <p class="mb-0 me-2 text-sm text-muted">Overall Monitoring</p>
             </div>
-         </div>=
+         </div>
 
-         <div class="col-12">
+         <div class="row mx-1">
+            <div class="col-4">
+               <div class="chart-border">
+                  <!-- this is the total count of defect record per month sorted by week -->
+                  <div id="overall_month_week_chart"></div>
+               </div>
+            </div>
+            <div class="col-4">
+               <div class="chart-border">
+                  <!-- this is the breakdown per harness type -->
+                  <div id="harness_type_breakdown_chart"></div>
+               </div>
+            </div>
+            <div class="col-4">
+               <div class="chart-border">
+                  <!-- this is the overall minor record per section -->
+                  <div id="overall_record_per_section_chart"></div>
+               </div>
+            </div>
 
+         </div>
+
+         <div class="row mx-1 mt-2">
+            <div class="col-4">
+               <div class="chart-border">
+                  <!-- this is the top 10 lines based on month and defect category -->
+                  <div id="top_ten_lines_chart"></div>
+               </div>
+            </div>
          </div>
 
 

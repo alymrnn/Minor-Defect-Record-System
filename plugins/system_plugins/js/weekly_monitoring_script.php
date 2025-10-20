@@ -10,25 +10,38 @@
 
       $('#week_container').empty().html('<p class="text-muted text-xs">Select year and month.</p>');
 
-      // Detect when year/month checkboxes change
-      $(document).on('change', '.year-check, .month-check', function() {
-         const selectedYears = $('.year-check:checked').map(function() {
-            return $(this).val();
-         }).get();
-
-         const selectedMonths = $('.month-check:checked').map(function() {
-            return $(this).val();
-         }).get();
-
-         console.log("Selected years:", selectedYears);
-         console.log("Selected months:", selectedMonths);
-
-         if (selectedYears.length > 0 && selectedMonths.length > 0) {
-            fetch_week_list(selectedYears, selectedMonths);
-         } else {
-            $('#week_container').empty().html('<p class="text-muted text-xs">Select year and month.</p>');
-         }
+      $(document).on('change', '.defect-checkbox', function() {
+         fetch_process_list();
       });
+
+
+      // Detect when year/month checkboxes change
+      // $(document).on('change', '.year-check, .month-check', function() {
+      //    const selectedYears = $('.year-check:checked').map(function() {
+      //       return $(this).val();
+      //    }).get();
+
+      //    const selectedMonths = $('.month-check:checked').map(function() {
+      //       return $(this).val();
+      //    }).get();
+
+      //    console.log("Selected years:", selectedYears);
+      //    console.log("Selected months:", selectedMonths);
+
+      //    if (selectedYears.length > 0 && selectedMonths.length > 0) {
+      //       fetch_week_list(selectedYears, selectedMonths);
+      //    } else {
+      //       $('#week_container').empty().html('<p class="text-muted text-xs">Select year and month.</p>');
+      //    }
+      // });
+
+      // $(document).on('change', '.process-check', function() {
+      //    const selectedProcess = $('.process-check:checked').map(function() {
+      //       return $(this).val();
+      //    }).get();
+      // });
+
+
 
       // const now = new Date();
       // if (!$("#d_year").val()) {
@@ -60,8 +73,17 @@
       });
 
       Promise.all([
-            fetch_weekly_defect_category_count(),
-            fetch_weekly_defect_per_section()
+            fetch_overall_month_week_chart(),
+            fetch_harness_type_breakdown_chart(),
+            fetch_overall_record_per_section_chart(),
+            fetch_overall_top_ten_lines_chart(),
+
+
+
+
+
+            // fetch_weekly_defect_category_count(),
+            // fetch_weekly_defect_per_section()
          ])
          .then(() => {
             document.getElementById("weekly_top_lines_based_on_defect_category_chart").innerHTML = `
@@ -804,7 +826,6 @@
       });
    };
 
-
    const fetch_week_list = (years, months) => {
       $.ajax({
          url: 'process/weekly_monitoring_p.php',
@@ -1000,11 +1021,17 @@
    };
 
    const fetch_process_list = () => {
+      // Get selected defect categories
+      const selectedDefectCategory = $('.defect-checkbox:checked').map(function() {
+         return $(this).val();
+      }).get();
+
       $.ajax({
          url: 'process/weekly_monitoring_p.php',
          type: 'POST',
          data: {
-            method: 'fetch_process_list'
+            method: 'fetch_process_list',
+            defect_category: selectedDefectCategory
          },
          dataType: 'json',
          success: function(response) {
@@ -1026,13 +1053,13 @@
 
             // Generate process checkboxes
             response.forEach(process => {
-               const safeId = process.replace(/\s+/g, '_');
+               const safeId = process.replace(/\s+/g, '_').replace(/[^\w]/g, '');
                const buttonCheckbox = `
-                  <input type="checkbox" class="btn-check process-check" id="process_${safeId}" value="${process}" autocomplete="off">
-                  <label class="btn btn-outline-secondary btn-xs text-xs m-0 p-0 font-weight-normal m-1" for="process_${safeId}">
-                     &nbsp;${process}&nbsp;
-                  </label>
-               `;
+               <input type="checkbox" class="btn-check process-check" id="process_${safeId}" value="${process}" autocomplete="off">
+               <label class="btn btn-outline-secondary btn-xs text-xs m-0 p-0 font-weight-normal m-1" for="process_${safeId}">
+                  &nbsp;${process}&nbsp;
+               </label>
+            `;
                container.append(buttonCheckbox);
             });
 
@@ -1049,6 +1076,9 @@
                   $(this).html('&nbsp;Unmark All&nbsp;');
                }
             });
+         },
+         error: function(xhr, status, error) {
+            console.error("Error fetching process list:", error);
          }
       });
    };
@@ -1106,4 +1136,747 @@
          }
       });
    };
+
+   const fetch_overall_month_week_chart = () => {
+      return new Promise((resolve, reject) => {
+         const selectedDefectCategory = $('.defect-checkbox:checked').map(function() {
+            return $(this).val();
+         }).get();
+
+         const selectedYears = $('.year-check:checked').map(function() {
+            return $(this).val();
+         }).get();
+
+         const selectedMonths = $('.month-check:checked').map(function() {
+            return $(this).val();
+         }).get();
+
+         if (selectedYears.length === 0 || selectedMonths.length === 0) {
+            $('#overall_month_week_chart').html('<p class="text-muted text-center">Please select at least one year and one month.</p>');
+            reject('Missing filters: years or months');
+            return;
+         }
+
+         $.ajax({
+            url: 'process/weekly_monitoring_p.php',
+            type: 'POST',
+            dataType: 'json',
+            data: {
+               method: 'fetch_overall_month_week_chart',
+               defect_category: selectedDefectCategory,
+               years: selectedYears,
+               months: selectedMonths
+            },
+            success: function(response) {
+               if (!response || response.length === 0) {
+                  $('#overall_month_week_chart').html('<p class="text-muted text-center">No data found for the selected filters.</p>');
+                  resolve('No data');
+                  return;
+               }
+
+               // Build flattened categories and data, and compute group boundaries
+               let categories = [];
+               let data = [];
+               let groupLabels = []; // { name, from, to }
+
+               response.forEach(monthData => {
+                  const startIndex = categories.length;
+                  monthData.weeks.forEach(week => {
+                     categories.push(week.week_label);
+                     data.push(parseInt(week.total_records) || 0);
+                  });
+                  const endIndex = categories.length - 1;
+                  groupLabels.push({
+                     name: monthData.month.toUpperCase(),
+                     from: startIndex,
+                     to: endIndex
+                  });
+               });
+
+               // Compute center positions for month tick labels
+               const tickPositions = groupLabels.map(g => (g.from + g.to) / 2);
+
+               $('#overall_month_week_chart').css('min-height', '300px');
+
+               Highcharts.chart('overall_month_week_chart', {
+                  chart: {
+                     type: 'column',
+                     backgroundColor: '#fff'
+                  },
+                  title: {
+                     text: 'Overall Monthly-Weekly Defect Records',
+                     align: 'left',
+                     style: {
+                        fontSize: '13px',
+                        fontWeight: '600',
+                        fontFamily: 'Poppins, sans-serif'
+                     }
+                  },
+                  xAxis: [{
+                        categories: categories,
+                        tickLength: 0,
+                        labels: {
+                           style: {
+                              fontFamily: 'Poppins, sans-serif',
+                              fontSize: '11px'
+                           },
+                           y: 20
+                        },
+                        crosshair: true,
+                        plotLines: groupLabels.slice(1).map(g => ({
+                           color: '#DDD',
+                           width: 1,
+                           value: g.from - 0.5,
+                           zIndex: 5
+                        }))
+                     },
+                     {
+                        linkedTo: 0,
+                        opposite: false,
+                        tickPositions: tickPositions,
+                        labels: {
+                           formatter: function() {
+                              const pos = this.pos;
+                              for (let i = 0; i < groupLabels.length; i++) {
+                                 const g = groupLabels[i];
+                                 const center = (g.from + g.to) / 2;
+                                 if (Math.abs(center - pos) < 0.6) return g.name;
+                              }
+                              return '';
+                           },
+                           style: {
+                              fontFamily: 'Poppins, sans-serif',
+                              fontWeight: '400',
+                              fontSize: '11px'
+                           },
+                           y: 8
+                        },
+                        tickLength: 0,
+                        lineWidth: 0,
+                        labelsAlign: 'center'
+                     }
+                  ],
+                  yAxis: {
+                     title: {
+                        text: null,
+                        style: {
+                           fontFamily: 'Poppins, sans-serif',
+                           fontSize: '11px'
+                        }
+                     },
+                     allowDecimals: false
+                  },
+                  tooltip: {
+                     style: {
+                        fontFamily: 'Poppins, sans-serif'
+                     },
+                     pointFormat: '<b>{point.y}</b> defects'
+                  },
+                  plotOptions: {
+                     column: {
+                        grouping: false,
+                        pointPadding: 0.1,
+                        borderWidth: 0
+                     }
+                  },
+                  series: [{
+                     name: 'Defect Count',
+                     data: data,
+                     color: '#1e6091'
+                  }],
+                  legend: {
+                     enabled: false
+                  },
+                  credits: {
+                     enabled: false
+                  },
+                  responsive: {
+                     rules: [{
+                        condition: {
+                           maxWidth: 500
+                        },
+                        chartOptions: {
+                           xAxis: [{
+                              labels: {
+                                 style: {
+                                    fontFamily: 'Poppins, sans-serif',
+                                    fontSize: '11px'
+                                 }
+                              }
+                           }, {
+                              labels: {
+                                 style: {
+                                    fontFamily: 'Poppins, sans-serif',
+                                    fontSize: '11px'
+                                 }
+                              }
+                           }]
+                        }
+                     }]
+                  }
+               });
+
+               resolve('Chart loaded successfully');
+            },
+            error: function(xhr, status, error) {
+               console.error('AJAX Error:', error);
+               reject(error);
+            }
+         });
+      });
+   };
+
+   const fetch_harness_type_breakdown_chart = () => {
+      const selectedDefectCategory = $('.defect-checkbox:checked').map(function() {
+         return $(this).val();
+      }).get();
+
+      const selectedYears = $('.year-check:checked').map(function() {
+         return $(this).val();
+      }).get();
+
+      const selectedMonths = $('.month-check:checked').map(function() {
+         return $(this).val();
+      }).get();
+
+      if (selectedYears.length === 0 || selectedMonths.length === 0) {
+         $('#overall_month_week_chart').html('<p class="text-muted text-center">Please select at least one year and one month.</p>');
+         reject('Missing filters: years or months');
+         return;
+      }
+
+      $.ajax({
+         url: 'process/weekly_monitoring_p.php',
+         type: 'POST',
+         dataType: 'json',
+         data: {
+            method: 'fetch_harness_type_breakdown_chart',
+            defect_category: selectedDefectCategory,
+            years: selectedYears,
+            months: selectedMonths
+         },
+         success: function(response) {
+            Highcharts.chart('harness_type_breakdown_chart', {
+               chart: {
+                  type: 'pie',
+                  backgroundColor: '#fff',
+                  height: '300px'
+               },
+               colors: [
+                  '184e77', '99d98c', '6c757d'
+               ],
+               title: {
+                  text: 'Harness Type Breakdown',
+                  align: 'left',
+                  style: {
+                     fontSize: '13px',
+                     fontWeight: '600',
+                     fontFamily: 'Poppins, sans-serif'
+                  }
+               },
+               tooltip: {
+                  pointFormatter: function() {
+                     let name = this.name === 'S' ? 'SMALL' : (this.name === 'B' ? 'BIG' : this.name);
+                     return `<b>${name}</b>: ${this.percentage.toFixed(1)}% (${this.y} records)`;
+                  }
+               },
+               accessibility: {
+                  point: {
+                     valueSuffix: '%'
+                  }
+               },
+               plotOptions: {
+                  pie: {
+                     allowPointSelect: true,
+                     cursor: 'pointer',
+                     dataLabels: {
+                        enabled: true,
+                        useHTML: true,
+                        formatter: function() {
+                           let name = this.point.name === 'S' ? 'SMALL' : (this.point.name === 'B' ? 'BIG' : this.point.name);
+                           return `<b>${name}</b>: ${this.percentage.toFixed(1)}% (${this.y})`;
+                        },
+                        style: {
+                           fontSize: '11px',
+                           fontFamily: 'Poppins, sans-serif',
+                           fontWeight: '400'
+                        }
+                     }
+                  }
+               },
+               series: [{
+                  name: 'Harness Type',
+                  colorByPoint: true,
+                  data: response.map(item => {
+                     let name = item.name === 'S' ? 'S' : (item.name === 'B' ? 'B' : 'Unknown');
+                     let color = name === 'B' ? '#184e77' :
+                        name === 'S' ? '#99d98c' :
+                        '#6c757d';
+                     return {
+                        name: name === 'B' ? 'BIG' : (name === 'S' ? 'SMALL' : 'Unknown'),
+                        y: item.y,
+                        color: color
+                     };
+                  })
+               }],
+               legend: {
+                  enabled: true,
+                  useHTML: true,
+                  labelFormatter: function() {
+                     let name = this.name === 'S' ? 'SMALL' : (this.name === 'B' ? 'BIG' : this.name);
+                     return `<b>${name}</b>`;
+                  },
+                  itemStyle: {
+                     fontFamily: 'Poppins, sans-serif',
+                     fontSize: '11px',
+                     fontWeight: '400'
+                  }
+               },
+               credits: {
+                  enabled: false
+               }
+            });
+         },
+         error: function(xhr, status, error) {
+            console.error('Error fetching harness type breakdown:', error);
+         }
+      });
+   };
+
+   const fetch_overall_record_per_section_chart = () => {
+      return new Promise((resolve, reject) => {
+         const selectedDefectCategory = $('.defect-checkbox:checked').map(function() {
+            return $(this).val();
+         }).get();
+
+         const selectedYears = $('.year-check:checked').map(function() {
+            return $(this).val();
+         }).get();
+
+         const selectedMonths = $('.month-check:checked').map(function() {
+            return $(this).val();
+         }).get();
+
+         if (selectedYears.length === 0 || selectedMonths.length === 0) {
+            $('#overall_record_per_section_chart').html('<p class="text-muted text-center">Please select at least one year and one month.</p>');
+            reject('Missing filters: years or months');
+            return;
+         }
+
+         $.ajax({
+            url: 'process/weekly_monitoring_p.php',
+            type: 'POST',
+            dataType: 'json',
+            data: {
+               method: 'fetch_overall_record_per_section_chart',
+               defect_category: selectedDefectCategory,
+               years: selectedYears,
+               months: selectedMonths
+            },
+            success: function(response) {
+               if (!response || response.length === 0) {
+                  $('#overall_record_per_section_chart').html('<p class="text-muted text-center">No data found for the selected filters.</p>');
+                  resolve('No data');
+                  return;
+               }
+
+               let categories = [];
+               let groupLabels = [];
+               let sectionMap = {};
+
+               const alternatingColors = [
+                  "#34a0a4", // blue
+                  "#168aad", // blue
+                  "#1a759f", // blue
+                  "#1e6091", // blue
+                  "#b5e48c", // green
+                  "#99d98c", // green
+                  "#76c893", // green
+                  "#52b69a" // green
+               ];
+
+               const monthNamesMap = {
+                  "JAN": "JANUARY",
+                  "FEB": "FEBRUARY",
+                  "MAR": "MARCH",
+                  "APR": "APRIL",
+                  "MAY": "MAY",
+                  "JUN": "JUNE",
+                  "JUL": "JULY",
+                  "AUG": "AUGUST",
+                  "SEP": "SEPTEMBER",
+                  "OCT": "OCTOBER",
+                  "NOV": "NOVEMBER",
+                  "DEC": "DECEMBER"
+               };
+
+               response.forEach(monthData => {
+                  const startIndex = categories.length;
+
+                  // Add week labels
+                  monthData.weeks.forEach(week => categories.push(week.week_label));
+
+                  // Map sections and records
+                  monthData.sections.forEach(sec => {
+                     if (!sectionMap[sec.section]) sectionMap[sec.section] = [];
+                     sec.weekly_records.forEach(wr => sectionMap[sec.section].push(parseInt(wr.total_records)));
+                  });
+
+                  const endIndex = categories.length - 1;
+
+                  groupLabels.push({
+                     name: monthNamesMap[monthData.month.toUpperCase()] || monthData.month.toUpperCase(),
+                     from: startIndex,
+                     to: endIndex
+                  });
+               });
+
+               const tickPositions = groupLabels.map(g => (g.from + g.to) / 2);
+
+               const series = Object.keys(sectionMap).map((sec, i) => ({
+                  name: sec,
+                  data: sectionMap[sec],
+                  color: alternatingColors[i % alternatingColors.length] // keep alternating colors
+               }));
+
+               $('#overall_record_per_section_chart').css('min-height', '300px');
+
+               Highcharts.chart('overall_record_per_section_chart', {
+                  chart: {
+                     type: 'column',
+                     backgroundColor: '#fff'
+                  },
+                  colors: alternatingColors, // fallback
+                  title: {
+                     text: 'Overall Defect Records per Section',
+                     align: 'left',
+                     style: {
+                        fontSize: '13px',
+                        fontWeight: '600',
+                        fontFamily: 'Poppins, sans-serif'
+                     }
+                  },
+                  xAxis: [{
+                     categories: categories,
+                     tickLength: 0,
+                     labels: {
+                        style: {
+                           fontFamily: 'Poppins, sans-serif',
+                           fontSize: '11px'
+                        },
+                        y: 20
+                     },
+                     crosshair: true,
+                     plotLines: groupLabels.slice(1).map(g => ({
+                        color: '#DDD',
+                        width: 1,
+                        value: g.from - 0.5,
+                        zIndex: 5
+                     }))
+                  }, {
+                     linkedTo: 0,
+                     opposite: false,
+                     tickPositions: tickPositions,
+                     labels: {
+                        formatter: function() {
+                           const pos = this.pos;
+                           for (let i = 0; i < groupLabels.length; i++) {
+                              const g = groupLabels[i];
+                              if (Math.abs((g.from + g.to) / 2 - pos) < 0.6) return g.name;
+                           }
+                           return '';
+                        },
+                        style: {
+                           fontFamily: 'Poppins, sans-serif',
+                           fontWeight: '400',
+                           fontSize: '11px'
+                        },
+                        y: 8
+                     },
+                     tickLength: 0,
+                     lineWidth: 0
+                  }],
+                  yAxis: {
+                     allowDecimals: false,
+                     title: {
+                        text: null,
+                        style: {
+                           fontFamily: 'Poppins, sans-serif',
+                           fontSize: '11px'
+                        }
+                     }
+                  },
+                  tooltip: {
+                     shared: true,
+                     useHTML: true,
+                     formatter: function() {
+                        let tooltip = `${this.point.category}<br/>`;
+                        this.points.forEach(p => tooltip += `<span style="color:${p.color}">●</span> Section ${p.series.name}: <b>${p.y}</b><br/>`);
+                        return tooltip;
+                     },
+                     style: {
+                        fontFamily: 'Poppins, sans-serif'
+                     }
+                  },
+                  plotOptions: {
+                     column: {
+                        stacking: null,
+                        borderWidth: 0
+                     }
+                  },
+                  series: series,
+                  legend: {
+                     enabled: true,
+                     itemStyle: {
+                        fontFamily: 'Poppins, sans-serif',
+                        fontSize: '11px',
+                        fontWeight: '400'
+                     },
+                     symbolHeight: 12,
+                     symbolWidth: 12,
+                     symbolRadius: 0,
+                     squareSymbol: true,
+                     labelFormatter: function() {
+                        return `Section ${this.name}`;
+                     }
+                  },
+                  credits: {
+                     enabled: false
+                  }
+               });
+
+               resolve('Chart loaded successfully');
+            },
+
+            error: function(xhr, status, error) {
+               console.error('AJAX Error:', error);
+               reject(error);
+            }
+         });
+      });
+   };
+
+   const fetch_overall_top_ten_lines_chart = () => {
+      return new Promise((resolve, reject) => {
+         const selectedDefectCategory = $('.defect-checkbox:checked').map(function() {
+            return $(this).val();
+         }).get();
+
+         const selectedYears = $('.year-check:checked').map(function() {
+            return $(this).val();
+         }).get();
+
+         const selectedMonths = $('.month-check:checked').map(function() {
+            return $(this).val();
+         }).get();
+
+         if (selectedYears.length === 0 || selectedMonths.length === 0) {
+            $('#top_ten_lines_chart').html('<p class="text-muted text-center">Please select at least one year and one month.</p>');
+            reject('Missing filters: years or months');
+            return;
+         }
+
+         $.ajax({
+            url: 'process/weekly_monitoring_p.php',
+            type: 'POST',
+            dataType: 'json',
+            data: {
+               method: 'fetch_overall_top_ten_lines_chart',
+               defect_category: selectedDefectCategory,
+               years: selectedYears,
+               months: selectedMonths
+            },
+            success: function(response) {
+               if (!response || response.length === 0) {
+                  $('#top_ten_lines_chart').html('<p class="text-muted text-center">No data found for the selected filters.</p>');
+                  resolve('No data');
+                  return;
+               }
+
+               let categories = [];
+               let groupLabels = [];
+               let lineMap = {};
+
+               const monthNamesMap = {
+                  "JAN": "JANUARY",
+                  "FEB": "FEBRUARY",
+                  "MAR": "MARCH",
+                  "APR": "APRIL",
+                  "MAY": "MAY",
+                  "JUN": "JUNE",
+                  "JUL": "JULY",
+                  "AUG": "AUGUST",
+                  "SEP": "SEPTEMBER",
+                  "OCT": "OCTOBER",
+                  "NOV": "NOVEMBER",
+                  "DEC": "DECEMBER"
+               };
+
+               response.forEach(monthData => {
+                  const startIndex = categories.length;
+
+                  // Add week labels to categories dynamically
+                  monthData.weeks.forEach(week => categories.push(week.week_label));
+
+                  // Map each line's weekly records
+                  monthData.lines.forEach(line => {
+                     if (!lineMap[line.line_no]) lineMap[line.line_no] = [];
+
+                     line.weekly_records.forEach(wr => {
+                        lineMap[line.line_no].push(parseInt(wr.total_records));
+                     });
+                  });
+
+                  const endIndex = categories.length - 1;
+                  groupLabels.push({
+                     name: monthNamesMap[monthData.month.toUpperCase()] || monthData.month.toUpperCase(),
+                     from: startIndex,
+                     to: endIndex
+                  });
+               });
+
+               const tickPositions = groupLabels.map(g => (g.from + g.to) / 2);
+               const alternatingColors = [
+                  "#34a0a4", "#168aad", "#1a759f", "#1e6091", "#184e77", // blue shades
+                  "#d9ed92", "#b5e48c", "#99d98c", "#76c893", "#52b69a" // green shades
+               ];
+
+               const series = Object.keys(lineMap).map((line, i) => ({
+                  name: line,
+                  data: lineMap[line],
+                  color: alternatingColors[i % alternatingColors.length]
+               }));
+
+               $('#top_ten_lines_chart').css('min-height', '300px');
+
+               Highcharts.chart('top_ten_lines_chart', {
+                  chart: {
+                     type: 'column',
+                     backgroundColor: '#fff'
+                  },
+                  colors: alternatingColors,
+                  title: {
+                     text: 'Top 10 Lines',
+                     align: 'left',
+                     style: {
+                        fontSize: '13px',
+                        fontWeight: '600',
+                        fontFamily: 'Poppins, sans-serif'
+                     }
+                  },
+                  xAxis: [{
+                     categories: categories,
+                     tickLength: 0,
+                     labels: {
+                        style: {
+                           fontFamily: 'Poppins, sans-serif',
+                           fontSize: '11px'
+                        },
+                        y: 20
+                     },
+                     crosshair: true,
+                     plotLines: groupLabels.slice(1).map(g => ({
+                        color: '#DDD',
+                        width: 1,
+                        value: g.from - 0.5,
+                        zIndex: 5
+                     }))
+                  }, {
+                     linkedTo: 0,
+                     opposite: false,
+                     tickPositions: tickPositions,
+                     labels: {
+                        formatter: function() {
+                           const pos = this.pos;
+                           for (let i = 0; i < groupLabels.length; i++) {
+                              const g = groupLabels[i];
+                              if (Math.abs((g.from + g.to) / 2 - pos) < 0.6) return g.name;
+                           }
+                           return '';
+                        },
+                        style: {
+                           fontFamily: 'Poppins, sans-serif',
+                           fontWeight: '400',
+                           fontSize: '11px'
+                        },
+                        y: 8
+                     },
+                     tickLength: 0,
+                     lineWidth: 0
+                  }],
+                  yAxis: {
+                     allowDecimals: false,
+                     title: {
+                        text: null,
+                        style: {
+                           fontFamily: 'Poppins, sans-serif',
+                           fontSize: '11px'
+                        }
+                     }
+                  },
+                  tooltip: {
+                     shared: true,
+                     useHTML: true,
+                     formatter: function() {
+                        let tooltip = `${this.points[0].category}<br/>`;
+
+                        // Sort points descending by y value
+                        let sortedPoints = this.points.slice().sort((a, b) => b.y - a.y);
+
+                        sortedPoints.forEach(p => {
+                           tooltip += `<span style="color:${p.color}">●</span> Line ${p.series.name}: <b>${p.y}</b><br/>`;
+                        });
+
+                        return tooltip;
+                     },
+                     style: {
+                        fontFamily: 'Poppins, sans-serif'
+                     }
+                  },
+                  plotOptions: {
+                     column: {
+                        stacking: null,
+                        borderWidth: 0
+                     }
+                  },
+                  series: series,
+                  legend: {
+                     enabled: true,
+                     itemStyle: {
+                        fontFamily: 'Poppins, sans-serif',
+                        fontSize: '11px',
+                        fontWeight: '400'
+                     },
+                     symbolHeight: 12,
+                     symbolWidth: 12,
+                     symbolRadius: 0,
+                     squareSymbol: true,
+                     labelFormatter: function() {
+                        return `Line ${this.name}`;
+                     }
+                  },
+                  credits: {
+                     enabled: false
+                  }
+               });
+
+               resolve('Top 10 lines chart loaded');
+            },
+            error: function(xhr, status, error) {
+               console.error('AJAX Error:', error);
+               reject(error);
+            }
+         });
+      });
+   };
+
+
+
+
+
+
+
+
+
+
 </script>
