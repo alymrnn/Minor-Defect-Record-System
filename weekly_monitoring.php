@@ -134,14 +134,26 @@ include('plugins/system_plugins/navbar/index_navbar.php');
             </div>
          </div>
 
-         
-
-
-
-
-
-
-         
+         <div class="row mx-1 mt-2 mb-3">
+            <div class="col-4">
+               <div class="chart-border">
+                  <!-- this is the top 5 sequence no by process -->
+                  <div id="sequence_no_breakdown_chart"></div>
+               </div>
+            </div>
+            <div class="col-4">
+               <div class="chart-border">
+                  <!-- this is the top 5 connector no by process -->
+                  <div id="connector_no_breakdown_chart"></div>
+               </div>
+            </div>
+            <div class="col-4">
+               <div class="chart-border">
+                  <!-- this is the weekly breakdown of line category based on year/month/defect -->
+                  <div id="line_category_month_week_chart"></div>
+               </div>
+            </div>
+         </div>
 
          <!-- hide this -->
          <div class="col-12 d-none">

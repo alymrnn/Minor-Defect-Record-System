@@ -1109,3 +1109,242 @@ if ($method == 'fetch_sub_defect_details_breakdown_chart') {
     echo json_encode($response);
     exit;
 }
+
+if ($method == 'fetch_sequence_no_breakdown_chart') {
+    $years = $_POST['years'] ?? [];
+    $months = $_POST['months'] ?? [];
+    $defect_category = $_POST['defect_category'] ?? [];
+
+    if (!is_array($years)) $years = [$years];
+    if (!is_array($months)) $months = [$months];
+    if (!is_array($defect_category)) $defect_category = [$defect_category];
+
+    $yearList = implode(',', array_map('intval', $years));
+    $monthList = implode(',', array_map('intval', $months));
+
+    $query = "
+        SELECT TOP 5 
+            RTRIM(LTRIM(CONCAT(process, '_', sequence_no))) AS process_sequence,
+            COUNT(*) AS total_records
+        FROM t_minor_defect_f
+        WHERE YEAR(date_detected) IN ($yearList)
+          AND MONTH(date_detected) IN ($monthList)
+    ";
+
+    $params = [];
+
+    if (!empty($defect_category)) {
+        $placeholders = implode(',', array_fill(0, count($defect_category), '?'));
+        $query .= " AND defect_category IN ($placeholders)";
+        $params = array_merge($params, $defect_category);
+    }
+
+    $query .= "
+        GROUP BY process, sequence_no
+        ORDER BY total_records DESC
+    ";
+
+    $stmt = $conn->prepare($query);
+    $stmt->execute($params);
+    $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    // Always ensure JSON output is an array
+    if (!is_array($results)) {
+        $results = [$results];
+    }
+
+    // Trim spaces and cast numbers
+    foreach ($results as &$row) {
+        $row['process_sequence'] = trim($row['process_sequence']);
+        $row['total_records'] = (int)$row['total_records'];
+    }
+
+    echo json_encode($results);
+    exit;
+}
+
+if ($method == 'fetch_connector_no_breakdown_chart') {
+    $years = $_POST['years'] ?? [];
+    $months = $_POST['months'] ?? [];
+    $defect_category = $_POST['defect_category'] ?? [];
+
+    if (!is_array($years)) $years = [$years];
+    if (!is_array($months)) $months = [$months];
+    if (!is_array($defect_category)) $defect_category = [$defect_category];
+
+    $yearList = implode(',', array_map('intval', $years));
+    $monthList = implode(',', array_map('intval', $months));
+
+    $query = "
+        SELECT TOP 5 
+            RTRIM(LTRIM(CONCAT(process, '_', connector_no))) AS process_connector,
+            COUNT(*) AS total_records
+        FROM t_minor_defect_f
+        WHERE YEAR(date_detected) IN ($yearList)
+          AND MONTH(date_detected) IN ($monthList)
+    ";
+
+    $params = [];
+
+    if (!empty($defect_category)) {
+        $placeholders = implode(',', array_fill(0, count($defect_category), '?'));
+        $query .= " AND defect_category IN ($placeholders)";
+        $params = array_merge($params, $defect_category);
+    }
+
+    $query .= "
+        GROUP BY process, connector_no
+        ORDER BY total_records DESC
+    ";
+
+    $stmt = $conn->prepare($query);
+    $stmt->execute($params);
+    $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    // Always ensure JSON output is an array
+    if (!is_array($results)) {
+        $results = [$results];
+    }
+
+    // Trim spaces and cast numbers
+    foreach ($results as &$row) {
+        $row['process_connector'] = trim($row['process_connector']);
+        $row['total_records'] = (int)$row['total_records'];
+    }
+
+    echo json_encode($results);
+    exit;
+}
+
+if ($method == 'fetch_line_category_month_week_chart') {
+    $years = $_POST['years'] ?? [];
+    $months = $_POST['months'] ?? [];
+    $defect_category = $_POST['defect_category'] ?? [];
+
+    if (!is_array($years)) $years = [$years];
+    if (!is_array($months)) $months = [$months];
+    if (!is_array($defect_category)) $defect_category = [$defect_category];
+
+    $response = [];
+
+    foreach ($years as $year) {
+        foreach ($months as $month) {
+            $year = (int)$year;
+            $month = (int)$month;
+
+            $monthStart = new DateTime("$year-$month-01");
+            $monthEnd = (clone $monthStart)->modify('last day of this month');
+
+            $weeks = [];
+            $current = clone $monthStart;
+
+            // Week generation: start = actual first day, end = next Sunday (or month end)
+            while ($current <= $monthEnd) {
+                $start = clone $current;
+
+                // Find next Sunday or month end
+                $end = (clone $start)->modify('next sunday');
+                if ($end > $monthEnd) {
+                    $end = clone $monthEnd;
+                }
+
+                $weeks[] = [
+                    'start' => $start->format('Y-m-d'),
+                    'end'   => $end->format('Y-m-d')
+                ];
+
+                // Move to next Monday after this week
+                $current = (clone $end)->modify('+1 day');
+            }
+
+            $monthData = [
+                'year' => $year,
+                'month' => strtoupper(date('M', strtotime("$year-$month-01"))),
+                'weeks' => [],
+                'line_categories' => []
+            ];
+
+            // Get all unique line categories for the month (replace NULL with 'Unknown')
+            $queryCategories = "
+            SELECT DISTINCT ISNULL(line_category, 'Unknown') AS line_category
+            FROM t_minor_defect_f
+            WHERE YEAR(date_detected) = ? AND MONTH(date_detected) = ?
+        ";
+            $params = [$year, $month];
+
+            if (!empty($defect_category)) {
+                $placeholders = implode(',', array_fill(0, count($defect_category), '?'));
+                $queryCategories .= " AND defect_category IN ($placeholders)";
+                $params = array_merge($params, $defect_category);
+            }
+
+            $stmtCat = $conn->prepare($queryCategories);
+            $stmtCat->execute($params);
+            $categories = $stmtCat->fetchAll(PDO::FETCH_COLUMN);
+
+            // If no categories, include empty structure
+            if (empty($categories)) {
+                $monthData['weeks'] = array_map(function ($wf, $i) {
+                    return [
+                        'week_label' => 'W' . ($i + 1),
+                        'week_range' => date('M j', strtotime($wf['start'])) . '–' . date('j', strtotime($wf['end']))
+                    ];
+                }, $weeks, array_keys($weeks));
+
+                $response[] = $monthData;
+                continue;
+            }
+
+            // Loop through each line_category (even if 'Unknown')
+            foreach ($categories as $lc) {
+                $weeklyRecords = [];
+
+                foreach ($weeks as $index => $wf) {
+                    $query = "
+                    SELECT COUNT(*) AS total_records
+                    FROM t_minor_defect_f
+                    WHERE ISNULL(line_category, 'Unknown') = ?
+                      AND date_detected BETWEEN ? AND ?
+                      AND YEAR(date_detected) = ?
+                      AND MONTH(date_detected) = ?
+                ";
+
+                    $params = [$lc, $wf['start'], $wf['end'], $year, $month];
+                    if (!empty($defect_category)) {
+                        $placeholders = implode(',', array_fill(0, count($defect_category), '?'));
+                        $query .= " AND defect_category IN ($placeholders)";
+                        $params = array_merge($params, $defect_category);
+                    }
+
+                    $stmt = $conn->prepare($query);
+                    $stmt->execute($params);
+                    $count = (int)$stmt->fetchColumn();
+
+                    $weeklyRecords[] = [
+                        'week_label' => 'W' . ($index + 1),
+                        'week_range' => date('M j', strtotime($wf['start'])) . '–' . date('j', strtotime($wf['end'])),
+                        'total_records' => $count
+                    ];
+                }
+
+                $monthData['line_categories'][] = [
+                    'line_category' => $lc ?: 'Unknown',
+                    'weekly_records' => $weeklyRecords
+                ];
+            }
+
+            // Include all week labels for x-axis
+            $monthData['weeks'] = array_map(function ($wf, $i) {
+                return [
+                    'week_label' => 'W' . ($i + 1),
+                    'week_range' => date('M j', strtotime($wf['start'])) . '–' . date('j', strtotime($wf['end']))
+                ];
+            }, $weeks, array_keys($weeks));
+
+            $response[] = $monthData;
+        }
+    }
+
+    echo json_encode($response);
+    exit;
+}

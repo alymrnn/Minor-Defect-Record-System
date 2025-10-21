@@ -80,6 +80,9 @@
             fetch_summary_per_detection_chart(),
             fetch_defect_category_breakdown_chart(),
             fetch_sub_defect_details_breakdown_chart(),
+            fetch_sequence_no_breakdown_chart(),
+            fetch_connector_no_breakdown_chart(),
+            fetch_line_category_month_week_chart()
 
 
 
@@ -2351,6 +2354,495 @@
                      symbolWidth: 12,
                      symbolRadius: 0,
                      squareSymbol: true
+                  },
+                  credits: {
+                     enabled: false
+                  }
+               });
+
+               resolve('Chart loaded successfully');
+            },
+            error: function(xhr, status, error) {
+               console.error('AJAX Error:', error);
+               reject(error);
+            }
+         });
+      });
+   };
+
+   const fetch_sequence_no_breakdown_chart = () => {
+      return new Promise((resolve, reject) => {
+         const selectedYears = $('.year-check:checked').map(function() {
+            return $(this).val();
+         }).get();
+
+         const selectedMonths = $('.month-check:checked').map(function() {
+            return $(this).val();
+         }).get();
+
+         const selectedDefectCategory = $('.defect-checkbox:checked').map(function() {
+            return $(this).val();
+         }).get();
+
+         if (selectedYears.length === 0 || selectedMonths.length === 0) {
+            $('#sequence_no_breakdown_chart').html('<p class="text-muted text-center">Please select at least one year and one month.</p>');
+            reject('Missing filters: years or months');
+            return;
+         }
+
+         $.ajax({
+            url: 'process/weekly_monitoring_p.php',
+            type: 'POST',
+            dataType: 'json',
+            data: {
+               method: 'fetch_sequence_no_breakdown_chart',
+               years: selectedYears,
+               months: selectedMonths,
+               defect_category: selectedDefectCategory
+            },
+            success: function(response) {
+               console.log(response);
+
+               if (!response || response.length === 0) {
+                  $('#sequence_no_breakdown_chart').html('<p class="text-muted text-center">No data found for the selected filters.</p>');
+                  resolve('No data');
+                  return;
+               }
+
+               // Ensure response is an array
+               if (!Array.isArray(response)) response = [response];
+
+               const categories = response.map(item => item.process_sequence.trim());
+               const data = response.map(item => parseInt(item.total_records));
+
+               Highcharts.chart('sequence_no_breakdown_chart', {
+                  chart: {
+                     type: 'bar',
+                     backgroundColor: '#fff',
+                     height: '290px'
+                  },
+                  title: {
+                     text: 'Top Sequence No. by Process',
+                     align: 'left',
+                     style: {
+                        fontSize: '13px',
+                        fontWeight: '600',
+                        fontFamily: 'Poppins, sans-serif'
+                     }
+                  },
+                  xAxis: {
+                     categories: categories,
+                     title: {
+                        text: null
+                     },
+                     labels: {
+                        style: {
+                           fontFamily: 'Poppins, sans-serif',
+                           fontSize: '11px'
+                        }
+                     }
+                  },
+                  yAxis: {
+                     min: 0,
+                     title: {
+                        text: null
+                     },
+                     labels: {
+                        overflow: 'justify',
+                        style: {
+                           fontFamily: 'Poppins, sans-serif',
+                           fontSize: '11px'
+                        }
+                     }
+                  },
+                  tooltip: {
+                     shared: true,
+                     style: {
+                        fontFamily: 'Poppins, sans-serif'
+                     },
+                     formatter: function() {
+                        return `<b>${this.x}</b><br/>Total Records: <b>${this.y}</b>`;
+                     }
+                  },
+                  plotOptions: {
+                     bar: {
+                        borderWidth: 0,
+                        colorByPoint: false,
+                        dataLabels: {
+                           enabled: false
+                        }
+                     }
+                  },
+                  series: [{
+                     name: 'Records',
+                     data: data,
+                     color: '#1e6091'
+                  }],
+                  credits: {
+                     enabled: false
+                  },
+                  legend: {
+                     enabled: false
+                  }
+               });
+
+               resolve('Chart loaded successfully');
+            },
+            error: function(xhr, status, error) {
+               console.error('AJAX Error:', error);
+               reject(error);
+            }
+         });
+      });
+   };
+
+   const fetch_connector_no_breakdown_chart = () => {
+      return new Promise((resolve, reject) => {
+         const selectedYears = $('.year-check:checked').map(function() {
+            return $(this).val();
+         }).get();
+
+         const selectedMonths = $('.month-check:checked').map(function() {
+            return $(this).val();
+         }).get();
+
+         const selectedDefectCategory = $('.defect-checkbox:checked').map(function() {
+            return $(this).val();
+         }).get();
+
+         if (selectedYears.length === 0 || selectedMonths.length === 0) {
+            $('#connector_no_breakdown_chart').html('<p class="text-muted text-center">Please select at least one year and one month.</p>');
+            reject('Missing filters: years or months');
+            return;
+         }
+
+         $.ajax({
+            url: 'process/weekly_monitoring_p.php',
+            type: 'POST',
+            dataType: 'json',
+            data: {
+               method: 'fetch_connector_no_breakdown_chart',
+               years: selectedYears,
+               months: selectedMonths,
+               defect_category: selectedDefectCategory
+            },
+            success: function(response) {
+               console.log(response);
+
+               if (!response || response.length === 0) {
+                  $('#connector_no_breakdown_chart').html('<p class="text-muted text-center">No data found for the selected filters.</p>');
+                  resolve('No data');
+                  return;
+               }
+
+               // Ensure response is an array
+               if (!Array.isArray(response)) response = [response];
+
+               const categories = response.map(item => item.process_connector.trim());
+               const data = response.map(item => parseInt(item.total_records));
+
+               Highcharts.chart('connector_no_breakdown_chart', {
+                  chart: {
+                     type: 'bar',
+                     backgroundColor: '#fff',
+                     height: '290px'
+                  },
+                  title: {
+                     text: 'Top Connector No. by Process',
+                     align: 'left',
+                     style: {
+                        fontSize: '13px',
+                        fontWeight: '600',
+                        fontFamily: 'Poppins, sans-serif'
+                     }
+                  },
+                  xAxis: {
+                     categories: categories,
+                     title: {
+                        text: null
+                     },
+                     labels: {
+                        style: {
+                           fontFamily: 'Poppins, sans-serif',
+                           fontSize: '11px'
+                        }
+                     }
+                  },
+                  yAxis: {
+                     min: 0,
+                     title: {
+                        text: null
+                     },
+                     labels: {
+                        overflow: 'justify',
+                        style: {
+                           fontFamily: 'Poppins, sans-serif',
+                           fontSize: '11px'
+                        }
+                     }
+                  },
+                  tooltip: {
+                     shared: true,
+                     style: {
+                        fontFamily: 'Poppins, sans-serif'
+                     },
+                     formatter: function() {
+                        return `<b>${this.x}</b><br/>Total Records: <b>${this.y}</b>`;
+                     }
+                  },
+                  plotOptions: {
+                     bar: {
+                        borderWidth: 0,
+                        colorByPoint: false,
+                        dataLabels: {
+                           enabled: false
+                        }
+                     }
+                  },
+                  series: [{
+                     name: 'Records',
+                     data: data,
+                     color: '#1e6091'
+                  }],
+                  credits: {
+                     enabled: false
+                  },
+                  legend: {
+                     enabled: false
+                  }
+               });
+
+               resolve('Chart loaded successfully');
+            },
+            error: function(xhr, status, error) {
+               console.error('AJAX Error:', error);
+               reject(error);
+            }
+         });
+      });
+   }
+
+   const fetch_line_category_month_week_chart = () => {
+      return new Promise((resolve, reject) => {
+         const selectedDefectCategory = $('.defect-checkbox:checked').map(function() {
+            return $(this).val();
+         }).get();
+
+         const selectedYears = $('.year-check:checked').map(function() {
+            return $(this).val();
+         }).get();
+
+         const selectedMonths = $('.month-check:checked').map(function() {
+            return $(this).val();
+         }).get();
+
+         if (selectedYears.length === 0 || selectedMonths.length === 0) {
+            $('#line_category_month_week_chart').html('<p class="text-muted text-center">Please select at least one year and one month.</p>');
+            reject('Missing filters: years or months');
+            return;
+         }
+
+         $.ajax({
+            url: 'process/weekly_monitoring_p.php',
+            type: 'POST',
+            dataType: 'json',
+            data: {
+               method: 'fetch_line_category_month_week_chart',
+               defect_category: selectedDefectCategory,
+               years: selectedYears,
+               months: selectedMonths
+            },
+            success: function(response) {
+               if (!response || response.length === 0) {
+                  $('#line_category_month_week_chart').html('<p class="text-muted text-center">No data found for the selected filters.</p>');
+                  resolve('No data');
+                  return;
+               }
+
+               let categories = [];
+               let groupLabels = [];
+               let lineCategoryMap = {};
+
+               const alternatingColors = [
+                  "#34a0a4", // blue
+                  "#b5e48c", // green
+                  "#168aad", // blue
+                  "#76c893" // green
+               ];
+
+               const monthNamesMap = {
+                  "JAN": "JANUARY",
+                  "FEB": "FEBRUARY",
+                  "MAR": "MARCH",
+                  "APR": "APRIL",
+                  "MAY": "MAY",
+                  "JUN": "JUNE",
+                  "JUL": "JULY",
+                  "AUG": "AUGUST",
+                  "SEP": "SEPTEMBER",
+                  "OCT": "OCTOBER",
+                  "NOV": "NOVEMBER",
+                  "DEC": "DECEMBER"
+               };
+
+               response.forEach(monthData => {
+                  const startIndex = categories.length;
+
+                  // Add week's labels to x-axis
+                  monthData.weeks.forEach(week => categories.push(week.week_label));
+
+                  // Register all line categories from this month into the map if new
+                  monthData.line_categories.forEach(lc => {
+                     if (!lineCategoryMap[lc.line_category]) {
+                        // Fill previous months with zeros to align correctly
+                        const totalPrevWeeks = categories.length - monthData.weeks.length;
+                        lineCategoryMap[lc.line_category] = Array(totalPrevWeeks).fill(0);
+                     }
+                  });
+
+                  // Determine how many weeks this month has
+                  const totalWeeks = monthData.weeks.length;
+
+                  // Now append data correctly for all known line categories
+                  Object.keys(lineCategoryMap).forEach(lcName => {
+                     const categoryData = monthData.line_categories.find(l => l.line_category === lcName);
+
+                     if (categoryData) {
+                        categoryData.weekly_records.forEach(wr => {
+                           lineCategoryMap[lcName].push(parseInt(wr.total_records));
+                        });
+
+                        // pad if fewer weeks
+                        if (categoryData.weekly_records.length < totalWeeks) {
+                           const diff = totalWeeks - categoryData.weekly_records.length;
+                           for (let i = 0; i < diff; i++) {
+                              lineCategoryMap[lcName].push(0);
+                           }
+                        }
+                     } else {
+                        // Category didn’t appear in this month — pad zeros for this month’s weeks
+                        for (let i = 0; i < totalWeeks; i++) {
+                           lineCategoryMap[lcName].push(0);
+                        }
+                     }
+                  });
+
+                  const endIndex = categories.length - 1;
+                  groupLabels.push({
+                     name: monthNamesMap[monthData.month.toUpperCase()] || monthData.month.toUpperCase(),
+                     from: startIndex,
+                     to: endIndex
+                  });
+               });
+
+               const tickPositions = groupLabels.map(g => (g.from + g.to) / 2);
+
+               const series = Object.keys(lineCategoryMap).map((lc, i) => ({
+                  name: lc,
+                  data: lineCategoryMap[lc],
+                  color: alternatingColors[i % alternatingColors.length]
+               }));
+
+               $('#line_category_month_week_chart').css('min-height', '290px');
+
+               Highcharts.chart('line_category_month_week_chart', {
+                  chart: {
+                     type: 'column',
+                     backgroundColor: '#fff'
+                  },
+                  colors: alternatingColors,
+                  title: {
+                     text: 'Weekly Breakdown per Line Category',
+                     align: 'left',
+                     style: {
+                        fontSize: '13px',
+                        fontWeight: '600',
+                        fontFamily: 'Poppins, sans-serif'
+                     }
+                  },
+                  xAxis: [{
+                     categories: categories,
+                     tickLength: 0,
+                     labels: {
+                        style: {
+                           fontFamily: 'Poppins, sans-serif',
+                           fontSize: '11px'
+                        },
+                        y: 20
+                     },
+                     crosshair: true,
+                     plotLines: groupLabels.slice(1).map(g => ({
+                        color: '#DDD',
+                        width: 1,
+                        value: g.from - 0.5,
+                        zIndex: 5
+                     }))
+                  }, {
+                     linkedTo: 0,
+                     opposite: false,
+                     tickPositions: tickPositions,
+                     labels: {
+                        formatter: function() {
+                           const pos = this.pos;
+                           for (let i = 0; i < groupLabels.length; i++) {
+                              const g = groupLabels[i];
+                              if (Math.abs((g.from + g.to) / 2 - pos) < 0.6) return g.name;
+                           }
+                           return '';
+                        },
+                        style: {
+                           fontFamily: 'Poppins, sans-serif',
+                           fontWeight: '400',
+                           fontSize: '11px'
+                        },
+                        y: 8
+                     },
+                     tickLength: 0,
+                     lineWidth: 0
+                  }],
+                  yAxis: {
+                     allowDecimals: false,
+                     title: {
+                        text: null,
+                        style: {
+                           fontFamily: 'Poppins, sans-serif',
+                           fontSize: '11px'
+                        }
+                     }
+                  },
+                  tooltip: {
+                     shared: true,
+                     useHTML: true,
+                     formatter: function() {
+                        let tooltip = `${this.point.category}<br/>`;
+                        this.points.forEach(p => tooltip += `<span style="color:${p.color}">●</span> ${p.series.name}: <b>${p.y}</b><br/>`);
+                        return tooltip;
+                     },
+                     style: {
+                        fontFamily: 'Poppins, sans-serif'
+                     }
+                  },
+                  plotOptions: {
+                     column: {
+                        stacking: null,
+                        borderWidth: 0
+                     }
+                  },
+                  series: series,
+                  legend: {
+                     enabled: true,
+                     itemStyle: {
+                        fontFamily: 'Poppins, sans-serif',
+                        fontSize: '11px',
+                        fontWeight: '400'
+                     },
+                     symbolHeight: 12,
+                     symbolWidth: 12,
+                     symbolRadius: 0,
+                     squareSymbol: true,
+                     labelFormatter: function() {
+                        return `${this.name}`;
+                     }
                   },
                   credits: {
                      enabled: false
