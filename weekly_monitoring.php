@@ -8,7 +8,7 @@ include('plugins/system_plugins/navbar/index_navbar.php');
 <div class="content-wrapper" style="background: #f8f9fa;">
    <!-- Main content -->
    <section class="content">
-      <div class="d-side-nav collapse show" id="sidebarOverall">
+      <div class="d-side-nav collapse" id="sidebarOverall">
          <div class="row">
             <div class="col-12">
                <div class="mt-2 d-flex justify-content-end align-items-center">

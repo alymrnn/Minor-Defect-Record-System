@@ -1,63 +1,163 @@
 <script type="text/javascript">
-   $(document).ready(function() {
-      fetch_defect_category_list();
-      fetch_year_list();
-      fetch_month_list();
-      fetch_section_list();
-      fetch_line_list();
-      fetch_process_list();
-      fetch_line_category_list();
+   // $(document).ready(function() {
+   //    fetch_defect_category_list();
+   //    fetch_year_list();
+   //    fetch_month_list();
+   //    fetch_section_list();
+   //    fetch_line_list();
+   //    fetch_process_list();
+   //    fetch_line_category_list();
 
-      $('#week_container').empty().html('<p class="text-muted text-xs">Select year and month.</p>');
+   //    $('#week_container').empty().html('<p class="text-muted text-xs">Select year and month.</p>');
 
+   //    $(document).on('change', '.defect-checkbox', function() {
+   //       fetch_process_list();
+   //    });
+
+   //    setTimeout(() => {
+   //       // 1. Preselect defect category checkbox
+   //       $('.defect-checkbox').each(function() {
+   //          if ($(this).val() === 'Exposed Wire/Junction') {
+   //             $(this).prop('checked', true);
+   //          }
+   //       });
+
+   //       // 2. Preselect year = 2025
+   //       $('.year-check').each(function() {
+   //          if ($(this).val() === '2025') {
+   //             $(this).prop('checked', true);
+   //          }
+   //       });
+
+   //       // 3. Preselect month = Oct
+   //       $('.month-check').each(function() {
+   //          const val = $(this).val().toString().toLowerCase();
+   //          if (val === '10' || val === 'oct' || val === 'october') {
+   //             $(this).prop('checked', true);
+   //          }
+   //       });
+
+   //       // 4. Trigger dashboard filter after marking
+   //       generate_weekly_dashboard_filter();
+   //    }, 300); // small delay (adjust if needed)
+
+
+   //    // Detect when year/month checkboxes change
+   //    // $(document).on('change', '.year-check, .month-check', function() {
+   //    //    const selectedYears = $('.year-check:checked').map(function() {
+   //    //       return $(this).val();
+   //    //    }).get();
+
+   //    //    const selectedMonths = $('.month-check:checked').map(function() {
+   //    //       return $(this).val();
+   //    //    }).get();
+
+   //    //    console.log("Selected years:", selectedYears);
+   //    //    console.log("Selected months:", selectedMonths);
+
+   //    //    if (selectedYears.length > 0 && selectedMonths.length > 0) {
+   //    //       fetch_week_list(selectedYears, selectedMonths);
+   //    //    } else {
+   //    //       $('#week_container').empty().html('<p class="text-muted text-xs">Select year and month.</p>');
+   //    //    }
+   //    // });
+
+   //    // $(document).on('change', '.process-check', function() {
+   //    //    const selectedProcess = $('.process-check:checked').map(function() {
+   //    //       return $(this).val();
+   //    //    }).get();
+   //    // });
+
+
+   //    // const now = new Date();
+   //    // if (!$("#d_year").val()) {
+   //    //    $("#d_year").val(now.getFullYear());
+   //    // }
+   //    // if (!$("#d_month").val()) {
+   //    //    $("#d_month").val(now.getMonth() + 1);
+   //    // }
+
+   //    // fetch_year_month_options().then(() => {
+   //    //    generate_weekly_dashboard_filter();
+   //    // });
+
+   //    // setInterval(() => {
+   //    //    generate_weekly_dashboard_filter();
+   //    // }, 300000); // refersh every 5 mins
+   // });
+
+   $(document).ready(async function() {
+      // Wait for all filter data to load (AJAX)
+      await Promise.all([
+         fetch_defect_category_list(),
+         fetch_year_list(),
+         fetch_month_list(),
+         fetch_section_list(),
+         fetch_line_list(),
+         fetch_process_list(),
+         fetch_line_category_list()
+      ]);
+
+      // Wait until checkboxes are actually rendered
+      const waitForCheckboxes = async (selector, retries = 10, interval = 200) => {
+         for (let i = 0; i < retries; i++) {
+            if ($(selector).length > 0) return true;
+            await new Promise(resolve => setTimeout(resolve, interval));
+         }
+         return false;
+      };
+
+      // Wait for all important checkbox groups to be ready
+      await Promise.all([
+         waitForCheckboxes('.defect-checkbox'),
+         waitForCheckboxes('.year-check'),
+         waitForCheckboxes('.month-check')
+      ]);
+
+      // Mark default selections
+      $('.defect-checkbox').each(function() {
+         if ($(this).val() === 'Exposed Wire/Junction') {
+            $(this).prop('checked', true);
+         }
+      });
+
+      $('.year-check').each(function() {
+         if ($(this).val() === '2025') {
+            $(this).prop('checked', true);
+         }
+      });
+
+      $('.month-check').each(function() {
+         const val = $(this).val().toString().toLowerCase();
+         if (val === '10' || val === 'oct' || val === 'october') {
+            $(this).prop('checked', true);
+         }
+      });
+
+      // Verify all are marked before generating dashboard
+      const defectChecked = $('.defect-checkbox:checked').length > 0;
+      const yearChecked = $('.year-check:checked').length > 0;
+      const monthChecked = $('.month-check:checked').length > 0;
+
+      if (defectChecked && yearChecked && monthChecked) {
+         console.log('✅ All filters selected. Generating dashboard...');
+         generate_weekly_dashboard_filter();
+      } else {
+         console.warn('⚠️ Some default filters not marked yet.');
+         Swal.fire({
+            icon: 'info',
+            title: 'Incomplete Selection',
+            text: 'Please ensure defect category, year, and month are all selected before loading the dashboard.'
+         });
+      }
+
+      // Re-fetch process list when defect category changes
       $(document).on('change', '.defect-checkbox', function() {
          fetch_process_list();
       });
 
-
-      // Detect when year/month checkboxes change
-      // $(document).on('change', '.year-check, .month-check', function() {
-      //    const selectedYears = $('.year-check:checked').map(function() {
-      //       return $(this).val();
-      //    }).get();
-
-      //    const selectedMonths = $('.month-check:checked').map(function() {
-      //       return $(this).val();
-      //    }).get();
-
-      //    console.log("Selected years:", selectedYears);
-      //    console.log("Selected months:", selectedMonths);
-
-      //    if (selectedYears.length > 0 && selectedMonths.length > 0) {
-      //       fetch_week_list(selectedYears, selectedMonths);
-      //    } else {
-      //       $('#week_container').empty().html('<p class="text-muted text-xs">Select year and month.</p>');
-      //    }
-      // });
-
-      // $(document).on('change', '.process-check', function() {
-      //    const selectedProcess = $('.process-check:checked').map(function() {
-      //       return $(this).val();
-      //    }).get();
-      // });
-
-
-
-      // const now = new Date();
-      // if (!$("#d_year").val()) {
-      //    $("#d_year").val(now.getFullYear());
-      // }
-      // if (!$("#d_month").val()) {
-      //    $("#d_month").val(now.getMonth() + 1);
-      // }
-
-      // fetch_year_month_options().then(() => {
-      //    generate_weekly_dashboard_filter();
-      // });
-
-      // setInterval(() => {
-      //    generate_weekly_dashboard_filter();
-      // }, 300000); // refersh every 5 mins
+      // Initialize empty week container
+      $('#week_container').empty().html('<p class="text-muted text-xs">Select year and month.</p>');
    });
 
    const generate_weekly_dashboard_filter = () => {
@@ -84,19 +184,14 @@
             fetch_connector_no_breakdown_chart(),
             fetch_line_category_month_week_chart()
 
-
-
-
-
             // fetch_weekly_defect_category_count(),
             // fetch_weekly_defect_per_section()
          ])
          .then(() => {
-            document.getElementById("weekly_top_lines_based_on_defect_category_chart").innerHTML = `
-               <p id="weekly_top_lines_chart_placeholder" class="mb-0 text-info small">
-                  Select from Weekly Record per Defect Category to generate Top 10 Lines of Selected Defect Category per Week
-               </p>
-         `;
+            // document.getElementById("weekly_top_lines_based_on_defect_category_chart").innerHTML = `
+            //    <p id="weekly_top_lines_chart_placeholder" class="mb-0 text-info small">
+            //       Select from Weekly Record per Defect Category to generate Top 10 Lines of Selected Defect Category per Week
+            //    </p>`;
 
             Swal.close();
          })
@@ -843,8 +938,6 @@
          },
          dataType: 'json',
          success: function(response) {
-            console.log("Weeks response:", response);
-
             let container = $('#week_container');
             container.empty();
 
@@ -1988,7 +2081,7 @@
          }).get();
 
          if (selectedDefectCategory.length === 0) {
-            $('#defect_category_breakdown_chart').html('<p class="text-muted text-center">Please select at least one defect category.</p>');
+            $('#defect_category_breakdown_chart').html('<p class="text-info text-center text-sm">Please select at least one defect category.</p>');
             reject('No defect category selected');
             return;
          }
@@ -2150,7 +2243,7 @@
          }).get();
 
          if (selectedDefectCategory.length !== 1) {
-            $('#sub_defect_details_breakdown_chart').html('<p class="text-muted text-center">Please select exactly one defect category to view its defect details breakdown.</p>');
+            $('#sub_defect_details_breakdown_chart').html('<p class="text-info text-center text-sm">Please select exactly one defect category to view its defect details breakdown.</p>');
             reject('Select exactly one defect category');
             return;
          }
@@ -2401,8 +2494,6 @@
                defect_category: selectedDefectCategory
             },
             success: function(response) {
-               console.log(response);
-
                if (!response || response.length === 0) {
                   $('#sequence_no_breakdown_chart').html('<p class="text-muted text-center">No data found for the selected filters.</p>');
                   resolve('No data');
@@ -2527,8 +2618,6 @@
                defect_category: selectedDefectCategory
             },
             success: function(response) {
-               console.log(response);
-
                if (!response || response.length === 0) {
                   $('#connector_no_breakdown_chart').html('<p class="text-muted text-center">No data found for the selected filters.</p>');
                   resolve('No data');
