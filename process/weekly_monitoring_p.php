@@ -480,12 +480,10 @@ if ($method == 'fetch_overall_month_week_chart') {
     $years = $_POST['years'] ?? [];
     $months = $_POST['months'] ?? [];
     $weeks = $_POST['weeks'] ?? [];
-    $defect_category = $_POST['defect_category'] ?? [];
 
     if (!is_array($years)) $years = [$years];
     if (!is_array($months)) $months = [$months];
     if (!is_array($weeks)) $weeks = [$weeks];
-    if (!is_array($defect_category)) $defect_category = [$defect_category];
 
     $response = [];
 
@@ -500,7 +498,6 @@ if ($method == 'fetch_overall_month_week_chart') {
 
             $weeksFilter = [];
 
-            // Use selected weeks if any
             if (!empty($weeks)) {
                 foreach ($weeks as $w) {
                     if (preg_match('/(\w{3})\s?(\d+)[–-](\d+)/', $w, $matches)) {
@@ -513,7 +510,6 @@ if ($method == 'fetch_overall_month_week_chart') {
                     }
                 }
             } else {
-                // Otherwise, compute real weekly ranges (Mon–Sun)
                 $current = new DateTime($monthStart);
                 $monthEndDate = new DateTime($monthEnd);
 
@@ -521,10 +517,7 @@ if ($method == 'fetch_overall_month_week_chart') {
                     $start = clone $current;
                     $end = clone $start;
                     $end->modify('next Sunday');
-
-                    if ($end > $monthEndDate) {
-                        $end = clone $monthEndDate;
-                    }
+                    if ($end > $monthEndDate) $end = clone $monthEndDate;
 
                     $weeksFilter[] = [
                         'start' => $start->format('Y-m-d'),
@@ -535,30 +528,15 @@ if ($method == 'fetch_overall_month_week_chart') {
                 }
             }
 
-            // Fetch record count per week (with defect_category filter)
-            $monthData = [
-                'year' => $year,
-                'month' => date('F', strtotime($monthStart)),
-                'weeks' => []
-            ];
+            $monthData = ['year' => $year, 'month' => date('F', strtotime($monthStart)), 'weeks' => []];
 
             foreach ($weeksFilter as $index => $wf) {
-                $baseQuery = "
+                $stmt = $conn->prepare("
                     SELECT COUNT(*) AS total_records
                     FROM t_minor_defect_f
                     WHERE date_detected BETWEEN ? AND ?
-                ";
-
-                // Apply defect_category filter if selected
-                $params = [$wf['start'], $wf['end']];
-                if (!empty($defect_category)) {
-                    $placeholders = implode(',', array_fill(0, count($defect_category), '?'));
-                    $baseQuery .= " AND defect_category IN ($placeholders)";
-                    $params = array_merge($params, $defect_category);
-                }
-
-                $stmt = $conn->prepare($baseQuery);
-                $stmt->execute($params);
+                ");
+                $stmt->execute([$wf['start'], $wf['end']]);
                 $count = (int)$stmt->fetchColumn();
 
                 $monthData['weeks'][] = [
@@ -741,7 +719,6 @@ if ($method == 'fetch_overall_record_per_section_chart') {
 }
 
 if ($method == 'fetch_overall_top_ten_lines_chart') {
-
     $years = $_POST['years'] ?? [];
     $months = $_POST['months'] ?? [];
     $defect_category = $_POST['defect_category'] ?? [];
@@ -761,7 +738,7 @@ if ($method == 'fetch_overall_top_ten_lines_chart') {
             $daysInMonth = cal_days_in_month(CAL_GREGORIAN, $month, $year);
             $monthEnd = sprintf('%04d-%02d-%02d', $year, $month, $daysInMonth);
 
-            // --- Build dynamic week ranges for the month
+            // --- Build dynamic week ranges
             $weeksFilter = [];
             $current = new DateTime($monthStart);
             $monthEndDate = new DateTime($monthEnd);
@@ -783,56 +760,57 @@ if ($method == 'fetch_overall_top_ten_lines_chart') {
                 $weekCount++;
             }
 
-            // Format week labels for frontend
             $weeksData = array_map(fn($w) => [
                 'week_label' => $w['label'],
                 'week_range' => date('M j', strtotime($w['start'])) . '–' . date('j', strtotime($w['end']))
             ], $weeksFilter);
 
-            // --- Build SQL query dynamically using CASE per week
+            // --- SQL CASE for each week
             $weekCases = [];
             foreach ($weeksFilter as $idx => $w) {
                 $weekCases[] = "SUM(CASE WHEN date_detected BETWEEN ? AND ? THEN 1 ELSE 0 END) AS week" . ($idx + 1);
             }
             $weekCasesSql = implode(",\n", $weekCases);
 
+            // --- Full SQL
             $sql = "
                 WITH FilteredDefects AS (
-                    SELECT line_no, date_detected
+                    SELECT line_no, car_model, date_detected
                     FROM t_minor_defect_f
                     WHERE date_detected BETWEEN ? AND ?
-                    " . (!empty($defect_category) 
-                        ? "AND defect_category IN (" . implode(',', array_fill(0, count($defect_category), '?')) . ")"
-                        : "") . "
+                    " . (!empty($defect_category)
+                ? "AND defect_category IN (" . implode(',', array_fill(0, count($defect_category), '?')) . ")"
+                : "") . "
                 ),
-                LineTotals AS (
-                    SELECT line_no, COUNT(*) AS total_defects
+                LineCarTotals AS (
+                    SELECT line_no, car_model, COUNT(*) AS total_defects
                     FROM FilteredDefects
-                    GROUP BY line_no
+                    GROUP BY line_no, car_model
                 ),
-                TopLines AS (
-                    SELECT TOP 10 line_no
-                    FROM LineTotals
+                TopLineCars AS (
+                    SELECT TOP 10 line_no, car_model
+                    FROM LineCarTotals
                     ORDER BY total_defects DESC
                 ),
                 WeeklyBreakdown AS (
                     SELECT 
                         f.line_no,
+                        f.car_model,
                         $weekCasesSql
                     FROM FilteredDefects f
-                    INNER JOIN TopLines t ON f.line_no = t.line_no
-                    GROUP BY f.line_no
+                    INNER JOIN TopLineCars t 
+                        ON f.line_no = t.line_no AND f.car_model = t.car_model
+                    GROUP BY f.line_no, f.car_model
                 )
                 SELECT *
                 FROM WeeklyBreakdown
-                ORDER BY line_no;
+                ORDER BY line_no, car_model;
             ";
 
-            // --- Build parameters for SQL
+            // --- Parameters
             $params = [$monthStart, $monthEnd];
             if (!empty($defect_category)) $params = array_merge($params, $defect_category);
 
-            // Add start/end for each week CASE
             foreach ($weeksFilter as $w) {
                 $params[] = $w['start'];
                 $params[] = $w['end'];
@@ -842,7 +820,7 @@ if ($method == 'fetch_overall_top_ten_lines_chart') {
             $stmt->execute($params);
             $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-            // --- Format results for frontend
+            // --- Format for frontend
             $linesData = [];
             foreach ($results as $row) {
                 $weeklyRecords = [];
@@ -855,6 +833,7 @@ if ($method == 'fetch_overall_top_ten_lines_chart') {
                 }
                 $linesData[] = [
                     'line_no' => $row['line_no'],
+                    'car_model' => $row['car_model'],
                     'weekly_records' => $weeklyRecords
                 ];
             }
@@ -871,4 +850,262 @@ if ($method == 'fetch_overall_top_ten_lines_chart') {
     exit;
 }
 
+if ($method == 'fetch_summary_per_detection_chart') {
 
+    $years = $_POST['years'] ?? [];
+    $months = $_POST['months'] ?? [];
+    $defect_category = $_POST['defect_category'] ?? [];
+
+    if (!is_array($years)) $years = [$years];
+    if (!is_array($months)) $months = [$months];
+    if (!is_array($defect_category)) $defect_category = [$defect_category];
+
+    $response = [];
+
+    // Build date range filters
+    $dateConditions = [];
+    $params = [];
+
+    foreach ($years as $year) {
+        foreach ($months as $month) {
+            $monthStart = sprintf('%04d-%02d-01', (int)$year, (int)$month);
+            $daysInMonth = cal_days_in_month(CAL_GREGORIAN, (int)$month, (int)$year);
+            $monthEnd = sprintf('%04d-%02d-%02d', (int)$year, (int)$month, $daysInMonth);
+
+            $dateConditions[] = "(date_detected BETWEEN ? AND ?)";
+            $params[] = $monthStart;
+            $params[] = $monthEnd;
+        }
+    }
+
+    $sql = "
+        SELECT TOP 7 process, COUNT(*) AS total_records
+        FROM t_minor_defect_f
+        WHERE " . implode(' OR ', $dateConditions) . "
+    ";
+
+    if (!empty($defect_category)) {
+        $sql .= " AND defect_category IN (" . implode(',', array_fill(0, count($defect_category), '?')) . ")";
+        $params = array_merge($params, $defect_category);
+    }
+
+    $sql .= " GROUP BY process ORDER BY total_records DESC";
+
+    $stmt = $conn->prepare($sql);
+    $stmt->execute($params);
+    $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    echo json_encode($results);
+    exit;
+}
+
+if ($method == 'fetch_defect_category_breakdown_chart') {
+    $years = $_POST['years'] ?? [];
+    $months = $_POST['months'] ?? [];
+    $weeks = $_POST['weeks'] ?? [];
+    $defect_category = $_POST['defect_category'] ?? [];
+
+    if (!is_array($years)) $years = [$years];
+    if (!is_array($months)) $months = [$months];
+    if (!is_array($weeks)) $weeks = [$weeks];
+    if (!is_array($defect_category)) $defect_category = [$defect_category];
+
+    $response = [];
+
+    foreach ($years as $year) {
+        foreach ($months as $month) {
+            $year = (int)$year;
+            $month = (int)$month;
+
+            $monthStart = sprintf('%04d-%02d-01', $year, $month);
+            $daysInMonth = cal_days_in_month(CAL_GREGORIAN, $month, $year);
+            $monthEnd = sprintf('%04d-%02d-%02d', $year, $month, $daysInMonth);
+
+            // Fetch all rows for this month in one query
+            $baseQuery = "
+                SELECT date_detected, COUNT(*) AS total_records
+                FROM t_minor_defect_f
+                WHERE date_detected BETWEEN ? AND ?
+            ";
+            $params = [$monthStart, $monthEnd];
+
+            if (!empty($defect_category)) {
+                $placeholders = implode(',', array_fill(0, count($defect_category), '?'));
+                $baseQuery .= " AND defect_category IN ($placeholders)";
+                $params = array_merge($params, $defect_category);
+            }
+
+            $baseQuery .= " GROUP BY date_detected ORDER BY date_detected ASC";
+
+            $stmt = $conn->prepare($baseQuery);
+            $stmt->execute($params);
+            $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            // Generate week ranges
+            $weeksFilter = [];
+            if (!empty($weeks)) {
+                foreach ($weeks as $w) {
+                    if (preg_match('/(\w{3})\s?(\d+)[–-](\d+)/', $w, $matches)) {
+                        $startDay = $matches[2];
+                        $endDay = $matches[3];
+                        $weeksFilter[] = [
+                            'start' => sprintf('%04d-%02d-%02d', $year, $month, $startDay),
+                            'end'   => sprintf('%04d-%02d-%02d', $year, $month, $endDay)
+                        ];
+                    }
+                }
+            } else {
+                $current = new DateTime($monthStart);
+                $monthEndDate = new DateTime($monthEnd);
+                while ($current <= $monthEndDate) {
+                    $start = clone $current;
+                    $end = clone $start;
+                    $end->modify('next Sunday');
+                    if ($end > $monthEndDate) $end = clone $monthEndDate;
+                    $weeksFilter[] = [
+                        'start' => $start->format('Y-m-d'),
+                        'end'   => $end->format('Y-m-d')
+                    ];
+                    $current = (clone $end)->modify('+1 day');
+                }
+            }
+
+            // Aggregate data in PHP by week
+            $monthData = [
+                'year' => $year,
+                'month' => date('F', strtotime($monthStart)),
+                'weeks' => []
+            ];
+
+            foreach ($weeksFilter as $index => $wf) {
+                $weekCount = 0;
+                foreach ($results as $row) {
+                    if ($row['date_detected'] >= $wf['start'] && $row['date_detected'] <= $wf['end']) {
+                        $weekCount += $row['total_records'];
+                    }
+                }
+
+                $monthData['weeks'][] = [
+                    'week_label' => 'W' . ($index + 1),
+                    'week_range' => date('M j', strtotime($wf['start'])) . '–' . date('j', strtotime($wf['end'])),
+                    'total_records' => $weekCount
+                ];
+            }
+
+            $response[] = $monthData;
+        }
+    }
+
+    echo json_encode($response);
+    exit;
+}
+
+if ($method == 'fetch_sub_defect_details_breakdown_chart') {
+    $years = $_POST['years'] ?? [];
+    $months = $_POST['months'] ?? [];
+    $weeks = $_POST['weeks'] ?? [];
+    $defect_category = $_POST['defect_category'] ?? '';
+
+    if (!is_array($years)) $years = [$years];
+    if (!is_array($months)) $months = [$months];
+
+    $response = [];
+
+    foreach ($years as $year) {
+        foreach ($months as $month) {
+            $year = (int)$year;
+            $month = (int)$month;
+
+            $monthStart = sprintf('%04d-%02d-01', $year, $month);
+            $daysInMonth = cal_days_in_month(CAL_GREGORIAN, $month, $year);
+            $monthEnd = sprintf('%04d-%02d-%02d', $year, $month, $daysInMonth);
+
+            // Fetch all records for the month in one query
+            $query = "
+                SELECT 
+                    defect_details,
+                    date_detected,
+                    COUNT(*) AS total_records
+                FROM t_minor_defect_f
+                WHERE 
+                    date_detected BETWEEN ? AND ?
+                    AND defect_category = ?
+                GROUP BY defect_details, date_detected
+                ORDER BY date_detected ASC
+            ";
+            $stmt = $conn->prepare($query);
+            $stmt->execute([$monthStart, $monthEnd, $defect_category]);
+            $allResults = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            // Precompute weekly ranges
+            $weeksFilter = [];
+            if (!empty($weeks)) {
+                foreach ($weeks as $w) {
+                    if (preg_match('/(\w{3})\s?(\d+)[–-](\d+)/', $w, $matches)) {
+                        $startDay = $matches[2];
+                        $endDay = $matches[3];
+                        $weeksFilter[] = [
+                            'start' => sprintf('%04d-%02d-%02d', $year, $month, $startDay),
+                            'end'   => sprintf('%04d-%02d-%02d', $year, $month, $endDay)
+                        ];
+                    }
+                }
+            } else {
+                $current = new DateTime($monthStart);
+                $monthEndDate = new DateTime($monthEnd);
+                while ($current <= $monthEndDate) {
+                    $start = clone $current;
+                    $end = clone $start;
+                    $end->modify('next Sunday');
+                    if ($end > $monthEndDate) $end = clone $monthEndDate;
+                    $weeksFilter[] = [
+                        'start' => $start->format('Y-m-d'),
+                        'end'   => $end->format('Y-m-d')
+                    ];
+                    $current = (clone $end)->modify('+1 day');
+                }
+            }
+
+            // Aggregate data per week from the single result set
+            $monthData = [
+                'year' => $year,
+                'month' => date('F', strtotime($monthStart)),
+                'weeks' => []
+            ];
+
+            foreach ($weeksFilter as $index => $wf) {
+                $weekData = [];
+
+                foreach ($allResults as $row) {
+                    $date = $row['date_detected'];
+                    if ($date >= $wf['start'] && $date <= $wf['end']) {
+                        $def = $row['defect_details'];
+                        if (!isset($weekData[$def])) $weekData[$def] = 0;
+                        $weekData[$def] += $row['total_records'];
+                    }
+                }
+
+                $weekDetails = [];
+                foreach ($weekData as $defect => $count) {
+                    $weekDetails[] = [
+                        'defect_details' => $defect,
+                        'count' => $count
+                    ];
+                }
+
+                usort($weekDetails, fn($a, $b) => $b['count'] <=> $a['count']); // sort descending
+
+                $monthData['weeks'][] = [
+                    'week_label' => 'W' . ($index + 1),
+                    'week_range' => date('M j', strtotime($wf['start'])) . '–' . date('j', strtotime($wf['end'])),
+                    'details' => $weekDetails
+                ];
+            }
+
+            $response[] = $monthData;
+        }
+    }
+
+    echo json_encode($response);
+    exit;
+}

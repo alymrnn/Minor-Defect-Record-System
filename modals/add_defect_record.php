@@ -37,7 +37,14 @@
                     <div class="col-12 col-md-3">
                         <label class="m-0 p-0 text-sm font-weight-normal">Line No.</label>
                         <label class="m-0 p-0 text-danger text-xs">*</label>
-                        <input type="number" id="a_line_no" class="form-control form-control-sm form-control-border" autocomplete="off" required>
+                        <input
+                            type="text"
+                            id="a_line_no"
+                            class="form-control form-control-sm form-control-border"
+                            autocomplete="off"
+                            required
+                            maxlength="4"
+                            pattern="\d{4}">
 
                         <input type="hidden" id="a_harness_type">
                     </div>

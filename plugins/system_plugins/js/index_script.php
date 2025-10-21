@@ -6,6 +6,13 @@
 
         toggleQRField();
 
+        const input = document.getElementById('a_line_no');
+
+        input.addEventListener('input', () => {
+            // Remove non-digit characters and limit to 4 digits
+            input.value = input.value.replace(/\D/g, '').slice(0, 4);
+        });
+
         $('#a_process').prop('disabled', true).css('background', '#DDD');
         $('#a_defect_category').prop('disabled', true).css('background', '#F1F1F1');
         $('#a_defect_details').prop('disabled', true).css('background', '#F1F1F1');

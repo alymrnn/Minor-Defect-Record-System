@@ -98,15 +98,20 @@ include('plugins/system_plugins/navbar/index_navbar.php');
             </div>
             <div class="col-4">
                <div class="chart-border">
+                  <!-- this is the summary per detection -->
+                  <div id="summary_per_detection_chart"></div>
+               </div>
+            </div>
+         </div>
+
+         <div class="row mx-1 mt-2">
+            <div class="col-6">
+               <div class="chart-border">
                   <!-- this is the overall minor record per section -->
                   <div id="overall_record_per_section_chart"></div>
                </div>
             </div>
-
-         </div>
-
-         <div class="row mx-1 mt-2">
-            <div class="col-4">
+            <div class="col-6">
                <div class="chart-border">
                   <!-- this is the top 10 lines based on month and defect category -->
                   <div id="top_ten_lines_chart"></div>
@@ -114,30 +119,29 @@ include('plugins/system_plugins/navbar/index_navbar.php');
             </div>
          </div>
 
+         <div class="row mx-1 mt-2">
+            <div class="col-5">
+               <div class="chart-border">
+                  <!-- this is the defect category breakdown per month sorted by week -->
+                  <div id="defect_category_breakdown_chart"></div>
+               </div>
+            </div>
+            <div class="col-7">
+               <div class="chart-border">
+                  <!-- this is the breakdown of the sub defect category per main category sorted by week -->
+                  <div id="sub_defect_details_breakdown_chart"></div>
+               </div>
+            </div>
+         </div>
+
+         
 
 
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+         
 
          <!-- hide this -->
          <div class="col-12 d-none">
