@@ -249,7 +249,10 @@
          })
          .catch((error) => {
             Swal.close();
-            Swal.fire("Error", "Failed to load some data: " + error, "error");
+            Swal.fire({
+               icon: 'info',
+               text: 'Failed to load some data: ' + error,
+            });
          });
    };
 
@@ -1352,7 +1355,8 @@
                      style: {
                         fontSize: '13px',
                         fontWeight: '600',
-                        fontFamily: 'Poppins, sans-serif'
+                        fontFamily: 'Poppins, sans-serif',
+                        color: '#17A2B8'
                      }
                   },
                   xAxis: [{

@@ -184,16 +184,16 @@
 
     /* Style when checked */
     .btn-check:checked+.btn-outline-secondary {
-        background-color: #1a759f;
-        color: #fff;
-        border-color: #1a759f;
+        background-color: #d8e1e9;
+        color: #000;
+        border-color: #d8e1e9;
     }
 
     /* Hover effect */
     .btn-outline-secondary:hover {
-        background-color: #1a759f;
-        color: #fff;
-        border-color: #1a759f;
+        background-color: #d8e1e9;
+        color: #000;
+        border-color: #d8e1e9;
     }
 
     .highcharts-menu {
