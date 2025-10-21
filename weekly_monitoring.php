@@ -38,22 +38,22 @@ include('plugins/system_plugins/navbar/index_navbar.php');
                   <div id="week_container"></div>
                </div>
 
-               <div class="filter-border mb-2">
+               <div class="filter-border mb-2 d-none">
                   <p class="m-0 p-0 mb-1 text-xs">Section</p>
                   <div id="section_container"></div>
                </div>
 
-               <div class="filter-border mb-2">
+               <div class="filter-border mb-2 d-none">
                   <p class="m-0 p-0 mb-1 text-xs">Process</p>
                   <div id="process_container"></div>
                </div>
 
-               <div class="filter-border mb-2">
+               <div class="filter-border mb-2 d-none">
                   <p class="m-0 p-0 mb-1 text-xs">Line Category</p>
                   <div id="line_category_container"></div>
                </div>
 
-               <div class="filter-border mb-2">
+               <div class="filter-border mb-2 d-none">
                   <p class="m-0 p-0 mb-1 text-xs">Line No.</p>
                   <div id="line_container"></div>
                </div>
@@ -79,7 +79,7 @@ include('plugins/system_plugins/navbar/index_navbar.php');
                   <i class="fas fa-bars"></i>
                </button>
                <span style="color: #ddd;">&nbsp; | &nbsp;</span>
-               <p class="mb-0 me-2 text-sm text-muted">Overall Monitoring</p>
+               <p class="mb-0 me-2 text-sm text-muted">Overall Monitoring <span id="selectedFiltersText" class="text-info fw-semibold"></span></p>
             </div>
          </div>
 

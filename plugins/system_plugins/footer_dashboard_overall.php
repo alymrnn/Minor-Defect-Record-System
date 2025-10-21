@@ -40,11 +40,11 @@ include 'modals/add_record_auth.php';
 <script src="dist/js/adminlte.js"></script>
 
 <!-- Highcharts -->
-<script src="plugins/highcharts/js/accessibility.js"></script>
-<script src="plugins/highcharts/js/export-data.js"></script>
-<script src="plugins/highcharts/js/exporting.js"></script>
-<script src="plugins/highcharts/js/highcharts-more.js"></script>
 <script src="plugins/highcharts/js/highcharts.js"></script>
+<script src="plugins/highcharts/js/highcharts-more.js"></script>
+<script src="plugins/highcharts/js/exporting.js"></script>
+<script src="plugins/highcharts/js/export-data.js"></script>
+<script src="plugins/highcharts/js/accessibility.js"></script>
 <script src="plugins/highcharts/js/map.js"></script>
 
 </body>

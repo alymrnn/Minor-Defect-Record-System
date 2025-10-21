@@ -91,11 +91,11 @@
       await Promise.all([
          fetch_defect_category_list(),
          fetch_year_list(),
-         fetch_month_list(),
-         fetch_section_list(),
-         fetch_line_list(),
-         fetch_process_list(),
-         fetch_line_category_list()
+         fetch_month_list()
+         // fetch_section_list()
+         // fetch_line_list(),
+         // fetch_process_list(),
+         // fetch_line_category_list()
       ]);
 
       // Wait until checkboxes are actually rendered
@@ -140,10 +140,8 @@
       const monthChecked = $('.month-check:checked').length > 0;
 
       if (defectChecked && yearChecked && monthChecked) {
-         console.log('✅ All filters selected. Generating dashboard...');
          generate_weekly_dashboard_filter();
       } else {
-         console.warn('⚠️ Some default filters not marked yet.');
          Swal.fire({
             icon: 'info',
             title: 'Incomplete Selection',
@@ -158,7 +156,61 @@
 
       // Initialize empty week container
       $('#week_container').empty().html('<p class="text-muted text-xs">Select year and month.</p>');
+
+      // get dashboard filter text
+      updateSelectedFiltersDisplay();
    });
+
+   function updateSelectedFiltersDisplay() {
+      // Month number → name mapping
+      const monthNames = {
+         '1': 'January',
+         '2': 'February',
+         '3': 'March',
+         '4': 'April',
+         '5': 'May',
+         '6': 'June',
+         '7': 'July',
+         '8': 'August',
+         '9': 'September',
+         '10': 'October',
+         '11': 'November',
+         '12': 'December'
+      };
+
+      // Collect selected filter values
+      const selectedDefectCategory = $('.defect-checkbox:checked').map(function() {
+         return $(this).val();
+      }).get();
+
+      const selectedYears = $('.year-check:checked').map(function() {
+         return $(this).val();
+      }).get();
+
+      const selectedMonths = $('.month-check:checked').map(function() {
+         const val = $(this).val().toString();
+         // Convert numeric to month name if possible
+         return monthNames[val] || val.charAt(0).toUpperCase() + val.slice(1);
+      }).get();
+
+      // Format text nicely
+      let displayText = '';
+
+      if (selectedDefectCategory.length > 0) {
+         displayText += ` | ${selectedDefectCategory.join(', ')}`;
+      }
+
+      if (selectedYears.length > 0) {
+         displayText += ` [${selectedYears.join(', ')}`;
+         if (selectedMonths.length > 0) {
+            displayText += ` - ${selectedMonths.join(', ')}`;
+         }
+         displayText += `]`;
+      }
+
+      // Update the span beside "Overall Monitoring"
+      $('#selectedFiltersText').text(displayText);
+   }
 
    const generate_weekly_dashboard_filter = () => {
       Swal.fire({
@@ -750,12 +802,12 @@
             }
 
             // Add Mark All / Unmark All button
-            const markAllButton = $(`
-               <button id="markAllBtn" class="btn btn-xs btn-outline-info m-0 p-0 m-1">
-                  &nbsp;Mark All&nbsp;
-               </button>
-            `);
-            container.append(markAllButton);
+            // const markAllButton = $(`
+            //    <button id="markAllBtn" class="btn btn-xs btn-outline-info m-0 p-0 m-1">
+            //       &nbsp;Mark All&nbsp;
+            //    </button>
+            // `);
+            // container.append(markAllButton);
 
             // Generate button-style checkboxes
             response.forEach(item => {
@@ -807,12 +859,12 @@
             }
 
             // Add Mark/Unmark All button
-            const markAllBtn = $('<button>', {
-               class: 'btn btn-xs btn-outline-info m-0 p-0 m-1',
-               html: '&nbsp;Mark All&nbsp;',
-               id: 'mark_all_years_btn'
-            });
-            container.append(markAllBtn);
+            // const markAllBtn = $('<button>', {
+            //    class: 'btn btn-xs btn-outline-info m-0 p-0 m-1',
+            //    html: '&nbsp;Mark All&nbsp;',
+            //    id: 'mark_all_years_btn'
+            // });
+            // container.append(markAllBtn);
 
             // Generate year buttons
             response.forEach(year => {
@@ -860,12 +912,12 @@
             }
 
             // Add Mark/Unmark All button
-            const markAllBtn = $('<button>', {
-               class: 'btn btn-xs btn-outline-info m-0 p-0 m-1',
-               html: '&nbsp;Mark All&nbsp;',
-               id: 'mark_all_months_btn'
-            });
-            container.append(markAllBtn);
+            // const markAllBtn = $('<button>', {
+            //    class: 'btn btn-xs btn-outline-info m-0 p-0 m-1',
+            //    html: '&nbsp;Mark All&nbsp;',
+            //    id: 'mark_all_months_btn'
+            // });
+            // container.append(markAllBtn);
 
             // Generate month buttons
             response.forEach(month => {
@@ -1013,12 +1065,12 @@
             }
 
             // Add Mark/Unmark All button
-            const markAllBtn = $('<button>', {
-               class: 'btn btn-xs btn-outline-info m-0 p-0 m-1',
-               html: '&nbsp;Mark All&nbsp;',
-               id: 'mark_all_sections_btn'
-            });
-            container.append(markAllBtn);
+            // const markAllBtn = $('<button>', {
+            //    class: 'btn btn-xs btn-outline-info m-0 p-0 m-1',
+            //    html: '&nbsp;Mark All&nbsp;',
+            //    id: 'mark_all_sections_btn'
+            // });
+            // container.append(markAllBtn);
 
             // Generate section checkboxes
             response.forEach(section => {

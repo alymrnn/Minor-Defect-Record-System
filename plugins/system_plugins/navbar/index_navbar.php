@@ -151,6 +151,7 @@
         border: 1px solid #eee;
         height: 100%;
     }
+
     .filter-border {
         border: none;
         background-color: #fff;
@@ -183,18 +184,31 @@
 
     /* Style when checked */
     .btn-check:checked+.btn-outline-secondary {
-        background-color: #97dffc;
-        color: #020887;
-        border-color: #97dffc;
+        background-color: #1a759f;
+        color: #fff;
+        border-color: #1a759f;
     }
 
     /* Hover effect */
     .btn-outline-secondary:hover {
-        background-color: #97dffc;
-        color: #020887;
-        border-color: #97dffc;
+        background-color: #1a759f;
+        color: #fff;
+        border-color: #1a759f;
     }
-    
+
+    .highcharts-menu {
+        font-family: 'Poppins', sans-serif !important;
+        font-size: 12px !important;
+    }
+
+    .highcharts-menu-item {
+        padding: 4px 10px !important;
+    }
+
+    .highcharts-menu-item:hover {
+        background-color: #184e77 !important;
+        color: #fff !important;
+    }
 </style>
 
 <!-- Navbar -->
