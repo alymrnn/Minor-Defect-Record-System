@@ -23,11 +23,25 @@ include('plugins/system_plugins/navbar/index_navbar.php');
             <label class="m-0 p-0 text-sm font-weight-normal">Scan here</label>
             <input type="text" id="scan_qr" class="form-control form-control-sm form-control-border" autocomplete="off">
           </div>
-          <div class="col-12 col-sm-6 col-md-2 mb-2">
+          <div class="col-12 col-sm-6 col-md-2 mb-2 d-none">
             <!-- product name -->
             <label class="m-0 p-0 text-sm font-weight-normal">Product Number</label>
             <input type="text" id="scan_product_name" class="form-control form-control-sm form-control-border" placeholder="Product Number"
               autocomplete="off">
+          </div>
+          <div class="col-12 col-sm-6 col-md-2 mb-2">
+            <!-- car maker -->
+            <label class="m-0 p-0 text-sm font-weight-normal">Car Maker</label>
+            <select id="search_car_maker" class="form-control form-control-sm form-control-border">
+              <option value="" disabled selected>Select Car Maker</option>
+              <option value="MAZDA">MAZDA</option>
+              <option value="DAIHATSU">DAIHATSU</option>
+              <option value="HONDA">HONDA</option>
+              <option value="TOYOTA">TOYOTA</option>
+              <option value="SUZUKI">SUZUKI</option>
+              <option value="SUBARU">SUBARU</option>
+              <option value="MARELLI">MARELLI</option>
+            </select>
           </div>
           <div class="col-12 col-sm-6 col-md-2 mb-2">
             <!-- lot no -->

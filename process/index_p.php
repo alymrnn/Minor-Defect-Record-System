@@ -4,7 +4,7 @@ include 'conn_pcad.php';
 
 $method = $_POST['method'];
 
-function count_defect_list($conn, $scan_qr, $scan_product_name, $scan_lot_no, $scan_serial_no, $search_process, $search_line_no, $search_date_from, $search_date_to, $search_defect_category, $search_defect_details)
+function count_defect_list($conn, $scan_qr, $scan_product_name, $scan_lot_no, $scan_serial_no, $search_process, $search_line_no, $search_date_from, $search_date_to, $search_defect_category, $search_defect_details, $search_car_maker)
 {
     $query = "SELECT COUNT(id) AS total FROM t_minor_defect_f";
     $conditions = [];
@@ -56,6 +56,11 @@ function count_defect_list($conn, $scan_qr, $scan_product_name, $scan_lot_no, $s
         $params[':defect_details'] = '%' . $search_defect_details . '%';
     }
 
+    if (!empty($search_car_maker) && $search_car_maker !== '%') {
+        $conditions[] = "car_maker LIKE :car_maker";
+        $params[':car_maker'] = '%' . $search_car_maker . '%';
+    }
+
     if (!empty($conditions)) {
         $query .= " WHERE " . implode(" AND ", $conditions);
     }
@@ -83,8 +88,9 @@ if ($method == 'count_defect_list') {
     $search_date_to = trim($_POST['search_date_to']);
     $search_defect_category = trim($_POST['search_defect_category']);
     $search_defect_details = trim($_POST['search_defect_details']);
+    $search_car_maker = trim($_POST['search_car_maker']);
 
-    echo count_defect_list($conn, $scan_qr, $scan_product_name, $scan_lot_no, $scan_serial_no, $search_process, $search_line_no, $search_date_from, $search_date_to, $search_defect_category, $search_defect_details);
+    echo count_defect_list($conn, $scan_qr, $scan_product_name, $scan_lot_no, $scan_serial_no, $search_process, $search_line_no, $search_date_from, $search_date_to, $search_defect_category, $search_defect_details, $search_car_maker);
 }
 
 if ($method == 'defect_list_last_page') {
@@ -98,9 +104,10 @@ if ($method == 'defect_list_last_page') {
     $search_date_to = trim($_POST['search_date_to']);
     $search_defect_category = trim($_POST['search_defect_category']);
     $search_defect_details = trim($_POST['search_defect_details']);
+    $search_car_maker = trim($_POST['search_car_maker']);
 
     $results_per_page = 200;
-    $number_of_result = count_defect_list($conn, $scan_qr, $scan_product_name, $scan_lot_no, $scan_serial_no, $search_process, $search_line_no, $search_date_from, $search_date_to, $search_defect_category, $search_defect_details);
+    $number_of_result = count_defect_list($conn, $scan_qr, $scan_product_name, $scan_lot_no, $scan_serial_no, $search_process, $search_line_no, $search_date_from, $search_date_to, $search_defect_category, $search_defect_details, $search_car_maker);
     $number_of_page = ceil($number_of_result / $results_per_page);
 
     echo $number_of_page;
@@ -123,7 +130,8 @@ if ($method == 'load_defect_list') {
         'search_date_from'     => $_POST['search_date_from'] ?? '',
         'search_date_to'       => $_POST['search_date_to'] ?? '',
         'search_defect_category' => $_POST['search_defect_category'] ?? '',
-        'search_defect_details' => $_POST['search_defect_details'] ?? ''
+        'search_defect_details' => $_POST['search_defect_details'] ?? '',
+        'search_car_maker'      => $_POST['search_car_maker'] ?? ''
     ];
 
     foreach ($filters as &$value) $value = trim($value);
@@ -148,7 +156,8 @@ if ($method == 'load_defect_list') {
         'search_process'        => 'process',
         'search_line_no'        => 'line_no',
         'search_defect_category' => 'defect_category',
-        'search_defect_details' => 'defect_details'
+        'search_defect_details' => 'defect_details',
+        'search_car_maker'      => 'car_maker',
     ];
 
     foreach ($map as $key => $column) {

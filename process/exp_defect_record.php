@@ -11,6 +11,7 @@ $search_date_from = $_GET['search_date_from'];
 $search_date_to = $_GET['search_date_to'];
 $search_defect_category = $_GET['search_defect_category'];
 $search_defect_details = $_GET['search_defect_details'];
+$search_car_maker = $_GET['search_car_maker'];
 
 $filename = 'Minor-Defect-Record_' . date("Y-m-d") . '.csv';
 header('Content-Type: text/csv; charset=utf-8');
@@ -23,6 +24,7 @@ $delimiter = ',';
 
 $headers = array(
     'Date Detected',
+    'Car Maker',
     'Car Model',
     'Line No.',
     'Harness Type',
@@ -48,7 +50,7 @@ $headers = array(
 
 fputcsv($f, $headers, $delimiter);
 
-$query = "SELECT date_detected, car_model, line_no, line_category, process, group_d, 
+$query = "SELECT date_detected, car_maker, car_model, line_no, line_category, process, group_d, 
                 shift, product_no, lot_no, serial_no, defect_category_code, 
                 defect_category, defect_details_code, defect_details, sequence_no, connector_no, 
                 treatment_content_defect, repaired_by, verified_by, record_added_by, harness_type, total_time 
@@ -98,6 +100,11 @@ if (!empty($search_defect_details) && $search_defect_details !== '%') {
     $params[] = '%' . $search_defect_details . '%';
 }
 
+if (!empty($search_car_maker) && $search_car_maker !== '%') {
+    $conditions[] = "car_maker LIKE ?";
+    $params[] = '%' . $search_car_maker . '%';
+}
+
 if (count($conditions) > 0) {
     $query .= ' AND ' . implode(' AND ', $conditions);
 }
@@ -111,6 +118,7 @@ if ($stmt->rowCount() > 0) {
 
         $lineData = array(
             $date_part,
+            $row['car_maker'],
             $row['car_model'],
             $row['line_no'],
             $row['harness_type'],

@@ -183,6 +183,7 @@
         var search_date_to = sessionStorage.getItem('search_date_to');
         var search_defect_category = sessionStorage.getItem('search_defect_category');
         var search_defect_details = sessionStorage.getItem('search_defect_details');
+        var search_car_maker = sessionStorage.getItem('search_car_maker');
 
         $.ajax({
             url: 'process/index_p.php',
@@ -199,7 +200,8 @@
                 search_date_from: search_date_from,
                 search_date_to: search_date_to,
                 search_defect_category: search_defect_category,
-                search_defect_details: search_defect_details
+                search_defect_details: search_defect_details,
+                search_car_maker: search_car_maker
             },
             success: function(response) {
                 sessionStorage.setItem('count_rows', response);
@@ -227,6 +229,7 @@
         var search_date_to = sessionStorage.getItem('search_date_to');
         var search_defect_category = sessionStorage.getItem('search_defect_category');
         var search_defect_details = sessionStorage.getItem('search_defect_details');
+        var search_car_maker = sessionStorage.getItem('search_car_maker');
 
         var current_page = parseInt(sessionStorage.getItem('defect_table_pagination'));
 
@@ -245,7 +248,8 @@
                 search_date_from: search_date_from,
                 search_date_to: search_date_to,
                 search_defect_category: search_defect_category,
-                search_defect_details: search_defect_details
+                search_defect_details: search_defect_details,
+                search_car_maker: search_car_maker
             },
             success: function(response) {
                 sessionStorage.setItem('last_page', response);
@@ -274,6 +278,7 @@
         var search_date_to = document.getElementById('search_date_to').value;
         var search_defect_category = document.getElementById('search_defect_category').value;
         var search_defect_details = document.getElementById('search_defect_details').value;
+        var search_car_maker = document.getElementById('search_car_maker').value;
 
         var scan_qr_1 = sessionStorage.getItem('scan_qr');
         var scan_product_name_1 = sessionStorage.getItem('scan_product_name');
@@ -285,6 +290,7 @@
         var search_date_to_1 = sessionStorage.getItem('search_date_to');
         var search_defect_category_1 = sessionStorage.getItem('search_defect_category');
         var search_defect_details_1 = sessionStorage.getItem('search_defect_details');
+        var search_car_maker_1 = sessionStorage.getItem('search_car_maker');
 
         if (current_page > 1) {
             switch (true) {
@@ -298,6 +304,7 @@
                 case search_date_to !== search_date_to_1:
                 case search_defect_category !== search_defect_category_1:
                 case search_defect_details !== search_defect_details_1:
+                case search_car_maker !== search_car_maker_1:
                     scan_product_name = scan_product_name_1;
                     scan_qr = scan_qr_1;
                     scan_lot_no = scan_lot_no_1;
@@ -308,6 +315,7 @@
                     search_date_to = search_date_to_1;
                     search_defect_category = search_defect_category_1;
                     search_defect_details = search_defect_details_1;
+                    search_car_maker = search_car_maker_1;
 
                     break;
                 default:
@@ -323,6 +331,7 @@
             sessionStorage.setItem('search_date_to', search_date_to);
             sessionStorage.setItem('search_defect_category', search_defect_category);
             sessionStorage.setItem('search_defect_details', search_defect_details);
+            sessionStorage.setItem('search_car_maker', search_car_maker);
         }
         $.ajax({
             url: 'process/index_p.php',
@@ -340,6 +349,7 @@
                 search_date_to: search_date_to,
                 search_defect_category: search_defect_category,
                 search_defect_details: search_defect_details,
+                search_car_maker: search_car_maker,
                 current_page: current_page
             },
             beforeSend: () => {
@@ -812,6 +822,7 @@
         var search_date_to = document.getElementById('search_date_to').value.trim();
         var search_defect_category = document.getElementById('search_defect_category').value.trim();
         var search_defect_details = document.getElementById('search_defect_details').value.trim();
+        var search_car_maker = document.getElementById('search_car_maker').value.trim();
 
         // if (search_date_from === '') {
         //     search_date_from = new Date().toISOString().slice(0, 10);
@@ -829,7 +840,8 @@
             '&search_date_from=' + encodeURIComponent(search_date_from) +
             '&search_date_to=' + encodeURIComponent(search_date_to) +
             '&search_defect_category=' + encodeURIComponent(search_defect_category) +
-            '&search_defect_details=' + encodeURIComponent(search_defect_details),
+            '&search_defect_details=' + encodeURIComponent(search_defect_details) +
+            '&search_car_maker=' + encodeURIComponent(search_car_maker),
             '_blank'
         );
     };
