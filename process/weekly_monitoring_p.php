@@ -215,9 +215,6 @@ if ($method == 'fetch_weekly_defect_per_section') {
     exit;
 }
 
-
-
-
 // =================================================================================================================
 // OVERALL MONITORING V2
 if ($method == 'fetch_defect_category_list') {
@@ -480,10 +477,12 @@ if ($method == 'fetch_overall_month_week_chart') {
     $years = $_POST['years'] ?? [];
     $months = $_POST['months'] ?? [];
     $weeks = $_POST['weeks'] ?? [];
+    $sections = $_POST['sections'] ?? [];
 
     if (!is_array($years)) $years = [$years];
     if (!is_array($months)) $months = [$months];
     if (!is_array($weeks)) $weeks = [$weeks];
+    if (!is_array($sections)) $sections = [$sections];
 
     $response = [];
 
@@ -531,12 +530,27 @@ if ($method == 'fetch_overall_month_week_chart') {
             $monthData = ['year' => $year, 'month' => date('F', strtotime($monthStart)), 'weeks' => []];
 
             foreach ($weeksFilter as $index => $wf) {
-                $stmt = $conn->prepare("
+
+                // Base query with join to m_line_process
+                $query = "
                     SELECT COUNT(*) AS total_records
-                    FROM t_minor_defect_f
-                    WHERE date_detected BETWEEN ? AND ?
-                ");
-                $stmt->execute([$wf['start'], $wf['end']]);
+                    FROM t_minor_defect_f f
+                    LEFT JOIN m_line_no l ON f.line_no = l.line_no
+                    WHERE f.date_detected BETWEEN ? AND ?
+                ";
+
+                $params = [$wf['start'], $wf['end']];
+
+                // Apply section filter if sections are selected
+                if (!empty($sections)) {
+                    // Create placeholders for IN clause
+                    $placeholders = implode(',', array_fill(0, count($sections), '?'));
+                    $query .= " AND l.section IN ($placeholders)";
+                    $params = array_merge($params, $sections);
+                }
+
+                $stmt = $conn->prepare($query);
+                $stmt->execute($params);
                 $count = (int)$stmt->fetchColumn();
 
                 $monthData['weeks'][] = [
@@ -555,63 +569,91 @@ if ($method == 'fetch_overall_month_week_chart') {
 }
 
 if ($method == 'fetch_harness_type_breakdown_chart') {
-    $defect_category = $_POST['defect_category'] ?? [];
     $years = $_POST['years'] ?? [];
     $months = $_POST['months'] ?? [];
+    $defect_category = $_POST['defect_category'] ?? [];
+    $sections = $_POST['sections'] ?? [];
 
-    // Ensure they are arrays
-    if (!is_array($defect_category)) $defect_category = [$defect_category];
     if (!is_array($years)) $years = [$years];
     if (!is_array($months)) $months = [$months];
+    if (!is_array($defect_category)) $defect_category = [$defect_category];
+    if (!is_array($sections)) $sections = [$sections];
 
-    $conditions = [];
-    $params = [];
+    $response = [];
 
-    // Filter by defect category (if selected)
-    if (!empty($defect_category)) {
-        $placeholders = implode(',', array_fill(0, count($defect_category), '?'));
-        $conditions[] = "defect_category IN ($placeholders)";
-        $params = array_merge($params, $defect_category);
-    }
-
-    // Filter by year
-    if (!empty($years)) {
-        $yearPlaceholders = implode(',', array_fill(0, count($years), '?'));
-        $conditions[] = "YEAR(date_added) IN ($yearPlaceholders)";
-        $params = array_merge($params, $years);
-    }
-
-    // Filter by month
-    if (!empty($months)) {
-        $monthPlaceholders = implode(',', array_fill(0, count($months), '?'));
-        $conditions[] = "MONTH(date_added) IN ($monthPlaceholders)";
-        $params = array_merge($params, $months);
-    }
-
-    // Combine all conditions
-    $where = '';
-    if (!empty($conditions)) {
-        $where = 'WHERE ' . implode(' AND ', $conditions);
-    }
-
-    $query = "SELECT harness_type, COUNT(*) AS total
-              FROM t_minor_defect_f
-              $where
-              GROUP BY harness_type
-              ORDER BY total DESC";
-
-    $stmt = $conn->prepare($query);
-    $stmt->execute($params);
-
-    $data = [];
+    // --- Get all sections and map line numbers
+    $stmt = $conn->query("SELECT section, line_no FROM m_line_no WHERE section IS NOT NULL AND section <> ''");
+    $sectionLinesMap = [];
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-        $data[] = [
-            'name' => $row['harness_type'] ?: 'Unknown',
-            'y' => (int)$row['total']
-        ];
+        $sectionLinesMap[$row['section']][] = $row['line_no'];
     }
 
-    echo json_encode($data);
+    // --- Build date ranges for all selected months/years
+    $dateRanges = [];
+    foreach ($years as $year) {
+        foreach ($months as $month) {
+            $monthStart = sprintf('%04d-%02d-01', $year, $month);
+            $daysInMonth = cal_days_in_month(CAL_GREGORIAN, $month, $year);
+            $monthEnd = sprintf('%04d-%02d-%02d', $year, $month, $daysInMonth);
+            $dateRanges[] = ['start' => $monthStart, 'end' => $monthEnd];
+        }
+    }
+
+    $countB = 0;
+    $countS = 0;
+
+    // --- Loop through each date range
+    foreach ($dateRanges as $dr) {
+        $query = "
+            SELECT line_no, harness_type, defect_category
+            FROM t_minor_defect_f
+            WHERE date_detected BETWEEN ? AND ?
+        ";
+        $params = [$dr['start'], $dr['end']];
+
+        if (!empty($defect_category)) {
+            $catPlaceholders = implode(',', array_fill(0, count($defect_category), '?'));
+            $query .= " AND defect_category IN ($catPlaceholders)";
+            $params = array_merge($params, $defect_category);
+        }
+
+        $stmt2 = $conn->prepare($query);
+        $stmt2->execute($params);
+        $defects = $stmt2->fetchAll(PDO::FETCH_ASSOC);
+
+        foreach ($defects as $defect) {
+            $lineNo = $defect['line_no'];
+            $hType = strtoupper(trim($defect['harness_type']));
+
+            // Determine which section this line belongs to
+            $belongsToSelectedSection = false;
+
+            foreach ($sectionLinesMap as $section => $lineNos) {
+                if (!empty($sections) && !in_array($section, $sections)) continue;
+
+                if (in_array($lineNo, $lineNos)) {
+                    $belongsToSelectedSection = true;
+                    break;
+                }
+            }
+
+            if ($belongsToSelectedSection) {
+                if ($hType === 'B') {
+                    $countB++;
+                } elseif ($hType === 'S') {
+                    $countS++;
+                }
+            }
+        }
+    }
+
+    // --- Build response for Highcharts pie chart
+    $response = [
+        ['name' => 'B', 'y' => $countB],
+        ['name' => 'S', 'y' => $countS]
+    ];
+
+    echo json_encode($response);
     exit;
 }
 
@@ -619,10 +661,12 @@ if ($method == 'fetch_overall_record_per_section_chart') {
     $years = $_POST['years'] ?? [];
     $months = $_POST['months'] ?? [];
     $defect_category = $_POST['defect_category'] ?? [];
+    $sections = $_POST['sections'] ?? [];
 
     if (!is_array($years)) $years = [$years];
     if (!is_array($months)) $months = [$months];
     if (!is_array($defect_category)) $defect_category = [$defect_category];
+    if (!is_array($sections)) $sections = [$sections];
 
     $response = [];
 
@@ -668,7 +712,7 @@ if ($method == 'fetch_overall_record_per_section_chart') {
                 'week_range' => date('M j', strtotime($w['start'])) . '–' . date('j', strtotime($w['end']))
             ], $weeksFilter);
 
-            // --- Prepare a single query to fetch all defects in the month
+            // --- Prepare query to fetch all defects in the month
             $query = "SELECT line_no, date_detected, defect_category 
                       FROM t_minor_defect_f 
                       WHERE date_detected BETWEEN ? AND ?";
@@ -686,8 +730,17 @@ if ($method == 'fetch_overall_record_per_section_chart') {
 
             // --- Initialize section-week counts
             $sectionsData = [];
-            foreach ($sectionLinesMap as $section => $lineNos) {
-                $weeklyRecords = array_map(fn($w) => ['week_label' => $w['label'], 'total_records' => 0], $weeksFilter);
+
+            // Filter: Only process selected sections (if any)
+            $filteredSections = !empty($sections)
+                ? array_filter($sectionLinesMap, fn($key) => in_array($key, $sections), ARRAY_FILTER_USE_KEY)
+                : $sectionLinesMap;
+
+            foreach ($filteredSections as $section => $lineNos) {
+                $weeklyRecords = array_map(fn($w) => [
+                    'week_label' => $w['label'],
+                    'total_records' => 0
+                ], $weeksFilter);
 
                 foreach ($allDefects as $defect) {
                     if (!in_array($defect['line_no'], $lineNos)) continue;
@@ -722,10 +775,12 @@ if ($method == 'fetch_overall_top_ten_lines_chart') {
     $years = $_POST['years'] ?? [];
     $months = $_POST['months'] ?? [];
     $defect_category = $_POST['defect_category'] ?? [];
+    $sections = $_POST['sections'] ?? [];
 
     if (!is_array($years)) $years = [$years];
     if (!is_array($months)) $months = [$months];
     if (!is_array($defect_category)) $defect_category = [$defect_category];
+    if (!is_array($sections)) $sections = [$sections];
 
     $response = [];
 
@@ -765,22 +820,48 @@ if ($method == 'fetch_overall_top_ten_lines_chart') {
                 'week_range' => date('M j', strtotime($w['start'])) . '–' . date('j', strtotime($w['end']))
             ], $weeksFilter);
 
-            // --- SQL CASE for each week
+            // --- SQL CASE for each week (safe date conversion)
             $weekCases = [];
             foreach ($weeksFilter as $idx => $w) {
-                $weekCases[] = "SUM(CASE WHEN date_detected BETWEEN ? AND ? THEN 1 ELSE 0 END) AS week" . ($idx + 1);
+                $weekCases[] = "
+                    SUM(CASE 
+                        WHEN f.date_detected BETWEEN CONVERT(date, ?, 23) AND CONVERT(date, ?, 23) 
+                        THEN 1 ELSE 0 
+                    END) AS week" . ($idx + 1);
             }
             $weekCasesSql = implode(",\n", $weekCases);
 
-            // --- Full SQL
+            // --- Build Section Filter (using m_line_no table)
+            $sectionFilterSql = '';
+            $sectionParams = [];
+
+            if (!empty($sections)) {
+                $sectionPlaceholders = implode(',', array_fill(0, count($sections), '?'));
+                $sectionFilterSql = "
+                    AND f.line_no IN (
+                        SELECT line_no FROM m_line_no WHERE section IN ($sectionPlaceholders)
+                    )";
+                $sectionParams = $sections;
+            }
+
+            // --- Build Defect Category Filter
+            $categoryFilterSql = '';
+            $categoryParams = [];
+
+            if (!empty($defect_category)) {
+                $catPlaceholders = implode(',', array_fill(0, count($defect_category), '?'));
+                $categoryFilterSql = "AND defect_category IN ($catPlaceholders)";
+                $categoryParams = $defect_category;
+            }
+
+            // --- Final SQL Query
             $sql = "
                 WITH FilteredDefects AS (
                     SELECT line_no, car_model, date_detected
-                    FROM t_minor_defect_f
-                    WHERE date_detected BETWEEN ? AND ?
-                    " . (!empty($defect_category)
-                ? "AND defect_category IN (" . implode(',', array_fill(0, count($defect_category), '?')) . ")"
-                : "") . "
+                    FROM t_minor_defect_f f
+                    WHERE date_detected BETWEEN CONVERT(date, ?, 23) AND CONVERT(date, ?, 23)
+                    $categoryFilterSql
+                    $sectionFilterSql
                 ),
                 LineCarTotals AS (
                     SELECT line_no, car_model, COUNT(*) AS total_defects
@@ -807,20 +888,23 @@ if ($method == 'fetch_overall_top_ten_lines_chart') {
                 ORDER BY line_no, car_model;
             ";
 
-            // --- Parameters
-            $params = [$monthStart, $monthEnd];
-            if (!empty($defect_category)) $params = array_merge($params, $defect_category);
+            // --- Build Parameter List in Correct Order
+            $params = [$monthStart, $monthEnd]; // first main date range
+            $params = array_merge($params, $categoryParams); // then category filters
+            $params = array_merge($params, $sectionParams);  // then section filters
 
+            // add week ranges last
             foreach ($weeksFilter as $w) {
                 $params[] = $w['start'];
                 $params[] = $w['end'];
             }
 
+            // --- Execute Query
             $stmt = $conn->prepare($sql);
             $stmt->execute($params);
             $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-            // --- Format for frontend
+            // --- Format data for frontend
             $linesData = [];
             foreach ($results as $row) {
                 $weeklyRecords = [];
@@ -851,14 +935,15 @@ if ($method == 'fetch_overall_top_ten_lines_chart') {
 }
 
 if ($method == 'fetch_summary_per_detection_chart') {
-
     $years = $_POST['years'] ?? [];
     $months = $_POST['months'] ?? [];
     $defect_category = $_POST['defect_category'] ?? [];
+    $sections = $_POST['sections'] ?? [];
 
     if (!is_array($years)) $years = [$years];
     if (!is_array($months)) $months = [$months];
     if (!is_array($defect_category)) $defect_category = [$defect_category];
+    if (!is_array($sections)) $sections = [$sections];
 
     $response = [];
 
@@ -872,24 +957,41 @@ if ($method == 'fetch_summary_per_detection_chart') {
             $daysInMonth = cal_days_in_month(CAL_GREGORIAN, (int)$month, (int)$year);
             $monthEnd = sprintf('%04d-%02d-%02d', (int)$year, (int)$month, $daysInMonth);
 
-            $dateConditions[] = "(date_detected BETWEEN ? AND ?)";
+            $dateConditions[] = "(TRY_CONVERT(date, f.date_detected, 23) BETWEEN CONVERT(date, ?, 23) AND CONVERT(date, ?, 23))";
             $params[] = $monthStart;
             $params[] = $monthEnd;
         }
     }
 
+    // --- Base query with join to m_line_no for section filtering
     $sql = "
-        SELECT TOP 7 process, COUNT(*) AS total_records
-        FROM t_minor_defect_f
+        SELECT TOP 7 
+            f.process, 
+            COUNT(*) AS total_records
+        FROM t_minor_defect_f f
+        LEFT JOIN m_line_no l ON f.line_no = l.line_no
         WHERE " . implode(' OR ', $dateConditions) . "
     ";
 
+    // --- Apply defect category filter
     if (!empty($defect_category)) {
-        $sql .= " AND defect_category IN (" . implode(',', array_fill(0, count($defect_category), '?')) . ")";
+        $placeholders = implode(',', array_fill(0, count($defect_category), '?'));
+        $sql .= " AND f.defect_category IN ($placeholders)";
         $params = array_merge($params, $defect_category);
     }
 
-    $sql .= " GROUP BY process ORDER BY total_records DESC";
+    // --- Apply section filter (from m_line_no)
+    if (!empty($sections)) {
+        $sectionPlaceholders = implode(',', array_fill(0, count($sections), '?'));
+        $sql .= " AND l.section IN ($sectionPlaceholders)";
+        $params = array_merge($params, $sections);
+    }
+
+    // --- Group and sort
+    $sql .= " GROUP BY f.process ORDER BY total_records DESC";
+
+    // --- Debugging (optional)
+    // echo '<pre>'; print_r($params); echo '</pre>'; echo $sql; exit;
 
     $stmt = $conn->prepare($sql);
     $stmt->execute($params);
@@ -904,11 +1006,14 @@ if ($method == 'fetch_defect_category_breakdown_chart') {
     $months = $_POST['months'] ?? [];
     $weeks = $_POST['weeks'] ?? [];
     $defect_category = $_POST['defect_category'] ?? [];
+    $sections = $_POST['sections'] ?? [];
 
+    // Ensure all inputs are arrays
     if (!is_array($years)) $years = [$years];
     if (!is_array($months)) $months = [$months];
     if (!is_array($weeks)) $weeks = [$weeks];
     if (!is_array($defect_category)) $defect_category = [$defect_category];
+    if (!is_array($sections)) $sections = [$sections];
 
     $response = [];
 
@@ -921,27 +1026,36 @@ if ($method == 'fetch_defect_category_breakdown_chart') {
             $daysInMonth = cal_days_in_month(CAL_GREGORIAN, $month, $year);
             $monthEnd = sprintf('%04d-%02d-%02d', $year, $month, $daysInMonth);
 
-            // Fetch all rows for this month in one query
+            // Base query now includes JOIN to m_line_no to get section
             $baseQuery = "
-                SELECT date_detected, COUNT(*) AS total_records
-                FROM t_minor_defect_f
-                WHERE date_detected BETWEEN ? AND ?
+                SELECT t.date_detected, COUNT(*) AS total_records
+                FROM t_minor_defect_f AS t
+                LEFT JOIN m_line_no AS m ON t.line_no = m.line_no
+                WHERE t.date_detected BETWEEN ? AND ?
             ";
             $params = [$monthStart, $monthEnd];
 
+            // Add defect category filter if selected
             if (!empty($defect_category)) {
                 $placeholders = implode(',', array_fill(0, count($defect_category), '?'));
-                $baseQuery .= " AND defect_category IN ($placeholders)";
+                $baseQuery .= " AND t.defect_category IN ($placeholders)";
                 $params = array_merge($params, $defect_category);
             }
 
-            $baseQuery .= " GROUP BY date_detected ORDER BY date_detected ASC";
+            // Add section filter if selected (from m_line_no)
+            if (!empty($sections)) {
+                $placeholders = implode(',', array_fill(0, count($sections), '?'));
+                $baseQuery .= " AND m.section IN ($placeholders)";
+                $params = array_merge($params, $sections);
+            }
+
+            $baseQuery .= " GROUP BY t.date_detected ORDER BY t.date_detected ASC";
 
             $stmt = $conn->prepare($baseQuery);
             $stmt->execute($params);
             $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-            // Generate week ranges
+            // Generate weekly ranges
             $weeksFilter = [];
             if (!empty($weeks)) {
                 foreach ($weeks as $w) {
@@ -970,7 +1084,7 @@ if ($method == 'fetch_defect_category_breakdown_chart') {
                 }
             }
 
-            // Aggregate data in PHP by week
+            // Aggregate by week
             $monthData = [
                 'year' => $year,
                 'month' => date('F', strtotime($monthStart)),
@@ -1005,9 +1119,12 @@ if ($method == 'fetch_sub_defect_details_breakdown_chart') {
     $months = $_POST['months'] ?? [];
     $weeks = $_POST['weeks'] ?? [];
     $defect_category = $_POST['defect_category'] ?? '';
+    $sections = $_POST['sections'] ?? [];
 
     if (!is_array($years)) $years = [$years];
     if (!is_array($months)) $months = [$months];
+    if (!is_array($weeks)) $weeks = [$weeks];
+    if (!is_array($sections)) $sections = [$sections];
 
     $response = [];
 
@@ -1020,21 +1137,32 @@ if ($method == 'fetch_sub_defect_details_breakdown_chart') {
             $daysInMonth = cal_days_in_month(CAL_GREGORIAN, $month, $year);
             $monthEnd = sprintf('%04d-%02d-%02d', $year, $month, $daysInMonth);
 
-            // Fetch all records for the month in one query
+            // Base query now includes JOIN to m_line_no to filter by section
             $query = "
                 SELECT 
-                    defect_details,
-                    date_detected,
+                    t.defect_details,
+                    t.date_detected,
                     COUNT(*) AS total_records
-                FROM t_minor_defect_f
+                FROM t_minor_defect_f AS t
+                LEFT JOIN m_line_no AS m ON t.line_no = m.line_no
                 WHERE 
-                    date_detected BETWEEN ? AND ?
-                    AND defect_category = ?
-                GROUP BY defect_details, date_detected
-                ORDER BY date_detected ASC
+                    t.date_detected BETWEEN ? AND ?
+                    AND t.defect_category = ?
             ";
+
+            $params = [$monthStart, $monthEnd, $defect_category];
+
+            // Add section filter if selected
+            if (!empty($sections)) {
+                $placeholders = implode(',', array_fill(0, count($sections), '?'));
+                $query .= " AND m.section IN ($placeholders)";
+                $params = array_merge($params, $sections);
+            }
+
+            $query .= " GROUP BY t.defect_details, t.date_detected ORDER BY t.date_detected ASC";
+
             $stmt = $conn->prepare($query);
-            $stmt->execute([$monthStart, $monthEnd, $defect_category]);
+            $stmt->execute($params);
             $allResults = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
             // Precompute weekly ranges
@@ -1066,7 +1194,7 @@ if ($method == 'fetch_sub_defect_details_breakdown_chart') {
                 }
             }
 
-            // Aggregate data per week from the single result set
+            // Aggregate data per week
             $monthData = [
                 'year' => $year,
                 'month' => date('F', strtotime($monthStart)),
@@ -1093,7 +1221,7 @@ if ($method == 'fetch_sub_defect_details_breakdown_chart') {
                     ];
                 }
 
-                usort($weekDetails, fn($a, $b) => $b['count'] <=> $a['count']); // sort descending
+                usort($weekDetails, fn($a, $b) => $b['count'] <=> $a['count']); // Sort descending
 
                 $monthData['weeks'][] = [
                     'week_label' => 'W' . ($index + 1),
@@ -1114,33 +1242,44 @@ if ($method == 'fetch_sequence_no_breakdown_chart') {
     $years = $_POST['years'] ?? [];
     $months = $_POST['months'] ?? [];
     $defect_category = $_POST['defect_category'] ?? [];
+    $sections = $_POST['sections'] ?? []; // Section filter added
 
     if (!is_array($years)) $years = [$years];
     if (!is_array($months)) $months = [$months];
     if (!is_array($defect_category)) $defect_category = [$defect_category];
+    if (!is_array($sections)) $sections = [$sections];
 
     $yearList = implode(',', array_map('intval', $years));
     $monthList = implode(',', array_map('intval', $months));
 
     $query = "
         SELECT TOP 5 
-            RTRIM(LTRIM(CONCAT(process, '_', sequence_no))) AS process_sequence,
+            RTRIM(LTRIM(CONCAT(f.process, '_', f.sequence_no))) AS process_sequence,
             COUNT(*) AS total_records
-        FROM t_minor_defect_f
-        WHERE YEAR(date_detected) IN ($yearList)
-          AND MONTH(date_detected) IN ($monthList)
+        FROM t_minor_defect_f AS f
+        LEFT JOIN m_line_no AS l ON f.line_no = l.line_no 
+        WHERE YEAR(f.date_detected) IN ($yearList)
+          AND MONTH(f.date_detected) IN ($monthList)
     ";
 
     $params = [];
 
+    // Add defect category filter
     if (!empty($defect_category)) {
         $placeholders = implode(',', array_fill(0, count($defect_category), '?'));
-        $query .= " AND defect_category IN ($placeholders)";
+        $query .= " AND f.defect_category IN ($placeholders)";
         $params = array_merge($params, $defect_category);
     }
 
+    // Add section filter
+    if (!empty($sections)) {
+        $placeholders = implode(',', array_fill(0, count($sections), '?'));
+        $query .= " AND l.section IN ($placeholders)";
+        $params = array_merge($params, $sections);
+    }
+
     $query .= "
-        GROUP BY process, sequence_no
+        GROUP BY f.process, f.sequence_no
         ORDER BY total_records DESC
     ";
 
@@ -1153,7 +1292,7 @@ if ($method == 'fetch_sequence_no_breakdown_chart') {
         $results = [$results];
     }
 
-    // Trim spaces and cast numbers
+    // Clean up and cast data types
     foreach ($results as &$row) {
         $row['process_sequence'] = trim($row['process_sequence']);
         $row['total_records'] = (int)$row['total_records'];
@@ -1167,33 +1306,44 @@ if ($method == 'fetch_connector_no_breakdown_chart') {
     $years = $_POST['years'] ?? [];
     $months = $_POST['months'] ?? [];
     $defect_category = $_POST['defect_category'] ?? [];
+    $sections = $_POST['sections'] ?? [];
 
     if (!is_array($years)) $years = [$years];
     if (!is_array($months)) $months = [$months];
     if (!is_array($defect_category)) $defect_category = [$defect_category];
+    if (!is_array($sections)) $sections = [$sections];
 
     $yearList = implode(',', array_map('intval', $years));
     $monthList = implode(',', array_map('intval', $months));
 
     $query = "
         SELECT TOP 5 
-            RTRIM(LTRIM(CONCAT(process, '_', connector_no))) AS process_connector,
+            RTRIM(LTRIM(CONCAT(f.process, '_', f.connector_no))) AS process_connector,
             COUNT(*) AS total_records
-        FROM t_minor_defect_f
-        WHERE YEAR(date_detected) IN ($yearList)
-          AND MONTH(date_detected) IN ($monthList)
+        FROM t_minor_defect_f AS f
+        LEFT JOIN m_line_no AS l ON f.line_no = l.line_no
+        WHERE YEAR(f.date_detected) IN ($yearList)
+          AND MONTH(f.date_detected) IN ($monthList)
     ";
 
     $params = [];
 
+    // Filter by defect category if provided
     if (!empty($defect_category)) {
         $placeholders = implode(',', array_fill(0, count($defect_category), '?'));
-        $query .= " AND defect_category IN ($placeholders)";
+        $query .= " AND f.defect_category IN ($placeholders)";
         $params = array_merge($params, $defect_category);
     }
 
+    // Add section filter logic
+    if (!empty($sections)) {
+        $placeholders = implode(',', array_fill(0, count($sections), '?'));
+        $query .= " AND l.section IN ($placeholders)";
+        $params = array_merge($params, $sections);
+    }
+
     $query .= "
-        GROUP BY process, connector_no
+        GROUP BY f.process, f.connector_no
         ORDER BY total_records DESC
     ";
 
@@ -1201,12 +1351,10 @@ if ($method == 'fetch_connector_no_breakdown_chart') {
     $stmt->execute($params);
     $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    // Always ensure JSON output is an array
     if (!is_array($results)) {
         $results = [$results];
     }
 
-    // Trim spaces and cast numbers
     foreach ($results as &$row) {
         $row['process_connector'] = trim($row['process_connector']);
         $row['total_records'] = (int)$row['total_records'];
@@ -1220,10 +1368,12 @@ if ($method == 'fetch_line_category_month_week_chart') {
     $years = $_POST['years'] ?? [];
     $months = $_POST['months'] ?? [];
     $defect_category = $_POST['defect_category'] ?? [];
+    $sections = $_POST['sections'] ?? []; 
 
     if (!is_array($years)) $years = [$years];
     if (!is_array($months)) $months = [$months];
     if (!is_array($defect_category)) $defect_category = [$defect_category];
+    if (!is_array($sections)) $sections = [$sections];
 
     $response = [];
 
@@ -1235,7 +1385,7 @@ if ($method == 'fetch_line_category_month_week_chart') {
             $monthStart = new DateTime("$year-$month-01");
             $monthEnd = (clone $monthStart)->modify('last day of this month');
 
-            // Build week boundaries (any start day → end on Sunday)
+            // Build week boundaries
             $weeks = [];
             $current = clone $monthStart;
             while ($current <= $monthEnd) {
@@ -1251,29 +1401,40 @@ if ($method == 'fetch_line_category_month_week_chart') {
                 $current = (clone $end)->modify('+1 day');
             }
 
-            // Fetch all records at once
+            // UPDATED QUERY with LEFT JOIN for section
             $query = "
                 SELECT 
-                    ISNULL(line_category, 'Unknown') AS line_category,
-                    date_detected
-                FROM t_minor_defect_f
-                WHERE YEAR(date_detected) = ? 
-                  AND MONTH(date_detected) = ?
+                    ISNULL(t.line_category, 'Unknown') AS line_category,
+                    t.date_detected,
+                    ISNULL(m.section, 'Unknown') AS section
+                FROM t_minor_defect_f AS t
+                LEFT JOIN m_line_no AS m 
+                    ON t.line_no = m.line_no
+                WHERE YEAR(t.date_detected) = ? 
+                  AND MONTH(t.date_detected) = ?
             ";
 
             $params = [$year, $month];
 
+            // Defect category filter
             if (!empty($defect_category)) {
                 $placeholders = implode(',', array_fill(0, count($defect_category), '?'));
-                $query .= " AND defect_category IN ($placeholders)";
+                $query .= " AND t.defect_category IN ($placeholders)";
                 $params = array_merge($params, $defect_category);
+            }
+
+            // Section filter
+            if (!empty($sections)) {
+                $placeholders = implode(',', array_fill(0, count($sections), '?'));
+                $query .= " AND m.section IN ($placeholders)";
+                $params = array_merge($params, $sections);
             }
 
             $stmt = $conn->prepare($query);
             $stmt->execute($params);
             $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-            // Preprocess counts: line_category + week index
+            // Preprocess counts by line_category + week index
             $counts = [];
             foreach ($rows as $r) {
                 $lc = $r['line_category'] ?: 'Unknown';

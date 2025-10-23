@@ -91,10 +91,10 @@
       await Promise.all([
          fetch_defect_category_list(),
          fetch_year_list(),
-         fetch_month_list()
-         // fetch_section_list()
+         fetch_month_list(),
+         fetch_section_list(),
          // fetch_line_list(),
-         // fetch_process_list(),
+         fetch_process_list(),
          // fetch_line_category_list()
       ]);
 
@@ -805,12 +805,12 @@
             }
 
             // Add Mark All / Unmark All button
-            // const markAllButton = $(`
-            //    <button id="markAllBtn" class="btn btn-xs btn-outline-info m-0 p-0 m-1">
-            //       &nbsp;Mark All&nbsp;
-            //    </button>
-            // `);
-            // container.append(markAllButton);
+            const markAllButton = $(`
+               <button id="markAllBtn" class="btn btn-xs btn-outline-info m-0 p-0 m-1">
+                  &nbsp;Mark All&nbsp;
+               </button>
+            `);
+            container.append(markAllButton);
 
             // Generate button-style checkboxes
             response.forEach(item => {
@@ -862,12 +862,12 @@
             }
 
             // Add Mark/Unmark All button
-            // const markAllBtn = $('<button>', {
-            //    class: 'btn btn-xs btn-outline-info m-0 p-0 m-1',
-            //    html: '&nbsp;Mark All&nbsp;',
-            //    id: 'mark_all_years_btn'
-            // });
-            // container.append(markAllBtn);
+            const markAllBtn = $('<button>', {
+               class: 'btn btn-xs btn-outline-info m-0 p-0 m-1',
+               html: '&nbsp;Mark All&nbsp;',
+               id: 'mark_all_years_btn'
+            });
+            container.append(markAllBtn);
 
             // Generate year buttons
             response.forEach(year => {
@@ -915,12 +915,12 @@
             }
 
             // Add Mark/Unmark All button
-            // const markAllBtn = $('<button>', {
-            //    class: 'btn btn-xs btn-outline-info m-0 p-0 m-1',
-            //    html: '&nbsp;Mark All&nbsp;',
-            //    id: 'mark_all_months_btn'
-            // });
-            // container.append(markAllBtn);
+            const markAllBtn = $('<button>', {
+               class: 'btn btn-xs btn-outline-info m-0 p-0 m-1',
+               html: '&nbsp;Mark All&nbsp;',
+               id: 'mark_all_months_btn'
+            });
+            container.append(markAllBtn);
 
             // Generate month buttons
             response.forEach(month => {
@@ -1068,12 +1068,12 @@
             }
 
             // Add Mark/Unmark All button
-            // const markAllBtn = $('<button>', {
-            //    class: 'btn btn-xs btn-outline-info m-0 p-0 m-1',
-            //    html: '&nbsp;Mark All&nbsp;',
-            //    id: 'mark_all_sections_btn'
-            // });
-            // container.append(markAllBtn);
+            const markAllBtn = $('<button>', {
+               class: 'btn btn-xs btn-outline-info m-0 p-0 m-1',
+               html: '&nbsp;Mark All&nbsp;',
+               id: 'mark_all_sections_btn'
+            });
+            container.append(markAllBtn);
 
             // Generate section checkboxes
             response.forEach(section => {
@@ -1296,7 +1296,12 @@
          const selectedYears = $('.year-check:checked').map(function() {
             return $(this).val();
          }).get();
+
          const selectedMonths = $('.month-check:checked').map(function() {
+            return $(this).val();
+         }).get();
+
+         const selectedSections = $('.section-check:checked').map(function() {
             return $(this).val();
          }).get();
 
@@ -1313,7 +1318,8 @@
             data: {
                method: 'fetch_overall_month_week_chart',
                years: selectedYears,
-               months: selectedMonths
+               months: selectedMonths,
+               sections: selectedSections
             },
             success: function(response) {
                if (!response || response.length === 0) {
@@ -1484,6 +1490,10 @@
          return $(this).val();
       }).get();
 
+      const selectedSections = $('.section-check:checked').map(function() {
+         return $(this).val();
+      }).get();
+
       if (selectedYears.length === 0 || selectedMonths.length === 0) {
          $('#overall_month_week_chart').html('<p class="text-muted text-center">Please select at least one year and one month.</p>');
          reject('Missing filters: years or months');
@@ -1498,7 +1508,8 @@
             method: 'fetch_harness_type_breakdown_chart',
             defect_category: selectedDefectCategory,
             years: selectedYears,
-            months: selectedMonths
+            months: selectedMonths,
+            sections: selectedSections
          },
          success: function(response) {
             Highcharts.chart('harness_type_breakdown_chart', {
@@ -1602,6 +1613,10 @@
             return $(this).val();
          }).get();
 
+         const selectedSections = $('.section-check:checked').map(function() {
+            return $(this).val();
+         }).get();
+
          if (selectedYears.length === 0 || selectedMonths.length === 0) {
             $('#overall_record_per_section_chart').html('<p class="text-muted text-center">Please select at least one year and one month.</p>');
             reject('Missing filters: years or months');
@@ -1616,7 +1631,8 @@
                method: 'fetch_overall_record_per_section_chart',
                defect_category: selectedDefectCategory,
                years: selectedYears,
-               months: selectedMonths
+               months: selectedMonths,
+               sections: selectedSections
             },
             success: function(response) {
                if (!response || response.length === 0) {
@@ -1815,6 +1831,10 @@
             return $(this).val();
          }).get();
 
+         const selectedSections = $('.section-check:checked').map(function() {
+            return $(this).val();
+         }).get();
+
          if (selectedYears.length === 0 || selectedMonths.length === 0) {
             $('#top_ten_lines_chart').html('<p class="text-muted text-center">Please select at least one year and one month.</p>');
             reject('Missing filters: years or months');
@@ -1829,7 +1849,8 @@
                method: 'fetch_overall_top_ten_lines_chart',
                defect_category: selectedDefectCategory,
                years: selectedYears,
-               months: selectedMonths
+               months: selectedMonths,
+               sections: selectedSections
             },
             success: function(response) {
                if (!response || response.length === 0) {
@@ -2030,6 +2051,10 @@
             return $(this).val();
          }).get();
 
+         const selectedSections = $('.section-check:checked').map(function() {
+            return $(this).val();
+         }).get();
+
          if (selectedYears.length === 0 || selectedMonths.length === 0) {
             $('#summary_per_detection_chart').html('<p class="text-muted text-center">Please select at least one year and one month.</p>');
             reject('Missing filters');
@@ -2044,7 +2069,8 @@
                method: 'fetch_summary_per_detection_chart',
                years: selectedYears,
                months: selectedMonths,
-               defect_category: selectedDefectCategory
+               defect_category: selectedDefectCategory,
+               sections: selectedSections
             },
             success: function(response) {
                if (!response || response.length === 0) {
@@ -2156,6 +2182,10 @@
             return;
          }
 
+         const selectedSections = $('.section-check:checked').map(function() {
+            return $(this).val();
+         }).get();
+
          $.ajax({
             url: 'process/weekly_monitoring_p.php',
             type: 'POST',
@@ -2164,7 +2194,8 @@
                method: 'fetch_defect_category_breakdown_chart',
                defect_category: selectedDefectCategory,
                years: selectedYears,
-               months: selectedMonths
+               months: selectedMonths,
+               sections: selectedSections
             },
             success: function(response) {
                if (!response || response.length === 0) {
@@ -2317,6 +2348,10 @@
             return;
          }
 
+         const selectedSections = $('.section-check:checked').map(function() {
+            return $(this).val();
+         }).get();
+
          $.ajax({
             url: 'process/weekly_monitoring_p.php',
             type: 'POST',
@@ -2325,7 +2360,8 @@
                method: 'fetch_sub_defect_details_breakdown_chart',
                defect_category: selectedDefectCategory[0],
                years: selectedYears,
-               months: selectedMonths
+               months: selectedMonths,
+               sections: selectedSections
             },
             success: function(response) {
                if (!response || response.length === 0) {
@@ -2533,6 +2569,10 @@
             return $(this).val();
          }).get();
 
+         const selectedSections = $('.section-check:checked').map(function() {
+            return $(this).val();
+         }).get();
+
          if (selectedYears.length === 0 || selectedMonths.length === 0) {
             $('#sequence_no_breakdown_chart').html('<p class="text-muted text-center">Please select at least one year and one month.</p>');
             reject('Missing filters: years or months');
@@ -2547,7 +2587,8 @@
                method: 'fetch_sequence_no_breakdown_chart',
                years: selectedYears,
                months: selectedMonths,
-               defect_category: selectedDefectCategory
+               defect_category: selectedDefectCategory,
+               sections: selectedSections
             },
             success: function(response) {
                if (!response || response.length === 0) {
@@ -2608,7 +2649,7 @@
                         fontFamily: 'Poppins, sans-serif'
                      },
                      formatter: function() {
-                        return `<b>${this.x}</b><br/>Total Records: <b>${this.y}</b>`;
+                        return `<p>${this.point.category}</p><br/>Total Records: <b>${this.y}</b>`;
                      }
                   },
                   plotOptions: {
@@ -2657,6 +2698,10 @@
             return $(this).val();
          }).get();
 
+         const selectedSections = $('.section-check:checked').map(function() {
+            return $(this).val();
+         }).get();
+
          if (selectedYears.length === 0 || selectedMonths.length === 0) {
             $('#connector_no_breakdown_chart').html('<p class="text-muted text-center">Please select at least one year and one month.</p>');
             reject('Missing filters: years or months');
@@ -2671,7 +2716,8 @@
                method: 'fetch_connector_no_breakdown_chart',
                years: selectedYears,
                months: selectedMonths,
-               defect_category: selectedDefectCategory
+               defect_category: selectedDefectCategory,
+               sections: selectedSections
             },
             success: function(response) {
                if (!response || response.length === 0) {
@@ -2732,7 +2778,7 @@
                         fontFamily: 'Poppins, sans-serif'
                      },
                      formatter: function() {
-                        return `<b>${this.x}</b><br/>Total Records: <b>${this.y}</b>`;
+                        return `<p>${this.point.category}</p><br/>Total Records: <b>${this.y}</b>`;
                      }
                   },
                   plotOptions: {
@@ -2781,6 +2827,10 @@
             return $(this).val();
          }).get();
 
+         const selectedSections = $('.section-check:checked').map(function() {
+            return $(this).val();
+         }).get();
+
          if (selectedYears.length === 0 || selectedMonths.length === 0) {
             $('#line_category_month_week_chart').html('<p class="text-muted text-center">Please select at least one year and one month.</p>');
             reject('Missing filters: years or months');
@@ -2795,7 +2845,8 @@
                method: 'fetch_line_category_month_week_chart',
                defect_category: selectedDefectCategory,
                years: selectedYears,
-               months: selectedMonths
+               months: selectedMonths,
+               sections: selectedSections
             },
             success: function(response) {
                if (!response || response.length === 0) {
