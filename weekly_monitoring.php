@@ -8,7 +8,7 @@ include('plugins/system_plugins/navbar/index_navbar.php');
 <div class="content-wrapper" style="background: #f8f9fa;">
    <!-- Main content -->
    <section class="content">
-      <div class="d-side-nav collapse show" id="sidebarOverall">
+      <div class="d-side-nav collapse" id="sidebarOverall">
          <div class="row">
             <div class="col-12">
                <div class="mt-2 d-flex justify-content-end align-items-center">
@@ -43,7 +43,7 @@ include('plugins/system_plugins/navbar/index_navbar.php');
                   <div id="section_container"></div>
                </div>
 
-               <div class="filter-border mb-2">
+               <div class="filter-border mb-2 d-none">
                   <p class="m-0 p-0 mb-1 text-xs">Process</p>
                   <div id="process_container"></div>
                </div>
@@ -79,7 +79,8 @@ include('plugins/system_plugins/navbar/index_navbar.php');
                   <i class="fas fa-bars"></i>
                </button>
                <span style="color: #ddd;">&nbsp; | &nbsp;</span>
-               <p class="mb-0 me-2 text-sm text-muted">Overall Monitoring <span id="selectedFiltersText" class="text-info fw-semibold"></span></p>
+               <p class="mb-0 me-2 text-sm text-muted">Overall Monitoring</p>
+               <!-- <span id="selectedFiltersText" class="text-info fw-semibold"></span> -->
             </div>
          </div>
 

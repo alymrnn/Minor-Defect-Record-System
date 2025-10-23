@@ -227,16 +227,7 @@ if ($method == 'fetch_defect_category_list') {
     $data = [];
 
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-        $category = $row['defect_code_value_dd'];
-
-        // Apply short name replacements
-        switch ($category) {
-            case 'Insufficient taping (with dimension requirement)':
-                $category = 'Insufficient taping (w/ dim req)';
-                break;
-        }
-
-        $data[] = $category;
+        $data[] = $row['defect_code_value_dd'];
     }
 
     echo json_encode($data);
@@ -1008,7 +999,6 @@ if ($method == 'fetch_defect_category_breakdown_chart') {
     $defect_category = $_POST['defect_category'] ?? [];
     $sections = $_POST['sections'] ?? [];
 
-    // Ensure all inputs are arrays
     if (!is_array($years)) $years = [$years];
     if (!is_array($months)) $months = [$months];
     if (!is_array($weeks)) $weeks = [$weeks];
@@ -1026,65 +1016,54 @@ if ($method == 'fetch_defect_category_breakdown_chart') {
             $daysInMonth = cal_days_in_month(CAL_GREGORIAN, $month, $year);
             $monthEnd = sprintf('%04d-%02d-%02d', $year, $month, $daysInMonth);
 
-            // Base query now includes JOIN to m_line_no to get section
+            // --- Get all matching data for the month ---
             $baseQuery = "
-                SELECT t.date_detected, COUNT(*) AS total_records
+                SELECT 
+                    t.date_detected, 
+                    t.defect_category,
+                    COUNT(*) AS total_records
                 FROM t_minor_defect_f AS t
                 LEFT JOIN m_line_no AS m ON t.line_no = m.line_no
                 WHERE t.date_detected BETWEEN ? AND ?
             ";
+
             $params = [$monthStart, $monthEnd];
 
-            // Add defect category filter if selected
             if (!empty($defect_category)) {
                 $placeholders = implode(',', array_fill(0, count($defect_category), '?'));
                 $baseQuery .= " AND t.defect_category IN ($placeholders)";
                 $params = array_merge($params, $defect_category);
             }
 
-            // Add section filter if selected (from m_line_no)
             if (!empty($sections)) {
                 $placeholders = implode(',', array_fill(0, count($sections), '?'));
                 $baseQuery .= " AND m.section IN ($placeholders)";
                 $params = array_merge($params, $sections);
             }
 
-            $baseQuery .= " GROUP BY t.date_detected ORDER BY t.date_detected ASC";
+            $baseQuery .= " GROUP BY t.date_detected, t.defect_category ORDER BY t.date_detected ASC";
 
             $stmt = $conn->prepare($baseQuery);
             $stmt->execute($params);
             $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-            // Generate weekly ranges
+            // --- Build weekly ranges ---
             $weeksFilter = [];
-            if (!empty($weeks)) {
-                foreach ($weeks as $w) {
-                    if (preg_match('/(\w{3})\s?(\d+)[–-](\d+)/', $w, $matches)) {
-                        $startDay = $matches[2];
-                        $endDay = $matches[3];
-                        $weeksFilter[] = [
-                            'start' => sprintf('%04d-%02d-%02d', $year, $month, $startDay),
-                            'end'   => sprintf('%04d-%02d-%02d', $year, $month, $endDay)
-                        ];
-                    }
-                }
-            } else {
-                $current = new DateTime($monthStart);
-                $monthEndDate = new DateTime($monthEnd);
-                while ($current <= $monthEndDate) {
-                    $start = clone $current;
-                    $end = clone $start;
-                    $end->modify('next Sunday');
-                    if ($end > $monthEndDate) $end = clone $monthEndDate;
-                    $weeksFilter[] = [
-                        'start' => $start->format('Y-m-d'),
-                        'end'   => $end->format('Y-m-d')
-                    ];
-                    $current = (clone $end)->modify('+1 day');
-                }
+            $current = new DateTime($monthStart);
+            $monthEndDate = new DateTime($monthEnd);
+            while ($current <= $monthEndDate) {
+                $start = clone $current;
+                $end = clone $start;
+                $end->modify('next Sunday');
+                if ($end > $monthEndDate) $end = clone $monthEndDate;
+                $weeksFilter[] = [
+                    'start' => $start->format('Y-m-d'),
+                    'end'   => $end->format('Y-m-d')
+                ];
+                $current = (clone $end)->modify('+1 day');
             }
 
-            // Aggregate by week
+            // --- Aggregate by category + week ---
             $monthData = [
                 'year' => $year,
                 'month' => date('F', strtotime($monthStart)),
@@ -1092,17 +1071,30 @@ if ($method == 'fetch_defect_category_breakdown_chart') {
             ];
 
             foreach ($weeksFilter as $index => $wf) {
-                $weekCount = 0;
-                foreach ($results as $row) {
-                    if ($row['date_detected'] >= $wf['start'] && $row['date_detected'] <= $wf['end']) {
-                        $weekCount += $row['total_records'];
+                $weekLabel = 'W' . ($index + 1);
+                $weekData = [];
+
+                foreach ($defect_category as $cat) {
+                    $count = 0;
+                    foreach ($results as $row) {
+                        if (
+                            $row['defect_category'] === $cat &&
+                            $row['date_detected'] >= $wf['start'] &&
+                            $row['date_detected'] <= $wf['end']
+                        ) {
+                            $count += $row['total_records'];
+                        }
                     }
+                    $weekData[] = [
+                        'defect_category' => $cat,
+                        'total_records' => $count
+                    ];
                 }
 
                 $monthData['weeks'][] = [
-                    'week_label' => 'W' . ($index + 1),
+                    'week_label' => $weekLabel,
                     'week_range' => date('M j', strtotime($wf['start'])) . '–' . date('j', strtotime($wf['end'])),
-                    'total_records' => $weekCount
+                    'data' => $weekData
                 ];
             }
 
@@ -1118,13 +1110,14 @@ if ($method == 'fetch_sub_defect_details_breakdown_chart') {
     $years = $_POST['years'] ?? [];
     $months = $_POST['months'] ?? [];
     $weeks = $_POST['weeks'] ?? [];
-    $defect_category = $_POST['defect_category'] ?? '';
+    $defect_categories = $_POST['defect_category'] ?? []; // now multiple
     $sections = $_POST['sections'] ?? [];
 
     if (!is_array($years)) $years = [$years];
     if (!is_array($months)) $months = [$months];
     if (!is_array($weeks)) $weeks = [$weeks];
     if (!is_array($sections)) $sections = [$sections];
+    if (!is_array($defect_categories)) $defect_categories = [$defect_categories];
 
     $response = [];
 
@@ -1137,9 +1130,10 @@ if ($method == 'fetch_sub_defect_details_breakdown_chart') {
             $daysInMonth = cal_days_in_month(CAL_GREGORIAN, $month, $year);
             $monthEnd = sprintf('%04d-%02d-%02d', $year, $month, $daysInMonth);
 
-            // Base query now includes JOIN to m_line_no to filter by section
+            // Build base query
             $query = "
                 SELECT 
+                    t.defect_category,
                     t.defect_details,
                     t.date_detected,
                     COUNT(*) AS total_records
@@ -1147,10 +1141,16 @@ if ($method == 'fetch_sub_defect_details_breakdown_chart') {
                 LEFT JOIN m_line_no AS m ON t.line_no = m.line_no
                 WHERE 
                     t.date_detected BETWEEN ? AND ?
-                    AND t.defect_category = ?
             ";
 
-            $params = [$monthStart, $monthEnd, $defect_category];
+            $params = [$monthStart, $monthEnd];
+
+            // Add defect categories filter
+            if (!empty($defect_categories)) {
+                $placeholders = implode(',', array_fill(0, count($defect_categories), '?'));
+                $query .= " AND t.defect_category IN ($placeholders)";
+                $params = array_merge($params, $defect_categories);
+            }
 
             // Add section filter if selected
             if (!empty($sections)) {
@@ -1159,13 +1159,13 @@ if ($method == 'fetch_sub_defect_details_breakdown_chart') {
                 $params = array_merge($params, $sections);
             }
 
-            $query .= " GROUP BY t.defect_details, t.date_detected ORDER BY t.date_detected ASC";
+            $query .= " GROUP BY t.defect_category, t.defect_details, t.date_detected ORDER BY t.date_detected ASC";
 
             $stmt = $conn->prepare($query);
             $stmt->execute($params);
             $allResults = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-            // Precompute weekly ranges
+            // Compute weeks (same logic)
             $weeksFilter = [];
             if (!empty($weeks)) {
                 foreach ($weeks as $w) {
@@ -1194,7 +1194,7 @@ if ($method == 'fetch_sub_defect_details_breakdown_chart') {
                 }
             }
 
-            // Aggregate data per week
+            // Aggregate per week & category
             $monthData = [
                 'year' => $year,
                 'month' => date('F', strtotime($monthStart)),
@@ -1207,26 +1207,37 @@ if ($method == 'fetch_sub_defect_details_breakdown_chart') {
                 foreach ($allResults as $row) {
                     $date = $row['date_detected'];
                     if ($date >= $wf['start'] && $date <= $wf['end']) {
-                        $def = $row['defect_details'];
-                        if (!isset($weekData[$def])) $weekData[$def] = 0;
-                        $weekData[$def] += $row['total_records'];
+                        $category = $row['defect_category'];
+                        $detail = $row['defect_details'];
+
+                        if (!isset($weekData[$category])) $weekData[$category] = [];
+                        if (!isset($weekData[$category][$detail])) $weekData[$category][$detail] = 0;
+                        $weekData[$category][$detail] += $row['total_records'];
                     }
                 }
 
                 $weekDetails = [];
-                foreach ($weekData as $defect => $count) {
+                foreach ($weekData as $cat => $details) {
+                    $detailArr = [];
+                    foreach ($details as $defect => $count) {
+                        $detailArr[] = [
+                            'defect_details' => $defect,
+                            'count' => $count
+                        ];
+                    }
+
+                    usort($detailArr, fn($a, $b) => $b['count'] <=> $a['count']);
+
                     $weekDetails[] = [
-                        'defect_details' => $defect,
-                        'count' => $count
+                        'defect_category' => $cat,
+                        'details' => $detailArr
                     ];
                 }
 
-                usort($weekDetails, fn($a, $b) => $b['count'] <=> $a['count']); // Sort descending
-
                 $monthData['weeks'][] = [
-                    'week_label' => 'W' . ($index + 1),
+                    'week_label' => ($index + 1),
                     'week_range' => date('M j', strtotime($wf['start'])) . '–' . date('j', strtotime($wf['end'])),
-                    'details' => $weekDetails
+                    'data' => $weekDetails
                 ];
             }
 
@@ -1237,6 +1248,7 @@ if ($method == 'fetch_sub_defect_details_breakdown_chart') {
     echo json_encode($response);
     exit;
 }
+
 
 if ($method == 'fetch_sequence_no_breakdown_chart') {
     $years = $_POST['years'] ?? [];
@@ -1368,7 +1380,7 @@ if ($method == 'fetch_line_category_month_week_chart') {
     $years = $_POST['years'] ?? [];
     $months = $_POST['months'] ?? [];
     $defect_category = $_POST['defect_category'] ?? [];
-    $sections = $_POST['sections'] ?? []; 
+    $sections = $_POST['sections'] ?? [];
 
     if (!is_array($years)) $years = [$years];
     if (!is_array($months)) $months = [$months];

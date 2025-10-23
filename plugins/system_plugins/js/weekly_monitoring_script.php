@@ -94,7 +94,7 @@
          fetch_month_list(),
          fetch_section_list(),
          // fetch_line_list(),
-         fetch_process_list(),
+         // fetch_process_list(),
          // fetch_line_category_list()
       ]);
 
@@ -2205,14 +2205,29 @@
                }
 
                let categories = [];
-               let data = [];
                let groupLabels = [];
+               let seriesData = {};
+
+               // Define your alternating color palette
+               const alternatingColors = [
+                  "#34a0a4", "#168aad", "#1a759f", "#1e6091", "#184e77", // blue shades
+                  "#d9ed92", "#b5e48c", "#99d98c", "#76c893", "#52b69a", "#40916c", "#2d6a4f" // added green depth
+               ];
+
+               // Initialize data containers per defect category
+               selectedDefectCategory.forEach(cat => {
+                  seriesData[cat] = [];
+               });
 
                response.forEach(monthData => {
                   const startIndex = categories.length;
                   monthData.weeks.forEach(week => {
                      categories.push(week.week_label);
-                     data.push(parseInt(week.total_records) || 0);
+
+                     // Fill data per defect category for this week
+                     week.data.forEach(d => {
+                        seriesData[d.defect_category].push(parseInt(d.total_records) || 0);
+                     });
                   });
                   const endIndex = categories.length - 1;
                   groupLabels.push({
@@ -2225,13 +2240,21 @@
                const tickPositions = groupLabels.map(g => (g.from + g.to) / 2);
                $('#defect_category_breakdown_chart').css('min-height', '290px');
 
+               // Build chart series with color assignment
+               const chartSeries = selectedDefectCategory.map((cat, index) => ({
+                  name: cat,
+                  data: seriesData[cat],
+                  type: 'column',
+                  color: alternatingColors[index % alternatingColors.length]
+               }));
+
                Highcharts.chart('defect_category_breakdown_chart', {
                   chart: {
                      type: 'column',
                      backgroundColor: '#fff'
                   },
                   title: {
-                     text: selectedDefectCategory.join(', ') + ' Weekly Record Breakdown', // <-- dynamic title
+                     text: 'Defect Category Weekly Breakdown',
                      align: 'left',
                      style: {
                         fontSize: '13px',
@@ -2258,7 +2281,6 @@
                      }))
                   }, {
                      linkedTo: 0,
-                     opposite: false,
                      tickPositions: tickPositions,
                      labels: {
                         formatter: function() {
@@ -2278,8 +2300,7 @@
                         y: 8
                      },
                      tickLength: 0,
-                     lineWidth: 0,
-                     labelsAlign: 'center'
+                     lineWidth: 0
                   }],
                   yAxis: {
                      allowDecimals: false,
@@ -2288,26 +2309,40 @@
                      }
                   },
                   tooltip: {
-                     pointFormat: '<b>{point.y}</b> defects',
+                     shared: true,
+                     headerFormat: '<b>{point.key}</b><br>',
+                     pointFormat: '{series.name}: <b>{point.y}</b><br>',
                      style: {
                         fontFamily: 'Poppins, sans-serif'
                      }
                   },
                   plotOptions: {
                      column: {
-                        grouping: false,
-                        pointPadding: 0.1,
+                        grouping: true,
                         borderWidth: 0
                      }
                   },
-                  series: [{
-                     name: 'Defect Count',
-                     data: data,
-                     color: '#005f73'
-                  }],
+                  series: chartSeries,
                   legend: {
-                     enabled: false
+                     enabled: true,
+                     layout: 'horizontal',
+                     align: 'center',
+                     verticalAlign: 'bottom',
+                     itemMarginTop: 0,
+                     itemMarginBottom: 0,
+                     itemWidth: 180,
+                     itemStyle: {
+                        fontFamily: 'Poppins, sans-serif',
+                        fontSize: '11px',
+                        fontWeight: '400',
+                        whiteSpace: 'nowrap'
+                     },
+                     symbolHeight: 12,
+                     symbolWidth: 12,
+                     symbolRadius: 0,
+                     squareSymbol: true
                   },
+
                   credits: {
                      enabled: false
                   }
@@ -2329,9 +2364,9 @@
             return $(this).val();
          }).get();
 
-         if (selectedDefectCategory.length !== 1) {
-            $('#sub_defect_details_breakdown_chart').html('<p class="text-info text-center text-sm">Please select exactly one defect category to view its defect details breakdown.</p>');
-            reject('Select exactly one defect category');
+         if (selectedDefectCategory.length === 0) {
+            $('#sub_defect_details_breakdown_chart').html('<p class="text-info text-center text-sm">Please select at least one defect category.</p>');
+            reject('Select at least one defect category');
             return;
          }
 
@@ -2341,13 +2376,6 @@
          const selectedMonths = $('.month-check:checked').map(function() {
             return $(this).val();
          }).get();
-
-         if (selectedYears.length === 0 || selectedMonths.length === 0) {
-            $('#sub_defect_details_breakdown_chart').html('<p class="text-muted text-center">Please select at least one year and one month.</p>');
-            reject('Missing filters: years or months');
-            return;
-         }
-
          const selectedSections = $('.section-check:checked').map(function() {
             return $(this).val();
          }).get();
@@ -2358,98 +2386,102 @@
             dataType: 'json',
             data: {
                method: 'fetch_sub_defect_details_breakdown_chart',
-               defect_category: selectedDefectCategory[0],
+               defect_category: selectedDefectCategory,
                years: selectedYears,
                months: selectedMonths,
                sections: selectedSections
             },
             success: function(response) {
                if (!response || response.length === 0) {
-                  $('#sub_defect_details_breakdown_chart').html('<p class="text-muted text-center">No data found for this defect category.</p>');
+                  $('#sub_defect_details_breakdown_chart').html('<p class="text-muted text-center">No data found.</p>');
                   resolve('No data');
                   return;
                }
 
                let categories = [];
-               let groupLabels = [];
                let detailMap = {};
+               let categoryGroups = [];
+               let monthGroups = [];
 
                const alternatingColors = [
-                  "#0a9396", // teal
-                  "#ee9b00", // amber
-                  "#001219", // dark navy
-                  "#ca6702", // orange
-                  "#94d2bd", // light teal
-                  "#ae2012", // red
-                  "#e9d8a6", // light sand
-                  "#bb3e03", // dark orange
-                  "#005f73", // teal-blue
-                  "#9b2226" // dark red
+                  "#0a9396", "#ee9b00", "#001219", "#ca6702", "#94d2bd",
+                  "#ae2012", "#e9d8a6", "#bb3e03", "#005f73", "#9b2226"
                ];
 
-               const monthNamesMap = {
-                  "JAN": "JANUARY",
-                  "FEB": "FEBRUARY",
-                  "MAR": "MARCH",
-                  "APR": "APRIL",
-                  "MAY": "MAY",
-                  "JUN": "JUNE",
-                  "JUL": "JULY",
-                  "AUG": "AUGUST",
-                  "SEP": "SEPTEMBER",
-                  "OCT": "OCTOBER",
-                  "NOV": "NOVEMBER",
-                  "DEC": "DECEMBER"
-               };
+               let globalIndex = 0;
 
-               // Build category (weeks), group labels (months), and series data (defect details)
                response.forEach(monthData => {
-                  const startIndex = categories.length;
+                  const monthName = monthData.month.toUpperCase();
+                  const monthStartIndex = globalIndex;
 
-                  // Add week labels for each month
-                  monthData.weeks.forEach(week => {
-                     categories.push(week.week_label);
+                  // Get all unique defect categories in this month
+                  const allCategories = [...new Set(monthData.weeks.flatMap(w => w.data.map(d => d.defect_category)))];
 
-                     week.details.forEach(item => {
-                        if (!detailMap[item.defect_details]) detailMap[item.defect_details] = [];
-                        detailMap[item.defect_details].push(parseInt(item.count));
+                  allCategories.forEach(catName => {
+                     const catStart = globalIndex;
+
+                     // Each category block → has multiple weeks
+                     monthData.weeks.forEach(week => {
+                        const weekLabel = week.week_label;
+                        categories.push(`W${weekLabel}`); // show "W1", "W2", etc.
+                        globalIndex++;
+
+                        // Get this category data for this week
+                        const catGroup = week.data.find(d => d.defect_category === catName);
+
+                        if (catGroup) {
+                           catGroup.details.forEach(item => {
+                              const key = `${catName} - ${item.defect_details}`;
+                              if (!detailMap[key]) {
+                                 // Initialize with zeros for all past positions
+                                 detailMap[key] = new Array(categories.length - 1).fill(0);
+                              }
+                              detailMap[key].push(Number(item.count) || 0);
+                           });
+                        }
+
+                        // Fill zeros for missing detail keys (same category)
+                        Object.keys(detailMap).forEach(k => {
+                           if (k.startsWith(catName + ' -') && detailMap[k].length < categories.length) {
+                              detailMap[k].push(0);
+                           }
+                        });
                      });
 
-                     // Fill 0 for missing series
-                     for (let key in detailMap) {
-                        if (!week.details.find(d => d.defect_details === key)) {
-                           detailMap[key].push(0);
-                        }
-                     }
+                     const catEnd = globalIndex - 1;
+                     categoryGroups.push({
+                        name: catName,
+                        from: catStart,
+                        to: catEnd
+                     });
                   });
 
-                  const endIndex = categories.length - 1;
-
-                  groupLabels.push({
-                     name: monthNamesMap[monthData.month.toUpperCase()] || monthData.month.toUpperCase(),
-                     from: startIndex,
-                     to: endIndex
+                  const monthEndIndex = globalIndex - 1;
+                  monthGroups.push({
+                     name: monthName,
+                     from: monthStartIndex,
+                     to: monthEndIndex
                   });
                });
 
-               const tickPositions = groupLabels.map(g => (g.from + g.to) / 2);
-
-               const series = Object.keys(detailMap).map((detail, i) => ({
-                  name: detail,
-                  data: detailMap[detail],
+               // Build series (each defect detail = 1 series)
+               const series = Object.keys(detailMap).map((key, i) => ({
+                  name: key,
+                  data: detailMap[key],
                   color: alternatingColors[i % alternatingColors.length]
                }));
 
-               $('#sub_defect_details_breakdown_chart').css('min-height', '290px');
+               const categoryTicks = categoryGroups.map(g => Math.round((g.from + g.to) / 2));
+               const monthTicks = monthGroups.map(g => Math.round((g.from + g.to) / 2));
 
                Highcharts.chart('sub_defect_details_breakdown_chart', {
                   chart: {
                      type: 'column',
-                     backgroundColor: '#fff'
+                     backgroundColor: '#fff',
+                     height: '290px',
                   },
-                  colors: alternatingColors,
                   title: {
-                     text: `${selectedDefectCategory[0]} - Weekly Defect Details Breakdown`,
+                     text: `Defect Details by Category Weekly Breakdown`,
                      align: 'left',
                      style: {
                         fontSize: '13px',
@@ -2458,82 +2490,117 @@
                      }
                   },
                   xAxis: [{
-                     categories: categories,
-                     tickLength: 0,
-                     labels: {
-                        style: {
-                           fontFamily: 'Poppins, sans-serif',
-                           fontSize: '11px'
+                        categories: categories,
+                        labels: {
+                           style: {
+                              fontFamily: 'Poppins, sans-serif',
+                              fontSize: '10px'
+                           },
+                           y: 25
                         },
-                        y: 20
+                        crosshair: true
                      },
-                     crosshair: true,
-                     plotLines: groupLabels.slice(1).map(g => ({
-                        color: '#DDD',
-                        width: 1,
-                        value: g.from - 0.5,
-                        zIndex: 5
-                     }))
-                  }, {
-                     linkedTo: 0,
-                     opposite: false,
-                     tickPositions: tickPositions,
-                     labels: {
-                        formatter: function() {
-                           const pos = this.pos;
-                           for (let i = 0; i < groupLabels.length; i++) {
-                              const g = groupLabels[i];
-                              if (Math.abs((g.from + g.to) / 2 - pos) < 0.6) return g.name;
-                           }
-                           return '';
-                        },
-                        style: {
-                           fontFamily: 'Poppins, sans-serif',
-                           fontWeight: '400',
-                           fontSize: '11px'
-                        },
-                        y: 8
+                     {
+                        linkedTo: 0,
+                        tickPositions: categoryTicks,
+                        lineWidth: 0,
+                        tickLength: 0,
+                        labels: {
+                           formatter: function() {
+                              const pos = this.pos;
+                              for (let g of categoryGroups) {
+                                 const mid = (g.from + g.to) / 2;
+                                 if (Math.abs(mid - pos) <= 0.5) return `${g.name}`;
+                              }
+                              return '';
+                           },
+                           useHTML: true,
+                           style: {
+                              fontFamily: 'Poppins, sans-serif',
+                              fontSize: '11px',
+                              fontWeight: '500',
+                              whiteSpace: 'nowrap',
+                              textOverflow: 'none',
+                           },
+                           y: 0
+                        }
                      },
-                     tickLength: 0,
-                     lineWidth: 0
-                  }],
+                     {
+                        linkedTo: 0,
+                        tickPositions: monthTicks,
+                        lineWidth: 0,
+                        tickLength: 0,
+                        labels: {
+                           formatter: function() {
+                              const pos = this.pos;
+                              for (let g of monthGroups) {
+                                 const mid = (g.from + g.to) / 2;
+                                 if (Math.abs(mid - pos) <= 0.5) return `<span>${g.name}</span>`;
+                              }
+                              return '';
+                           },
+                           useHTML: true,
+                           style: {
+                              fontFamily: 'Poppins, sans-serif',
+                              fontSize: '11px',
+                              fontWeight: '400',
+                              color: '#444'
+                           },
+                           y: 0
+                        }
+                     }
+                  ],
                   yAxis: {
                      allowDecimals: false,
                      title: {
-                        text: null,
-                        style: {
-                           fontFamily: 'Poppins, sans-serif',
-                           fontSize: '11px'
-                        }
-                     }
+                        text: null
+                     },
+                     gridLineColor: '#eee'
                   },
                   tooltip: {
                      shared: true,
                      useHTML: true,
                      formatter: function() {
-                        let tooltip = `${this.point.category}<br/>`;
-                        this.points.forEach(p => {
-                           tooltip += `<span style="color:${p.color}">●</span> ${p.series.name}: <b>${p.y}</b><br/>`;
+                        const catLabel = this.point.category;
+
+                        const currentCategory = this.points[0].series.name.split(' - ')[0];
+
+                        const tooltipSeries = this.points.filter(p => {
+                           const seriesCategory = p.series.name.split(' - ')[0];
+                           return seriesCategory === currentCategory;
                         });
+
+                        let tooltip = `<b>${currentCategory}</b> (${catLabel})<br/>`;
+
+                        tooltipSeries.forEach(p => {
+                           tooltip += `<span style="color:${p.color}">●</span> ${p.series.name.split(' - ')[1]}: <b>${p.y}</b><br/>`;
+                        });
+
                         return tooltip;
-                     },
-                     style: {
-                        fontFamily: 'Poppins, sans-serif'
                      }
                   },
                   plotOptions: {
                      column: {
-                        stacking: null,
-                        borderWidth: 0
+                        stacking: true,
+                        borderWidth: 0,
+                        pointPadding: 0.05,
+                        groupPadding: 0.1
                      }
                   },
                   series: series,
                   legend: {
                      enabled: true,
+                     layout: 'horizontal',
+                     align: 'center',
+                     verticalAlign: 'bottom',
+                     itemMarginTop: 0,
+                     itemMarginBottom: 0,
+                     itemWidth: 180,
                      itemStyle: {
                         fontFamily: 'Poppins, sans-serif',
                         fontSize: '11px',
-                        fontWeight: '400'
+                        fontWeight: '400',
+                        whiteSpace: 'nowrap'
                      },
                      symbolHeight: 12,
                      symbolWidth: 12,
@@ -2547,6 +2614,7 @@
 
                resolve('Chart loaded successfully');
             },
+
             error: function(xhr, status, error) {
                console.error('AJAX Error:', error);
                reject(error);
@@ -2554,6 +2622,7 @@
          });
       });
    };
+
 
    const fetch_sequence_no_breakdown_chart = () => {
       return new Promise((resolve, reject) => {
