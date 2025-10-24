@@ -255,9 +255,9 @@ $current_page = basename($_SERVER['PHP_SELF']);
 
         <!-- Work Instruction -->
         <li class="nav-item mr-1">
-            <a class="btn btn-sm <?php echo ($current_page == 'Minor-Defect-Record-System_WI_rev.2.pdf') ? 'btn-light text-dark' : 'text-white'; ?>"
+            <a class="btn btn-sm <?php echo ($current_page == 'Minor-Defect-Record-System_WI_rev.3.pdf') ? 'btn-light text-dark' : 'text-white'; ?>"
 
-                href="template/Minor-Defect-Record-System_WI_rev.2.pdf" target="_blank">
+                href="template/Minor-Defect-Record-System_WI_rev.3.pdf" target="_blank">
                 <i class="fas fa-file-alt"></i> Work Instruction
             </a>
         </li>
@@ -271,6 +271,5 @@ $current_page = basename($_SERVER['PHP_SELF']);
         </li>
     </ul>
 </nav>
-<!-- /.navbar -->
 
 <body>

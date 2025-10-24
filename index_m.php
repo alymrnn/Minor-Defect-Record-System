@@ -133,7 +133,7 @@ if (isset($_SESSION['username'])) {
                         <div class="col-6 d-flex justify-content-center">
                             <button class="btn btn-block"
                                 style="color: #353535; border-radius: 10px; border: 1px solid #E9E9E9; height: 40px; font-size: 13px; background-color: #fff; transition: 0.3s ease;"
-                                onclick="window.open('template/Minor-Defect-Record-System_WI_rev.2.pdf', '_blank');"
+                                onclick="window.open('template/Minor-Defect-Record-System_WI_rev.3.pdf', '_blank');"
                                 onmouseover="this.style.backgroundColor='#00497A'; this.style.color='#fff';"
                                 onmouseout="this.style.backgroundColor='#fff'; this.style.color='#353535';">
                                 <i class="far fa-file"></i>&nbsp;Work Instruction
