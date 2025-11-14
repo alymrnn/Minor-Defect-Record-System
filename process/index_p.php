@@ -209,7 +209,7 @@ if ($method == 'load_defect_list') {
                 echo '<td>' . htmlspecialchars($row['treatment_content_defect']) . '</td>';
                 echo '<td>' . htmlspecialchars($row['sequence_no']) . '</td>';
                 echo '<td>' . htmlspecialchars($row['connector_no']) . '</td>';
-                echo '<td>' . htmlspecialchars($row['total_mins']) . '</td>';
+                echo '<td>' . htmlspecialchars($row['total_time']) . '</td>';
                 echo '<td>' . htmlspecialchars($row['repaired_by']) . '</td>';
                 echo '<td>' . htmlspecialchars($row['verified_by']) . '</td>';
                 echo '<td>' . htmlspecialchars($row['record_added_by']) . '</td>';
