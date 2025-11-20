@@ -5,10 +5,10 @@ include('plugins/system_plugins/preloader.php');
 include('plugins/system_plugins/navbar/index_navbar.php');
 ?>
 
-<div class="content-wrapper" style="background: #f5f6fa;">
+<div class="content-wrapper" style="background: #f8f9fa;">
   <!-- Main content -->
   <section class="content pt-3">
-    <div class="card mx-2 border-0 shadow-sm" style="background-color: #f8f9fa;">
+    <div class="chart-border mx-2">
       <!-- SEARCH FIELD -->
       <div class="card-body">
         <div class="row">
@@ -124,17 +124,17 @@ include('plugins/system_plugins/navbar/index_navbar.php');
     </div>
 
     <!-- MAIN FIELD -->
-    <div class="card mx-2 border-0 shadow-sm" style="background-color: #f8f9fa;">
+    <div class="chart-border mx-2 mt-2">
       <div class="card-body">
-        <p class="p-0 m-0" style="color:#525252; font-size: 15px;"><i class="far fa-folder"></i>&nbsp;Minor Defect Record Table</p>
+        <p class="p-0 m-0 text-secondary text-sm"><i class="far fa-folder"></i>&nbsp;Minor Defect Record Table</p>
         <div class="col-sm-3">
           <!-- view total count of data from table -->
           <span id="count_view_defect"></span>
         </div>
 
         <!-- table -->
-        <div id="list_of_defect_res" class="card-body table-responsive m-0 p-0" style="max-height: 450px;">
-          <table class="table col-12 mt-3 table-sm table-head-fixed text-nowrap table-hover" id="defect_table">
+        <div id="list_of_defect_res" class="card-body table-responsive m-0 p-0 mt-1" style="max-height: 450px;">
+          <table class="table col-12 table-sm table-head-fixed text-nowrap table-hover" id="defect_table">
             <thead class="text-center text-sm">
               <th>#</th>
               <th>Date Detected</th>
