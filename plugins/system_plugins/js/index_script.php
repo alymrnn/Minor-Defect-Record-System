@@ -51,33 +51,39 @@
 
         load_defect_table(1);
 
-        $('#a_line_no').on('keypress', function(e) {
-            if (e.which === 13) { // Enter key
-                let lineNo = $(this).val().trim();
-
-                if (lineNo === "2130" || lineNo === "2132") {
-                    $('#category_section').removeClass('d-none');
-                } else {
-                    $('#category_section').addClass('d-none');
-                    $('input[name="category_type"]').prop('checked', false);
-                }
-            }
+        document.querySelectorAll('input[name="category_type"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                document.getElementById('a_category').value = this.value;
+            });
         });
 
-        // Trigger when clearing (backspace/delete or manual clear)
-        $('#a_line_no').on('input', function() {
-            let lineNo = $(this).val().trim();
+        // $('#a_line_no').on('keypress', function(e) {
+        //     if (e.which === 13) { // Enter key
+        //         let lineNo = $(this).val().trim();
 
-            if (lineNo === "") {
-                $('#category_section').addClass('d-none');
-                $('input[name="category_type"]').prop('checked', false);
-            }
-        });
+        //         if (lineNo === "2130" || lineNo === "2132") {
+        //             $('#category_section').removeClass('d-none');
+        //         } else {
+        //             $('#category_section').addClass('d-none');
+        //             $('input[name="category_type"]').prop('checked', false);
+        //         }
+        //     }
+        // });
+
+        // // Trigger when clearing (backspace/delete or manual clear)
+        // $('#a_line_no').on('input', function() {
+        //     let lineNo = $(this).val().trim();
+
+        //     if (lineNo === "") {
+        //         $('#category_section').addClass('d-none');
+        //         $('input[name="category_type"]').prop('checked', false);
+        //     }
+        // });
 
         // When Prime or Re-assy is clicked, update hidden input
-        $('input[name="category_type"]').on('change', function() {
-            $('#a_category').val($(this).val());
-        });
+        // $('input[name="category_type"]').on('change', function() {
+        //     $('#a_category').val($(this).val());
+        // });
     });
 
     // Function to update the UI from sessionStorage
@@ -605,7 +611,7 @@
 
     const add_defect_record = () => {
         const fieldIds = [
-            "a_date_detected", "a_car_maker", "a_car_model", "a_line_no", "a_process",
+            "a_date_detected", "a_car_maker", "a_car_model", "a_line_no", "a_process", "a_category",
             "a_group", "a_shift", "a_product_name", "a_lot_no", "a_serial_no",
             "a_defect_category_code", "a_defect_category", "a_defect_details", "a_defect_details_code", "a_sequence_no",
             "a_connector_no", "a_treatment_content_defect", "a_total_time", "a_repaired_by", "a_verified_by",
@@ -618,13 +624,44 @@
             const input = document.getElementById(id);
             if (input && input.value.trim() === '') {
                 input.style.border = '1px solid #bc4749';
+                input.style.borderRadius = '5px';
                 hasEmpty = true;
             } else if (input) {
                 input.style.border = '';
             }
         });
 
-        if (hasEmpty) {
+        const radios = document.querySelectorAll('input[name="category_type"]');
+        let radioSelected = false;
+
+        radios.forEach(r => {
+            if (r.checked) radioSelected = true;
+        });
+
+        if (!radioSelected) {
+            radios.forEach(r => {
+                r.parentElement.style.border = '1px solid #bc4749';
+                r.parentElement.style.padding = '1px 3px';
+                r.parentElement.style.borderRadius = '5px';
+            });
+        } else {
+            radios.forEach(r => {
+                r.parentElement.style.border = '';
+            });
+        }
+
+        console.log("---- FIELD CHECK ----");
+        fieldIds.forEach(id => {
+            const input = document.getElementById(id);
+            if (input) {
+                console.log(id, "=>", input.value);
+            } else {
+                console.warn(id, "=> NOT FOUND");
+            }
+        });
+
+
+        if (hasEmpty || !radioSelected) {
             Swal.fire({
                 icon: 'info',
                 title: 'Missing Required Fields',
@@ -640,23 +677,23 @@
         var car_model = document.getElementById("a_car_model").value;
         var line_no = document.getElementById("a_line_no").value;
 
-        var category = document.getElementById("a_category").value.trim();
+        var category = document.getElementById("a_category").value;
 
-        if ((line_no === "2130" || line_no === "2132") && category === "") {
-            Swal.fire({
-                icon: 'info',
-                title: 'Missing Required Field',
-                text: 'Category is required for Line No. 2130 and 2132.',
-                background: '#00375C',
-                color: '#f9f9f9',
-            });
-            return;
-        }
+        // if ((line_no === "2130" || line_no === "2132") && category === "") {
+        //     Swal.fire({
+        //         icon: 'info',
+        //         title: 'Missing Required Field',
+        //         text: 'Category is required for Line No. 2130 and 2132.',
+        //         background: '#00375C',
+        //         color: '#f9f9f9',
+        //     });
+        //     return;
+        // }
 
-        if (line_no !== "2130" && line_no !== "2132") {
-            category = "N/A";
-            document.getElementById("a_category").value = "N/A";
-        }
+        // if (line_no !== "2130" && line_no !== "2132") {
+        //     category = "N/A";
+        //     document.getElementById("a_category").value = "N/A";
+        // }
 
         var process = document.getElementById("a_process").value;
         var group = document.getElementById("a_group").value;
@@ -785,7 +822,7 @@
         document.getElementById("a_connector_no").value = '';
         document.getElementById("a_treatment_content_defect").value = '';
         document.getElementById("a_total_time").value = '';
-        document.getElementById("a_occurrence_shift").value = '';
+        // document.getElementById("a_occurrence_shift").value = '';
         document.getElementById("a_occurrence_board_no").value = '';
         document.getElementById("a_occurrence_station_no").value = '';
         document.getElementById("a_repaired_by").value = 'N/A';
@@ -799,7 +836,7 @@
         $('#a_process').prop('disabled', true).css('background', '#DDD');
         $('#a_process').empty().append('<option value="" disabled selected>Select Process</option>');
 
-        $('#category_section').addClass('d-none');
+        // $('#category_section').addClass('d-none');
         $('input[name="category_type"]').prop('checked', false);
 
         $('#a_category').val('');

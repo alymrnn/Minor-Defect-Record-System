@@ -6,3 +6,4 @@ Status: --
 -> enable category: Prime and Re-assy in all lines
 -> additional input of occurrence shift, occurrence board no., and occurrence station no.
 -> reflect in exporting
+-> reflect in admin master

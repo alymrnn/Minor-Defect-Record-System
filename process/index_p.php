@@ -320,6 +320,7 @@ if ($method == 'add_defect_record') {
     $car_model = trim($_POST['car_model']);
     $line_no = trim($_POST['line_no']);
     $harness_type = trim($_POST['harness_type']);
+    $category = trim($_POST['category']);
     $process = trim($_POST['process']);
     $group = trim($_POST['group']);
     $shift = trim($_POST['shift']);
@@ -345,16 +346,16 @@ if ($method == 'add_defect_record') {
     $auth_id_no = trim($_POST['auth_id_no']);
     $auth_name = trim($_POST['auth_name']);
 
-    if ($line_no === "2130" || $line_no === "2132") {
-        if (isset($_POST['category']) && trim($_POST['category']) !== '') {
-            $category = trim($_POST['category']);
-        } else {
-            echo 'error_category_required';
-            exit;
-        }
-    } else {
-        $category = "N/A";
-    }
+    // if ($line_no === "2130" || $line_no === "2132") {
+    //     if (isset($_POST['category']) && trim($_POST['category']) !== '') {
+    //         $category = trim($_POST['category']);
+    //     } else {
+    //         echo 'error_category_required';
+    //         exit;
+    //     }
+    // } else {
+    //     $category = "N/A";
+    // }
 
     $defect_id = generate_defect_id($defect_id);
 

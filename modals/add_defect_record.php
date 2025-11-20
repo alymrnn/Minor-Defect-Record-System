@@ -60,7 +60,7 @@
                     </div>
                 </div>
                 <div class="row mb-4">
-                    <div class="col-12 col-md-3 d-none" id="category_section">
+                    <div class="col-12 col-md-3" id="category_section">
                         <label class="m-0 p-0 text-sm font-weight-normal">Category</label>
                         <label class="m-0 p-0 text-danger text-xs">*</label>
 
