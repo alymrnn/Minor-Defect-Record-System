@@ -153,6 +153,9 @@ include('plugins/system_plugins/navbar/index_navbar.php');
               <th>Defect Category</th>
               <th>Defect Details Code</th>
               <th>Defect Details</th>
+              <th>Occurrence Shift</th>
+              <th>Occurrence Board No.</th>
+              <th>Occurrence Station No.</th>
               <th>Treatment Content of Defect</th>
               <th>Sequence No.</th>
               <th>Connector No.</th>

@@ -609,7 +609,7 @@
             "a_group", "a_shift", "a_product_name", "a_lot_no", "a_serial_no",
             "a_defect_category_code", "a_defect_category", "a_defect_details", "a_defect_details_code", "a_sequence_no",
             "a_connector_no", "a_treatment_content_defect", "a_total_time", "a_repaired_by", "a_verified_by",
-            "a_ip_address", "a_harness_type"
+            "a_ip_address", "a_harness_type", "a_occurrence_shift", "a_occurrence_board_no", "a_occurrence_station_no"
         ];
 
         let hasEmpty = false;
@@ -676,9 +676,13 @@
         var total_time = document.getElementById("a_total_time").value;
         var repaired_by = document.getElementById("a_repaired_by").value;
         var verified_by = document.getElementById("a_verified_by").value;
-        var harness_type = document.getElementById('a_harness_type').value;
-        var defect_id = document.getElementById('defect_id_no').value;
+        var harness_type = document.getElementById("a_harness_type").value;
 
+        var occurrence_shift = document.getElementById("a_occurrence_shift").value;
+        var occurrence_board_no = document.getElementById("a_occurrence_board_no").value;
+        var occurrence_station_no = document.getElementById("a_occurrence_station_no").value;
+
+        var defect_id = document.getElementById('defect_id_no').value;
         var ip_address = document.getElementById("a_ip_address").value;
         var nameplate_value = document.getElementById("nameplate_value").value;
 
@@ -718,6 +722,9 @@
                 repaired_by: repaired_by,
                 verified_by: verified_by,
                 harness_type: harness_type,
+                occurrence_shift: occurrence_shift,
+                occurrence_board_no: occurrence_board_no,
+                occurrence_station_no: occurrence_station_no,
                 defect_id: defect_id,
                 ip_address: ip_address,
                 nameplate_value: nameplate_value,
@@ -741,6 +748,9 @@
                     $('#a_connector_no').val('');
                     $('#a_treatment_content_defect').val('');
                     $('#a_total_time').val('');
+                    $('#a_occurrence_shift').val('');
+                    $('#a_occurrence_board_no').val('');
+                    $('#a_occurrence_station_no').val('');
                     $('#defect_id_no').val('');
 
                     load_defect_table(1);
@@ -775,6 +785,9 @@
         document.getElementById("a_connector_no").value = '';
         document.getElementById("a_treatment_content_defect").value = '';
         document.getElementById("a_total_time").value = '';
+        document.getElementById("a_occurrence_shift").value = '';
+        document.getElementById("a_occurrence_board_no").value = '';
+        document.getElementById("a_occurrence_station_no").value = '';
         document.getElementById("a_repaired_by").value = 'N/A';
         document.getElementById("a_verified_by").value = 'N/A';
         document.getElementById("nameplate_value").value = '';

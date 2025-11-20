@@ -206,6 +206,9 @@ if ($method == 'load_defect_list') {
                 echo '<td>' . htmlspecialchars($row['defect_category']) . '</td>';
                 echo '<td>' . htmlspecialchars($row['defect_details_code']) . '</td>';
                 echo '<td>' . htmlspecialchars($row['defect_details']) . '</td>';
+                echo '<td>' . htmlspecialchars($row['occurrence_shift']) . '</td>';
+                echo '<td>' . htmlspecialchars($row['occurrence_board_no']) . '</td>';
+                echo '<td>' . htmlspecialchars($row['occurrence_station_no']) . '</td>';
                 echo '<td>' . htmlspecialchars($row['treatment_content_defect']) . '</td>';
                 echo '<td>' . htmlspecialchars($row['sequence_no']) . '</td>';
                 echo '<td>' . htmlspecialchars($row['connector_no']) . '</td>';
@@ -328,6 +331,9 @@ if ($method == 'add_defect_record') {
     $defect_category = trim($_POST['defect_category']);
     $defect_details_code = trim($_POST['defect_details_code']);
     $defect_details = trim($_POST['defect_details']);
+    $occurrence_shift = trim($_POST['occurrence_shift']);
+    $occurrence_board_no = trim($_POST['occurrence_board_no']);
+    $occurrence_station_no = trim($_POST['occurrence_station_no']);
     $sequence_no = trim($_POST['sequence_no']);
     $connector_no = trim($_POST['connector_no']);
     $treatment_content_defect = trim($_POST['treatment_content_defect']);
@@ -356,12 +362,14 @@ if ($method == 'add_defect_record') {
         (defect_id, date_detected, car_maker, car_model, line_no, harness_type,
         process, group_d, shift, nameplate_value, product_no,
         lot_no, serial_no, defect_category_code, defect_category, defect_details_code,
-        defect_details, sequence_no, connector_no, treatment_content_defect, repaired_by,
+        defect_details, occurrence_shift, occurrence_board_no, occurrence_station_no,
+        sequence_no, connector_no, treatment_content_defect, repaired_by,
         verified_by, ip_address, record_by_id_no, record_added_by, line_category, total_time) 
         VALUES (:defect_id, :date_detected, :car_maker, :car_model, :line_no, :harness_type,
         :process, :group_d, :shift, :nameplate_value, :product_no,
         :lot_no, :serial_no, :defect_category_code, :defect_category, :defect_details_code,
-        :defect_details, :sequence_no, :connector_no, :treatment_content_defect, :repaired_by,
+        :defect_details, :occurrence_shift, :occurrence_board_no, :occurrence_station_no,
+        :sequence_no, :connector_no, :treatment_content_defect, :repaired_by,
         :verified_by, :ip_address, :record_by_id_no, :record_added_by, :category, :total_time)";
 
     $stmt = $conn->prepare($query);
@@ -383,6 +391,9 @@ if ($method == 'add_defect_record') {
         ':defect_category' => $defect_category,
         ':defect_details_code' => $defect_details_code,
         ':defect_details' => $defect_details,
+        ':occurrence_shift' => $occurrence_shift,
+        ':occurrence_board_no' => $occurrence_board_no,
+        ':occurrence_station_no' => $occurrence_station_no,
         ':sequence_no' => $sequence_no,
         ':connector_no' => $connector_no,
         ':treatment_content_defect' => $treatment_content_defect,

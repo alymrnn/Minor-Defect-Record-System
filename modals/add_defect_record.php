@@ -176,6 +176,32 @@
                             required>
                     </div>
                 </div>
+                <div class="row mb-3 mt-3">
+                    <div class="col-12 col-md-3 offset-3">
+                        <label class="m-0 p-0 text-sm font-weight-normal">Occurrence Shift</label>
+                        <label class="m-0 p-0 text-danger text-xs">*</label>
+                        <select id="a_occurrence_shift" class="form-control form-control-sm form-control-border" required>
+                            <option value="" disabled>Select Shift</option>
+                            <option value="N/A" selected>N/A</option>
+                            <option value="DS">DS</option>
+                            <option value="NS">NS</option>
+                        </select>
+                    </div>
+                    <div class="col-12 col-md-3">
+                        <label class="m-0 p-0 text-sm font-weight-normal">Occurrence Board No.</label>
+                        <label class="m-0 p-0 text-danger text-xs">*</label>
+                        <input type="text" id="a_occurrence_board_no" class="form-control form-control-sm form-control-border" autocomplete="off"
+                            oninput="this.value = this.value.toUpperCase();"
+                            required>
+                    </div>
+                    <div class="col-12 col-md-3">
+                        <label class="m-0 p-0 text-sm font-weight-normal">Occurrence Station No.</label>
+                        <label class="m-0 p-0 text-danger text-xs">*</label>
+                        <input type="text" id="a_occurrence_station_no" class="form-control form-control-sm form-control-border" autocomplete="off"
+                            oninput="this.value = this.value.toUpperCase();"
+                            required>
+                    </div>
+                </div>
                 <div class="row">
                     <div class="col-12 col-md-3">
                         <label class="m-0 p-0 text-sm font-weight-normal">Sequence No.</label>

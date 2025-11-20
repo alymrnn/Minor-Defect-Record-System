@@ -1,0 +1,8 @@
+Request Date: 11/15/2025
+Revision Date: 11/20/2025 - 11/XX/2025
+Reference No: ITSRR-250033 
+Status: --
+
+-> enable category: Prime and Re-assy in all lines
+-> additional input of occurrence shift, occurrence board no., and occurrence station no.
+-> reflect in exporting
