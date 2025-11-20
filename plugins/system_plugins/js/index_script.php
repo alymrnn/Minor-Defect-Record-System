@@ -650,17 +650,6 @@
             });
         }
 
-        console.log("---- FIELD CHECK ----");
-        fieldIds.forEach(id => {
-            const input = document.getElementById(id);
-            if (input) {
-                console.log(id, "=>", input.value);
-            } else {
-                console.warn(id, "=> NOT FOUND");
-            }
-        });
-
-
         if (hasEmpty || !radioSelected) {
             Swal.fire({
                 icon: 'info',
