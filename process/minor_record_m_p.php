@@ -4,7 +4,7 @@ include 'conn.php';
 $method = $_POST['method'];
 
 if ($method == 'load_minor_defect_list') {
-    $limit  = isset($_POST['limit']) ? (int)$_POST['limit'] : 200; // default 200 rows
+    $limit  = isset($_POST['limit']) ? (int)$_POST['limit'] : 300; // default 300 rows
     $page   = isset($_POST['page']) ? (int)$_POST['page'] : 1;
     $offset = ($page - 1) * $limit;
 
@@ -12,6 +12,7 @@ if ($method == 'load_minor_defect_list') {
     $dateFrom = $_POST['m_search_date_from'] ?? '';
     $dateTo   = $_POST['m_search_date_to'] ?? '';
     $lineNo   = $_POST['m_search_line_no'] ?? '';
+    $lotNo    = $_POST['m_search_lot_no'] ?? '';
     $process  = $_POST['m_search_process'] ?? '';
 
     // build WHERE conditions
@@ -33,6 +34,11 @@ if ($method == 'load_minor_defect_list') {
     if (!empty($lineNo)) {
         $conditions[] = "line_no = :lineNo";
         $params[':lineNo'] = $lineNo;
+    }
+
+     if (!empty($lotNo)) {
+        $conditions[] = "lot_no = :lotNo";
+        $params[':lotNo'] = $lotNo;
     }
 
     if (!empty($process)) {
@@ -101,6 +107,9 @@ if ($method == 'load_minor_defect_list') {
                 <td style='vertical-align: middle;'>{$row['defect_category']}</td>
                 <td style='vertical-align: middle;'>{$row['defect_details_code']}</td>
                 <td style='vertical-align: middle;'>{$row['defect_details']}</td>
+                <td style='vertical-align: middle;'>{$row['occurrence_shift']}</td>
+                <td style='vertical-align: middle;'>{$row['occurrence_board_no']}</td>
+                <td style='vertical-align: middle;'>{$row['occurrence_station_no']}</td>
                 <td style='vertical-align: middle;'>{$row['treatment_content_defect']}</td>
                 <td style='vertical-align: middle;'>{$row['sequence_no']}</td>
                 <td style='vertical-align: middle;'>{$row['connector_no']}</td>
@@ -199,6 +208,9 @@ if ($method == 'update_minor_defect_record') {
     $defect_details_code      = trim($_POST['defect_details_code'] ?? '');
     $defect_details           = trim($_POST['defect_details'] ?? '');
     $treatment_content_defect = trim($_POST['treatment_content_defect'] ?? '');
+    $occurrence_shift         = trim($_POST['occurrence_shift'] ?? '');
+    $occurrence_board_no      = trim($_POST['occurrence_board_no'] ?? '');
+    $occurrence_station_no    = trim($_POST['occurrence_station_no'] ?? '');
     $sequence_no              = trim($_POST['sequence_no'] ?? '');
     $connector_no             = trim($_POST['connector_no'] ?? '');
     $total_time               = trim($_POST['total_time'] ?? '');
@@ -228,6 +240,9 @@ if ($method == 'update_minor_defect_record') {
                 defect_details_code = :defect_details_code,
                 defect_details = :defect_details,
                 treatment_content_defect = :treatment_content_defect,
+                occurrence_shift = :occurrence_shift,
+                occurrence_board_no = :occurrence_board_no,
+                occurrence_station_no = :occurrence_station_no,
                 sequence_no = :sequence_no,
                 connector_no = :connector_no,
                 total_time = :total_time,
@@ -256,6 +271,9 @@ if ($method == 'update_minor_defect_record') {
     $stmt->bindValue(':defect_details_code', $defect_details_code);
     $stmt->bindValue(':defect_details', $defect_details);
     $stmt->bindValue(':treatment_content_defect', $treatment_content_defect);
+    $stmt->bindValue(':occurrence_shift', $occurrence_shift);
+    $stmt->bindValue(':occurrence_board_no', $occurrence_board_no);
+    $stmt->bindValue(':occurrence_station_no', $occurrence_station_no);
     $stmt->bindValue(':sequence_no', $sequence_no);
     $stmt->bindValue(':connector_no', $connector_no);
     $stmt->bindValue(':total_time', $total_time);

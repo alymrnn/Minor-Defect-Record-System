@@ -13,10 +13,11 @@
             data: {
                 method: 'load_minor_defect_list',
                 page: page,
-                limit: 200,
+                limit: 300,
                 m_search_date_from: $('#m_search_date_from').val(),
                 m_search_date_to: $('#m_search_date_to').val(),
                 m_search_line_no: $('#m_search_line_no').val(),
+                m_search_lot_no: $('#m_search_lot_no').val(),
                 m_search_process: $('#m_search_process').val()
             },
             beforeSend: function() {
@@ -103,6 +104,9 @@
                     $('#edit_defect_details_code').val(data.defect_details_code);
                     $('#edit_defect_details').val(data.defect_details);
                     $('#edit_treatment_content').val(data.treatment_content_defect);
+                    $('#edit_occurrence_shift').val(data.occurrence_shift);
+                    $('#edit_occurrence_board_no').val(data.occurrence_board_no);
+                    $('#edit_occurrence_station_no').val(data.occurrence_station_no);
                     $('#edit_sequence_no').val(data.sequence_no);
                     $('#edit_connector_no').val(data.connector_no);
                     $('#edit_total_time').val(data.total_time);
@@ -147,6 +151,9 @@
         const defect_details_code = $('#edit_defect_details_code').val();
         const defect_details = $('#edit_defect_details').val();
         const treatment_content_defect = $('#edit_treatment_content').val();
+        const occurrence_shift = $('edit_occurrence_shift').val();
+        const occurrence_board_no = $('edit_occurrence_board_no').val();
+        const occurrence_station_no = $('edit_occurrence_station_no').val();
         const sequence_no = $('#edit_sequence_no').val();
         const connector_no = $('#edit_connector_no').val();
         const total_time = $('#edit_total_time').val();
@@ -178,6 +185,9 @@
                 defect_details_code: defect_details_code,
                 defect_details: defect_details,
                 treatment_content_defect: treatment_content_defect,
+                occurrence_shift: occurrence_shift,
+                occurrence_board_no: occurrence_board_no,
+                occurrence_station_no: occurrence_station_no,
                 sequence_no: sequence_no,
                 connector_no: connector_no,
                 total_time: total_time,

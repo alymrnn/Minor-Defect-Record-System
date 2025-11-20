@@ -37,12 +37,17 @@
             <label class="m-0 p-0 text-sm font-weight-normal">Line No.</label>
             <input type="text" id="m_search_line_no" class="form-control form-control-sm form-control-border" placeholder="Line No." autocomplete="off">
          </div>
+          <div class="col-12 col-sm-6 col-md-2 mb-2">
+            <!-- lot no. -->
+            <label class="m-0 p-0 text-sm font-weight-normal">Lot No.</label>
+            <input type="text" id="m_search_lot_no" class="form-control form-control-sm form-control-border" placeholder="Lot No." autocomplete="off">
+         </div>
          <div class="col-12 col-sm-6 col-md-2 mb-2">
             <!-- process -->
             <label class="m-0 p-0 text-sm font-weight-normal">Process</label>
             <input type="text" id="m_search_process" class="form-control form-control-sm form-control-border" placeholder="Process" autocomplete="off">
          </div>
-         <div class="col-12 col-sm-6 col-md-2 offset-2">
+         <div class="col-12 col-sm-6 col-md-2">
             <!-- search button -->
             <label></label>
             <button class="btn btn-outline-info btn-sm w-100" id="search_btn" onclick="load_minor_defect_list(1)">
@@ -74,6 +79,9 @@
                      <th>Defect Category</th>
                      <th>Defect Details Code</th>
                      <th>Defect Details</th>
+                     <th>Occurrence Shift</th>
+                     <th>Occurrence Board No.</th>
+                     <th>Occurrence Station No.</th>
                      <th>Treatment Content of Defect</th>
                      <th>Sequence No.</th>
                      <th>Connector No.</th>
