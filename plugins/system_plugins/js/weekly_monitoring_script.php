@@ -127,9 +127,22 @@
          }
       });
 
+      // Get previous month in all formats
+      const now = new Date();
+      now.setMonth(now.getMonth() - 1); // move to previous month
+
+      const prevMonthNum = (now.getMonth() + 1).toString(); // 1–12
+      const prevMonthShort = now.toLocaleString('en', {
+         month: 'short'
+      }).toLowerCase(); // jan, feb…
+      const prevMonthFull = now.toLocaleString('en', {
+         month: 'long'
+      }).toLowerCase(); // january…
+
       $('.month-check').each(function() {
          const val = $(this).val().toString().toLowerCase();
-         if (val === '10' || val === 'oct' || val === 'october') {
+
+         if (val === prevMonthNum || val === prevMonthShort || val === prevMonthFull) {
             $(this).prop('checked', true);
          }
       });
