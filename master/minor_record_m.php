@@ -6,10 +6,10 @@
       <div class="container-fluid">
          <div class="row">
             <div class="col-sm-6">
-               <h4 class="m-0">Minor Record List</h4>
+               <h5 class="m-0">Minor Record List</h5>
             </div>
             <div class="col-sm-6">
-               <ol class="breadcrumb float-sm-right text-sm">
+               <ol class="breadcrumb float-sm-right text-xs">
                   <li class="breadcrumb-item"><a href="minor_record_m.php">Minor Defect Record System</a></li>
                   <li class="breadcrumb-item active">Minor Record List</li>
                </ol>
@@ -22,35 +22,35 @@
       <div class="row mx-2">
          <div class="col-12 col-sm-4 col-md-2 mb-2">
             <!-- date from -->
-            <label class="m-0 p-0 text-sm font-weight-normal">Date Detected From</label>
-            <input type="date" name="date_from" class="form-control form-control-sm form-control-border" id="m_search_date_from" placeholder="Date From"
+            <label class="m-0 p-0 text-xs font-weight-normal">Date Detected From</label>
+            <input type="date" name="date_from" class="form-control form-control-sm form-control-border text-xs" id="m_search_date_from" placeholder="Date From"
                onfocus="(this.type='date')">
          </div>
          <div class="col-12 col-sm-4 col-md-2 mb-2">
             <!-- date to -->
-            <label class="m-0 p-0 text-sm font-weight-normal">Date Detected To</label>
-            <input type="date" name="date_to" class="form-control form-control-sm form-control-border" id="m_search_date_to" placeholder="Date To"
+            <label class="m-0 p-0 text-xs font-weight-normal">Date Detected To</label>
+            <input type="date" name="date_to" class="form-control form-control-sm form-control-border text-xs" id="m_search_date_to" placeholder="Date To"
                onfocus="(this.type='date')">
          </div>
          <div class="col-12 col-sm-6 col-md-2 mb-2">
             <!-- line no. -->
-            <label class="m-0 p-0 text-sm font-weight-normal">Line No.</label>
-            <input type="text" id="m_search_line_no" class="form-control form-control-sm form-control-border" placeholder="Line No." autocomplete="off">
+            <label class="m-0 p-0 text-xs font-weight-normal">Line No.</label>
+            <input type="text" id="m_search_line_no" class="form-control form-control-sm form-control-border text-xs" placeholder="Line No." autocomplete="off">
          </div>
           <div class="col-12 col-sm-6 col-md-2 mb-2">
             <!-- lot no. -->
-            <label class="m-0 p-0 text-sm font-weight-normal">Lot No.</label>
-            <input type="text" id="m_search_lot_no" class="form-control form-control-sm form-control-border" placeholder="Lot No." autocomplete="off">
+            <label class="m-0 p-0 text-xs font-weight-normal">Lot No.</label>
+            <input type="text" id="m_search_lot_no" class="form-control form-control-sm form-control-border text-xs" placeholder="Lot No." autocomplete="off">
          </div>
          <div class="col-12 col-sm-6 col-md-2 mb-2">
             <!-- process -->
-            <label class="m-0 p-0 text-sm font-weight-normal">Process</label>
-            <input type="text" id="m_search_process" class="form-control form-control-sm form-control-border" placeholder="Process" autocomplete="off">
+            <label class="m-0 p-0 text-xs font-weight-normal">Process</label>
+            <input type="text" id="m_search_process" class="form-control form-control-sm form-control-border text-xs" placeholder="Process" autocomplete="off">
          </div>
          <div class="col-12 col-sm-6 col-md-2">
             <!-- search button -->
             <label></label>
-            <button class="btn btn-outline-info btn-sm w-100" id="search_btn" onclick="load_minor_defect_list(1)">
+            <button class="btn btn-outline-info btn-sm w-100 text-xs" id="search_btn" onclick="load_minor_defect_list(1)">
                <i class="fas fa-search"></i>&nbsp;Search</button>
          </div>
       </div>
@@ -60,7 +60,7 @@
          <div class="card-body">
             <div class="table-responsive m-0 p-0 mt-3" style="max-height: 500px;">
                <table class="table table-sm table-head-fixed text-nowrap table-hover table-bordered" id="defect_table">
-                  <thead class="text-center text-sm">
+                  <thead class="text-center text-xs">
                      <th>#</th>
                      <th>Action</th>
                      <th>Date Detected</th>

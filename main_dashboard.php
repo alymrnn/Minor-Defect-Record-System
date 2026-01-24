@@ -106,7 +106,7 @@ include('plugins/system_plugins/navbar/index_navbar.php');
                </div>
             </div>
 
-            <p class="mt-4 m-0 p-0 text-md text-dark">Section Monitoring</p>
+            <p class="mt-4 m-0 p-0 text-sm text-dark">Section Monitoring</p>
             <hr class="m-0 p-0" style="background: #eee;">
             <div class="row mt-2">
                <div class="col-4">
@@ -130,7 +130,7 @@ include('plugins/system_plugins/navbar/index_navbar.php');
                </div>
             </div>
 
-            <p class="mt-4 m-0 p-0 text-md text-dark">Daily Trend Monitoring</p>
+            <p class="mt-4 m-0 p-0 text-sm text-dark">Daily Trend Monitoring</p>
             <hr class="m-0 p-0" style="background: #eee;">
             <div class="row mt-2">
                <div class="col-12">

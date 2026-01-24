@@ -211,7 +211,7 @@
             },
             success: function(response) {
                 sessionStorage.setItem('count_rows', response);
-                var count = `<span style="font-size: 14px;">Total Record: ${response}</span>`;
+                var count = `<span style="font-size: 12px;">Total Record: ${response}</span>`;
                 $('#defect_table_info').html(count);
 
                 if (response > 0) {

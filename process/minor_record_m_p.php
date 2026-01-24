@@ -125,22 +125,22 @@ if ($method == 'load_minor_defect_list') {
 
     // pagination wrapper
     $pagination  = "<div class='d-flex justify-content-between align-items-center w-100'>";
-    $pagination .= "<div class='text-sm text-muted'>Total Records: {$totalRecords}</div>";
+    $pagination .= "<div class='text-xs text-muted'>Total Records: {$totalRecords}</div>";
     $pagination .= "<div class='d-flex align-items-center gap-2'>";
 
     // Prev button
     if ($page > 1) {
-        $pagination .= "<button type='button' id='btnPrevPage' class='btn btn-default btn-sm' onclick='load_minor_defect_list(" . ($page - 1) . ")'>
+        $pagination .= "<button type='button' id='btnPrevPage' class='btn btn-default btn-sm text-xs' onclick='load_minor_defect_list(" . ($page - 1) . ")'>
                       <i class='fas fa-chevron-left'></i> Prev
                     </button>";
     } else {
-        $pagination .= "<button type='button' class='btn btn-default btn-sm' disabled>
+        $pagination .= "<button type='button' class='btn btn-default btn-sm text-xs' disabled>
                       <i class='fas fa-chevron-left'></i> Prev
                     </button>";
     }
 
     // Page input with datalist
-    $pagination .= "<input type='text' list='pagination' class='form-control form-control-sm mx-2' 
+    $pagination .= "<input type='text' list='pagination' class='form-control form-control-sm mx-2 text-xs' 
                     id='inventory_pagination' 
                     style='width: 70px; text-align: center;' 
                     value='{$page}' 
@@ -153,11 +153,11 @@ if ($method == 'load_minor_defect_list') {
 
     // Next button
     if ($page < $totalPages) {
-        $pagination .= "<button type='button' id='btnNextPage' class='btn btn-default btn-sm' onclick='load_minor_defect_list(" . ($page + 1) . ")'>
+        $pagination .= "<button type='button' id='btnNextPage' class='btn btn-default btn-sm text-xs' onclick='load_minor_defect_list(" . ($page + 1) . ")'>
                       Next <i class='fas fa-chevron-right'></i>
                     </button>";
     } else {
-        $pagination .= "<button type='button' class='btn btn-default btn-sm' disabled>
+        $pagination .= "<button type='button' class='btn btn-default btn-sm text-xs' disabled>
                       Next <i class='fas fa-chevron-right'></i>
                     </button>";
     }

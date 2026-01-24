@@ -7,10 +7,10 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h4 class="m-0">Masterlist</h4>
+                    <h5 class="m-0">Masterlist</h5>
                 </div><!-- /.col -->
                 <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right text-sm">
+                    <ol class="breadcrumb float-sm-right text-xs">
                         <li class="breadcrumb-item"><a href="barcode_m.php">Minor Defect Record System</a></li>
                         <li class="breadcrumb-item active">Masterlist</li>
                     </ol>
@@ -24,7 +24,7 @@
         <div class="col-md-12">
             <div class="card card-tabs bg-white">
                 <div class="card-header p-0 border-bottom-0">
-                    <ul class="nav nav-tabs text-sm" id="masterlist-record-tab" role="tablist">
+                    <ul class="nav nav-tabs text-xs" id="masterlist-record-tab" role="tablist">
                         <li class="nav-item">
                             <a class="nav-link" id="masterlist-record-1-tab" data-toggle="pill"
                                 href="#masterlist-record-1" role="tab" aria-controls="masterlist-record-1"
@@ -66,7 +66,7 @@
                             <!-- Main Content -->
                             <div class="row">
                                 <div class="col-12 col-sm-2">
-                                    <button class="btn btn-primary btn-sm w-100"
+                                    <button class="btn btn-primary btn-sm w-100 text-xs"
                                         data-toggle="modal" data-target="#add_qr_setting">
                                         Add Model Settings
                                     </button>
@@ -77,7 +77,7 @@
                             <div class="card-body table-responsive m-0 p-0 mt-3" style="max-height: 500px;">
                                 <table class="table table-head-fixed text-nowrap table-hover table-sm table-bordered"
                                     id="qr_setting_table">
-                                    <thead class="text-center text-sm">
+                                    <thead class="text-center text-xs">
                                         <th style="width: 10%;">#</th>
                                         <th style="width: 10%;">Car Maker</th>
                                         <th style="width: 10%;">Car Model Setting</th>
@@ -108,7 +108,7 @@
                             aria-labelledby="masterlist-record-2-tab">
                             <div class="row">
                                 <div class="col-12 col-sm-2">
-                                    <button class="btn btn-primary btn-sm w-100"
+                                    <button class="btn btn-primary btn-sm w-100 text-xs"
                                         data-toggle="modal" data-target="#add_defect_details">
                                         Add Defect Details
                                     </button>
@@ -118,7 +118,7 @@
                             <!-- table -->
                             <div class="card-body table-responsive m-0 p-0 mt-3" style="max-height: 500px;">
                                 <table class="table table-head-fixed text-nowrap table-hover table-sm table-bordered" id="defect_details_table">
-                                    <thead class="text-sm text-center">
+                                    <thead class="text-xs text-center">
                                         <th>#</th>
                                         <th>Action</th>
                                         <th>Defect Code</th>
@@ -145,7 +145,7 @@
                             aria-labelledby="masterlist-record-5-tab">
                             <div class="row">
                                 <div class="col-12 col-sm-2">
-                                    <button class="btn btn-primary btn-sm w-100"
+                                    <button class="btn btn-primary btn-sm w-100 text-xs"
                                         data-toggle="modal" data-target="#add_account">
                                         Add Account
                                     </button>
@@ -155,7 +155,7 @@
                             <!-- table -->
                             <div class="card-body table-responsive m-0 p-0 mt-3" style="max-height: 500px;">
                                 <table class="table col-12 table-head-fixed text-nowrap table-hover table-sm table-bordered" id="accounts_table">
-                                    <thead class="text-center text-sm">
+                                    <thead class="text-center text-xs">
                                         <th class="text-right">#</th>
                                         <th>Action</th>
                                         <th>Username</th>
@@ -179,7 +179,7 @@
                             aria-labelledby="masterlist-record-4-tab">
                             <div class="row">
                                 <div class="col-12 col-sm-2">
-                                    <button class="btn btn-primary btn-sm w-100"
+                                    <button class="btn btn-primary btn-sm w-100 text-xs"
                                         data-toggle="modal" data-target="#add_line_process">
                                         Add Process
                                     </button>
@@ -189,7 +189,7 @@
                             <!-- table -->
                             <div class="card-body table-responsive m-0 p-0 mt-3" style="max-height: 500px;">
                                 <table class="table col-12 table-head-fixed text-nowrap table-hover table-sm table-bordered" id="line_process_table">
-                                    <thead class="text-center text-sm">
+                                    <thead class="text-center text-xs">
                                         <th class="text-right">#</th>
                                         <th>Action</th>
                                         <th>Line</th>
@@ -213,7 +213,7 @@
                             aria-labelledby="masterlist-record-3-tab">
                             <div class="row">
                                 <div class="col-12 col-sm-2">
-                                    <button class="btn btn-primary btn-sm w-100"
+                                    <button class="btn btn-primary btn-sm w-100 text-xs"
                                         data-toggle="modal" data-target="#add_line_car_model">
                                         Add Car Model
                                     </button>
@@ -223,7 +223,7 @@
                             <!-- table -->
                             <div class="card-body table-responsive m-0 p-0 mt-3" style="max-height: 500px;">
                                 <table class="table col-12 table-head-fixed text-nowrap table-hover table-sm table-bordered" id="line_car_model_table">
-                                    <thead class="text-center text-sm">
+                                    <thead class="text-center text-xs">
                                         <th class="text-right">#</th>
                                         <th>Action</th>
                                         <th>Line</th>
@@ -250,7 +250,7 @@
                             aria-labelledby="masterlist-record-6-tab">
                             <div class="row">
                                 <div class="col-12 col-sm-2">
-                                    <button class="btn btn-primary btn-sm w-100"
+                                    <button class="btn btn-primary btn-sm w-100 text-xs"
                                         data-toggle="modal" data-target="#add_auth_account">
                                         Add Authorized Account
                                     </button>
@@ -260,7 +260,7 @@
                             <!-- table -->
                             <div class="card-body table-responsive m-0 p-0 mt-3" style="max-height: 500px;">
                                 <table class="table col-12 table-head-fixed text-nowrap table-hover table-sm table-bordered" id="auth_account_table">
-                                    <thead class="text-center text-sm">
+                                    <thead class="text-center text-xs">
                                         <th class="text-right">#</th>
                                         <th>Action</th>
                                         <th>Employee ID</th>

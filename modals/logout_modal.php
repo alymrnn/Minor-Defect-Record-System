@@ -8,10 +8,10 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <h5 class="text-center text-md">Confirm Logout</h5>
+                    <h5 class="text-center text-xs">Confirm Logout</h5>
                 </div>
                 <div class="modal-footer bg-light">
-                    <input type="submit" value="Logout" class="btn btn-outline-danger btn-sm w-100" name="Logout">
+                    <input type="submit" value="Logout" class="btn btn-outline-danger btn-sm w-100 text-xs" name="Logout">
                 </div>
             </div>
         </div>

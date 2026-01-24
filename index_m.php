@@ -78,32 +78,32 @@ if (isset($_SESSION['username'])) {
                 <img src="dist/img/fas-name.png"
                     alt="FAS Logo"
                     class="position-absolute"
-                    style="top: 20px; left: 20px; height: 37px;">
+                    style="top: 20px; left: 20px; height: 33px;">
 
                 <!-- Centered logo + text layout -->
                 <div class="d-flex align-items-center flex-wrap justify-content-center w-100">
                     <img src="dist/img/defect.png"
                         class="mt-3 mb-2"
-                        style="height: 90px; max-width: 100%;">
+                        style="height: 80px; max-width: 100%;">
 
                     <div class="ml-4 d-flex align-items-center justify-content-start" style="height: 100%;">
-                        <h2 class="text-white font-weight-bold m-0" style="text-align: left;">
+                        <h4 class="text-white font-weight-bold m-0" style="text-align: left;">
                             MINOR <br> DEFECT <br> RECORD <br> SYSTEM
-                        </h2>
+                        </h4>
                     </div>
                 </div>
             </div>
 
             <!-- Right Side (Login Form) -->
             <div class="col-6" style="background-color: #FEFEFE; border-radius: 0px 12px 12px 0px; width: 450px;">
-                <p class="text-center p-0 m-0 pt-5" style="font-size: 20px; font-weight: bold;">Login to your account</p>
-                <p class="text-center p-0 m-0" style="font-size: 13px; color: #444;">
+                <p class="text-center p-0 m-0 pt-5 text-md text-bold">Login to your account</p>
+                <p class="text-center p-0 m-0 text-xs text-muted">
                     Health and Safety First!
                 </p>
 
                 <form class="form-horizontal mt-5 mr-4 ml-4" method="POST" id="login_form">
                     <div class="input-group mb-3">
-                        <label class="m-0 p-0" style="font-weight: 100; font-size: 13px; color: #444;">User ID</label>
+                        <label class="m-0 p-0 text-xs text-muted" style="font-weight: 100;">User ID</label>
                         <input type="text" class="form-control" id="username" name="username" placeholder="Enter your credential"
                             autocomplete="off" required
                             style="width: 100%; height: 40px; font-size: 13px; border-radius: 10px; border-color: #E9E9E9; transition: 0.4s ease;"
@@ -115,7 +115,7 @@ if (isset($_SESSION['username'])) {
                     </div>
 
                     <div class="input-group mb-3">
-                        <button type="submit" class="btn btn-block" name="login_btn" value="login"
+                        <button type="submit" class="btn btn-block text-xs" name="login_btn" value="login"
                             style="background-color: #0F78DC; color: #fff; font-size: 14px; border-radius: 10px; height: 40px; transition: 0.3s ease;"
                             onmouseover="this.style.backgroundColor='#00497A'; this.style.color='#fff';"
                             onmouseout="this.style.backgroundColor='#0F78DC'; this.style.color='#fff';">Login</button>
@@ -131,17 +131,17 @@ if (isset($_SESSION['username'])) {
 
                     <div class="row mt-3 mb-5">
                         <div class="col-6 d-flex justify-content-center">
-                            <button class="btn btn-block"
+                            <button class="btn btn-block text-xs"
                                 style="color: #353535; border-radius: 10px; border: 1px solid #E9E9E9; height: 40px; font-size: 13px; background-color: #fff; transition: 0.3s ease;"
                                 onclick="window.open('template/Minor-Defect-Record-System_WI_rev.3.pdf', '_blank');"
                                 onmouseover="this.style.backgroundColor='#00497A'; this.style.color='#fff';"
                                 onmouseout="this.style.backgroundColor='#fff'; this.style.color='#353535';">
-                                <i class="far fa-file"></i>&nbsp;Work Instruction
+                                <i class="far fa-file"></i>&nbsp;System WI
                             </button>
                         </div>
 
                         <div class="col-6 d-flex justify-content-center">
-                            <button class="btn btn-block"
+                            <button class="btn btn-block text-xs"
                                 style="color: #353535; border-radius: 10px; border: 1px solid #E9E9E9; height: 40px; font-size: 13px; background-color: #fff; transition: 0.3s ease;"
                                 onmouseover="this.style.backgroundColor='#00497A'; this.style.color='#fff';"
                                 onmouseout="this.style.backgroundColor='#fff'; this.style.color='#353535';"

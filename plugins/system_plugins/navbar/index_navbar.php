@@ -222,7 +222,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
     <!-- Brand -->
     <a href="" class="navbar-brand d-flex align-items-center ml-2">
         <img src="dist/img/defect.png" alt="Minor Defect Record System Logo" class="brand-image mr-2">
-        <span class="brand-text font-weight-normal text-light" style="font-size:20px;">
+        <span class="brand-text font-weight-normal text-light text-md">
             MINOR DEFECT RECORD SYSTEM
         </span>
     </a>
@@ -231,7 +231,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
     <ul class="navbar-nav d-flex flex-row ml-auto align-items-center">
         <!-- Main -->
         <li class="nav-item mr-1">
-            <a class="btn btn-sm <?php echo ($current_page == 'index.php') ? 'btn-light text-dark' : 'text-white'; ?>"
+            <a class="btn btn-sm text-xs <?php echo ($current_page == 'index.php') ? 'btn-light text-dark' : 'text-white'; ?>"
                 href="index.php">
                 <i class="fas fa-home"></i> Main
             </a>
@@ -239,15 +239,15 @@ $current_page = basename($_SERVER['PHP_SELF']);
 
         <!-- Dashboard with Dropdown -->
         <li class="nav-item dropdown mr-1">
-            <a class="btn btn-sm <?php echo ($current_page == 'main_dashboard.php' || $current_page == 'weekly_monitoring.php') ? 'btn-light text-dark' : 'text-white'; ?> dropdown-toggle"
+            <a class="btn btn-sm text-xs <?php echo ($current_page == 'main_dashboard.php' || $current_page == 'weekly_monitoring.php') ? 'btn-light text-dark' : 'text-white'; ?> dropdown-toggle"
                 href="#" id="dashboardDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="fas fa-tachometer-alt"></i> Dashboard
             </a>
             <div class="dropdown-menu" aria-labelledby="dashboardDropdown" style="position: absolute; z-index: 1050;">
-                <a class="btn btn-sm dropdown-item <?php echo ($current_page == 'main_dashboard.php') ? 'active' : ''; ?>" href="main_dashboard.php">
+                <a class="btn btn-sm text-xs dropdown-item <?php echo ($current_page == 'main_dashboard.php') ? 'active' : ''; ?>" href="main_dashboard.php">
                     <i class="fas fa-desktop mr-1"></i> Daily Monitoring
                 </a>
-                <a class="btn btn-sm dropdown-item <?php echo ($current_page == 'weekly_monitoring.php') ? 'active' : ''; ?>" href="weekly_monitoring.php">
+                <a class="btn btn-sm text-xs dropdown-item <?php echo ($current_page == 'weekly_monitoring.php') ? 'active' : ''; ?>" href="weekly_monitoring.php">
                     <i class="fas fa-calendar-week mr-1"></i> Overall Monitoring
                 </a>
             </div>
@@ -255,7 +255,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
 
         <!-- Work Instruction -->
         <li class="nav-item mr-1">
-            <a class="btn btn-sm <?php echo ($current_page == 'Minor-Defect-Record-System_WI_rev.3.pdf') ? 'btn-light text-dark' : 'text-white'; ?>"
+            <a class="btn btn-sm text-xs <?php echo ($current_page == 'Minor-Defect-Record-System_WI_rev.3.pdf') ? 'btn-light text-dark' : 'text-white'; ?>"
 
                 href="template/Minor-Defect-Record-System_WI_rev.3.pdf" target="_blank">
                 <i class="fas fa-file-alt"></i> Work Instruction
@@ -264,7 +264,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
 
         <!-- Admin -->
         <li class="nav-item mr-1">
-            <a class="btn btn-sm <?php echo ($current_page == 'index_m.php') ? 'btn-light text-dark' : 'text-white'; ?>"
+            <a class="btn btn-sm text-xs <?php echo ($current_page == 'index_m.php') ? 'btn-light text-dark' : 'text-white'; ?>"
                 href="index_m.php">
                 <i class="fas fa-user-cog"></i> Admin
             </a>
