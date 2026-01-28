@@ -209,6 +209,24 @@
         background-color: #184e77 !important;
         color: #fff !important;
     }
+
+    /* Mobile styles */
+    @media (max-width: 768px) {
+        .modal-dialog {
+            width: 95%;
+            margin: 5px auto;
+        }
+
+        .modal-content {
+            height: auto;
+            max-height: 90vh;
+        }
+
+        .modal-body {
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+    }
 </style>
 
 <!-- Navbar -->
@@ -216,9 +234,7 @@
 $current_page = basename($_SERVER['PHP_SELF']);
 ?>
 
-<nav class="main-header navbar sticky-top d-flex align-items-center justify-content-between"
-    style="background:#00375C;">
-
+<nav class="main-header navbar sticky-top d-flex align-items-center justify-content-between" style="background:#00375C;">
     <!-- Brand -->
     <a href="" class="navbar-brand d-flex align-items-center ml-2">
         <img src="dist/img/defect.png" alt="Minor Defect Record System Logo" class="brand-image mr-2">
@@ -229,7 +245,6 @@ $current_page = basename($_SERVER['PHP_SELF']);
 
     <!-- Nav Buttons -->
     <ul class="navbar-nav d-flex flex-row ml-auto align-items-center">
-        <!-- Main -->
         <li class="nav-item mr-1">
             <a class="btn btn-sm text-xs <?php echo ($current_page == 'index.php') ? 'btn-light text-dark' : 'text-white'; ?>"
                 href="index.php">
@@ -237,8 +252,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
             </a>
         </li>
 
-        <!-- Dashboard with Dropdown -->
-        <li class="nav-item dropdown mr-1">
+        <li class="nav-item dropdown mr-1 d-none d-md-block">
             <a class="btn btn-sm text-xs <?php echo ($current_page == 'main_dashboard.php' || $current_page == 'weekly_monitoring.php') ? 'btn-light text-dark' : 'text-white'; ?> dropdown-toggle"
                 href="#" id="dashboardDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="fas fa-tachometer-alt"></i> Dashboard
@@ -253,17 +267,14 @@ $current_page = basename($_SERVER['PHP_SELF']);
             </div>
         </li>
 
-        <!-- Work Instruction -->
-        <li class="nav-item mr-1">
+        <li class="nav-item mr-1 d-none d-md-block">
             <a class="btn btn-sm text-xs <?php echo ($current_page == 'Minor-Defect-Record-System_WI_rev.3.pdf') ? 'btn-light text-dark' : 'text-white'; ?>"
-
                 href="template/Minor-Defect-Record-System_WI_rev.3.pdf" target="_blank">
                 <i class="fas fa-file-alt"></i> Work Instruction
             </a>
         </li>
 
-        <!-- Admin -->
-        <li class="nav-item mr-1">
+        <li class="nav-item mr-1 d-none d-md-block">
             <a class="btn btn-sm text-xs <?php echo ($current_page == 'index_m.php') ? 'btn-light text-dark' : 'text-white'; ?>"
                 href="index_m.php">
                 <i class="fas fa-user-cog"></i> Admin

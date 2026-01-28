@@ -18,10 +18,16 @@
         $('#a_defect_details').prop('disabled', true).css('background', '#F1F1F1');
         $('#a_treatment_content_defect').prop('disabled', true).css('background', '#F1F1F1');
 
+        // Trigger function when Enter key is pressed
         $('#a_line_no').on('keypress', function(e) {
             if (e.which === 13) {
                 get_inspection_details();
             }
+        });
+
+        // Trigger function when the input loses focus
+        $('#a_line_no').on('blur', function() {
+            get_inspection_details();
         });
 
         $('#a_defect_details_code').on('input', function() {
@@ -529,73 +535,83 @@
     //     }
     // });
 
-    $('#a_defect_details_code').on('keydown', function(e) {
-        if (e.key === 'Enter') {
-            e.preventDefault();
-            const detailsCode = $(this).val().trim().toUpperCase();
+    // Function for handling the defect details code entry
+    function handleDefectDetailsCode() {
+        const detailsCode = $('#a_defect_details_code').val().trim().toUpperCase();
 
-            if (detailsCode !== '') {
-                // Step 1: Extract category code (letters only before first digit)
-                const categoryCode = detailsCode.match(/^[A-Za-z]+/);
-                if (categoryCode) {
-                    const defectCategoryCode = categoryCode[0];
+        if (detailsCode !== '') {
+            // Step 1: Extract category code (letters only before first digit)
+            const categoryCode = detailsCode.match(/^[A-Za-z]+/);
+            if (categoryCode) {
+                const defectCategoryCode = categoryCode[0];
 
-                    // Step 2: Set the category code field
-                    $('#a_defect_category_code').val(defectCategoryCode);
+                // Step 2: Set the category code field
+                $('#a_defect_category_code').val(defectCategoryCode);
 
-                    // Step 3: Fetch defect category value
-                    $.ajax({
-                        url: 'process/index_p.php',
-                        type: 'POST',
-                        data: {
-                            method: 'fetch_defect_category_by_code',
-                            code: defectCategoryCode
-                        },
-                        success: function(categoryValue) {
-                            $('#a_defect_category').val(categoryValue).prop('disabled', true);
-                        }
-                    });
-                }
-
-                // Step 4: Fetch defect details and treatment
+                // Step 3: Fetch defect category value
                 $.ajax({
                     url: 'process/index_p.php',
                     type: 'POST',
-                    dataType: 'json',
                     data: {
-                        method: 'fetch_defect_details_by_code',
-                        details_code: detailsCode
+                        method: 'fetch_defect_category_by_code',
+                        code: defectCategoryCode
                     },
-                    success: function(data) {
-                        if (data.error) {
-                            Swal.fire({
-                                icon: 'info',
-                                title: 'Defect Details Code Not Found',
-                                text: `No defect details found for code: ${detailsCode}`,
-                                background: '#00375C',
-                                color: '#f9f9f9',
-
-                            });
-                            $('#a_defect_details').val('').prop('disabled', true);
-                            $('#a_treatment_content_defect').val('').prop('disabled', true);
-                        } else {
-                            $('#a_defect_details').val(data.details).prop('disabled', true);
-                            $('#a_treatment_content_defect').val(data.treatment).prop('disabled', true);
-                        }
-                    },
-                    error: function(xhr, status, error) {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'AJAX Error',
-                            text: error
-                        });
+                    success: function(categoryValue) {
+                        $('#a_defect_category').val(categoryValue).prop('disabled', true);
                     }
                 });
-            } else {
-                $('#a_defect_details').val('').prop('disabled', true);
-                $('#a_treatment_content_defect').val('').prop('disabled', true);
             }
+
+            // Step 4: Fetch defect details and treatment
+            $.ajax({
+                url: 'process/index_p.php',
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    method: 'fetch_defect_details_by_code',
+                    details_code: detailsCode
+                },
+                success: function(data) {
+                    if (data.error) {
+                        Swal.fire({
+                            icon: 'info',
+                            title: 'Defect Details Code Not Found',
+                            text: `No defect details found for code: ${detailsCode}`,
+                            background: '#00375C',
+                            color: '#f9f9f9',
+                        });
+                        $('#a_defect_details').val('').prop('disabled', true);
+                        $('#a_treatment_content_defect').val('').prop('disabled', true);
+                    } else {
+                        $('#a_defect_details').val(data.details).prop('disabled', true);
+                        $('#a_treatment_content_defect').val(data.treatment).prop('disabled', true);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'AJAX Error',
+                        text: error
+                    });
+                }
+            });
+        } else {
+            $('#a_defect_details').val('').prop('disabled', true);
+            $('#a_treatment_content_defect').val('').prop('disabled', true);
         }
+    }
+
+    // Desktop: Trigger function when Enter key is pressed
+    $('#a_defect_details_code').on('keydown', function(e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            handleDefectDetailsCode();
+        }
+    });
+
+    // Mobile: Trigger function when input loses focus (blur event)
+    $('#a_defect_details_code').on('blur', function() {
+        handleDefectDetailsCode();
     });
 
     const fetch_defect_treatment = () => {

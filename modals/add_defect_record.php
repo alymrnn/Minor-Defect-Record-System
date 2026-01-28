@@ -163,11 +163,10 @@
                     </div>
                 </div>
                 <div class="row mb-3 mt-3">
-                    <div class="col-12 col-md-5 offset-3">
+                    <div class="col-12 col-md-5 offset-md-3">
                         <label class="m-0 p-0 text-xs font-weight-normal">Treatment Content of Defect</label>
                         <label class="m-0 p-0 text-danger text-xs">*</label>
-                        <input id="a_treatment_content_defect" class="form-control form-control-sm form-control-border text-xs"
-                            required disabled>
+                        <input id="a_treatment_content_defect" class="form-control form-control-sm form-control-border text-xs" required disabled>
                     </div>
                 </div>
                 <div class="row mb-3 mt-3">

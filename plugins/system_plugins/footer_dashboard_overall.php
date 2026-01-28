@@ -6,7 +6,7 @@
             </span>
 
             <span>
-                Version 3.0.0 |
+                Version 3.1.0 |
                 <i style="font-size:12px;">IP Address:</i>
                 <input style="font-size:12px; border:none; background:none; text-align:right; width:80px;"
                     value="<?= $_SERVER['REMOTE_ADDR']; ?>" disabled>
