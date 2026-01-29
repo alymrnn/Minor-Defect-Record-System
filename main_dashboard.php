@@ -54,7 +54,7 @@ include('plugins/system_plugins/navbar/index_navbar.php');
 
          <div class="col-12">
             <div class="row">
-               <div class="col-2">
+               <div class="col-2 m-0 p-0 px-1">
                   <div class="count-border">
                      <p class="m-0 p-0" style="font-size: 13px;">Defect Record</p>
                      <h2 id="total_record_count" class="text-bold"></h2>
@@ -63,12 +63,12 @@ include('plugins/system_plugins/navbar/index_navbar.php');
                      <h2 id="total_comparison_count" class="text-bold"></h2>
                   </div>
                </div>
-               <div class="col-7">
+               <div class="col-7 m-0 p-0 px-1">
                   <div class="chart-border">
                      <div id="top_overall_defect_category"></div>
                   </div>
                </div>
-               <div class="col-3">
+               <div class="col-3 m-0 p-0 px-1">
                   <div class="chart-border">
                      <div id="top_overall_defect_details_chart" class="d-flex align-items-center justify-content-start text-center pl-2" style="height: 100%;">
                         <p id="overall_defect_details_chart_placeholder" class="mb-0 text-info small">
@@ -80,22 +80,22 @@ include('plugins/system_plugins/navbar/index_navbar.php');
             </div>
 
             <div class="row mt-2">
-               <div class="col-3">
+               <div class="col-3 m-0 p-0 px-1">
                   <div class="chart-border">
                      <div id="top_lot_no_chart"></div>
                   </div>
                </div>
-               <div class="col-3">
+               <div class="col-3 m-0 p-0 px-1">
                   <div class="chart-border">
                      <div id="top_sequence_no_chart"></div>
                   </div>
                </div>
-               <div class="col-3">
+               <div class="col-3 m-0 p-0 px-1">
                   <div class="chart-border">
                      <div id="top_connector_no_chart"></div>
                   </div>
                </div>
-               <div class="col-3">
+               <div class="col-3 m-0 p-0 px-1">
                   <div class="chart-border">
                      <div id="top_overall_line_no_chart" class="d-flex align-items-center justify-content-start text-center pl-2" style="height: 100%;">
                         <p id="overall_line_no_chart_placeholder" class="mb-0 text-info small">
@@ -109,17 +109,17 @@ include('plugins/system_plugins/navbar/index_navbar.php');
             <p class="mt-4 m-0 p-0 text-sm text-dark">Section Monitoring</p>
             <hr class="m-0 p-0" style="background: #eee;">
             <div class="row mt-2">
-               <div class="col-4">
+               <div class="col-4 m-0 p-0 px-1">
                   <div class="chart-border">
                      <div id="top_defect_category_per_section_chart"></div>
                   </div>
                </div>
-               <div class="col-4">
+               <div class="col-4 m-0 p-0 px-1">
                   <div class="chart-border">
                      <div id="defect_record_per_section_chart"></div>
                   </div>
                </div>
-               <div class="col-4">
+               <div class="col-4 m-0 p-0 px-1">
                   <div class="chart-border">
                      <div id="top_line_no_section_based_chart" class="d-flex align-items-center justify-content-start text-center pl-2" style="height: 100%;">
                         <p id="line_no_section_based_chart_placeholder" class="mb-0 text-info small">
@@ -133,14 +133,14 @@ include('plugins/system_plugins/navbar/index_navbar.php');
             <p class="mt-4 m-0 p-0 text-sm text-dark">Daily Trend Monitoring</p>
             <hr class="m-0 p-0" style="background: #eee;">
             <div class="row mt-2">
-               <div class="col-12">
+               <div class="col-12 m-0 p-0 px-1">
                   <div class="chart-border">
                      <div id="daily_trend_chart"></div>
                   </div>
                </div>
             </div>
             <div class="row mt-2 mb-3">
-               <div class="col-7">
+               <div class="col-7 m-0 p-0 px-1">
                   <div class="chart-border">
                      <div id="top_daily_defect_category_chart" class="d-flex align-items-center justify-content-start text-center pl-2" style="height: 100%;">
                         <p id="defect_category_chart_placeholder" class="mb-0 text-info small">
@@ -149,7 +149,7 @@ include('plugins/system_plugins/navbar/index_navbar.php');
                      </div>
                   </div>
                </div>
-               <div class="col-5">
+               <div class="col-5 m-0 p-0 px-1">
                   <div class="chart-border">
                      <div id="top_daily_line_no_chart" class="d-flex align-items-center justify-content-start text-center pl-2" style="height: 100%;">
                         <p id="line_no_chart_placeholder" class="mb-0 text-info small">

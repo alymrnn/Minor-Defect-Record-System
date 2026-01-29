@@ -4,6 +4,9 @@
         fetch_search_defect_details();
         fetch_search_process();
 
+        fetch_line_no();
+        fetch_defect_details_code();
+
         toggleQRField();
 
         const input = document.getElementById('a_line_no');
@@ -18,16 +21,29 @@
         $('#a_defect_details').prop('disabled', true).css('background', '#F1F1F1');
         $('#a_treatment_content_defect').prop('disabled', true).css('background', '#F1F1F1');
 
-        // Trigger function when Enter key is pressed
-        $('#a_line_no').on('keypress', function(e) {
-            if (e.which === 13) {
-                get_inspection_details();
-            }
+        // // Trigger function when Enter key is pressed (using keydown or keyup)
+        // $('#a_line_no').on('keydown', function(e) {
+        //     if (e.which === 13) { // 13 is the Enter key
+        //         get_inspection_details();
+        //     }
+        // });
+
+        // // Trigger function when the dropdown loses focus
+        // $('#a_line_no').on('blur', function() {
+        //     get_inspection_details();
+        // });
+
+        // Trigger function when the dropdown value changes
+        $('#a_line_no').on('change', function() {
+            get_inspection_details();
         });
 
-        // Trigger function when the input loses focus
-        $('#a_line_no').on('blur', function() {
-            get_inspection_details();
+        $('#a_line_no').on('input', function() {
+            if (!$(this).val()) {
+                $('#a_car_maker').val('');
+                $('#a_car_model').val('');
+                $('#a_process').prop('disabled', true).css('background', '#DDD');
+            }
         });
 
         $('#a_defect_details_code').on('input', function() {
@@ -39,12 +55,22 @@
             }
         });
 
-        $('#a_line_no').on('input', function() {
-            if (!$(this).val()) {
-                $('#a_car_maker').val('');
-                $('#a_car_model').val('');
-                $('#a_process').prop('disabled', true).css('background', '#DDD');
-            }
+        // // Desktop: Trigger function when Enter key is pressed
+        // $('#a_defect_details_code').on('keydown', function(e) {
+        //     if (e.key === 'Enter') {
+        //         e.preventDefault(); // Prevent form submission or other default behaviors
+        //         handleDefectDetailsCode();
+        //     }
+        // });
+
+        // // Mobile: Trigger function when input loses focus (blur event)
+        // $('#a_defect_details_code').on('blur', function() {
+        //     handleDefectDetailsCode();
+        // });
+
+        // Trigger function when the dropdown value changes (change event)
+        $('#a_defect_details_code').on('change', function() {
+            handleDefectDetailsCode();
         });
 
         $('#add_defect_record').on('shown.bs.modal', function() {
@@ -91,6 +117,34 @@
         //     $('#a_category').val($(this).val());
         // });
     });
+
+    const fetch_line_no = () => {
+        $.ajax({
+            url: 'process/index_p.php',
+            type: 'POST',
+            cache: false,
+            data: {
+                method: 'fetch_line_no',
+            },
+            success: function(response) {
+                $('#a_line_no').html(response);
+            },
+        });
+    };
+
+    const fetch_defect_details_code = () => {
+        $.ajax({
+            url: 'process/index_p.php',
+            type: 'POST',
+            cache: false,
+            data: {
+                method: 'fetch_defect_details_code',
+            },
+            success: function(response) {
+                $('#a_defect_details_code').html(response);
+            },
+        });
+    };
 
     // Function to update the UI from sessionStorage
     function updateAuthNameDisplay() {
@@ -601,19 +655,6 @@
         }
     }
 
-    // Desktop: Trigger function when Enter key is pressed
-    $('#a_defect_details_code').on('keydown', function(e) {
-        if (e.key === 'Enter') {
-            e.preventDefault();
-            handleDefectDetailsCode();
-        }
-    });
-
-    // Mobile: Trigger function when input loses focus (blur event)
-    $('#a_defect_details_code').on('blur', function() {
-        handleDefectDetailsCode();
-    });
-
     const fetch_defect_treatment = () => {
         const treatment = $('#a_defect_details option:selected').data('treatment');
         if (treatment) {
@@ -626,6 +667,39 @@
     };
 
     const add_defect_record = () => {
+        // Extract the date from the input field
+        var date_detected = document.getElementById("a_date_detected").value;
+
+        // Regular expression to validate the date format (yyyy-mm-dd)
+        var datePattern = /^\d{4}-\d{2}-\d{2}$/;
+
+        // Check if the date matches the pattern
+        if (!datePattern.test(date_detected)) {
+            Swal.fire({
+                icon: 'info',
+                text: 'Please enter a valid date in the format YYYY-MM-DD.',
+                background: '#00375C',
+                color: '#f9f9f9',
+            });
+            return;
+        }
+
+        // Split the date into year, month, and day components
+        var dateParts = date_detected.split('-');
+        var year = parseInt(dateParts[0], 10);
+        var currentYear = new Date().getFullYear();
+
+        // Check if the year is a valid 4-digit number
+        if (year < 2024 || year > currentYear) {
+            Swal.fire({
+                icon: 'info',
+                text: 'Please enter a valid year.',
+                background: '#00375C',
+                color: '#f9f9f9',
+            });
+            return;
+        }
+
         const fieldIds = [
             "a_date_detected", "a_car_maker", "a_car_model", "a_line_no", "a_process", "a_category",
             "a_group", "a_shift", "a_product_name", "a_lot_no", "a_serial_no",
@@ -819,7 +893,7 @@
         document.getElementById("a_process").value = '';
         document.getElementById("a_group").value = '';
         document.getElementById("a_product_name").value = 'N/A';
-        document.getElementById("a_lot_no").value = '';
+        document.getElementById("a_lot_no").value = '59';
         document.getElementById("a_serial_no").value = '';
         document.getElementById("a_defect_category_code").value = '';
         document.getElementById("a_defect_category").value = '';

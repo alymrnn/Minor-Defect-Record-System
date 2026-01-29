@@ -4,6 +4,34 @@ include 'conn_pcad.php';
 
 $method = $_POST['method'];
 
+if ($method == 'fetch_line_no') {
+    $query = "SELECT DISTINCT line_no FROM m_line_no ORDER BY line_no ASC";
+    $stmt = $conn->prepare($query, array(PDO::ATTR_CURSOR => PDO::CURSOR_SCROLL));
+    $stmt->execute();
+    if ($stmt->rowCount() > 0) {
+        echo '<option value="" disabled selected>Select Line No.</option>';
+        foreach ($stmt->fetchAll() as $row) {
+            echo '<option>' . htmlspecialchars($row['line_no']) . '</option>';
+        }
+    } else {
+        echo '<option value="">Select Line No.</option>';
+    }
+}
+
+if ($method == 'fetch_defect_details_code') {
+    $query = "SELECT DISTINCT defect_sub_code_dd FROM m_defect_details ORDER BY defect_sub_code_dd ASC";
+    $stmt = $conn->prepare($query, array(PDO::ATTR_CURSOR => PDO::CURSOR_SCROLL));
+    $stmt->execute();
+    if ($stmt->rowCount() > 0) {
+        echo '<option value="" disabled selected>Select Code</option>';
+        foreach ($stmt->fetchAll() as $row) {
+            echo '<option>' . htmlspecialchars($row['defect_sub_code_dd']) . '</option>';
+        }
+    } else {
+        echo '<option value="">Select Code</option>';
+    }
+}
+
 function count_defect_list($conn, $scan_qr, $scan_product_name, $scan_lot_no, $scan_serial_no, $search_process, $search_line_no, $search_date_from, $search_date_to, $search_defect_category, $search_defect_details, $search_car_maker)
 {
     $query = "SELECT COUNT(id) AS total FROM t_minor_defect_f";
@@ -316,6 +344,24 @@ function generate_defect_id($defect_id)
 
 if ($method == 'add_defect_record') {
     $date_detected = trim($_POST['date_detected']);
+
+    // Validate the date format
+    if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $date_detected)) {
+        echo 'error_invalid_date_format';
+        exit;
+    }
+
+    // Split the date to check the year
+    $date_parts = explode('-', $date_detected);
+    $year = (int) $date_parts[0];
+    $current_year = (int) date('Y');
+
+    // Check if the year is valid
+    if ($year < 2024 || $year > $current_year) {
+        echo 'error_invalid_year';
+        exit;
+    }
+
     $car_maker = trim($_POST['car_maker']);
     $car_model = trim($_POST['car_model']);
     $line_no = trim($_POST['line_no']);

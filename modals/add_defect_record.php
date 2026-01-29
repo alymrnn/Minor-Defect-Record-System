@@ -37,14 +37,18 @@
                     <div class="col-12 col-md-3">
                         <label class="m-0 p-0 text-xs font-weight-normal">Line No.</label>
                         <label class="m-0 p-0 text-danger text-xs">*</label>
-                        <input
+                        <!-- <input
                             type="text"
                             id="a_line_no"
                             class="form-control form-control-sm form-control-border text-xs"
                             autocomplete="off"
                             required
                             maxlength="4"
-                            pattern="\d{4}">
+                            pattern="\d{4}"> -->
+
+                        <select id="a_line_no" class="form-control form-control-sm form-control-border text-xs" required>
+                            <option value="" disabled selected>Select Line No.</option>
+                        </select>
 
                         <input type="hidden" id="a_harness_type">
                     </div>
@@ -124,7 +128,7 @@
                         <label class="m-0 p-0 text-danger text-xs">*</label>
                         <input type="text" id="a_lot_no" class="form-control form-control-sm form-control-border text-xs" autocomplete="off"
                             maxlength="6"
-                            oninput="this.value = this.value.toUpperCase();">
+                            oninput="this.value = this.value.toUpperCase();" value="59">
                     </div>
                     <div class="col-12 col-md-4">
                         <label class="m-0 p-0 text-xs font-weight-normal">Serial No.</label>
@@ -145,9 +149,13 @@
                     <div class="col-12 col-md-3">
                         <label class="m-0 p-0 text-xs font-weight-normal">Defect Details Code</label>
                         <label class="m-0 p-0 text-danger text-xs">*</label>
-                        <input type="text" id="a_defect_details_code" class="form-control form-control-sm form-control-border text-xs"
+                        <!-- <input type="text" id="a_defect_details_code" class="form-control form-control-sm form-control-border text-xs"
                             autocomplete="off" maxlength="3"
-                            oninput="this.value = this.value.toUpperCase();">
+                            oninput="this.value = this.value.toUpperCase();"> -->
+
+                        <select id="a_defect_details_code" class="form-control form-control-sm form-control-border text-xs" required>
+                            <option value="" disabled selected>Select Code</option>
+                        </select>
                     </div>
                     <div class="col-12 col-md-5">
                         <label class="m-0 p-0 text-xs font-weight-normal">Defect Category</label>

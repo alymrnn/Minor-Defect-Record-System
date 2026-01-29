@@ -85,19 +85,19 @@ include('plugins/system_plugins/navbar/index_navbar.php');
          </div>
 
          <div class="row mx-1">
-            <div class="col-4">
+            <div class="col-4 m-0 p-0 px-1">
                <div class="chart-border">
                   <!-- this is the total count of defect record per month sorted by week -->
                   <div id="overall_month_week_chart"></div>
                </div>
             </div>
-            <div class="col-4">
+            <div class="col-4 m-0 p-0 px-1">
                <div class="chart-border">
                   <!-- this is the breakdown per harness type -->
                   <div id="harness_type_breakdown_chart"></div>
                </div>
             </div>
-            <div class="col-4">
+            <div class="col-4 m-0 p-0 px-1">
                <div class="chart-border">
                   <!-- this is the summary per detection -->
                   <div id="summary_per_detection_chart"></div>
@@ -106,13 +106,13 @@ include('plugins/system_plugins/navbar/index_navbar.php');
          </div>
 
          <div class="row mx-1 mt-2">
-            <div class="col-6">
+            <div class="col-6 m-0 p-0 px-1">
                <div class="chart-border">
                   <!-- this is the overall minor record per section -->
                   <div id="overall_record_per_section_chart"></div>
                </div>
             </div>
-            <div class="col-6">
+            <div class="col-6 m-0 p-0 px-1">
                <div class="chart-border">
                   <!-- this is the top 10 lines based on month and defect category -->
                   <div id="top_ten_lines_chart"></div>
@@ -121,13 +121,13 @@ include('plugins/system_plugins/navbar/index_navbar.php');
          </div>
 
          <div class="row mx-1 mt-2">
-            <div class="col-5">
+            <div class="col-5 m-0 p-0 px-1">
                <div class="chart-border">
                   <!-- this is the defect category breakdown per month sorted by week -->
                   <div id="defect_category_breakdown_chart"></div>
                </div>
             </div>
-            <div class="col-7">
+            <div class="col-7 m-0 p-0 px-1">
                <div class="chart-border">
                   <!-- this is the breakdown of the sub defect category per main category sorted by week -->
                   <div id="sub_defect_details_breakdown_chart"></div>
@@ -136,19 +136,19 @@ include('plugins/system_plugins/navbar/index_navbar.php');
          </div>
 
          <div class="row mx-1 mt-2 mb-3">
-            <div class="col-4">
+            <div class="col-4 m-0 p-0 px-1">
                <div class="chart-border">
                   <!-- this is the top 5 sequence no by process -->
                   <div id="sequence_no_breakdown_chart"></div>
                </div>
             </div>
-            <div class="col-4">
+            <div class="col-4 m-0 p-0 px-1">
                <div class="chart-border">
                   <!-- this is the top 5 connector no by process -->
                   <div id="connector_no_breakdown_chart"></div>
                </div>
             </div>
-            <div class="col-4">
+            <div class="col-4 m-0 p-0 px-1">
                <div class="chart-border">
                   <!-- this is the weekly breakdown of line category based on year/month/defect -->
                   <div id="line_category_month_week_chart"></div>

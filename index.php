@@ -7,7 +7,7 @@ include('plugins/system_plugins/navbar/index_navbar.php');
 
 <div class="content-wrapper" style="background: #f8f9fa;">
   <!-- Main content -->
-  <section class="content pt-2">
+  <section class="content py-2">
     <div class="chart-border mx-1">
       <!-- SEARCH FIELD -->
       <div class="card-body">
@@ -51,7 +51,7 @@ include('plugins/system_plugins/navbar/index_navbar.php');
           <div class="col-12 col-sm-6 col-md-2 mb-2">
             <!-- serial no -->
             <label class="m-0 p-0 text-xs font-weight-normal">Serial No.</label>
-            <input type="text" id="scan_serial_no" class="form-control form-control-sm form-control-border text-xs" placeholder="Serial No." autocomplete="off">
+            <input type="number" id="scan_serial_no" class="form-control form-control-sm form-control-border text-xs" placeholder="Serial No." autocomplete="off">
           </div>
           <div class="col-12 col-sm-6 col-md-2">
             <!-- search button -->
