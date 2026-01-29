@@ -15,8 +15,12 @@ include('plugins/system_plugins/navbar/index_navbar.php');
           <div class="col-12 col-sm-6 col-md-2 mb-2">
             <!-- line no. -->
             <label class="m-0 p-0 text-xs font-weight-normal">Line No.</label>
-            <input type="text" id="search_line_no" class="form-control form-control-sm form-control-border text-xs" placeholder="Line No." autocomplete="off"
-              class="pl-3">
+            <!-- <input type="text" id="search_line_no" class="form-control form-control-sm form-control-border text-xs" placeholder="Line No." autocomplete="off"
+              class="pl-3"> -->
+
+            <select id="search_line_no" class="form-control form-control-sm form-control-border text-xs">
+              <option value="" disabled selected>Select Line No.</option>
+            </select>
           </div>
           <div class="col-12 col-sm-6 col-md-4 mb-2 d-none">
             <!-- qr scan -->

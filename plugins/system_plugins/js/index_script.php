@@ -128,6 +128,7 @@
             },
             success: function(response) {
                 $('#a_line_no').html(response);
+                $('#search_line_no').html(response);
             },
         });
     };
