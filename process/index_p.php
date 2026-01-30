@@ -357,7 +357,7 @@ if ($method == 'add_defect_record') {
     $current_year = (int) date('Y');
 
     // Check if the year is valid
-    if ($year < 2024 || $year > $current_year) {
+    if ($year < 2026 || $year > $current_year) {
         echo 'error_invalid_year';
         exit;
     }

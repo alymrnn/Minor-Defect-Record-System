@@ -691,10 +691,10 @@
         var currentYear = new Date().getFullYear();
 
         // Check if the year is a valid 4-digit number
-        if (year < 2024 || year > currentYear) {
+        if (year < 2026 || year > currentYear) {
             Swal.fire({
                 icon: 'info',
-                text: 'Please enter a valid year.',
+                text: 'Year should be 2026.',
                 background: '#00375C',
                 color: '#f9f9f9',
             });

@@ -1,6 +1,6 @@
 <div class="modal fade bd-example-modal-xl" id="add_defect_record" tabindex="-1" role="dialog" data-backdrop="static"
     data-keyboard="false">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
         <div class="modal-content bg-light">
             <div class="modal-header" style="border-bottom: 1px solid #ddd;">
                 <h6 class="modal-title font-weight-normal text-primary">
