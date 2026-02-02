@@ -121,8 +121,10 @@
          }
       });
 
+      const currentYear = new Date().getFullYear();
+
       $('.year-check').each(function() {
-         if ($(this).val() === '2025') {
+         if ($(this).val() === currentYear.toString()) {
             $(this).prop('checked', true);
          }
       });
