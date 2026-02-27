@@ -10,7 +10,7 @@ include('plugins/system_plugins/navbar/index_navbar.php');
   <section class="content py-2">
     <div class="chart-border mx-1">
       <!-- SEARCH FIELD -->
-      <div class="card-body">
+      <div class="card-body m-0 p-0 p-2">
         <div class="row">
           <div class="col-12 col-sm-6 col-md-2 mb-2">
             <!-- line no. -->
@@ -129,7 +129,7 @@ include('plugins/system_plugins/navbar/index_navbar.php');
 
     <!-- MAIN FIELD -->
     <div class="chart-border mx-1 mt-2">
-      <div class="card-body">
+      <div class="card-body m-0 p-0 p-2">
         <p class="p-0 m-0 text-secondary text-xs"><i class="far fa-folder"></i>&nbsp;Minor Defect Record Table</p>
         <div class="col-sm-3">
           <!-- view total count of data from table -->
