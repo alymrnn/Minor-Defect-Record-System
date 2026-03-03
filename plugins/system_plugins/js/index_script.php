@@ -207,17 +207,25 @@
         });
     });
 
-    $('#closeScanner').on('click', function() {
+    let closehtml5QrCode = null;
 
-        if (html5QrCode) {
-            html5QrCode.stop().then(() => {
-                $('#qr-reader').hide();
-                $('#openScanner').show();
-                $('#closeScanner').hide();
-            }).catch(err => {
-                console.error("Stop failed:", err);
-            });
+    const stopScanner = async () => {
+        try {
+            if (closehtml5QrCode) {
+                await closehtml5QrCode.stop();
+                await closehtml5QrCode.clear(); // fully release camera
+            }
+        } catch (err) {
+            console.warn("Scanner already stopped");
         }
+
+        $('#qr-reader').hide();
+        $('#openScanner').show();
+        $('#closeScanner').hide();
+    };
+
+    $('#closeScanner').on('click', function() {
+        stopScanner();
     });
 
     function processScannedQR(qrCode) {
@@ -1060,6 +1068,8 @@
     };
 
     const clear_add_defect_record = () => {
+        stopScanner();
+
         document.getElementById("a_date_detected").value = '';
         document.getElementById("a_car_maker").value = '';
         document.getElementById("a_car_model").value = '';
@@ -1067,6 +1077,7 @@
         document.getElementById("a_harness_type").value = '';
         document.getElementById("a_process").value = '';
         document.getElementById("a_group").value = '';
+        document.getElementById("a_shift").value = 'N/A';
         document.getElementById("a_product_name").value = 'N/A';
         document.getElementById("a_lot_no").value = '59';
         document.getElementById("a_serial_no").value = '';
