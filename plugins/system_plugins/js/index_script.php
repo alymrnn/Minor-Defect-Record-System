@@ -140,7 +140,7 @@
 
                     data.qr_settings.forEach(setting => {
                         $('#qr_settings').append(`
-                        <option value='${JSON.stringify(setting)}'>
+                        <option class='text-xs' value='${JSON.stringify(setting)}'>
                             ${setting.car_model}
                         </option>
                     `);
@@ -149,7 +149,9 @@
                 } else {
                     Swal.fire({
                         icon: 'warning',
-                        title: data.error
+                        text: data.error,
+                        background: '#00375C',
+                        color: '#fff',
                     });
                 }
             }
@@ -159,49 +161,67 @@
     let html5QrCode;
     let selectedQRSetting = null;
 
-    // Store selected setting
+    // Store selected QR setting
     $(document).on('change', '#qr_settings', function() {
         selectedQRSetting = JSON.parse($(this).val());
     });
 
     // Open scanner
     $('#openScanner').on('click', function() {
-
         if (!selectedQRSetting) {
-            Swal.fire("Please select QR Setting first");
+            Swal.fire({
+                icon: 'warning',
+                text: 'Please select QR Setting first',
+                showConfirmButton: true,
+                background: '#00375C',
+                color: '#fff'
+            });
             return;
         }
 
         $('#qr-reader').show();
+        $('#openScanner').hide();
+        $('#closeScanner').show();
 
         html5QrCode = new Html5Qrcode("qr-reader");
 
         html5QrCode.start({
                 facingMode: "environment"
-            }, // back camera
-            {
+            }, {
                 fps: 10,
                 qrbox: 250
             },
             function(decodedText) {
-
                 html5QrCode.stop().then(() => {
                     $('#qr-reader').hide();
+                    $('#openScanner').show();
+                    $('#closeScanner').hide();
                 });
 
                 processScannedQR(decodedText);
             },
-            function(error) {
-                // ignore scanning errors
-            }
+            function(errorMessage) {}
         ).catch(err => {
             console.error(err);
             Swal.fire("Camera Error", "Cannot access camera", "error");
         });
+    });
 
+    $('#closeScanner').on('click', function() {
+
+        if (html5QrCode) {
+            html5QrCode.stop().then(() => {
+                $('#qr-reader').hide();
+                $('#openScanner').show();
+                $('#closeScanner').hide();
+            }).catch(err => {
+                console.error("Stop failed:", err);
+            });
+        }
     });
 
     function processScannedQR(qrCode) {
+        if (!selectedQRSetting) return;
 
         const {
             total_length,
@@ -217,26 +237,59 @@
             Swal.fire({
                 icon: 'error',
                 title: 'Invalid QR Code',
-                text: `Expected length: ${total_length}, got ${qrCode.length}`
+                text: `Expected length: ${total_length}, got ${qrCode.length}`,
+                background: '#00375C',
+                color: '#fff',
+                showConfirmButton: true
             });
             return;
         }
 
+        // Display full scanned QR
+        $('#a_scan_qr').val(qrCode);
+
+        // Store full value in hidden input
         $('#nameplate_value').val(qrCode);
 
-        $('#a_product_name').val(
-            qrCode.substring(product_name_start, product_name_start + product_name_length).trim()
-        );
+        // Step 1: Extract product including padding
+        let productWithPadding = qrCode.substring(product_name_start, lot_no_start).trim();
 
-        $('#a_lot_no').val(
-            qrCode.substring(lot_no_start, lot_no_start + lot_no_length).trim()
-        );
+        // Step 2: Extract lot from start of lot_no_start to start of serial
+        let lotWithPadding = qrCode.substring(lot_no_start, serial_no_start).trim();
 
-        $('#a_serial_no').val(
-            qrCode.substring(serial_no_start, serial_no_start + serial_no_length).trim()
-        );
+        // Step 3: Extract serial
+        let serial = qrCode.substring(serial_no_start).trim();
 
-        navigator.vibrate?.(200); // vibrate if supported
+        $('#a_product_name').val(productWithPadding);
+        $('#a_lot_no').val(lotWithPadding);
+        $('#a_serial_no').val(serial);
+
+        Swal.fire({
+            icon: 'success',
+            text: 'Nameplate Scanned',
+            showConfirmButton: false,
+            timer: 1200,
+            background: '#00375C',
+            color: '#fff',
+        });
+
+        // Highlight product, lot, serial inputs for 5 seconds
+        const highlightInputs = ['#a_product_name', '#a_lot_no', '#a_serial_no'];
+        highlightInputs.forEach(selector => {
+            $(selector).css({
+                'border-bottom': '1px solid #22c55e', // green border
+                'background-color': '#d4fcd4' // light green
+            });
+        });
+
+        setTimeout(() => {
+            highlightInputs.forEach(selector => {
+                $(selector).css({
+                    'border-bottom': '',
+                    'background-color': ''
+                });
+            });
+        }, 5000);
     }
 
     const fetch_line_no = () => {
@@ -1034,6 +1087,8 @@
         document.getElementById("a_defect_details_code").value = '';
         document.getElementById("a_defect_details").value = '';
 
+        document.getElementById("qr_settings").value = '';
+
         $('#a_process').prop('disabled', true).css('background', '#DDD');
         $('#a_process').empty().append('<option value="" disabled selected>Select Process</option>');
 
@@ -1179,7 +1234,7 @@
                     // Handle car_model
                     if (Array.isArray(data.car_model)) {
                         let selectHtml = `
-                                            <select id="a_car_model" class="form-control form-control-sm form-control-border" required>
+                                            <select id="a_car_model" class="form-control form-control-sm form-control-border text-xs" required>
                                                 <option value="" disabled selected>Select Car Model</option>
                                         `;
                         data.car_model.forEach(model => {
@@ -1195,7 +1250,7 @@
                     } else {
                         // If single car model, ensure it's a text input
                         const inputHtml = `
-                                                <input type="text" id="a_car_model" class="form-control form-control-sm form-control-border" autocomplete="off"
+                                                <input type="text" id="a_car_model" class="form-control form-control-sm form-control-border text-xs" autocomplete="off"
                                                     value="${data.car_model}" required>
                                             `;
                         $('#a_car_model').replaceWith(inputHtml);
@@ -1307,6 +1362,50 @@
                     checkAuthId(inputValue);
                 }
             }
+        });
+    });
+
+    let authHtml5QrCode = null;
+
+    $('#openAuthScanner').on('click', function() {
+        const qrContainer = $('#auth-qr-reader');
+        qrContainer.show();
+
+        // Initialize Html5Qrcode if not already
+        if (!authHtml5QrCode) {
+            authHtml5QrCode = new Html5Qrcode("auth-qr-reader");
+        }
+
+        authHtml5QrCode.start({
+                facingMode: "environment"
+            }, // back camera
+            {
+                fps: 10,
+                qrbox: 250
+            },
+            function(decodedText) {
+                // Stop scanner after successful scan
+                authHtml5QrCode.stop().then(() => {
+                    qrContainer.hide();
+                });
+
+                // Fill input and trigger your existing check
+                $('#auth_id_no').val(decodedText);
+                sessionStorage.setItem('auth_id_no', decodedText);
+                checkAuthId(decodedText);
+            },
+            function(errorMessage) {
+                // optional: ignore scanning errors
+            }
+        ).catch(err => {
+            console.error(err);
+            Swal.fire({
+                icon: 'error',
+                title: 'Camera Error',
+                text: 'Cannot access camera. Make sure your device allows camera access.',
+                background: '#00375C',
+                color: '#fff'
+            });
         });
     });
 

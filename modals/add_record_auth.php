@@ -15,11 +15,23 @@
                     </div>
                 </div>
                 <div class="row justify-content-center">
-                    <div class="col-12 col-md-6">
+                    <div class="col-12 col-md-10">
                         <input type="hidden" id="auth_name" class="form-control">
-                        <input class="form-control form-control-sm text-center border-0 shadow-sm p-2 text-xs" id="auth_id_no"
-                            placeholder="Input ID no. here" type="text" oncopy="return false;" onpaste="return false;">
-                        <small class="text-muted d-block mt-2 text-center text-xs">Click enter button to proceed.</small>
+                        <input class="form-control form-control-sm text-center border-0 shadow-sm p-2 text-xs"
+                            id="auth_id_no" placeholder="Input ID no. here" type="text"
+                            oncopy="return false;" onpaste="return false;">
+
+                        <!-- QR Scanner Button -->
+                        <button type="button" class="btn btn-sm btn-warning text-xs mt-2" id="openAuthScanner">
+                             <i class="fas fa-camera mr-1"></i> Scan QR ID No.
+                        </button>
+
+                        <!-- QR Reader container -->
+                        <div id="auth-qr-reader" style="width:100%; display:none; margin-top:10px;"></div>
+
+                        <small class="text-muted d-block mt-2 text-center text-xs">
+                            Click enter button or scan QR to proceed.
+                        </small>
                     </div>
                 </div>
             </div>
