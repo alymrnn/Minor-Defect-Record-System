@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "highcharts": "^12.1.2"
+    "highcharts": "^12.1.2",
+    "html5-qrcode": "^2.3.8"
   }
 }

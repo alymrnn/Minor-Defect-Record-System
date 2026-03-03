@@ -236,3 +236,35 @@ if ($method == 'get_inspection_details') {
     ]);
     exit;
 }
+
+if ($method == 'get_qr_settings') {
+    $line_no = $_GET['line_no'];
+
+    // Get first digit of line_no
+    $first_digit = substr($line_no, 0, 1);
+
+    $query = "SELECT id, car_model, total_length, 
+                     product_name_start, product_name_length, 
+                     lot_no_start, lot_no_length, 
+                     serial_no_start, serial_no_length 
+              FROM m_car_qr_setting 
+              WHERE car_value = ?";
+
+    $stmt = $conn->prepare($query);
+    $stmt->execute([$first_digit]);
+    $qr_settings = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    if (!$qr_settings) {
+        echo json_encode([
+            'success' => false,
+            'error' => 'No QR settings found for this line number.'
+        ]);
+        exit;
+    }
+
+    echo json_encode([
+        'success' => true,
+        'qr_settings' => $qr_settings
+    ]);
+    exit;
+}

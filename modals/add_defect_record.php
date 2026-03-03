@@ -109,11 +109,25 @@
                         </select>
                     </div>
                 </div>
-                <div class="row mb-2 d-none">
-                    <div class="col-sm-12">
-                        <label class="m-0 p-0 text-xs font-weight-normal">Scan QR-Code</label>
-                        <input type="text" id="a_scan_qr" class="form-control form-control-sm form-control-border text-xs" autocomplete="off">
-                        <input type="hidden" id="nameplate_value">
+                <div class="d-block d-md-none">
+                    <div class="row">
+                        <div class="col-12">
+                            <label class="m-0 p-0 text-xs font-weight-normal">QR Setting</label>
+                            <select id="qr_settings" class="form-control form-control-sm form-control-border text-xs" required>
+                                <option value="" disabled selected>Select Setting</option>
+                            </select>
+                        </div>
+                        <button type="button" class="btn btn-primary btn-sm mt-2" id="openScanner">
+                            Open Camera Scanner
+                        </button>
+                        <div class="col-12 mt-2">
+                            <div id="qr-reader" style="width:100%;"></div>
+                        </div>
+                        <div class="col-12">
+                            <label class="m-0 p-0 text-xs font-weight-normal">Scan QR-Code</label>
+                            <input type="text" id="a_scan_qr" class="form-control form-control-sm form-control-border text-xs" autocomplete="off">
+                            <input type="hidden" id="nameplate_value">
+                        </div>
                     </div>
                 </div>
                 <div class="row">

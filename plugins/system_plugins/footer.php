@@ -38,6 +38,9 @@ include 'modals/add_record_auth.php';
 <script src="plugins/highcharts/js/highcharts-more.js"></script>
 <script src="plugins/highcharts/js/map.js"></script>
 
+<!-- qr code -->
+<script src="node_modules/html5-qrcode/html5-qrcode.min.js"></script>
+
 </body>
 
 </html>

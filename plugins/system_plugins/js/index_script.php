@@ -16,6 +16,7 @@
             input.value = input.value.replace(/\D/g, '').slice(0, 4);
         });
 
+        $('#qr_settings').prop('disabled', true).css('background', '#DDD');
         $('#a_process').prop('disabled', true).css('background', '#DDD');
         $('#a_defect_category').prop('disabled', true).css('background', '#F1F1F1');
         $('#a_defect_details').prop('disabled', true).css('background', '#F1F1F1');
@@ -117,6 +118,126 @@
         //     $('#a_category').val($(this).val());
         // });
     });
+
+    $(document).on('change', '#a_line_no', function() {
+        $('#qr_settings').prop('disabled', false).css('background', '#FFF');
+        const line_no = $(this).val();
+
+        $.ajax({
+            url: 'process/inspection_p.php',
+            type: 'GET',
+            data: {
+                method: 'get_qr_settings',
+                line_no: line_no
+            },
+            success: function(response) {
+                const data = JSON.parse(response);
+
+                $('#qr_settings').empty()
+                    .append('<option value="" disabled selected>Select Setting</option>');
+
+                if (data.success) {
+
+                    data.qr_settings.forEach(setting => {
+                        $('#qr_settings').append(`
+                        <option value='${JSON.stringify(setting)}'>
+                            ${setting.car_model}
+                        </option>
+                    `);
+                    });
+
+                } else {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: data.error
+                    });
+                }
+            }
+        });
+    });
+
+    let html5QrCode;
+    let selectedQRSetting = null;
+
+    // Store selected setting
+    $(document).on('change', '#qr_settings', function() {
+        selectedQRSetting = JSON.parse($(this).val());
+    });
+
+    // Open scanner
+    $('#openScanner').on('click', function() {
+
+        if (!selectedQRSetting) {
+            Swal.fire("Please select QR Setting first");
+            return;
+        }
+
+        $('#qr-reader').show();
+
+        html5QrCode = new Html5Qrcode("qr-reader");
+
+        html5QrCode.start({
+                facingMode: "environment"
+            }, // back camera
+            {
+                fps: 10,
+                qrbox: 250
+            },
+            function(decodedText) {
+
+                html5QrCode.stop().then(() => {
+                    $('#qr-reader').hide();
+                });
+
+                processScannedQR(decodedText);
+            },
+            function(error) {
+                // ignore scanning errors
+            }
+        ).catch(err => {
+            console.error(err);
+            Swal.fire("Camera Error", "Cannot access camera", "error");
+        });
+
+    });
+
+    function processScannedQR(qrCode) {
+
+        const {
+            total_length,
+            product_name_start,
+            product_name_length,
+            lot_no_start,
+            lot_no_length,
+            serial_no_start,
+            serial_no_length
+        } = selectedQRSetting;
+
+        if (qrCode.length !== parseInt(total_length)) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Invalid QR Code',
+                text: `Expected length: ${total_length}, got ${qrCode.length}`
+            });
+            return;
+        }
+
+        $('#nameplate_value').val(qrCode);
+
+        $('#a_product_name').val(
+            qrCode.substring(product_name_start, product_name_start + product_name_length).trim()
+        );
+
+        $('#a_lot_no').val(
+            qrCode.substring(lot_no_start, lot_no_start + lot_no_length).trim()
+        );
+
+        $('#a_serial_no').val(
+            qrCode.substring(serial_no_start, serial_no_start + serial_no_length).trim()
+        );
+
+        navigator.vibrate?.(200); // vibrate if supported
+    }
 
     const fetch_line_no = () => {
         $.ajax({
@@ -1068,6 +1189,9 @@
 
                         // Replace existing input with select
                         $('#a_car_model').replaceWith(selectHtml);
+
+                        // Initialize QR handler
+                        // setupQRHandler(data.qr_settings);
                     } else {
                         // If single car model, ensure it's a text input
                         const inputHtml = `
@@ -1113,64 +1237,64 @@
         });
     };
 
-    const setupQRHandler = (qr_settings) => {
-        const {
-            total_length,
-            product_name_start,
-            product_name_length,
-            lot_no_start,
-            lot_no_length,
-            serial_no_start,
-            serial_no_length
-        } = qr_settings;
+    // const setupQRHandler = (qr_settings) => {
+    //     const {
+    //         total_length,
+    //         product_name_start,
+    //         product_name_length,
+    //         lot_no_start,
+    //         lot_no_length,
+    //         serial_no_start,
+    //         serial_no_length
+    //     } = qr_settings;
 
-        $('#a_scan_qr').off('keyup').on('keyup', function(e) {
-            if (e.which === 13) { // Enter key
-                e.preventDefault();
-                let qrCode = this.value;
+    //     $('#a_scan_qr').off('keyup').on('keyup', function(e) {
+    //         if (e.which === 13) { // Enter key
+    //             e.preventDefault();
+    //             let qrCode = this.value;
 
-                // Convert settings to integers
-                const totalLength = parseInt(total_length, 10);
-                const productNameStart = parseInt(product_name_start, 10);
-                const productNameLength = parseInt(product_name_length, 10);
-                const lotNoStart = parseInt(lot_no_start, 10);
-                const lotNoLength = parseInt(lot_no_length, 10);
-                const serialNoStart = parseInt(serial_no_start, 10);
-                const serialNoLength = parseInt(serial_no_length, 10);
+    //             // Convert settings to integers
+    //             const totalLength = parseInt(total_length, 10);
+    //             const productNameStart = parseInt(product_name_start, 10);
+    //             const productNameLength = parseInt(product_name_length, 10);
+    //             const lotNoStart = parseInt(lot_no_start, 10);
+    //             const lotNoLength = parseInt(lot_no_length, 10);
+    //             const serialNoStart = parseInt(serial_no_start, 10);
+    //             const serialNoLength = parseInt(serial_no_length, 10);
 
-                console.log('Converted Settings:', {
-                    totalLength,
-                    productNameStart,
-                    productNameLength,
-                    lotNoStart,
-                    lotNoLength,
-                    serialNoStart,
-                    serialNoLength
-                });
+    //             console.log('Converted Settings:', {
+    //                 totalLength,
+    //                 productNameStart,
+    //                 productNameLength,
+    //                 lotNoStart,
+    //                 lotNoLength,
+    //                 serialNoStart,
+    //                 serialNoLength
+    //             });
 
-                if (qrCode.length === totalLength) {
-                    document.getElementById('nameplate_value').value = qrCode;
+    //             if (qrCode.length === totalLength) {
+    //                 document.getElementById('nameplate_value').value = qrCode;
 
-                    // Extract values using start and length parameters
-                    const productName = qrCode.substring(productNameStart, productNameStart + productNameLength).trim();
-                    const lotNo = qrCode.substring(lotNoStart, lotNoStart + lotNoLength).trim();
-                    const serialNo = qrCode.substring(serialNoStart, serialNoStart + serialNoLength).trim();
+    //                 // Extract values using start and length parameters
+    //                 const productName = qrCode.substring(productNameStart, productNameStart + productNameLength).trim();
+    //                 const lotNo = qrCode.substring(lotNoStart, lotNoStart + lotNoLength).trim();
+    //                 const serialNo = qrCode.substring(serialNoStart, serialNoStart + serialNoLength).trim();
 
-                    $('#a_product_name').val(productName);
-                    $('#a_lot_no').val(lotNo);
-                    $('#a_serial_no').val(serialNo);
+    //                 $('#a_product_name').val(productName);
+    //                 $('#a_lot_no').val(lotNo);
+    //                 $('#a_serial_no').val(serialNo);
 
-                    this.value = '';
-                } else {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Invalid QR Code',
-                        text: `Expected length: ${totalLength}, but received: ${qrCode.length}`,
-                    });
-                }
-            }
-        });
-    };
+    //                 this.value = '';
+    //             } else {
+    //                 Swal.fire({
+    //                     icon: 'error',
+    //                     title: 'Invalid QR Code',
+    //                     text: `Expected length: ${totalLength}, but received: ${qrCode.length}`,
+    //                 });
+    //             }
+    //         }
+    //     });
+    // };
 
     document.addEventListener('DOMContentLoaded', function() {
         const input = document.getElementById('auth_id_no');
