@@ -158,79 +158,7 @@
         });
     });
 
-    let html5QrCode;
-    let selectedQRSetting = null;
-
-    // Store selected QR setting
-    $(document).on('change', '#qr_settings', function() {
-        selectedQRSetting = JSON.parse($(this).val());
-    });
-
-    // Open scanner
-    $('#openScanner').on('click', function() {
-        if (!selectedQRSetting) {
-            Swal.fire({
-                icon: 'warning',
-                text: 'Please select QR Setting first',
-                showConfirmButton: true,
-                background: '#00375C',
-                color: '#fff'
-            });
-            return;
-        }
-
-        $('#qr-reader').show();
-        $('#openScanner').hide();
-        $('#closeScanner').show();
-
-        html5QrCode = new Html5Qrcode("qr-reader");
-
-        html5QrCode.start({
-                facingMode: "environment"
-            }, {
-                fps: 10,
-                qrbox: 250
-            },
-            function(decodedText) {
-                html5QrCode.stop().then(() => {
-                    $('#qr-reader').hide();
-                    $('#openScanner').show();
-                    $('#closeScanner').hide();
-                });
-
-                processScannedQR(decodedText);
-            },
-            function(errorMessage) {}
-        ).catch(err => {
-            console.error(err);
-            Swal.fire("Camera Error", "Cannot access camera", "error");
-        });
-    });
-
-    let closehtml5QrCode = null;
-
-    const stopScanner = async () => {
-        try {
-            if (closehtml5QrCode) {
-                await closehtml5QrCode.stop();
-                await closehtml5QrCode.clear(); // fully release camera
-            }
-        } catch (err) {
-            console.warn("Scanner already stopped");
-        }
-
-        $('#qr-reader').hide();
-        $('#openScanner').show();
-        $('#closeScanner').hide();
-    };
-
-    $('#closeScanner').on('click', function() {
-        stopScanner();
-    });
-
-    function processScannedQR(qrCode) {
-        if (!selectedQRSetting) return;
-
+    const parseQRCode = (qrCode, qr_settings) => {
         const {
             total_length,
             product_name_start,
@@ -239,66 +167,225 @@
             lot_no_length,
             serial_no_start,
             serial_no_length
-        } = selectedQRSetting;
+        } = qr_settings;
 
-        if (qrCode.length !== parseInt(total_length)) {
+        const totalLength = parseInt(total_length, 10);
+        const productNameStart = parseInt(product_name_start, 10);
+        const productNameLength = parseInt(product_name_length, 10);
+        const lotNoStart = parseInt(lot_no_start, 10);
+        const lotNoLength = parseInt(lot_no_length, 10);
+        const serialNoStart = parseInt(serial_no_start, 10);
+        const serialNoLength = parseInt(serial_no_length, 10);
+
+        if (qrCode.length === totalLength) {
+
+            $('#nameplate_value').val(qrCode);
+
+            const productName = qrCode.substring(productNameStart, productNameStart + productNameLength).trim();
+            const lotNo = qrCode.substring(lotNoStart, lotNoStart + lotNoLength).trim();
+            const serialNo = qrCode.substring(serialNoStart, serialNoStart + serialNoLength).trim();
+
+            const fields = $('#a_product_name, #a_lot_no, #a_serial_no');
+
+            $('#a_product_name').val(productName);
+            $('#a_lot_no').val(lotNo);
+            $('#a_serial_no').val(serialNo);
+
+            fields.css({
+                'background': '#d4edda',
+                'border-bottom': '1px solid #80ed99'
+            });
+
+            // Remove highlight after 3 seconds
+            setTimeout(() => {
+                fields.css({
+                    'background': '',
+                    'border-bottom': ''
+                });
+            }, 3000);
+
+        } else {
             Swal.fire({
                 icon: 'error',
                 title: 'Invalid QR Code',
-                text: `Expected length: ${total_length}, got ${qrCode.length}`,
-                background: '#00375C',
-                color: '#fff',
-                showConfirmButton: true
+                text: `Expected length: ${totalLength}, but received: ${qrCode.length}`,
             });
-            return;
+        }
+    };
+
+    const setupQRHandler = (qr_settings) => {
+
+        $('#a_scan_qr').off('keyup').on('keyup', function(e) {
+            if (e.which === 13) {
+                e.preventDefault();
+                let qrCode = this.value;
+
+                parseQRCode(qrCode, qr_settings);
+
+                this.value = '';
+            }
+        });
+
+    };
+
+    $(document).on('change', '#qr_settings', function() {
+
+        const qr_settings = JSON.parse($(this).val());
+
+        setupQRHandler(qr_settings);
+
+        // read existing nameplate value
+        const existingQR = $('#a_scan_qr').val();
+
+        if (existingQR) {
+            parseQRCode(existingQR, qr_settings);
         }
 
-        // Display full scanned QR
-        $('#a_scan_qr').val(qrCode);
+    });
 
-        // Store full value in hidden input
-        $('#nameplate_value').val(qrCode);
 
-        // Step 1: Extract product including padding
-        let productWithPadding = qrCode.substring(product_name_start, lot_no_start).trim();
 
-        // Step 2: Extract lot from start of lot_no_start to start of serial
-        let lotWithPadding = qrCode.substring(lot_no_start, serial_no_start).trim();
+    // let html5QrCode;
+    // let selectedQRSetting = null;
 
-        // Step 3: Extract serial
-        let serial = qrCode.substring(serial_no_start).trim();
+    // // Store selected QR setting
+    // $(document).on('change', '#qr_settings', function() {
+    //     selectedQRSetting = JSON.parse($(this).val());
+    // });
 
-        $('#a_product_name').val(productWithPadding);
-        $('#a_lot_no').val(lotWithPadding);
-        $('#a_serial_no').val(serial);
+    // // Open scanner
+    // $('#openScanner').on('click', function() {
+    //     if (!selectedQRSetting) {
+    //         Swal.fire({
+    //             icon: 'warning',
+    //             text: 'Please select QR Setting first',
+    //             showConfirmButton: true,
+    //             background: '#00375C',
+    //             color: '#fff'
+    //         });
+    //         return;
+    //     }
 
-        Swal.fire({
-            icon: 'success',
-            text: 'Nameplate Scanned',
-            showConfirmButton: false,
-            timer: 1200,
-            background: '#00375C',
-            color: '#fff',
-        });
+    //     $('#qr-reader').show();
+    //     $('#openScanner').hide();
+    //     $('#closeScanner').show();
 
-        // Highlight product, lot, serial inputs for 5 seconds
-        const highlightInputs = ['#a_product_name', '#a_lot_no', '#a_serial_no'];
-        highlightInputs.forEach(selector => {
-            $(selector).css({
-                'border-bottom': '1px solid #22c55e', // green border
-                'background-color': '#d4fcd4' // light green
-            });
-        });
+    //     html5QrCode = new Html5Qrcode("qr-reader");
 
-        setTimeout(() => {
-            highlightInputs.forEach(selector => {
-                $(selector).css({
-                    'border-bottom': '',
-                    'background-color': ''
-                });
-            });
-        }, 5000);
-    }
+    //     html5QrCode.start({
+    //             facingMode: "environment"
+    //         }, {
+    //             fps: 10,
+    //             qrbox: 250
+    //         },
+    //         function(decodedText) {
+    //             html5QrCode.stop().then(() => {
+    //                 $('#qr-reader').hide();
+    //                 $('#openScanner').show();
+    //                 $('#closeScanner').hide();
+    //             });
+
+    //             processScannedQR(decodedText);
+    //         },
+    //         function(errorMessage) {}
+    //     ).catch(err => {
+    //         console.error(err);
+    //         Swal.fire("Camera Error", "Cannot access camera", "error");
+    //     });
+    // });
+
+    // let closehtml5QrCode = null;
+
+    // const stopScanner = async () => {
+    //     try {
+    //         if (closehtml5QrCode) {
+    //             await closehtml5QrCode.stop();
+    //             await closehtml5QrCode.clear(); // fully release camera
+    //         }
+    //     } catch (err) {
+    //         console.warn("Scanner already stopped");
+    //     }
+
+    //     $('#qr-reader').hide();
+    //     $('#openScanner').show();
+    //     $('#closeScanner').hide();
+    // };
+
+    // $('#closeScanner').on('click', function() {
+    //     stopScanner();
+    // });
+
+    // function processScannedQR(qrCode) {
+    //     if (!selectedQRSetting) return;
+
+    //     const {
+    //         total_length,
+    //         product_name_start,
+    //         product_name_length,
+    //         lot_no_start,
+    //         lot_no_length,
+    //         serial_no_start,
+    //         serial_no_length
+    //     } = selectedQRSetting;
+
+    //     if (qrCode.length !== parseInt(total_length)) {
+    //         Swal.fire({
+    //             icon: 'error',
+    //             title: 'Invalid QR Code',
+    //             text: `Expected length: ${total_length}, got ${qrCode.length}`,
+    //             background: '#00375C',
+    //             color: '#fff',
+    //             showConfirmButton: true
+    //         });
+    //         return;
+    //     }
+
+    //     // Display full scanned QR
+    //     $('#a_scan_qr').val(qrCode);
+
+    //     // Store full value in hidden input
+    //     $('#nameplate_value').val(qrCode);
+
+    //     // Step 1: Extract product including padding
+    //     let productWithPadding = qrCode.substring(product_name_start, lot_no_start).trim();
+
+    //     // Step 2: Extract lot from start of lot_no_start to start of serial
+    //     let lotWithPadding = qrCode.substring(lot_no_start, serial_no_start).trim();
+
+    //     // Step 3: Extract serial
+    //     let serial = qrCode.substring(serial_no_start).trim();
+
+    //     $('#a_product_name').val(productWithPadding);
+    //     $('#a_lot_no').val(lotWithPadding);
+    //     $('#a_serial_no').val(serial);
+
+    //     Swal.fire({
+    //         icon: 'success',
+    //         text: 'Nameplate Scanned',
+    //         showConfirmButton: false,
+    //         timer: 1200,
+    //         background: '#00375C',
+    //         color: '#fff',
+    //     });
+
+    //     // Highlight product, lot, serial inputs for 5 seconds
+    //     const highlightInputs = ['#a_product_name', '#a_lot_no', '#a_serial_no'];
+    //     highlightInputs.forEach(selector => {
+    //         $(selector).css({
+    //             'border-bottom': '1px solid #22c55e', // green border
+    //             'background-color': '#d4fcd4' // light green
+    //         });
+    //     });
+
+    //     setTimeout(() => {
+    //         highlightInputs.forEach(selector => {
+    //             $(selector).css({
+    //                 'border-bottom': '',
+    //                 'background-color': ''
+    //             });
+    //         });
+    //     }, 5000);
+    // }
 
     const fetch_line_no = () => {
         $.ajax({

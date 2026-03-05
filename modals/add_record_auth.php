@@ -21,9 +21,22 @@
                             id="auth_id_no" placeholder="Input ID no. here" type="text"
                             oncopy="return false;" onpaste="return false;">
 
+                        <style>
+                            .auth-scan-btn {
+                                display: none;
+                            }
+
+                            /* Show button on small screens (mobile) */
+                            @media (max-width: 767px) {
+                                .auth-scan-btn {
+                                    display: inline-block;
+                                    /* or block if you want full width */
+                                }
+                            }
+                        </style>
                         <!-- QR Scanner Button -->
-                        <button type="button" class="btn btn-sm btn-warning text-xs mt-2" id="openAuthScanner">
-                             <i class="fas fa-camera mr-1"></i> Scan QR ID No.
+                        <button type="button" class="btn btn-sm btn-outline-warning text-xs mt-2 auth-scan-btn d-none" id="openAuthScanner">
+                            <i class="fas fa-camera mr-1"></i> Scan QR ID No.
                         </button>
 
                         <!-- QR Reader container -->

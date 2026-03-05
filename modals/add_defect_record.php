@@ -118,18 +118,17 @@
                             </select>
                         </div>
 
-                        <button type="button" class="btn btn-warning btn-sm text-xs mt-2 mx-2" id="openScanner">
+                        <!-- <button type="button" class="btn btn-warning btn-sm text-xs mt-2 mx-2" id="openScanner">
                             <i class="fas fa-camera mr-1"></i> Open Camera Scanner
                         </button>
 
-                        <!-- Close Button (Hidden Initially) -->
                         <button type="button" class="btn btn-outline-danger btn-sm text-xs mt-2 mx-2" id="closeScanner" style="display:none;">
                            <i class="fas fa-window-close mr-1"></i> Close Camera Scanner
                         </button>
 
                         <div class="col-12 mt-2">
                             <div id="qr-reader" style="width:100%; display:none;"></div>
-                        </div>
+                        </div> -->
 
                         <div class="col-12 mt-2">
                             <label class="m-0 p-0 text-xs font-weight-normal">Nameplate Value</label>
