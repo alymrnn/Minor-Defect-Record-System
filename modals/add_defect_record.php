@@ -133,7 +133,7 @@
 
                         <div class="col-12 mt-2">
                             <label class="m-0 p-0 text-xs font-weight-normal">Nameplate Value</label>
-                            <input type="text" id="a_scan_qr" class="form-control form-control-sm form-control-border text-xs" readonly>
+                            <input type="text" id="a_scan_qr" value="<?php echo isset($_GET['qr']) ? $_GET['qr'] : ''; ?>" class="form-control form-control-sm form-control-border text-xs" readonly>
                             <input type="hidden" id="nameplate_value">
                         </div>
                     </div>
