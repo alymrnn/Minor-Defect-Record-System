@@ -26,7 +26,7 @@
                     text: 'Fetching minor defect records, please wait.',
                     allowOutsideClick: false,
                     showConfirmButton: false,
-                    background: '#1b263b',
+                    background: '#00375C',
                     color: '#fff',
                     didOpen: () => {
                         Swal.showLoading();
@@ -43,7 +43,7 @@
                     icon: 'error',
                     title: 'Oops...',
                     text: 'Something went wrong while loading data.',
-                    background: '#1b263b',
+                    background: '#00375C',
                     color: '#fff',
                 });
             }

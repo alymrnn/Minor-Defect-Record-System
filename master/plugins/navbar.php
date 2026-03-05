@@ -40,6 +40,7 @@ if (!isset($_SESSION['username'])) {
         .sidebar-light-primary .nav-sidebar>.nav-item>.nav-link.active {
             background: #fff;
             border: 1px solid #DDD;
+            box-shadow: none !important;
         }
 
         .spinner {
@@ -84,6 +85,11 @@ if (!isset($_SESSION['username'])) {
         /* Handle on hover */
         ::-webkit-scrollbar-thumb:hover {
             background: #332D2D;
+        }
+
+        .card-border {
+            border: 1px solid #eee;
+            border-radius: 10px;
         }
     </style>
 </head>

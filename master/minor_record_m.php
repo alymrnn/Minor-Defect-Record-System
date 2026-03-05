@@ -2,15 +2,15 @@
 <?php include 'plugins/sidebar/minor_record_m_bar.php'; ?>
 
 <div class="content-wrapper bg-white">
-   <div class="content-header">
+   <div class="content-header m-0 p-0 p-2">
       <div class="container-fluid">
-         <div class="row">
+         <div class="row pt-2">
             <div class="col-sm-6">
                <h5 class="m-0">Minor Record List</h5>
             </div>
             <div class="col-sm-6">
                <ol class="breadcrumb float-sm-right text-xs">
-                  <li class="breadcrumb-item"><a href="minor_record_m.php">Minor Defect Record System</a></li>
+                  <li class="breadcrumb-item"><a href="barcode_m.php">Minor Defect Record System</a></li>
                   <li class="breadcrumb-item active">Minor Record List</li>
                </ol>
             </div>
@@ -19,7 +19,7 @@
    </div>
 
    <section class="content">
-      <div class="row mx-2">
+      <div class="row mx-1 p-2 card-border">
          <div class="col-12 col-sm-4 col-md-2 mb-2">
             <!-- date from -->
             <label class="m-0 p-0 text-xs font-weight-normal">Date Detected From</label>
@@ -37,7 +37,7 @@
             <label class="m-0 p-0 text-xs font-weight-normal">Line No.</label>
             <input type="text" id="m_search_line_no" class="form-control form-control-sm form-control-border text-xs" placeholder="Line No." autocomplete="off">
          </div>
-          <div class="col-12 col-sm-6 col-md-2 mb-2">
+         <div class="col-12 col-sm-6 col-md-2 mb-2">
             <!-- lot no. -->
             <label class="m-0 p-0 text-xs font-weight-normal">Lot No.</label>
             <input type="text" id="m_search_lot_no" class="form-control form-control-sm form-control-border text-xs" placeholder="Lot No." autocomplete="off">
@@ -56,9 +56,9 @@
       </div>
 
       <!-- MAIN FIELD -->
-      <div class="card mx-2">
+      <div class="card-border mx-1 mt-2">
          <div class="card-body">
-            <div class="table-responsive m-0 p-0 mt-3" style="max-height: 500px;">
+            <div class="table-responsive m-0 p-0" style="max-height: 500px;">
                <table class="table table-sm table-head-fixed text-nowrap table-hover table-bordered" id="defect_table">
                   <thead class="text-center text-xs">
                      <th>#</th>

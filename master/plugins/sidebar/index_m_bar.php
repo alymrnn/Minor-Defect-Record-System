@@ -1,5 +1,5 @@
 <aside class="main-sidebar sidebar-light-primary"
-    style="position: fixed; top: 0; bottom: 0; overflow-y: auto; border-right: 1px solid #ddd;">
+    style="position: fixed; top: 0; bottom: 0; overflow-y: auto; border-right: 1px solid #eee;">
     <a href="masterlist_m.php" class="brand-link">
         <img src="../dist/img/defect.png" alt="Logo" class="brand-image" style="opacity: .8;">
         <span class="brand-text text-sm text-dark">Minor Defect System</span>
