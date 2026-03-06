@@ -7,7 +7,7 @@ $method = $_POST['method'];
 if ($method == 'qr_setting_list') {
     $c = 0;
 
-    $query = "SELECT * FROM m_car_qr_setting ORDER BY car_maker ASC";
+    $query = "SELECT * FROM m_car_qr_setting ORDER BY car_value ASC";
     $stmt = $conn->prepare($query, array(PDO::ATTR_CURSOR => PDO::CURSOR_SCROLL));
     $stmt->execute();
     if ($stmt->rowCount() > 0) {
