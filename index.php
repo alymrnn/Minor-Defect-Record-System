@@ -33,7 +33,7 @@ include('plugins/system_plugins/navbar/index_navbar.php');
             <input type="text" id="scan_product_name" class="form-control form-control-sm form-control-border text-xs" placeholder="Product Number"
               autocomplete="off">
           </div>
-          <div class="col-12 col-sm-6 col-md-2 mb-2">
+          <div class="col-12 col-sm-6 col-md-2 mb-2 d-none d-md-block">
             <!-- car maker -->
             <label class="m-0 p-0 text-xs font-weight-normal">Car Maker</label>
             <select id="search_car_maker" class="form-control form-control-sm form-control-border text-xs">
@@ -47,23 +47,24 @@ include('plugins/system_plugins/navbar/index_navbar.php');
               <option value="MARELLI">MARELLI</option>
             </select>
           </div>
-          <div class="col-12 col-sm-6 col-md-2 mb-2">
+          <div class="col-12 col-sm-6 col-md-2 mb-2 d-none d-md-block">
             <!-- lot no -->
             <label class="m-0 p-0 text-xs font-weight-normal">Lot No.</label>
             <input type="text" id="scan_lot_no" class="form-control form-control-sm form-control-border text-xs" placeholder="Lot No." autocomplete="off">
           </div>
-          <div class="col-12 col-sm-6 col-md-2 mb-2">
+          <div class="col-12 col-sm-6 col-md-2 mb-2 d-none d-md-block">
             <!-- serial no -->
             <label class="m-0 p-0 text-xs font-weight-normal">Serial No.</label>
             <input type="number" id="scan_serial_no" class="form-control form-control-sm form-control-border text-xs" placeholder="Serial No." autocomplete="off">
           </div>
-          <div class="col-12 col-sm-6 col-md-2">
-            <!-- search button -->
-            <label></label>
-            <button class="btn btn-outline-info btn-sm w-100 text-xs" id="search_btn" onclick="load_defect_table(1)">
-              <i class="fas fa-search"></i>&nbsp;Search</button>
+          <div class="col-12 col-sm-6 col-md-2 mb-2 d-none d-md-block">
+            <!-- process -->
+            <label class="m-0 p-0 text-xs font-weight-normal">Process</label>
+            <select id="search_process" class="form-control form-control-sm form-control-border text-xs">
+              <option value="" disabled selected>Select Process</option>
+            </select>
           </div>
-          <div class="col-12 col-sm-4 col-md-2">
+          <div class="col-12 col-sm-6 col-md-2 mb-2 d-none d-md-block">
             <!-- export button -->
             <label></label>
             <button class="btn btn-outline-secondary btn-sm w-100 text-xs" id="export_record"
@@ -84,26 +85,26 @@ include('plugins/system_plugins/navbar/index_navbar.php');
             <input type="date" name="date_to" class="form-control form-control-sm form-control-border text-xs" id="search_date_to" placeholder="Date To"
               onfocus="(this.type='date')">
           </div>
-          <div class="col-12 col-sm-6 col-md-2 mb-2">
-            <!-- process -->
-            <label class="m-0 p-0 text-xs font-weight-normal">Process</label>
-            <select id="search_process" class="form-control form-control-sm form-control-border text-xs">
-              <option value="" disabled selected>Select Process</option>
-            </select>
-          </div>
-          <div class="col-12 col-sm-6 col-md-2 mb-2">
+          <div class="col-12 col-sm-6 col-md-2 mb-2 d-none d-md-block">
             <!-- defect category -->
             <label class="m-0 p-0 text-xs font-weight-normal">Defect Category</label>
             <select id="search_defect_category" class="form-control form-control-sm form-control-border text-xs">
               <option value="" disabled selected>Select Defect Category</option>
             </select>
           </div>
-          <div class="col-12 col-sm-6 col-md-2 mb-2">
+
+          <div class="col-12 col-sm-6 col-md-2 mb-2 d-none d-md-block">
             <!-- defect details -->
             <label class="m-0 p-0 text-xs font-weight-normal">Defect Details</label>
             <select id="search_defect_details" class="form-control form-control-sm form-control-border text-xs">
               <option value="" disabled selected>Select Defect Details</option>
             </select>
+          </div>
+          <div class="col-12 col-sm-6 col-md-2">
+            <!-- search button -->
+            <label></label>
+            <button class="btn btn-outline-info btn-sm w-100 text-xs" id="search_btn" onclick="load_defect_table(1)">
+              <i class="fas fa-search"></i>&nbsp;Search</button>
           </div>
           <div class="col-12 col-sm-4 col-md-2">
             <!-- add button -->
