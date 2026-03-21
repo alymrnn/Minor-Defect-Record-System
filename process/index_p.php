@@ -255,13 +255,20 @@ if ($method == 'load_defect_list') {
 }
 
 if ($method == 'fetch_search_defect_category') {
-    $query = "SELECT defect_category_dc FROM m_defect_category ORDER BY defect_category_dc ASC";
+    $query = "SELECT defect_category_dc 
+              FROM m_defect_category 
+              WHERE defect_category_dc IS NOT NULL 
+              AND defect_category_dc != ''
+              ORDER BY defect_category_dc ASC";
+
     $stmt = $conn->prepare($query, array(PDO::ATTR_CURSOR => PDO::CURSOR_SCROLL));
     $stmt->execute();
     if ($stmt->rowCount() > 0) {
         echo '<option value="" disabled selected>Select Defect Category</option>';
         foreach ($stmt->fetchAll() as $row) {
-            echo '<option value="' . htmlspecialchars($row['defect_category_dc']) . '">' . htmlspecialchars($row['defect_category_dc']) . '</option>';
+            echo '<option value="' . htmlspecialchars($row['defect_category_dc']) . '">'
+                . htmlspecialchars($row['defect_category_dc']) .
+                '</option>';
         }
     } else {
         echo '<option value="">Select Defect Category</option>';

@@ -18,9 +18,9 @@
 
         $('#qr_settings').prop('disabled', true).css('background', '#DDD');
         $('#a_process').prop('disabled', true).css('background', '#DDD');
-        $('#a_defect_category').prop('disabled', true).css('background', '#F1F1F1');
-        $('#a_defect_details').prop('disabled', true).css('background', '#F1F1F1');
-        $('#a_treatment_content_defect').prop('disabled', true).css('background', '#F1F1F1');
+        $('#a_defect_category').prop('readonly', true);
+        $('#a_defect_details').prop('readonly', true);
+        $('#a_treatment_content_defect').prop('readonly', true);
 
         // // Trigger function when Enter key is pressed (using keydown or keyup)
         // $('#a_line_no').on('keydown', function(e) {
@@ -78,9 +78,23 @@
             clear_add_defect_record();
         });
 
-        var currentDate = new Date().toISOString().split('T')[0];
-        $('#search_date_from').val(currentDate);
-        $('#search_date_to').val(currentDate);
+        function formatDateLocal(date) {
+            let year = date.getFullYear();
+            let month = String(date.getMonth() + 1).padStart(2, '0');
+            let day = String(date.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
+
+        var now = new Date();
+
+        // First day of current month
+        var firstDay = new Date(now.getFullYear(), now.getMonth(), 1);
+
+        // Last day of current month
+        var lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+
+        $('#search_date_from').val(formatDateLocal(firstDay));
+        $('#search_date_to').val(formatDateLocal(lastDay));
 
         load_defect_table(1);
 
@@ -881,7 +895,7 @@
                         code: defectCategoryCode
                     },
                     success: function(categoryValue) {
-                        $('#a_defect_category').val(categoryValue).prop('disabled', true);
+                        $('#a_defect_category').val(categoryValue).prop('readonly', true);
                     }
                 });
             }
@@ -904,11 +918,11 @@
                             background: '#00375C',
                             color: '#f9f9f9',
                         });
-                        $('#a_defect_details').val('').prop('disabled', true);
-                        $('#a_treatment_content_defect').val('').prop('disabled', true);
+                        $('#a_defect_details').val('').prop('readonly', true);
+                        $('#a_treatment_content_defect').val('').prop('readonly', true);
                     } else {
-                        $('#a_defect_details').val(data.details).prop('disabled', true);
-                        $('#a_treatment_content_defect').val(data.treatment).prop('disabled', true);
+                        $('#a_defect_details').val(data.details).prop('readonly', true);
+                        $('#a_treatment_content_defect').val(data.treatment).prop('readonly', true);
                     }
                 },
                 error: function(xhr, status, error) {
@@ -920,8 +934,8 @@
                 }
             });
         } else {
-            $('#a_defect_details').val('').prop('disabled', true);
-            $('#a_treatment_content_defect').val('').prop('disabled', true);
+            $('#a_defect_details').val('').prop('readonly', true);
+            $('#a_treatment_content_defect').val('').prop('readonly', true);
         }
     }
 
@@ -929,10 +943,10 @@
         const treatment = $('#a_defect_details option:selected').data('treatment');
         if (treatment) {
             $('#a_treatment_content_defect').val(treatment);
-            $('#a_treatment_content_defect').prop('disabled', true).css('background', '#F1F1F1');
+            $('#a_treatment_content_defect').prop('readonly', true).css('background', '#F1F1F1');
         } else {
             $('#a_treatment_content_defect').val('');
-            $('#a_treatment_content_defect').prop('disabled', true).css('background', '#F1F1F1');
+            $('#a_treatment_content_defect').prop('readonly', true).css('background', '#F1F1F1');
         }
     };
 

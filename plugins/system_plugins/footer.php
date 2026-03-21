@@ -1,4 +1,4 @@
-<footer class="main-footer text-xs" style="background-color: #f8f9fa; border-top: 1px solid #ddd;">
+<footer class="main-footer text-xs" style="background-color: #fff; border-top: 1px solid #eee;">
     Copyright © 2024. All Rights Reserved. Developed by: <i>Ally Maranan.</i>
     <div class="float-right d-none d-sm-inline-block">
         Version 3.1.0 | <i style="font-size:12px;">IP Address: &nbsp;</i><input

@@ -5,7 +5,32 @@ include('plugins/system_plugins/preloader.php');
 include('plugins/system_plugins/navbar/index_navbar.php');
 ?>
 
-<div class="content-wrapper" style="background: #f8f9fa;">
+<div class="content-wrapper" style="background: #fff;">
+  <div class="content-header m-0">
+    <div class="container-fluid">
+      <div class="row align-items-center">
+
+        <div class="col-12 col-sm-6">
+          <h5 class="m-0 text-md text-start text-sm-start">
+            Minor Defect Record Monitoring
+          </h5>
+        </div>
+
+        <div class="col-12 col-sm-6 d-none d-sm-block">
+          <ol class="breadcrumb justify-content-sm-end mb-0">
+            <li class="breadcrumb-item text-xs">
+              <a href="index.php">Minor Defect Record System</a>
+            </li>
+            <li class="breadcrumb-item text-xs active">
+              Minor Defect Record Monitoring
+            </li>
+          </ol>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
   <!-- Main content -->
   <section class="content py-2">
     <div class="chart-border mx-1">
@@ -14,7 +39,7 @@ include('plugins/system_plugins/navbar/index_navbar.php');
         <div class="row">
           <div class="col-12 col-sm-6 col-md-2 mb-2">
             <!-- line no. -->
-            <label class="m-0 p-0 text-xs font-weight-normal">Line No.</label>
+            <label class="m-0 p-0 label-xs text-muted font-weight-normal">Line No.</label>
             <!-- <input type="text" id="search_line_no" class="form-control form-control-sm form-control-border text-xs" placeholder="Line No." autocomplete="off"
               class="pl-3"> -->
 
@@ -29,13 +54,13 @@ include('plugins/system_plugins/navbar/index_navbar.php');
           </div>
           <div class="col-12 col-sm-6 col-md-2 mb-2 d-none">
             <!-- product name -->
-            <label class="m-0 p-0 text-xs font-weight-normal">Product Number</label>
+            <label class="m-0 p-0 label-xs text-muted font-weight-normal">Product Number</label>
             <input type="text" id="scan_product_name" class="form-control form-control-sm form-control-border text-xs" placeholder="Product Number"
               autocomplete="off">
           </div>
           <div class="col-12 col-sm-6 col-md-2 mb-2 d-none d-md-block">
             <!-- car maker -->
-            <label class="m-0 p-0 text-xs font-weight-normal">Car Maker</label>
+            <label class="m-0 p-0 label-xs text-muted font-weight-normal">Car Maker</label>
             <select id="search_car_maker" class="form-control form-control-sm form-control-border text-xs">
               <option value="" disabled selected>Select Car Maker</option>
               <option value="MAZDA">MAZDA</option>
@@ -49,17 +74,17 @@ include('plugins/system_plugins/navbar/index_navbar.php');
           </div>
           <div class="col-12 col-sm-6 col-md-2 mb-2 d-none d-md-block">
             <!-- lot no -->
-            <label class="m-0 p-0 text-xs font-weight-normal">Lot No.</label>
+            <label class="m-0 p-0 label-xs text-muted font-weight-normal">Lot No.</label>
             <input type="text" id="scan_lot_no" class="form-control form-control-sm form-control-border text-xs" placeholder="Lot No." autocomplete="off">
           </div>
           <div class="col-12 col-sm-6 col-md-2 mb-2 d-none d-md-block">
             <!-- serial no -->
-            <label class="m-0 p-0 text-xs font-weight-normal">Serial No.</label>
+            <label class="m-0 p-0 label-xs text-muted font-weight-normal">Serial No.</label>
             <input type="number" id="scan_serial_no" class="form-control form-control-sm form-control-border text-xs" placeholder="Serial No." autocomplete="off">
           </div>
           <div class="col-12 col-sm-6 col-md-2 mb-2 d-none d-md-block">
             <!-- process -->
-            <label class="m-0 p-0 text-xs font-weight-normal">Process</label>
+            <label class="m-0 p-0 label-xs text-muted font-weight-normal">Process</label>
             <select id="search_process" class="form-control form-control-sm form-control-border text-xs">
               <option value="" disabled selected>Select Process</option>
             </select>
@@ -75,19 +100,19 @@ include('plugins/system_plugins/navbar/index_navbar.php');
         <div class="row mt-1">
           <div class="col-12 col-sm-4 col-md-2 mb-2">
             <!-- date from -->
-            <label class="m-0 p-0 text-xs font-weight-normal">Date Detected From</label>
+            <label class="m-0 p-0 label-xs text-muted font-weight-normal">Date Detected From</label>
             <input type="date" name="date_from" class="form-control form-control-sm form-control-border text-xs" id="search_date_from" placeholder="Date From"
               onfocus="(this.type='date')">
           </div>
           <div class="col-12 col-sm-4 col-md-2 mb-2">
             <!-- date to -->
-            <label class="m-0 p-0 text-xs font-weight-normal">Date Detected To</label>
+            <label class="m-0 p-0 label-xs text-muted font-weight-normal">Date Detected To</label>
             <input type="date" name="date_to" class="form-control form-control-sm form-control-border text-xs" id="search_date_to" placeholder="Date To"
               onfocus="(this.type='date')">
           </div>
           <div class="col-12 col-sm-6 col-md-2 mb-2 d-none d-md-block">
             <!-- defect category -->
-            <label class="m-0 p-0 text-xs font-weight-normal">Defect Category</label>
+            <label class="m-0 p-0 label-xs text-muted font-weight-normal">Defect Category</label>
             <select id="search_defect_category" class="form-control form-control-sm form-control-border text-xs">
               <option value="" disabled selected>Select Defect Category</option>
             </select>
@@ -95,7 +120,7 @@ include('plugins/system_plugins/navbar/index_navbar.php');
 
           <div class="col-12 col-sm-6 col-md-2 mb-2 d-none d-md-block">
             <!-- defect details -->
-            <label class="m-0 p-0 text-xs font-weight-normal">Defect Details</label>
+            <label class="m-0 p-0 label-xs text-muted font-weight-normal">Defect Details</label>
             <select id="search_defect_details" class="form-control form-control-sm form-control-border text-xs">
               <option value="" disabled selected>Select Defect Details</option>
             </select>
@@ -130,17 +155,17 @@ include('plugins/system_plugins/navbar/index_navbar.php');
 
     <!-- MAIN FIELD -->
     <div class="chart-border mx-1 mt-2">
-      <div class="card-body m-0 p-0 p-2">
-        <p class="p-0 m-0 text-secondary text-xs"><i class="far fa-folder"></i>&nbsp;Minor Defect Record Table</p>
+      <div class="card-body m-0 p-0 p-1">
+        <!-- <p class="p-0 m-0 text-secondary text-xs"><i class="far fa-folder"></i>&nbsp;Minor Defect Record Table</p> -->
         <div class="col-sm-3">
           <!-- view total count of data from table -->
           <span id="count_view_defect"></span>
         </div>
 
         <!-- table -->
-        <div id="list_of_defect_res" class="card-body table-responsive m-0 p-0 mt-1" style="max-height: 450px;">
+        <div id="list_of_defect_res" class="card-body table-responsive m-0 p-0" style="max-height: 450px;">
           <table class="table col-12 table-sm table-head-fixed text-nowrap table-hover" id="defect_table">
-            <thead class="text-center text-xs">
+            <thead class="text-center label-xs text-uppercase">
               <th>#</th>
               <th>Date Detected</th>
               <th>Car Maker</th>
@@ -169,7 +194,7 @@ include('plugins/system_plugins/navbar/index_navbar.php');
               <th>Verified By</th>
               <th>Added By</th>
             </thead>
-            <tbody class="mb-0 text-xs" id="list_of_defect"></tbody>
+            <tbody class="mb-0 label-xs" id="list_of_defect"></tbody>
           </table>
         </div>
         <br>
@@ -177,7 +202,7 @@ include('plugins/system_plugins/navbar/index_navbar.php');
           <div class="dataTables_info" id="defect_table_info" role="status" aria-live="polite"></div>
         </div>
         <div class="d-flex justify-content-sm-center">
-          <button type="button" class="btn btn-outline-dark btn-sm text-xs" id="btnNextPage"
+          <button type="button" class="btn btn-outline-secondary btn-sm label-xs" id="btnNextPage"
             onclick="get_next_page()">Load more</button>
         </div>
       </div>

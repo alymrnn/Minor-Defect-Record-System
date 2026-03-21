@@ -11,20 +11,20 @@
     /* scrollbar */
     /* width */
     ::-webkit-scrollbar {
-        width: 8px;
-        height: 8px;
+        width: 7px;
+        height: 7px;
     }
 
     /* Track */
     ::-webkit-scrollbar-track {
         background: #f1f1f1;
-        border-radius: 10px;
+        border-radius: 8px;
     }
 
     /* Handle */
     ::-webkit-scrollbar-thumb {
         background: #888;
-        border-radius: 10px;
+        border-radius: 8px;
     }
 
     /* Handle on hover */
@@ -138,7 +138,7 @@
         border: none;
         background-color: #fff;
         padding: 15px;
-        border-radius: 15px;
+        border-radius: 10px;
         border: 1px solid #eee;
         height: 100%;
     }
@@ -147,7 +147,7 @@
         border: none;
         background-color: #fff;
         padding: 8px;
-        border-radius: 15px;
+        border-radius: 11px;
         border: 1px solid #eee;
         height: 100%;
     }
@@ -155,9 +155,9 @@
     .filter-border {
         border: none;
         background-color: #fff;
-        padding: 15px;
-        border-radius: 15px;
-        border: 1px solid #ddd;
+        padding: 10px;
+        border-radius: 8px;
+        border: 1px solid #eee;
     }
 
     .navbar-nav .nav-item a.btn {
@@ -226,6 +226,27 @@
             max-height: 80vh;
             overflow-y: auto;
         }
+    }
+
+    .label-xs {
+        font-size: 11px;
+    }
+
+    #defect_table tbody tr:nth-child(odd) {
+        background-color: #fbfcfd;
+    }
+
+    #defect_table tbody tr:nth-child(even) {
+        background-color: #fff;
+    }
+
+    #defect_table tbody tr:hover {
+        background-color: #e2eafc;
+        cursor: pointer;
+    }
+
+    #defect_table tbody tr {
+        transition: background-color 0.2s ease;
     }
 </style>
 
