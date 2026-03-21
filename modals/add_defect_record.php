@@ -2,10 +2,16 @@
     data-keyboard="false">
     <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
         <div class="modal-content bg-light">
-            <div class="modal-header m-0 py-2 px-3" style="border-bottom: 1px solid #ddd;">
-                <h6 class="modal-title font-weight-bold text-sm">
-                    Add New Minor Defect Record
-                </h6>
+            <div class="modal-header m-0 py-2 px-3" style="border-bottom: 1px solid #ddd; display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: nowrap;">
+                <div class="d-flex flex-column">
+                    <h6 class="modal-title font-weight-bold text-sm">
+                        Add New Minor Defect Record
+                    </h6>
+                    <label class="font-weight-normal text-xs text-muted mb-0">
+                        Record Added By: <b><span id="authNameDisplay" class="text-dark text-bold"></span></b>
+                    </label>
+                </div>
+
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true"><i class="fas fa-times fa-xs"></i></span>
                 </button>
@@ -15,14 +21,6 @@
                     <legend class="text-sm text-muted w-auto px-2">
                         MINOR DEFECT FORM DATA
                     </legend>
-
-
-
-                    <div style="display: flex; justify-content: flex-end;">
-                        <label class="p-1 font-weight-normal label-xs">
-                            Record Added By: <b><span id="authNameDisplay"></span></b>
-                        </label>
-                    </div>
 
                     <div class="row mb-2">
                         <div class="col-12 col-md-3 m-0 p-0 px-1">
