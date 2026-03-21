@@ -162,6 +162,15 @@ include('plugins/system_plugins/navbar/index_navbar.php');
           <span id="count_view_defect"></span>
         </div>
 
+        <div class="row">
+          <div class="col-12 m-0 p-0 px-1">
+            <p class="p-1 mb-2 label-xs" style="background: #f8f9fa; border-left: 3px solid #ddd; color: #22577a;">
+              <i>Note:</i>
+              Records for the current month are shown in descending order. Update the date range as needed.
+            </p>
+          </div>
+        </div>
+
         <!-- table -->
         <div id="list_of_defect_res" class="card-body table-responsive m-0 p-0" style="max-height: 450px;">
           <table class="table col-12 table-sm table-head-fixed text-nowrap table-hover" id="defect_table">
