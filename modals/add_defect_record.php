@@ -2,7 +2,7 @@
     data-keyboard="false">
     <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
         <div class="modal-content bg-light">
-            <div class="modal-header m-0 py-2 px-3" style="border-bottom: 1px solid #ddd; display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: nowrap;">
+            <div class="modal-header m-0 py-2 px-3" style="border-bottom: 1px solid #eee; display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: nowrap;">
                 <div class="d-flex flex-column">
                     <h6 class="modal-title font-weight-bold text-sm">
                         Add New Minor Defect Record
@@ -34,7 +34,7 @@
                             <label class="m-0 p-0 label-xs font-weight-normal">Date Detected</label>
                             <label class="m-0 p-0 text-danger label-xs">*</label>
 
-                            <input type="date" id="a_date_detected" class="form-control form-control-sm form-control-border text-xs" autocomplete="off" required>
+                            <input type="date" id="a_date_detected" class="form-control form-control-sm form-control-border label-xs" autocomplete="off" required>
                         </div>
                         <div class="col-12 col-md-3 m-0 p-0 px-1">
                             <label class="m-0 p-0 label-xs font-weight-normal">Line No.</label>
@@ -42,13 +42,13 @@
                             <!-- <input
                             type="text"
                             id="a_line_no"
-                            class="form-control form-control-sm form-control-border text-xs"
+                            class="form-control form-control-sm form-control-border label-xs"
                             autocomplete="off"
                             required
                             maxlength="4"
                             pattern="\d{4}"> -->
 
-                            <select id="a_line_no" class="form-control form-control-sm form-control-border text-xs" required>
+                            <select id="a_line_no" class="form-control form-control-sm form-control-border label-xs" required>
                                 <option value="" disabled selected>Select Line No.</option>
                             </select>
 
@@ -57,12 +57,12 @@
                         <div class="col-12 col-md-3 m-0 p-0 px-1">
                             <label class="m-0 p-0 label-xs font-weight-normal">Car Maker</label>
                             <label class="m-0 p-0 text-danger label-xs">*</label>
-                            <input id="a_car_maker" class="form-control form-control-sm form-control-border text-xs" onchange="handleCarMakerChange(this)" required readonly>
+                            <input id="a_car_maker" class="form-control form-control-sm form-control-border label-xs" onchange="handleCarMakerChange(this)" required readonly>
                         </div>
                         <div class="col-12 col-md-3 m-0 p-0 px-1">
                             <label class="m-0 p-0 label-xs font-weight-normal">Car Model</label>
                             <label class="m-0 p-0 text-danger label-xs">*</label>
-                            <input type="text" id="a_car_model" class="form-control form-control-sm form-control-border text-xs" autocomplete="off" required>
+                            <input type="text" id="a_car_model" class="form-control form-control-sm form-control-border label-xs" autocomplete="off" required>
                         </div>
                     </div>
                     <div class="row mb-2">
@@ -72,12 +72,12 @@
 
                             <div class="m-0 p-0 px-1">
                                 <div class="form-check form-check-inline m-0 p-0">
-                                    <input class="form-check-input form-control-sm text-xs" type="radio" name="category_type" id="prime" value="Prime">
-                                    <label class="form-check-label form-control-sm text-xs" for="prime">Prime</label>
+                                    <input class="form-check-input form-control-sm label-xs" type="radio" name="category_type" id="prime" value="Prime">
+                                    <label class="form-check-label form-control-sm label-xs" for="prime">Prime</label>
                                 </div>
                                 <div class="form-check form-check-inline m-0 p-0">
-                                    <input class="form-check-input form-control-sm text-xs" type="radio" name="category_type" id="re_assy" value="Re-assy">
-                                    <label class="form-check-label form-control-sm text-xs" for="re_assy">Re-assy</label>
+                                    <input class="form-check-input form-control-sm label-xs" type="radio" name="category_type" id="re_assy" value="Re-assy">
+                                    <label class="form-check-label form-control-sm label-xs" for="re_assy">Re-assy</label>
                                 </div>
                             </div>
 
@@ -86,14 +86,14 @@
                         <div class="col-12 col-md-3 m-0 p-0 px-1">
                             <label class="m-0 p-0 label-xs font-weight-normal">Process</label>
                             <label class="m-0 p-0 text-danger label-xs">*</label>
-                            <select id="a_process" class="form-control form-control-sm form-control-border text-xs" required>
+                            <select id="a_process" class="form-control form-control-sm form-control-border label-xs" required>
                                 <option value="" disabled selected>Select Process</option>
                             </select>
                         </div>
                         <div class="col-12 col-md-3 m-0 p-0 px-1">
                             <label class="m-0 p-0 label-xs font-weight-normal">Group</label>
                             <label class="m-0 p-0 text-danger label-xs">*</label>
-                            <select id="a_group" class="form-control form-control-sm form-control-border text-xs" required>
+                            <select id="a_group" class="form-control form-control-sm form-control-border label-xs" required>
                                 <option value="" disabled selected>Select Group</option>
                                 <option value="ADS">ADS</option>
                                 <option value="A">A</option>
@@ -103,7 +103,7 @@
                         <div class="col-12 col-md-3 m-0 p-0 px-1">
                             <label class="m-0 p-0 label-xs font-weight-normal">Shift</label>
                             <label class="m-0 p-0 text-danger label-xs">*</label>
-                            <select id="a_shift" class="form-control form-control-sm form-control-border text-xs" required>
+                            <select id="a_shift" class="form-control form-control-sm form-control-border label-xs" required>
                                 <option value="" disabled>Select Shift</option>
                                 <option value="N/A" selected>N/A</option>
                                 <option value="DS">DS</option>
@@ -115,16 +115,16 @@
                         <div class="row">
                             <div class="col-12 m-0 p-0 px-1">
                                 <label class="m-0 p-0 label-xs font-weight-normal">QR Setting</label>
-                                <select id="qr_settings" class="form-control form-control-sm form-control-border text-xs" required>
+                                <select id="qr_settings" class="form-control form-control-sm form-control-border label-xs" required>
                                     <option value="" disabled selected>Select Setting</option>
                                 </select>
                             </div>
 
-                            <!-- <button type="button" class="btn btn-warning btn-sm text-xs mt-2 mx-2" id="openScanner">
+                            <!-- <button type="button" class="btn btn-warning btn-sm label-xs mt-2 mx-2" id="openScanner">
                             <i class="fas fa-camera mr-1"></i> Open Camera Scanner
                         </button>
 
-                        <button type="button" class="btn btn-outline-danger btn-sm text-xs mt-2 mx-2" id="closeScanner" style="display:none;">
+                        <button type="button" class="btn btn-outline-danger btn-sm label-xs mt-2 mx-2" id="closeScanner" style="display:none;">
                            <i class="fas fa-window-close mr-1"></i> Close Camera Scanner
                         </button>
 
@@ -134,7 +134,7 @@
 
                             <div class="col-12 mt-2 m-0 p-0 px-1">
                                 <label class="m-0 p-0 label-xs font-weight-normal">Nameplate Value</label>
-                                <input type="text" id="a_scan_qr" value="<?php echo isset($_GET['qr']) ? $_GET['qr'] : ''; ?>" class="form-control form-control-sm form-control-border text-xs" readonly>
+                                <input type="text" id="a_scan_qr" value="<?php echo isset($_GET['qr']) ? $_GET['qr'] : ''; ?>" class="form-control form-control-sm form-control-border label-xs" readonly>
                                 <input type="hidden" id="nameplate_value">
                             </div>
                         </div>
@@ -144,19 +144,19 @@
                         <div class="col-12 col-md-4 m-0 p-0 px-1">
                             <label class="m-0 p-0 label-xs font-weight-normal">Product Number</label>
                             <label class="m-0 p-0 text-danger label-xs">*</label>
-                            <input type="text" id="a_product_name" class="form-control form-control-sm form-control-border text-xs" autocomplete="off" value="N/A" oninput="this.value = this.value.toUpperCase();">
+                            <input type="text" id="a_product_name" class="form-control form-control-sm form-control-border label-xs" autocomplete="off" value="N/A" oninput="this.value = this.value.toUpperCase();">
                         </div>
                         <div class="col-12 col-md-4 m-0 p-0 px-1">
                             <label class="m-0 p-0 label-xs font-weight-normal">Lot No.</label>
                             <label class="m-0 p-0 text-danger label-xs">*</label>
-                            <input type="text" id="a_lot_no" class="form-control form-control-sm form-control-border text-xs" autocomplete="off"
+                            <input type="text" id="a_lot_no" class="form-control form-control-sm form-control-border label-xs" autocomplete="off"
                                 maxlength="6"
                                 oninput="this.value = this.value.toUpperCase();" value="59">
                         </div>
                         <div class="col-12 col-md-4 m-0 p-0 px-1">
                             <label class="m-0 p-0 label-xs font-weight-normal">Serial No.</label>
                             <label class="m-0 p-0 text-danger label-xs">*</label>
-                            <input type="text" id="a_serial_no" class="form-control form-control-sm form-control-border text-xs" autocomplete="off"
+                            <input type="text" id="a_serial_no" class="form-control form-control-sm form-control-border label-xs" autocomplete="off"
                                 oninput="this.value = this.value.toUpperCase();">
                         </div>
                     </div>
@@ -165,31 +165,31 @@
                         <div class="col-12 col-md-3 m-0 p-0 px-1" style="display: none;">
                             <label class="m-0 p-0 label-xs font-weight-normal">Defect Category Code</label>
                             <label class="m-0 p-0 text-danger label-xs">*</label>
-                            <input type="text" id="a_defect_category_code" class="form-control form-control-sm form-control-border text-xs"
+                            <input type="text" id="a_defect_category_code" class="form-control form-control-sm form-control-border label-xs"
                                 autocomplete="off"
                                 oninput="this.value = this.value.toUpperCase();">
                         </div>
                         <div class="col-12 col-md-3 m-0 p-0 px-1">
                             <label class="m-0 p-0 label-xs font-weight-normal">Defect Details Code</label>
                             <label class="m-0 p-0 text-danger label-xs">*</label>
-                            <!-- <input type="text" id="a_defect_details_code" class="form-control form-control-sm form-control-border text-xs"
+                            <!-- <input type="text" id="a_defect_details_code" class="form-control form-control-sm form-control-border label-xs"
                             autocomplete="off" maxlength="3"
                             oninput="this.value = this.value.toUpperCase();"> -->
 
-                            <select id="a_defect_details_code" class="form-control form-control-sm form-control-border text-xs" required>
+                            <select id="a_defect_details_code" class="form-control form-control-sm form-control-border label-xs" required>
                                 <option value="" disabled selected>Select Code</option>
                             </select>
                         </div>
                         <div class="col-12 col-md-5 m-0 p-0 px-1">
                             <label class="m-0 p-0 label-xs font-weight-normal">Defect Category</label>
                             <label class="m-0 p-0 text-danger label-xs">*</label>
-                            <input id="a_defect_category" class="form-control form-control-sm form-control-border text-xs"
+                            <input id="a_defect_category" class="form-control form-control-sm form-control-border label-xs"
                                 required readonly>
                         </div>
                         <div class="col-12 col-md-4 m-0 p-0 px-1">
                             <label class="m-0 p-0 label-xs font-weight-normal">Defect Details</label>
                             <label class="m-0 p-0 text-danger label-xs">*</label>
-                            <input id="a_defect_details" class="form-control form-control-sm form-control-border text-xs"
+                            <input id="a_defect_details" class="form-control form-control-sm form-control-border label-xs"
                                 required readonly>
                         </div>
                     </div>
@@ -197,28 +197,28 @@
                         <div class="col-12 col-md-5 offset-md-3 m-0 p-0 px-1">
                             <label class="m-0 p-0 label-xs font-weight-normal">Treatment Content of Defect</label>
                             <label class="m-0 p-0 text-danger label-xs">*</label>
-                            <input id="a_treatment_content_defect" class="form-control form-control-sm form-control-border text-xs" required readonly>
+                            <input id="a_treatment_content_defect" class="form-control form-control-sm form-control-border label-xs" required readonly>
                         </div>
                     </div>
                     <div class="row mb-2 mt-2">
                         <div class="col-12 col-md-3 m-0 p-0 px-1">
                             <label class="m-0 p-0 label-xs font-weight-normal">Sequence No.</label>
                             <label class="m-0 p-0 text-danger label-xs">*</label>
-                            <input type="text" id="a_sequence_no" class="form-control form-control-sm form-control-border text-xs" autocomplete="off"
+                            <input type="text" id="a_sequence_no" class="form-control form-control-sm form-control-border label-xs" autocomplete="off"
                                 oninput="this.value = this.value.toUpperCase();"
                                 required>
                         </div>
                         <div class="col-12 col-md-3 m-0 p-0 px-1">
                             <label class="m-0 p-0 label-xs font-weight-normal">Connector No.</label>
                             <label class="m-0 p-0 text-danger label-xs">*</label>
-                            <input type="text" id="a_connector_no" class="form-control form-control-sm form-control-border text-xs" autocomplete="off"
+                            <input type="text" id="a_connector_no" class="form-control form-control-sm form-control-border label-xs" autocomplete="off"
                                 oninput="this.value = this.value.toUpperCase();"
                                 required>
                         </div>
                         <div class="col-12 col-md-3 m-0 p-0 px-1">
                             <label class="m-0 p-0 label-xs font-weight-normal">Occurrence Shift</label>
                             <label class="m-0 p-0 text-danger label-xs">*</label>
-                            <select id="a_occurrence_shift" class="form-control form-control-sm form-control-border text-xs" required>
+                            <select id="a_occurrence_shift" class="form-control form-control-sm form-control-border label-xs" required>
                                 <option value="" disabled selected>Select Shift</option>
                                 <option value="ADS">ADS</option>
                                 <option value="A">A</option>
@@ -228,7 +228,7 @@
                         <div class="col-12 col-md-3 m-0 p-0 px-1">
                             <label class="m-0 p-0 label-xs font-weight-normal">Occurrence Board No.</label>
                             <label class="m-0 p-0 text-danger label-xs">*</label>
-                            <input type="text" id="a_occurrence_board_no" class="form-control form-control-sm form-control-border text-xs" autocomplete="off"
+                            <input type="text" id="a_occurrence_board_no" class="form-control form-control-sm form-control-border label-xs" autocomplete="off"
                                 oninput="this.value = this.value.toUpperCase();"
                                 required>
                         </div>
@@ -237,26 +237,26 @@
                         <div class="col-12 col-md-3 m-0 p-0 px-1">
                             <label class="m-0 p-0 label-xs font-weight-normal">Occurrence Station No.</label>
                             <label class="m-0 p-0 text-danger label-xs">*</label>
-                            <input type="text" id="a_occurrence_station_no" class="form-control form-control-sm form-control-border text-xs" autocomplete="off"
+                            <input type="text" id="a_occurrence_station_no" class="form-control form-control-sm form-control-border label-xs" autocomplete="off"
                                 oninput="this.value = this.value.toUpperCase();"
                                 required>
                         </div>
                         <div class="col-12 col-md-3 m-0 p-0 px-1">
                             <label class="m-0 p-0 label-xs font-weight-normal">Total Time (mins)</label>
                             <label class="m-0 p-0 text-danger label-xs">*</label>
-                            <input type="number" id="a_total_time" class="form-control form-control-sm form-control-border text-xs"
+                            <input type="number" id="a_total_time" class="form-control form-control-sm form-control-border label-xs"
                                 required>
                         </div>
                         <div class="col-12 col-md-3 m-0 p-0 px-1">
                             <label class="m-0 p-0 label-xs font-weight-normal">Repaired By <i style="font-size: 10px">(PD ID No.)</i></label>
                             <label class="m-0 p-0 text-danger label-xs">*</label>
-                            <input type="text" id="a_repaired_by" class="form-control form-control-sm form-control-border text-xs" autocomplete="off" value="N/A"
+                            <input type="text" id="a_repaired_by" class="form-control form-control-sm form-control-border label-xs" autocomplete="off" value="N/A"
                                 oninput="this.value = this.value.toUpperCase();" required>
                         </div>
                         <div class="col-12 col-md-3 m-0 p-0 px-1">
                             <label class="m-0 p-0 label-xs font-weight-normal">Verified By <i style="font-size: 10px">(QA ID No.)</i></label>
                             <label class="m-0 p-0 text-danger label-xs">*</label>
-                            <input type="text" id="a_verified_by" class="form-control form-control-sm form-control-border text-xs" autocomplete="off" value="N/A"
+                            <input type="text" id="a_verified_by" class="form-control form-control-sm form-control-border label-xs" autocomplete="off" value="N/A"
                                 oninput="this.value = this.value.toUpperCase();" required>
                         </div>
                     </div>
@@ -265,10 +265,10 @@
 
             <div class="modal-footer bg-light">
                 <div class="col-12 d-flex justify-content-between m-0 p-0 px-1">
-                    <button class="btn btn-outline-secondary btn-sm w-25 label-xs" id="clear_btn" onclick="clear_add_defect_record()">
+                    <button class="btn btn-outline-secondary btn-sm label-xs" id="clear_btn" onclick="clear_add_defect_record()">
                         Clear All
                     </button>
-                    <button class="btn btn-primary btn-sm w-25 label-xs" onclick="add_defect_record()">
+                    <button class="btn btn-primary btn-sm label-xs" onclick="add_defect_record()">
                         Add Record
                     </button>
                 </div>
