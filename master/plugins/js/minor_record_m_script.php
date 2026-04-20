@@ -76,7 +76,7 @@
                     text: 'Fetching defect details, please wait.',
                     allowOutsideClick: false,
                     showConfirmButton: false,
-                    background: '#1b263b',
+                    background: '#00375C',
                     color: '#fff',
                     didOpen: () => {
                         Swal.showLoading();
@@ -151,9 +151,9 @@
         const defect_details_code = $('#edit_defect_details_code').val();
         const defect_details = $('#edit_defect_details').val();
         const treatment_content_defect = $('#edit_treatment_content').val();
-        const occurrence_shift = $('edit_occurrence_shift').val();
-        const occurrence_board_no = $('edit_occurrence_board_no').val();
-        const occurrence_station_no = $('edit_occurrence_station_no').val();
+        const occurrence_shift = $('#edit_occurrence_shift').val();
+        const occurrence_board_no = $('#edit_occurrence_board_no').val();
+        const occurrence_station_no = $('#edit_occurrence_station_no').val();
         const sequence_no = $('#edit_sequence_no').val();
         const connector_no = $('#edit_connector_no').val();
         const total_time = $('#edit_total_time').val();
@@ -200,7 +200,7 @@
                     text: 'Updating defect record, please wait.',
                     allowOutsideClick: false,
                     showConfirmButton: false,
-                    background: '#1b263b',
+                    background: '#00375C',
                     color: '#fff',
                     didOpen: () => {
                         Swal.showLoading();
@@ -213,7 +213,7 @@
                         icon: 'success',
                         title: 'Updated',
                         text: response.message,
-                        background: '#1b263b',
+                        background: '#00375C',
                         color: '#fff',
                         showConfirmButton: false,
                         timer: 1000
@@ -226,7 +226,7 @@
                         icon: 'error',
                         title: 'Error',
                         text: response.message,
-                        background: '#1b263b',
+                        background: '#00375C',
                         color: '#fff',
                     });
                 }
@@ -236,7 +236,7 @@
                     icon: 'error',
                     title: 'Oops...',
                     text: 'Something went wrong while updating the record.',
-                    background: '#1b263b',
+                    background: '#00375C',
                     color: '#fff',
                 });
             }

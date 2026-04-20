@@ -1169,7 +1169,7 @@
     };
 
     const clear_add_defect_record = () => {
-        stopScanner();
+        // stopScanner();
 
         document.getElementById("a_date_detected").value = '';
         document.getElementById("a_car_maker").value = '';
