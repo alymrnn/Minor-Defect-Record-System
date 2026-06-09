@@ -5,9 +5,9 @@
       fetch_date();
       generate_dashboard_filter();
 
-      setInterval(() => {
-         generate_dashboard_filter();
-      }, 300000); //refresh rate every 5 minutes
+      // setInterval(() => {
+      //    generate_dashboard_filter();
+      // }, 300000); //refresh rate every 5 minutes
    });
 
    function fetch_date() {
@@ -577,27 +577,22 @@
                   return;
                }
 
-               // Build complete date range
-               const start = new Date(date_from);
-               const end = new Date(date_to);
+               const start = new Date(date_from + "T00:00:00");
+               const end = new Date(date_to + "T00:00:00");
+
                const dateRange = [];
+
                while (start <= end) {
-                  let d = start.toISOString().split('T')[0];
-                  dateRange.push(d);
+                  dateRange.push(start.toISOString().split('T')[0]); // YYYY-MM-DD
                   start.setDate(start.getDate() + 1);
                }
 
-               // Map response into an object for quick lookup
                const defectMap = {};
                response.forEach(item => {
                   defectMap[item.defect_date] = parseInt(item.total);
                });
 
-               // Fill missing dates with 0
-               const categories = dateRange.map(d => {
-                  const parts = d.split("-"); // ["2025","09","01"]
-                  return `${parts[1]}-${parts[2]}`; // "09-01"
-               });
+               const categories = dateRange;
                const values = dateRange.map(d => defectMap[d] || 0);
 
                Highcharts.chart('daily_trend_chart', {
@@ -617,6 +612,9 @@
                      categories: categories,
                      tickmarkPlacement: 'on',
                      labels: {
+                        formatter: function() {
+                           return this.value.slice(5);
+                        },
                         rotation: -45,
                         style: {
                            fontFamily: 'Poppins, sans-serif',
@@ -659,30 +657,19 @@
                         },
                         lineWidth: 2,
                         lineColor: '#339BFF',
-                        fillOpacity: 0.25,
-                        dataLabels: {
-                           enabled: false,
-                           style: {
-                              fontFamily: 'Poppins, sans-serif',
-                              fontSize: '10px',
-                              fontWeight: 'normal',
-                           }
-                        }
+                        fillOpacity: 0.25
                      },
                      series: {
                         point: {
                            events: {
                               click: function() {
-                                 let clickedDate = this.category;
-                                 let fullDate = "2025-" + clickedDate;
+                                 let fullDate = this.category;
 
                                  Swal.fire({
                                     title: 'Loading...',
                                     text: 'Fetching top records for ' + fullDate,
                                     allowOutsideClick: false,
-                                    didOpen: () => {
-                                       Swal.showLoading();
-                                    },
+                                    didOpen: () => Swal.showLoading(),
                                     background: '#1b263b',
                                     color: '#f8f9fa'
                                  });
@@ -691,12 +678,8 @@
                                        fetch_top_daily_line_no(fullDate),
                                        fetch_top_daily_defect_category(fullDate)
                                     ])
-                                    .then(() => {
-                                       Swal.close();
-                                    })
-                                    .catch(() => {
-                                       Swal.fire('Error', 'Failed to load data.', 'error');
-                                    });
+                                    .then(() => Swal.close())
+                                    .catch(() => Swal.fire('Error', 'Failed to load data.', 'error'));
                               }
                            }
                         }
